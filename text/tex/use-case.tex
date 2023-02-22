@@ -1,11 +1,12 @@
 \chapter{Use cases}
 
-\section{Find Fitting Vocabulary Resources}
+\section{Search For Fitting Vocabulary Resources}
 
 \subsection{Description}
 User has a structured graph data and they would like to map the data to resources from registered vocabularies. User presents a graph of entities and their relations. The user can also specify other search parameters. The system returns a best-effort mapping options of vocabulary resources and predicates to specified entities and relationships between them. The user can then select the the most fitting option or change the input specification to make the system search again. The user can select which resources or whole vocabularies should not be included in the search.
 
 The system tracks the last inputs and outputs so user does not have to repeat the search again if they want to go back. 
+
 
 \subsection{Input}
 The specification of entities and relationships within the input graph can be done multiple ways:
@@ -18,8 +19,14 @@ The specification of entities and relationships within the input graph can be do
 
 The system contains default rules for mapping entities and relations. The user can remove some rules or add multiple. Rules typically specify what general descriptive properties are used for tag matching or how different the output model can be from the input one. The rule can be specified for all entities or for any one entity. User can also which domains the vocabularies should not be about so they can be filtered out beforehand or whether to search through all vocabularies.
 
+\subsection{Alternative Input}
+Alternatively, user could just upload their RDF data. The system then generates the most probable annotations for entities and relations.
+
 \subsection{Output}
 The output should provide the most fitting mappings for the input graph of entities and resources.
+
+\subsection{Alternative Output}
+If provided with the data, return the data in the selected mapping.
 
 \subsection{Scenario}
 \begin{enumerate}
@@ -27,4 +34,25 @@ The output should provide the most fitting mappings for the input graph of entit
 \end{enumerate}
 
 
-section{Map }
+\section{Visualize Vocabulary And Its Resources}
+\subsection{Description}
+The system provides visualization for registered vocabularies. The visualization has two main components. One is a graph representation with entities as nodes and predicates as edges. User is able to navigate to the definition of entities and predicates via clicking on their representation in graph. The system also provides a definition for each entity which includes a list of all predicates along with their objects. User can view both predicates and objects by clicking on them. Predicate definitions contain any predicates made about them.
+
+\section{Register Vocabulary}
+\subsection{Description}
+User can specify a vocabulary reference which is included in the system's vocabulary registry. User selects categories which the vocabulary fits in. The system also tries to find matching categories.
+
+
+\section{Alternatives Search}
+\subsection{Description}
+User searches for a similar resource to their defined resource. The systems does so by using same as links or comparing labels and resource's predicate labels.
+
+\section{Query Trash Data}
+
+
+
+\section{Browse Vocabularies}
+User can search for a vocabulary by specifying domain categories which should the vocabulary contain. The system  provides a list of most matchable vocabularies along with a summary of the most linked resource labels.
+
+
+
