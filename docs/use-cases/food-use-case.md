@@ -66,8 +66,7 @@ Lastly, the user wants to see the change of the schema if they go through the re
 Updated schema can be seen on the picture below. Any change from the input data (e.g. changed properties, added entities) are shown in pink/purple color. This is where the two sub use cases split.
 
 ![Countries](./img/after-countries.png)
-<!-- ![Countries](./img/after-countries.pdf) -->
-<img src="after-countries.png" alt="drawing" width="50%"/>
+<img src="./img/after-countries.png" alt="drawing" width="50%"/>
 
 ## Sub Use Case With Vocabularies
 
