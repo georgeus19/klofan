@@ -67,6 +67,8 @@ Updated schema can be seen on the picture below. Any change from the input data 
 
 ![Countries](./img/after-countries.png)
 <img src="./img/after-countries.png" alt="drawing" width="50%"/>
+<img src="./img/after-countries.png" alt="drawing" width="70%"/>
+<img src="./img/after-countries.png" alt="drawing" width="90%"/>
 
 ## Sub Use Case With Vocabularies
 
