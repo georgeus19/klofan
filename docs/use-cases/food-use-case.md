@@ -53,46 +53,97 @@ The user wants to start representing the data with known vocabularies - either t
 
 In the picture, there is only one recommendation called "Countries". The user selects it. For any recommendation the user typically wants to know what is the recommendation about (which property, entity) and what vocabulary and its terms were found matching the data. It would also be ideal if the user can browse the vocabulary and the terms in the app if URIs are not dereferencable or for convenience because they must decide whether the vocabulary and specifically the term fits the data. This is represented by the popup windows in the picture below. The window also contains information what method the recommendation was created from. The option of browsing experience is indicated by the eye buttons and the box with rdf tutrle showcasing an example of the vocabulary or term properties which corresponds to one such eye button being clicked by the user (highlighted by green color).
 
-![Countries](./img/countries-recommend-intro.png)
+![Countries Recommendation Introduction](./img/countries-recommend-intro.png)
 
 The user likes the recommendation based on the introductory information and gets more details about what from vocabulary matches with the data. This is shown in the picture below.
 
-![Countries](./img/countries-recommend-details.png)
+![Countries Recommendation Comparison Details](./img/countries-recommend-details.png)
 
 Lastly, the user wants to see the change of the schema if they go through the recommendation. This is shown in the picture below where new things added to the schema have pink/purple color.
 
-![Countries](./img/countries-recommend-diff.png)
+![Countries Recommendation Schema Diff](./img/countries-recommend-diff.png)
 
 Updated schema can be seen on the picture below. Any change from the input data (e.g. changed properties, added entities) are shown in pink/purple color. This is where the two sub use cases split.
 
-![Countries](./img/after-countries.png)
-<img src="./img/after-countries.png" alt="drawing" width="50%"/>
-<img src="./img/after-countries.png" alt="drawing" width="70%"/>
-<img src="./img/after-countries.png" alt="drawing" width="90%"/>
-
-## Sub Use Case With Vocabularies
+![Schema After Countries Recommendation](./img/after-countries.png)
 
 ## Sub Use Case With Generated Vocabulary
 
-## [Figma Use Case](https://www.figma.com/file/Llz9ODDgnr5dFHuXqtnddn/Mapovac?type=design&node-id=0-1&mode=design&t=XvDpDoj2Bbh26wVq-0)
-The starting point of this use case is the middle results of use case 2. The uses matched property values of property "countries" to [countries scheme](http://publications.europa.eu/resource/authority/country) general purpose matching methods. 
+### Mapping Nutriments Property
 
-![IMAGE EXAMPLE](./ex.png)
+![Start Schema For Sub Use Case With Generated Vocabulary](./img/after-countries-nutriments.png)
 
-The user selects `Nutriments` recommendation which found matching "[nutrients](http://aims.fao.org/aos/agrovoc/c_5274)" term in AGROVOC thesaurus. The user can also preview what properties it has. The user inspects it but based on the definition does not found the terms matching. However, rather than "nutrients" he founds a related term while browsing the data which fits the match - "[food composition](http://aims.fao.org/aos/agrovoc/c_10961)" and manually adds the entity to this class (next frame).
+The user selects `Nutriments` recommendation which found matching "[nutrients](http://aims.fao.org/aos/agrovoc/c_5274)" term in AGROVOC thesaurus for "nutriments" property. The recommendation introduction window can be seen below.
 
-The "nutriments" entity then contains a lot of properties such as calcium or energy values for given product. The calcium composition has at least three properties so it is further refactored manually to new entity representing calcium component in the food composition. The same thing is done for all such component properties such as energy, carbohydrates, etc. 
+![Nutriments Recommendation Introduction](./img/nutriments-recommend-intro.png)
 
-On the next frame, the tool detected a recommendation to convert a unit for food composition values from literal to URI in library. Specifically, "g" literal to [gram entity](http://qudt.org/vocab/unit/GM). Part of the recommendation is the link to the vocabulary of the found matching entity which can be previewed as well as the entity itself. The user has a chance to inspect what the found term means and whether to use it or something else from the library.
+Again the user is interested about what the found term matched and wants to preview the property or its whole vocabulary (visualised as simple turtle excerpt). The user inspects it but based on the definition does not found the terms matching. However, rather than "nutrients" he founds a related term while browsing the term properties which fits the match - "[food composition](http://aims.fao.org/aos/agrovoc/c_10961)" and manually adds the entity to this class (shown on the picture below).
 
-If user proceeds with the recommendation, the is a detail view showing how the match was found (method) and values that were matched. This is very simple in this case, since the literals matched by string comparison on literals.
+![Add Entity Manually](./img/nutriments-manual.png)
 
-Proceeding with the recommendation shows the recommended change in the graphical model.
+The right side menu also shows other example manual tasks that the user could want to perform to adjust the schema per their bidding.
 
-The following two frames then show the performed recommendation for "calciumUnit" and "energyUnit" where the process is the same but for "kcal".
+The next picture shows the updated schema.
 
-Now the user is satisfied with the model and wants to get the output rdf where the unmapped values should be part of new generated vocabularies. The tool detects all unmapped properties and provides a way to create new vocabularies and map them remaining unmapped properties to them. The first frame shows the unmapped properties in red.
+![Schema After Adding AGROVOC Food Composition Entity](./img/after-nutriments.png)
 
-The user adds 
+The user still wants to convert the nutrients properties to known vocabulary properties but there are no recommendations. If no vocabulary terms can be found, there is an option of creating a new vocabulary and assigning its terms in the schema. First, the user does not want to have so many properties of one component (e.g. "calcium", "calciumPer100g", "calciumUnit") for all food components hanged on one entity. Instead each component could have its own entity.  This can be done manually and the end result is shown in the picture below.
+
+![Manual Schema Update For Food Components](./img/food-comp-manual.png)
+
+On the next frame, the tool detected a recommendation to convert a unit for food composition values from literal to URI in library. The user prefers having a unit represented by a vocabulary entity with URI rather than a literal.
+
+![Unit Recommendation Introduction](./img/unit-recommend-intro.png)
+
+Specifically, "g" literal to [gram entity](http://qudt.org/vocab/unit/GM). Part of the recommendation is the link to the vocabulary of the found matching entity which can be previewed as well as the entity itself. The user has a chance to inspect what the found term means and whether to use it or something else from the library.
+
+The user proceeds with the recommendation. Next there is again a detail view showing how the match was found (method) and values that were matched. This is very simple in this case, since the literals matched by string comparison on literals.
+
+![Unit Recommendation Details](./img/unit-recommend-details.png)
+
+The user is also interested in how the schema is affected by this recommendation and the tool obliges.
+
+![Unit Recommendation Schema Difference](./img/unit-recommend-diff.png)
+
+The next picture shows the whole updated schema.
+
+![Schema After Calcium Unit Recommendation](./img/after-c-unit.png)
+
+The same can be done for energy or any other food components. The end result is shown below.
+
+![Schema After Energy Unit Recommendation](./img/after-e-unit.png)
+
+Now the user is satisfied with the schema and wants to get the output rdf where the unmapped properties should be a part of new generated vocabularies. The tool detects all unmapped properties and provides a way to create new vocabularies and map them remaining unmapped properties to them. In the picture below, the app shows all unmapped properties in red. If the user does not want to create any vocabulary, each property would have a default vocabulary prefix which is shown in the right side menu.
+
+![Schema With Unmapped Properties](./img/unmapped-props.png)
+
+The user wants to create a food vocabulary to represent any food product or dish along with its ingredients and nutrients. Therefore, they select the option to add a vocabulary. The user needs to select a prefix URI for the vocabulary (or more but for simplicity there is only one), select terms from the schema which would be a part of the vocabulary and add triples enriching, completing and describing the vocabulary. How this process could be done is illustrated in the next pictures.
+
+The picture below gives an example of how this part is expected to work. There is a summary for selected terms and an option for adding vocabulary prefix.
+![Add Vocabulary](./img/add-vocab.png)
+
+The user defines the vocabulary prefix in the picture below.
+![Define Vocabulary Prefix](./img/vocab-prefix.png)
+
+Then the user adds the properties that should be a part of the new food vocabulary (Green color means selection on the picture below).
+![Select Terms For Vocabulary](./img/select-terms.png)
+
+The next picture shows the summary of selected terms. The user could rename or otherwise adjust the terms here.
+![Selected Terms Summary](./img/selected-terms-overview.png)
+
+The next picture shows a simple example for adding more triples to the vocabulary. The user could define e.g. a class for food, add description and labels for the selected properties from previous step.
+![Add Additional Triples To Vocabulary](./img/add-tripls.png)
+
+The user could also want to add the new vocabulary to the catalog of vocabularies which the application uses for creating recommendations. This is illustrated in the picture below.
+![Add Vocabulary To Catalog](./img/add-to-catalog.png)
+
+The last picture shows the updated schema with terms from the newly created vocabulary.
+![Created Vocabulary](./img/generated-vocab.png)
+
+The user now can create vocabulary for the remaining unmapped terms or manually assign them to other vocabularies or generate output rdf with the default export vocabulary prefix applying to the remaining unmapped terms.
+
+## Sub Use Case With Vocabularies
+
+
 
 
