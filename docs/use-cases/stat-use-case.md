@@ -28,7 +28,11 @@ The result of applying the recommendation is shown below where a new entity matc
 
 ![Schema After Region Recommendation](./img/after-region.png)
 
-The user selects `Data Cube` recommendation. This recommendation detected several possible literals (green highlight) which could serve as observations in a data cube in Data Cube vocabulary. The user does not know the vocabulary so it is up to the recommendation to represent the data correctly in the vocabulary. To correctly represent a statistical cube, at least dimensions must be identified. It would be also nice if measures and some attributes could be inferred. If they are not inferred or are inferred incorrectly, the user wants to be able correct it and select the dimensions themself even if they are not an expert on the vocabulary (e.g. the recommendation provides a help text to help do it correctly). This is shown in the picture below.
+The user selects `Data Cube` recommendation. This recommendation detected several possible literals (green highlight) which could serve as observations in a data cube in Data Cube vocabulary.
+
+![Recommendation - Select Dimensions](./img/stat-obs.png)
+
+The user does not know the vocabulary so it is up to the recommendation to represent the data correctly in the vocabulary. To correctly represent a statistical cube, at least dimensions must be identified. It would be also nice if measures and some attributes could be inferred. If they are not inferred or are inferred incorrectly, the user wants to be able correct it and select the dimensions themself even if they are not an expert on the vocabulary (e.g. the recommendation provides a help text to help do it correctly). This is shown in the picture below.
 
 ![Recommendation - Select Dimensions](./img/select-dims.png)
 
