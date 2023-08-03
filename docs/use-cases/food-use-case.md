@@ -71,6 +71,7 @@ Updated schema can be seen on the picture below. Any change from the input data 
 
 ### Mapping Nutriments Property
 
+The following picture shows the starting schema for this sub use case.
 ![Start Schema For Sub Use Case With Generated Vocabulary](./img/after-countries-nutriments.png)
 
 The user selects `Nutriments` recommendation which found matching "[nutrients](http://aims.fao.org/aos/agrovoc/c_5274)" term in AGROVOC thesaurus for "nutriments" property. The recommendation introduction window can be seen below.
@@ -144,6 +145,23 @@ The user now can create vocabulary for the remaining unmapped terms or manually 
 
 ## Sub Use Case With Vocabularies
 
+The following picture shows the starting schema for this sub use case. The user wants to map the most properties and entities to known vocabulary terms. The user selects `Ingredient` recommendation in the right side menu.
 
+![Start Schema For Sub Use Case With Vocabularies](./img/after-countries-ingredients.png)
 
+A recommendation windows appears and the user can see that the recommendation is about the "ingredients" property and that it matched term "containsIngredient" from Food Ontology vocabulary. The picture representing this is below. The user previews the term which is simply illustrated with the rectangle with turtle rdf. 
+
+![Ingredient Recommendation Introduction](./img/ingredients-recommend-intro.png)
+
+The user likes the recommendation and proceeds. The next window shows the details of the matching method as in recommendations before but that is not shown in the next picture. The user wants to see what change the recommendation has on the overall schema. This is shown in the picture below. The recommendations do not have to be just about a single property as it was before but also about a set of terms that are somehow linked. The example here is that the recommendation recommends not just adding a property "food:containsIngredient" but also the type for food and an ingredient to the schema.
+
+![Ingredient Recommendation Schema Difference](./img/ingredients-recommend-diff.png)
+
+The next picture shows the updated schema.
+
+![Schema After Ingredient Recommendation](./img/after-ingredients.png)
+
+The user continues with the food recommendations and gets to the state portrayed below. They could find "schema:NutritionInformation" and map the food component properties themselves and this could be mostly done with a recommendation if the tool offered it. The user could also continue with the properties of the ingredient or food to map them to known vocabulary terms and generate output rdf or just generate the rdf as is similarly how it is done in the previous sub use case.
+
+![Final Use Case Schema](./img/food-with-vocabs.png)
 
