@@ -1,9 +1,9 @@
 # Statistical Data Use Case
-In this use case, a user wants to convert their statistical csv data about czech regions to rdf so that entities and properties are from known vocabularies and ideally done correctly.
+In this use case, a user wants to convert their statistical csv data about czech regions to rdf so that entities and properties are represented correctly using known vocabularies.
 
-This is a follow up to the food use case so there will be a lot of steps skipped and the focus will be on a vocabulary specific recommendation rather than on general purspose recommendation which was showcased in the food use case.
+This is a follow up to the food use case so there will be a lot of steps skipped and the focus will be on a vocabulary specific recommendation rather than on general purpose recommendation which was showcased in the food use case.
 
-Vocabulary specific recommendation means that it recommends to change the schema certain way and represent part of the schema using specific vocabulary way that would not be possible with using any general purpose matching method (e.g. comparing by string).
+Vocabulary specific recommendation means that it recommends to change the schema and represent part of the schema using specific vocabulary certain way that would not be possible with using any general purpose matching method (e.g. comparing by string).
 
 The look the following way:
 ```csv
@@ -28,11 +28,11 @@ The result of applying the recommendation is shown below where a new entity matc
 
 ![Schema After Region Recommendation](./img/after-region.png)
 
-The user selects `Data Cube` recommendation. This recommendation detected several possible literals (green highlight) which could serve as observations in a data cube in Data Cube vocabulary. The user does not know the vocabulary so it is up to the recommendation to represent the data correctly in the vocabulary. To correctly represent a statistical cube, at least dimensions must be identified. It would be also nice if measures and some attributes could be inferred. If they are not inferred or are inferred incorrectly, the user wants to correct it and select the dimensions themself. This is shown in the picture below.
+The user selects `Data Cube` recommendation. This recommendation detected several possible literals (green highlight) which could serve as observations in a data cube in Data Cube vocabulary. The user does not know the vocabulary so it is up to the recommendation to represent the data correctly in the vocabulary. To correctly represent a statistical cube, at least dimensions must be identified. It would be also nice if measures and some attributes could be inferred. If they are not inferred or are inferred incorrectly, the user wants to be able correct it and select the dimensions themself even if they are not an expert on the vocabulary (e.g. the recommendation provides a help text to help do it correctly). This is shown in the picture below.
 
 ![Recommendation - Select Dimensions](./img/select-dims.png)
 
-Since the recommendation is ultimately tied to Data Cube vocabulary, it can include constrains to what must be in the data to use the recommendation or what would be good if the data had for good Data Cube representation. The recommendation could then nudge the user to select the correct unit attributes, measures, etc...
+Since the recommendation is ultimately tied to Data Cube vocabulary, it can include constraints of what must be in the data to use the recommendation or what would be good if the data had for good Data Cube representation. The recommendation could then nudge the user to select the correct unit attributes, measures, etc...
 
 Below are the data represented in Data Cube. Note that since the recommendation is tried to the vocabulary, it can make vast schema changes such as adding a lot of new entities, blank nodes etc.. which would not be feasible in case of general purpose recommendation.
 
