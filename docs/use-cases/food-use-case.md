@@ -1,7 +1,7 @@
 # Food Data Use Case
-In this use case, a user wants to convert their food data from Open Food Facts to rdf with existing vocabularies if any are suitable. The use case shows how the process could go if our tool was used instead of looking for vocabularies and transforming data manually. The use case serves for introducing features that could be usable for the tool. The use cases should be a motivation for creation of the tool and a preview of the main functional requirements. 
+In this use case, a user wants to convert their food data from Open Food Facts to rdf using existing vocabularies if any are suitable. The use case shows how the process could go if our tool was used instead of looking up vocabularies and transforming data manually. The use case serves for introducing features that could be usable for the tool. The use cases should be a motivation for creation of the tool and a preview of the main functional requirements. 
 
-The data for each product are around 1000 lines long json with a lot of information that provide little meaning to a non-author person. Look in `food.json` for an example. An example of the data for noodles and its most important fields are shown below. The user wants to convert these to rdf and ignore the rest.
+The data for each product are around thousand lines long json with a lot of information that provide little meaning to a non-author person. Look in `food.json` for an example. An example of the data for noodles and its most important fields are shown below. The user wants to convert these to rdf and ignore the rest.
 
 ```json
 {
@@ -30,20 +30,21 @@ The data for each product are around 1000 lines long json with a lot of informat
 }
 ```
 
-The use case uses food product data for which there are a few vocabularies capable of representing a food product even sometimes along with nutrition information and ingredients - [FoodOn](https://foodon.org/), [The FoodOntology](http://akswnc7.informatik.uni-leipzig.de/dstreitmatter/archivo/purl.org/foodontology/2020.06.10-203447/foodontology_type=generatedDocu.html#introduction) and some ontologies for categorizing food products (but mostly wihout properties, just thesaurus) - [AGROVOC](https://agrovoc.fao.org/browse/agrovoc/en/page/c_5274).
+The use case uses food product data. There are a few vocabularies capable of representing a food product even sometimes along with nutrition information and ingredients - [FoodOn](https://foodon.org/), [The FoodOntology](http://akswnc7.informatik.uni-leipzig.de/dstreitmatter/archivo/purl.org/foodontology/2020.06.10-203447/foodontology_type=generatedDocu.html#introduction) and some ontologies for categorizing food products (but mostly without properties, just thesaurus) - [AGROVOC](https://agrovoc.fao.org/browse/agrovoc/en/page/c_5274).
 
-The use case has two sub use cases which share the input data but differ in output data. In the former one, the user uses any vocabulary terms that the tool can find to represent various entities and properties. In the latter, the user decides to not reuse vocabularies much and insteads wants to generated new vocabulary terms based on the data (create a new vocabulary (vocabularies) and represent part of the data using them). The reason might be that the aforementioned vocabularies have little properties, have different focus - e.g. agricultural or are too complex to understand.
+The use case has two sub use cases which share the input data but differ in the output. In the former one, the user uses any vocabulary terms that the tool can find to represent various entities and properties. In the latter, the user decides to not reuse vocabularies much and insteads wants to generate new vocabulary terms based on the data (create a new vocabulary (vocabularies) and represent parts of the data using them). The reason might be that the aforementioned vocabularies have little properties, have different focus - e.g. agricultural - or are too complex to understand.
 
 ## Common Part 
 
 ### Loading Data
-The user loads a json with product data into the tool. Since there may be a lot of entities which are not important and do not need to be shown initially so that the data view is not cluttered, the users selects what is shown. The user also selects which parts of data are not to be converted to rdf. A visualization is shown of the picture below where the user picks what to load from the loaded data. 
+
+The user loads a json with product data into the tool. Since there may be a lot of entities which are not important and do not need to be shown initially so that the data view is not cluttered, the users selects what is shown. The user also selects which parts of data are not to be converted to rdf. A visualization is shown of the picture below where the user picks what to load from the input data. 
 
 ![Selecting What To Show](./img/food-loading.png)
 
 ### Mapping Countries Property
 
-When the data is loaded, the user wants to see what is loaded graphically. This is shown in the next picture where the loaded data are converted to schema representing the data schema.
+When the data is loaded, the user wants to see what is loaded graphically. This is shown in the next picture where the loaded data are converted to a schema representing the data.
 
 ![Data Schema](./img/food-schema.png)
 
@@ -51,11 +52,11 @@ There is a graphical representation of entities (light red rectangles) with thei
 
 The user wants to start representing the data with known vocabularies - either through tool recommendations how the data can be matched to vocabulary terms or themself manually.
 
-In the picture, there is only one recommendation called "Countries". The user selects it. For any recommendation the user typically wants to know what is the recommendation about (which property, entity) and what vocabulary and its terms were found matching the data. It would also be ideal if the user can browse the vocabulary and the terms in the app if URIs are not dereferencable or for convenience because they must decide whether the vocabulary and specifically the term fits the data. This is represented by the popup windows in the picture below. The window also contains information what method the recommendation was created from. The option of browsing experience is indicated by the eye buttons and the box with rdf tutrle showcasing an example of the vocabulary or term properties which corresponds to one such eye button being clicked by the user (highlighted by green color).
+In the picture below, there is only one recommendation called "Countries". The user selects it. For any recommendation the user typically wants to know what is the recommendation about (which property, entity) and what vocabulary and its terms were found matching the data. It would also be ideal if the user can browse the vocabulary and the terms directly in the app in case of not dereferencable URIs or for convenience because they must decide whether the vocabulary and specifically the term fits the data. This is represented by the popup windows in the picture below. The main window also contains information what method the recommendation was created from. The option of browsing experience is indicated by the eye buttons and the box with rdf tutrle showcasing an example of the vocabulary or term properties which corresponds to one such eye button being clicked by the user (highlighted by green color).
 
 ![Countries Recommendation Introduction](./img/countries-recommend-intro.png)
 
-The user likes the recommendation based on the introductory information and gets more details about what from vocabulary matches with the data. This is shown in the picture below.
+The user likes the recommendation based on the introductory information and gets more details about how the vocabulary matches with the data. This is shown in the picture below.
 
 ![Countries Recommendation Comparison Details](./img/countries-recommend-details.png)
 
@@ -82,13 +83,13 @@ Again the user is interested about what the found term matched and wants to prev
 
 ![Add Entity Manually](./img/nutriments-manual.png)
 
-The right side menu also shows other example manual tasks that the user could want to perform to adjust the schema per their bidding.
+The right side menu also shows other examples manual tasks that the user could want to perform to adjust the schema per their bidding.
 
 The next picture shows the updated schema.
 
 ![Schema After Adding AGROVOC Food Composition Entity](./img/after-nutriments.png)
 
-The user still wants to convert the nutrients properties to known vocabulary properties but there are no recommendations. If no vocabulary terms can be found, there is an option of creating a new vocabulary and assigning its terms in the schema. First, the user does not want to have so many properties of one component (e.g. "calcium", "calciumPer100g", "calciumUnit") for all food components hanged on one entity. Instead each component could have its own entity.  This can be done manually and the end result is shown in the picture below.
+The user still wants to convert the nutrients properties to known vocabulary properties but there are no recommendations. If no vocabulary terms can be found, there is an option of creating a new vocabulary and assigning its terms in the schema. But before doint that the user does not want to have so many properties of one component (e.g. "calcium", "calciumPer100g", "calciumUnit") for all food components hanged on one entity. Instead each such component could have its own entity.  This can be done manually and the end result is shown in the picture below.
 
 ![Manual Schema Update For Food Components](./img/food-comp-manual.png)
 
@@ -145,7 +146,7 @@ The user now can create vocabulary for the remaining unmapped terms or manually 
 
 ## Sub Use Case With Vocabularies
 
-The following picture shows the starting schema for this sub use case. The user wants to map the most properties and entities to known vocabulary terms. The user selects `Ingredient` recommendation in the right side menu.
+The following picture shows the starting schema for this sub use case. The user wants to map the most of properties and entities to known vocabulary terms. The user selects `Ingredient` recommendation in the right side menu.
 
 ![Start Schema For Sub Use Case With Vocabularies](./img/after-countries-ingredients.png)
 
@@ -153,7 +154,7 @@ A recommendation windows appears and the user can see that the recommendation is
 
 ![Ingredient Recommendation Introduction](./img/ingredients-recommend-intro.png)
 
-The user likes the recommendation and proceeds. The next window shows the details of the matching method as in recommendations before but that is not shown in the next picture. The user wants to see what change the recommendation has on the overall schema. This is shown in the picture below. The recommendations do not have to be just about a single property as it was before but also about a set of terms that are somehow linked. The example here is that the recommendation recommends not just adding a property "food:containsIngredient" but also the type for food and an ingredient to the schema.
+The user likes the recommendation and proceeds. The next window would show the details of the matching method as in recommendations before but that is not shown in the next picture. The user wants to see what effect the recommendation has on the overall schema. This is shown in the picture below. The recommendations do not have to be just about a single property as it was before but also about a set of terms that are somehow linked. The example here is that the recommendation recommends not just adding a property "food:containsIngredient" but also the type for food and an ingredient to the schema.
 
 ![Ingredient Recommendation Schema Difference](./img/ingredients-recommend-diff.png)
 
@@ -161,7 +162,7 @@ The next picture shows the updated schema.
 
 ![Schema After Ingredient Recommendation](./img/after-ingredients.png)
 
-The user continues with the food recommendations and gets to the state portrayed below. They could find "schema:NutritionInformation" and map the food component properties themselves and this could be mostly done with a recommendation if the tool offered it. The user could also continue with the properties of the ingredient or food to map them to known vocabulary terms and generate output rdf or just generate the rdf as is similarly how it is done in the previous sub use case.
+The user continues with the food recommendations and gets to the state portrayed below. They could find "schema:NutritionInformation" and map the food component properties themselves or it could be mostly done with a recommendation if the tool offered it. The user could also continue with the properties of the ingredient or food to map them to known vocabulary terms and generate output rdf or just generate the rdf as is similarly how it is done in the previous sub use case.
 
 ![Final Use Case Schema](./img/food-with-vocabs.png)
 
