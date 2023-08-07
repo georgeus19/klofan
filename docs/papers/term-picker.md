@@ -8,7 +8,7 @@ Dulezite je, ze k nejakemu doporuceni uz je potreba mit neco malo spravne namode
 
 K tomu pouzivaji Schema Level Paterns (SLP), coz je trojice mnozin - {subjekty, vlastnosti, objekty}. Pro danou mnozinu datasetu se pak vytvori tyto SLP pomoci dvou hashovacich tabulek tak, aby kdyz je nejaky subjekt s typy A,B spojen vlastnosti V s objektem typu C, tak se vytvori {{A, B}, {D}, {C}}, pokud uz neexistuje. SLP take mohou mit na mistech prazdne mnoziny.
 
-Term picker funguje nasledovne: Vytvori se SLP_q, ktere reprezentuje vstup (uz namodelovana cast) a TM hleda nejlepsi kandidaty, ktere by se hodilo pridat. Chapu to tak, ze se zkousi vsechny termy z LOD cloudu - kandidati. Pro kazdeho kandidata se pocita 5 ruznych ficur:
+Term picker funguje nasledovne: Vytvori se SLP_q {{subjekty}, {vlastnosti}, {objekty}} (klidne ty mnoziny mohou byt prazdne), ktere reprezentuje vstup (uz namodelovana cast e.g. {{mo:MusicArtist}, {}, {}}) a TM hleda nejlepsi kandidaty, ktere by se hodilo pridat (napr. foaf:made). Chapu to tak, ze vsechny termy z LOD cloudu jsou mozni kandidati. Pro kazdeho kandidata se pocita 5 ruznych ficur:
 - V kolika je datasetech
 - V kolika datasetech je jeho knihovna
 - Pocet vyskytu v LOD cloudu
