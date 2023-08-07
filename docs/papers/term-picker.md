@@ -6,20 +6,31 @@ Paper je o doporucovani slovnikovych pojmu, aby se minimalizovala heterogenita d
 
 Dulezite je, ze k nejakemu doporuceni uz je potreba mit neco malo spravne namodelovano. Nelze zacit s praznym vstupem a jen tak predhodit literaly a porad si. Myslenka je, ze uzivatel uz tomu da cast namodelovaneho schema a ono to doporuci vhodne dalsi moznosti rozsireni podle data v LOD cloudu (reusuje nejake pouziti).
 
-K tomu pouzivaji Schema Level Paterns (SLP), coz je trojice mnozin - {subjekty, vlastnosti, objekty}. Pro danou mnozinu datasetu se pak vytvori tyto SLP pomoci dvou hashovacich tabulek tak, aby kdyz je nejaky subjekt s typy A,B spojen vlastnosti V s objektem typu C, tak se vytvori {{A, B}, {D}, {C}}, pokud uz neexistuje. SLP take mohou mit na mistech prazdne mnoziny.
+K tomu pouzivaji tzv. Schema Level Paterns (SLP), coz je trojice mnozin - {subjekty, vlastnosti, objekty}. Pro danou mnozinu datasetu (LOD cloud) se pak vytvori tyto SLP pomoci dvou hashovacich tabulek (SLP chapter) tak, aby kdyz je nejaky subjekt s typy A,B spojen vlastnosti V s objektem typu C, tak se vytvori {{A, B}, {D}, {C}}, pokud uz neexistuje. SLP take mohou mit na mistech prazdne mnoziny.
 
-Term picker funguje nasledovne: Vytvori se SLP_q {{subjekty}, {vlastnosti}, {objekty}} (klidne ty mnoziny mohou byt prazdne), ktere reprezentuje vstup (uz namodelovana cast e.g. {{mo:MusicArtist}, {}, {}}) a TM hleda nejlepsi kandidaty, ktere by se hodilo pridat (napr. foaf:made). Chapu to tak, ze vsechny termy z LOD cloudu jsou mozni kandidati. Pro kazdeho kandidata se pocita 5 ruznych ficur:
+```turtle
+ex:sports1 
+    a foaf:Person, dbo:ChessPlayer ;
+    foaf:knows ex:2 .
+
+ex:sports2 
+    a foaf:Person, dbo:Coach .
+```
+
+Vytvori SLP `{{foaf:Person, dbo:ChessPlayer}, {foaf:knows}, {foaf:Person, dbo:Coach}}`.
+
+Term picker funguje nasledovne: Vytvori se SLP_q (SLP query) `{{subjekty}, {vlastnosti}, {objekty}}` (klidne ty mnoziny mohou byt prazdne), ktere reprezentuje vstup (uz namodelovana cast e.g. `{{mo:MusicArtist}, {}, {}}`) a TM hleda nejlepsi kandidaty, ktere by se hodilo pridat (napr. `foaf:made`). Chapu to tak, ze vsechny termy z LOD cloudu jsou mozni kandidati. Pro kazdeho kandidata se pocita 5 ruznych ficur:
 - V kolika je datasetech
 - V kolika datasetech je jeho knihovna
 - Pocet vyskytu v LOD cloudu
 - Zda knihovna kandidata je v SLP_q (zamereni na reuse te same knihovny)
-- SLP score - Pocet SLP v LOD cloudu, ktere obsahuji kandidata x a SLP_q ->> #{SLP_i | SLP_q + x <= SLP_i} (<= je inclusion v kazde mnozine v trojici SLP)
+- SLP score - Pocet SLP v LOD cloudu, ktere obsahuji kandidata x a SLP_q ->> `#{SLP_i | SLP_q + x <= SLP_i}` (<= je inclusion v kazde mnozine v trojici SLP)
 
-TM vezme vsechny kandidaty s temito ficurami a seradi je podle vah, ktere jednotlive ficure dava. Ty vahy se trenuji pomoci ML - Learning To Rank misto toho aby se nastavovaly rucne. 
+TM vezme vsechny kandidaty s temito ficurami a seradi je podle vah, ktere jednotlive ficure dava, a da uzivateli na vystup (chceme co nejlepsi top-k vysledek). Ty vahy se trenuji pomoci ML - Learning To Rank misto toho aby se nastavovaly rucne. 
 
-Trenovani a testovani (evaluace) se dela simulovanim hledani termu, ktere lze reusovat. Pro trenovani vah se bere trenovaci set, testovaci set a LOD cloud (zbytek dat - pocitaji se na tom ficury) - vse reprezentovano jako mnozina SLP. Evaluaci delaji pomoci 10-fold leave-one-out. Trenovaci a testovaci mnozina jsou disjunktni mnoziny disjunktnich SLP. Jedna se o supervised trenovani, tedy pro kazdeho kandidata je potreba jednak znat tech 5 featur a druhak zda je kandidat relevantni (pozitivni odpoved, spravny kandidat).
+Trenovani a testovani (evaluace) se dela simulovanim hledani termu, ktere lze reusovat. Pro trenovani vah se bere trenovaci set, testovaci set a LOD cloud (zbytek dat - pocitaji se na tom ficury) - vse reprezentovano jako mnozina SLP. Evaluaci delaji pomoci 10-fold leave-one-out. Trenovaci a testovaci mnozina jsou disjunktni mnoziny disjunktnich SLP. Jedna se o supervised trenovani, tedy pro kazdeho kandidata je potreba jednak znat tech 5 featur a druhak zda je kandidat relevantni (pozitivni binarni odpoved, spravny kandidat ci ne).
 
-Pro kazdou SLP (z trainovaci/testovaci mnoziny) se nahodne vybere 1 ci vice termu a vyhodi se ze SLP - tzv. "vybrane" termy. Jedine relevantni termy - kandidati jsou ty "vybrane". Zbytek kandidatu je irelevantni - nevim, zda tady je kandidat jen z trenovaci/ testovaci mnoziny ci celeho LOD cloudu. Pro trenovani asi chceme mit zhruba podobne pozitivnich a negativnich vstupnich dat, aby trenovani bylo vyvazene??? (Alespon u normalni klasifikace tomu tak je...). 
+Pro kazdou SLP (z trenovaci/testovaci mnoziny) se nahodne vybere 1 ci vice termu a vyhodi se ze SLP - tzv. "vybrane" termy. Jedine relevantni termy - kandidati jsou ty "vybrane". Zbytek kandidatu je irelevantni - nevim, zda tady je kandidat jen z trenovaci/ testovaci mnoziny ci celeho LOD cloudu. Pro trenovani asi chceme mit zhruba podobne pozitivnich a negativnich vstupnich dat, aby trenovani bylo vyvazene??? (Alespon u normalni klasifikace tomu tak je...). 
 
 Je dulezite si dobre vybrat trenovaci a testovaci mnozinu - s hodne ruznymi termy a s hodne reusovanymi pojmy. Kdyz si ty mnoziny definujou vlastni termy, tak pak ve zbytku nemusi byt zadny pripad pouziti tech termu a jejich hodnota SLP je 0, coz negativne ovlivnuje trenovani.
 
