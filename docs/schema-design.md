@@ -82,6 +82,7 @@ interface BaseModel {
     entities: Entity[];
     properties: Property[];
 
+    // Send info to all analyzers when base model changes about what changed. 
     analyzers: Analyzer[];
 }
 
@@ -90,9 +91,9 @@ interface Operation {
     // Updates operation
     private model: BaseModel;
     // Links to old parts of the schema that were replaced by this operation.
-    private backup: Any;
+    previous: [Any];
     // Get parts of the schema that were somehow changed in this operation.
-    getChanged(): (Entity | Property | Literal)[];
+    getChangedSchemaParts(): (Entity | Property | Literal)[];
     // Make requested change to the schema by cloning all related parts of the schema
     // and changing them.
     execute(): void;
@@ -107,7 +108,7 @@ class RelinkPropertyOperation implements Operation {}
 // which add more information about hte model and the model sends any schema
 // changes to the analyzer so that it can keep its values up to date.
 interface Analyzer {
-    getChanges(): void;
+    getSchemaChanges(changes): void;
 }
 interface TypeDetector extends Analyzer {
     getType(property): Type;
@@ -180,6 +181,10 @@ countriesProperty2 = {
 // Add property to nutriments `rdf:type http://aims.fao.org/aos/agrovoc/c_10961`.
 // Add property operations.
 
+nutrimentsEntity2 = {
+    properties: [calcium100gProperty1, calciumUnitProperty1, agrovocTypeProperty1]
+} as Entity;
+
 agrovocEntity1 = {
     getInstances() { return [{ id: "A1", uri: "http://aims.fao.org/aos/agrovoc/c_10961"}]}
 } as Entity;
@@ -188,5 +193,18 @@ agrovocTypeProperty1 = {
     value: agrovocEntity1,
     getInstances() { return [({ id: "N1" }, { id: "A1", uri: "http://aims.fao.org/aos/agrovoc/c_10961"})]}
 }
+
+// Represents operation which can performed on the schema - user by both recommendations and users.
+addPropertyOperation = {
+    // Updates operation
+    private model: BaseModel;
+    // Links to old parts of the schema that were replaced by this operation.
+    previous = [ nutrimentsEntity1 ];
+    // Get parts of the schema that were somehow changed in this operation.
+    getChangedSchemaParts(): (Entity | Property | Literal)[];
+    // Make requested change to the schema by cloning all related parts of the schema
+    // and changing them.
+    execute(): void;
+} as Operation;
 
 ```
