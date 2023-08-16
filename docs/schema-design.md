@@ -201,7 +201,7 @@ addPropertyOperation = {
     // Links to old parts of the schema that were replaced by this operation.
     previous = [ nutrimentsEntity1 ];
     // Get parts of the schema that were somehow changed in this operation.
-    getChangedSchemaParts(): (Entity | Property | Literal)[];
+    getChangedSchemaParts() { return previous; }
     // Make requested change to the schema by cloning all related parts of the schema
     // and changing them.
     execute(): void;
