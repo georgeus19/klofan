@@ -1,136 +1,164 @@
 import { BaseModel, Entity, Property, Literal, EntityInstance, PropertyInstance, LiteralInstance } from './schema';
 import { v4 as uuidv4 } from 'uuid';
+import { isPrimitiveType, isNotPrimitiveType } from './utils';
+import { eraseArrays } from './array-erase';
 
-export function parseSchemaFromJson(data: string): any {
-    // let valuesToProcess = Object.values(obj);
-    // let counter: number = 0;
+export function parseSchema(obj: any): any {
+    let instanceId: number = 0;
+    let schemaId: number = 0;
 
-    const obj = JSON.parse(data.toString())[0];
-    const xx: any = eraseArrays(obj);
-    console.log('link->', xx.link);
-    console.log('link->', Object.getPrototypeOf(xx));
-    console.log('xx', xx);
+    const instances = new Map();
+    const schemaInstanceMap = new Map();
 
-    return xx;
+    const schema: any = assignSchemaIds(removePrimitiveTypes(eraseArrays(obj)));
+    extractInstances(obj, schema);
+    // console.log(instances);
+    // console.log(schema.prototype);
 
-    function processEntity() {}
+    const literals: any = [];
+    const entities: any = [];
+    // const properties = [];
+    return [createFinalSchema(schema), entities, literals, instances, schemaInstanceMap];
+    // return schema;
 
-    // const entities: any[] = [];
-    // if (obj === null) {
-    // } else if (typeof obj !== 'object') {
-    // } else if (Array.isArray(obj)) {
-    // } else {
-    // }
-    // (entities[0] as any)._parsingContext;
-
-    // const keys = Object.keys();
-
-    // console.log('is array:', Array.isArray(input));
-    // console.log('keys', keys);
-    // return {} as BaseModel;
-
-    // function processEntity(obj: NonNullable<object>): Entity {
-    //     const entityId: string = (++counter).toString();
-    //     const entity = {
-    //         id: entityId,
-    //     };
-
-    //     const keys: string[] = Object.keys(obj);
-    //     for (const property in obj) {
-    //         processProperty(property, obj[property as keyof typeof obj]);
-    //     }
-
-    //     const props: any[] = keys.map((key) => {
-    //         return {
-    //             id: (++counter).toString(),
-    //             name: key,
-    //             subject: entity,
-    //         } as Property;
-    //     });
-    //     return entity;
-    // }
-
-    function processProperty(prop: string, value: unknown): Property {
-        return {} as Property;
-    }
-
-    function processNullOrCallback(obj: unknown, callback: any) {
-        if (obj === null) {
-            return null;
+    function createFinalSchema(schema: any): Entity | Literal {
+        if (isLiteral(schema)) {
+            const literal: Literal = {
+                id: getSchemaId(schema),
+            };
+            literals.push(literal);
+            return literal;
         }
+
+        const properties: Property[] = Object.getOwnPropertyNames(schema).map((prop) => {
+            return {
+                name: prop,
+                value: createFinalSchema(schema[prop]),
+            };
+        });
+
+        const entity: Entity = {
+            id: getSchemaId(schema),
+            properties: properties,
+        };
+        // console.log(entity);
+        entities.push(entity);
+        return entity;
     }
 
-    function eraseArrays(obj: unknown): unknown {
+    function extractInstances(obj: any, schema: any) {
         if (isPrimitiveType(obj)) {
-            return obj;
-        } else if (Array.isArray(obj)) {
-            return eraseArrays(eraseArray(obj as Array<unknown>));
-        } else {
-            // obj is object or function -> function cant be parsed in json.
-            return eraseArraysFromEntity(obj as object);
+            ++instanceId;
+            instances.set(instanceId, { id: instanceId, value: obj.toString() });
+            addInstanceId(schema, instanceId);
+            return instanceId;
         }
 
-        function eraseArraysFromEntity(obj: object) {
-            const existingPrototype = Object.getPrototypeOf(obj);
-            const linkPrototype = Object.hasOwn(existingPrototype, 'link') ? existingPrototype : { link: obj };
-            const entity: Record<string, unknown> = Object.create(linkPrototype);
-
-            Object.getOwnPropertyNames(obj)
-                .filter((p) => isPrimitiveType(obj[p as keyof typeof obj]))
-                .forEach((p) => (entity[p] = obj[p as keyof typeof obj]));
-
-            Object.getOwnPropertyNames(obj)
-                .filter((p) => !isPrimitiveType(obj[p as keyof typeof obj]))
-                .forEach((p) => (entity[p] = eraseArrays(obj[p as keyof typeof obj])));
-
-            return entity;
+        if (Array.isArray(obj)) {
+            return obj.map((e) => {
+                extractInstances(e, schema);
+            });
         }
 
-        function eraseArray(array: Array<unknown>): object | null {
-            if (array.filter((e) => !isPrimitiveType(e)).length == 0) {
-                return null;
-            }
+        ++instanceId;
+        instances.set(instanceId, {
+            id: instanceId,
+            value: Object.getOwnPropertyNames(obj).map((prop) => {
+                return { property: prop, id: extractInstances(obj[prop], schema[prop]) };
+            }),
+        });
+        addInstanceId(schema, instanceId);
+        return instanceId;
+    }
 
-            return merge(array.filter((e) => isNotPrimitiveType(e)) as Array<object>);
-
-            function merge(array: Array<object>): Record<string, unknown> {
-                const linkPrototype = { link: array };
-                const entity: Record<string, unknown> = Object.create(linkPrototype);
-                const props = array.flatMap((e) => Object.getOwnPropertyNames(e));
-                const counts: Record<string, number> = {};
-                props.map((p) => {
-                    if (Object.hasOwn(counts, p)) {
-                        counts[p] = counts[p] + 1;
-                    } else {
-                        counts[p] = 1;
-                    }
-                });
-
-                array.map((e) => {
-                    Object.getOwnPropertyNames(e)
-                        .filter((p) => counts[p] == 1)
-                        .forEach((p) => (entity[p] = e[p as keyof typeof e]));
-
-                    Object.getOwnPropertyNames(e)
-                        .filter((p) => counts[p] > 1)
-                        .forEach((p) => {
-                            if (Object.hasOwn(entity, p)) {
-                                (entity[p] as Array<object>).push(e[p as keyof typeof e]);
-                            } else {
-                                entity[p] = [e[p as keyof typeof e]];
-                            }
-                        });
-                });
-                return entity;
-            }
+    function addInstanceId(schema: any, instanceId: any) {
+        if (schemaInstanceMap.has(getSchemaId(schema))) {
+            schemaInstanceMap.get(getSchemaId(schema)).push(instanceId);
         }
+
+        schemaInstanceMap.set(getSchemaId(schema), [instanceId]);
+    }
+
+    function removePrimitiveTypes(schema: any) {
+        if (isPrimitiveType(schema)) {
+            // console.log(schema, Object.create({ literal: true }));
+            return Object.create({ literal: true });
+        }
+
+        Object.getOwnPropertyNames(schema).forEach((prop) => {
+            schema[prop] = removePrimitiveTypes(schema[prop]);
+        });
+        return schema;
+    }
+
+    function assignSchemaIds(schema: any) {
+        setSchemaId(schema, ++schemaId);
+        // console.log(schema);
+        // console.log(schemaId, schema);
+
+        Object.getOwnPropertyNames(schema).forEach((prop) => {
+            assignSchemaIds(schema[prop]);
+        });
+
+        return schema;
+    }
+
+    function isLiteral(schema: any) {
+        return Object.getPrototypeOf(schema).literal;
+    }
+
+    function getSchemaId(schema: any) {
+        return Object.getPrototypeOf(schema).id;
+    }
+
+    function setSchemaId(schema: any, id: any) {
+        Object.getPrototypeOf(schema).id = id;
     }
 }
 
-function isPrimitiveType(x: unknown): boolean {
-    return x !== Object(x);
-}
+// const entities: any[] = [];
+// if (obj === null) {
+// } else if (typeof obj !== 'object') {
+// } else if (Array.isArray(obj)) {
+// } else {
+// }
+// (entities[0] as any)._parsingContext;
 
-function isNotPrimitiveType(x: unknown): boolean {
-    return !isPrimitiveType(x);
-}
+// const keys = Object.keys();
+
+// console.log('is array:', Array.isArray(input));
+// console.log('keys', keys);
+// return {} as BaseModel;
+
+// function processEntity(obj: object): Entity {
+//     const entityId: string = (++instanceId).toString();
+//     const entity = {
+//         id: entityId,
+//     };
+
+//     const keys: string[] = Object.getOwnPropertyNames(obj);
+//     for (const property in obj) {
+//         const property = processProperty(property, obj[property as keyof typeof obj]);
+//     }
+
+//     const props: any[] = keys.map((key) => {
+//         return {
+//             id: (++instanceId).toString(),
+//             name: key,
+//             subject: entity,
+//         } as Property;
+//     });
+//     return entity;
+// }
+
+// function processProperty(prop: string, value: unknown): Property {
+//     if (isPrimitiveType(value)) {
+//         return {} as Property;
+//     }
+
+//     return {
+//         id: (++instanceId).toString(),
+//         name: prop,
+//         value: processEntity(value as object),
+//     } as Property;
+// }

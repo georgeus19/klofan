@@ -1,34 +1,38 @@
 export interface EntityInstance {
     id: string;
-    uri: string;
+    // uri: string;
 }
 
 export interface PropertyInstance {
     id: string;
-    uri: string;
+    // uri: string;
 }
 export interface LiteralInstance {
     id: string;
-    uri: string;
+    // uri: string;
+}
+
+export interface Instance {
+    id: string;
+    value: string;
 }
 
 export interface Entity {
     id: string;
     properties: Property[];
 
-    getInstances(): EntityInstance[];
+    // getInstances(): EntityInstance[];
 }
 export interface Property {
-    id: string;
     name: string;
-    uri: string;
+    // uri: string;
     value: Entity | Literal;
 
-    getInstances(entity: EntityInstance): EntityInstance[] | LiteralInstance[];
+    // getInstances(entity: EntityInstance): EntityInstance[] | LiteralInstance[];
 }
 export interface Literal {
     id: string;
-    getInstances(): LiteralInstance[];
+    // getInstances(): LiteralInstance[];
 }
 
 export interface InstanceStore {
