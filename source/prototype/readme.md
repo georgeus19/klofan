@@ -14,7 +14,7 @@ Pri zmenach se tedy vytvori retez verzi modelu a klient si muze vybrat, kam kouk
 
 Pri hodne zmenach retez bude dlouhy a ziskani od zacatku nezmenenych dat pomale, proto si jeste predstavuju funkcionalitu, ktera dokaze mergovat modely do sebe.
 
-Implementace jsou spolu s dalsimi tridami pro schema, resp. instance, v (./schema.ts)[`schema.ts`], resp. (./instance.ts)[`instance.ts`]. Commandy v (./command.ts)[`command.ts`].
+Implementace jsou spolu s dalsimi tridami pro schema, resp. instance, v (schema.ts)[./schema.ts], resp. (instance.ts)[./instance.ts]. Commandy v (./command.ts)[`command.ts`].
 
 ```ts
 /**
