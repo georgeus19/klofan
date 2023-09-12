@@ -1,6 +1,6 @@
 # Prototype
 
-Zkusil jsem implementovat myslenku prace se schematem a daty dle (https://github.com/georgeus19/MastersThesis/blob/main/docs/schema-design.md)[meho navrhu z minula]. Zamerne jsem se pokousel implementovat to tak, jak jsem si to predtim predstavoval. Pri implementaci jsem nasel ruzne problemy a alternativy, tak mam v planu pokracovat a cele to trochu upravit.
+Zkusil jsem implementovat myslenku prace se schematem a daty dle (meho navrhu z minula)[https://github.com/georgeus19/MastersThesis/blob/main/docs/schema-design.md]. Zamerne jsem se pokousel implementovat to tak, jak jsem si to predtim predstavoval. Pri implementaci jsem nasel ruzne problemy a alternativy, tak mam v planu pokracovat a cele to trochu upravit.
 
 ## Implementace
 
@@ -14,7 +14,7 @@ Pri zmenach se tedy vytvori retez verzi modelu a klient si muze vybrat, kam kouk
 
 Pri hodne zmenach retez bude dlouhy a ziskani od zacatku nezmenenych dat pomale, proto si jeste predstavuju funkcionalitu, ktera dokaze mergovat modely do sebe.
 
-Implementace jsou spolu s dalsimi tridami pro schema, resp. instance, v (schema.ts)[./schema.ts], resp. (instance.ts)[./instance.ts]. Commandy v (./command.ts)[`command.ts`].
+Implementace jsou spolu s dalsimi tridami pro schema, resp. instance, v `schema.ts`, resp. `instance.ts`. Commandy v `command.ts`.
 
 ```ts
 /**
@@ -263,7 +263,7 @@ export class LiteralInstance implements ILiteralInstance {
 
 ### Priklad pouziti commandu nad schematem:
 
-Dole je priklad aplikovani zmeny property ve schematu i datech. Bohuzel neni jak moc pekne graficky zobrazovat vysledky... Tenhle priklad se spusti s `npm run start` a je ulozen v [./main.ts](`main.ts`).
+Dole je priklad aplikovani zmeny property ve schematu i datech. Bohuzel neni jak moc pekne graficky zobrazovat vysledky... Tenhle priklad se spusti s `npm run start` a je ulozen v `main.ts`.
 
 ```ts
 /**
