@@ -8,7 +8,7 @@ Dulezite kriterium bylo pro me zjistit, zda a jak lze zajistit uchovani stavu a 
 
 Pristup ke schematu reprezentuje `interface ISchemaModel` a k instancim `interface IInstanceModel` (viz nize). Oba modely poskytuji pristup k entitam, propertam a literalum ve schematu ci instancich, coz jsou vsechno immutable objekty poskytujici info o sobe. `IInstanceModel` je jeste schopen poskytnout instance entit, propert ci literalu pro entity, property ci literaly ze schematu.
 
-Zmeny ve schema nebo instancich se delaji jen pomoci trid implementujici `interface Command`. Ten zatim s jedinou metodou `execute` vrati nove instance jak `ISchemaModel` tak `IInstanceModel`, ktere reflektuji data po zmene, kterou `Command` reprezentuje. Vsechny objekty pro reprezentaci entit, propert a literalu jsou navrzeny jako immutable a zmenit je je mozne jen pomoci zkopirovani a definovanych operacich na nich (vice pozdeji). `Command` typicky vytvori updatovane kopie vsechno co chce zmenit a nasazi tyto kopie to novych `ISchemaModel` a `IInstanceModel`. `Command` do implementaci techto rozhrani preda doted nejaktualnejsi instance modelu, ktere pozkytuji vsechny informace o starsi verzi dat. Pri zavolani noveho modelu novy model zkontroluje, zda se klient pta na jim zmenene objekty a pokud ne, tak volani forwarduje do starsiho modelu.
+Zmeny ve schema nebo instancich se delaji jen pomoci trid implementujici `interface Command`. Ten zatim s jedinou metodou `execute` vraci nove instance `ISchemaModel` a tak `IInstanceModel`, ktere reflektuji data po zmene, kterou `Command` reprezentuje. Vsechny objekty pro reprezentaci entit, propert a literalu jsou navrzeny jako immutable a zmenit je je mozne jen pomoci zkopirovani a definovanych operacich na nich (vice pozdeji). `Command` typicky vytvori updatovane kopie vsechno co chce zmenit a nasazi tyto kopie to novych `ISchemaModel` a `IInstanceModel`. `Command` do implementaci techto rozhrani preda doted nejaktualnejsi instance modelu, ktere poskytuji vsechny informace o starsi verzi dat. Pri zavolani noveho modelu novy model zkontroluje, zda se klient pta na jim zmenene objekty a pokud ne, tak volani forwarduje do starsiho modelu.
 
 Pri zmenach se tedy vytvori retez verzi modelu a klient si muze vybrat, kam kouka. Tady si predstavuji, ze bude existovat nejaky objekt, ktery bude drzet pole poslednich modelu nebo pripadne commandu s trochu pozmenenych interfacem.
 
@@ -33,6 +33,7 @@ export interface ISchemaModel {
     entities(): IEntity[];
     properties(): IProperty[];
     literals(): ILiteral[];
+    instance;
     entity(id: string): IEntity | null;
     property(id: string): IProperty | null;
     literal(id: string): ILiteral | null;
@@ -65,7 +66,9 @@ export interface IInstanceModel {
 
 ### Entity, Property, Literaly
 
-Nize jsou videt interfacy a implementace entit, propert a literalu pro schema. Interface jednak specifikuje operace pro ziskani informaci o danem objektu a dale poskytuje modifikujici operace, ktere vraceji "shallow copy" s danou modifikaci. Nove kopie se pak mohou davat do instanci novych modelu. Dulezite je, ze se pri kopirovani nemeni ID - kazda verze ma vzdy stejne ID a dle techto ID si modely ukladaji, jake objekty ze zmenili oproti predchozimu modelu (base model) v rezezci predchozich modelu. Co se tyce implementace, tak si kazda instance drzi referenci na model, do ktereho patri. Ten vyuziva k ziskani objektu propert v pripade entit a nebo hodnot v pripade propert. Sami si objekty pamatuji jen idicka, ne reference na objekty samotne. To by pak bylo nutne kopirovat iterativne cele schema pri zmene - napr. zmena property vyzaduje modifikaci entity, ve ktere je. Pokud chceme entitu immutable, tak se musi vytvorit dalsi. Tedy by bylo nutne zmenit property, ktere odkazovali na tu entitu, tak, aby odkazovaly na entitu novou, atd...
+Nize jsou videt interfacy a implementace entit, propert a literalu pro schema. Interface jednak specifikuje operace pro ziskani informaci o danem objektu a dale poskytuje modifikujici operace, ktere vraceji "shallow copy" s danou modifikaci. Nove kopie se pak mohou davat do instanci novych modelu. Dulezite je, ze se pri kopirovani nemeni ID - kazda verze ma vzdy stejne ID a dle techto ID si modely ukladaji, jake objekty se zmenily oproti predchozimu modelu (base model) v retezci predchozich modelu.
+
+Co se tyce implementace, tak si kazda instance drzi referenci na model, do ktereho patri. Instance model vyuziva k ziskani objektu propert v pripade entit a nebo hodnot v pripade propert. Objekty si samy pamatuji jen idicka, ne reference na objekty samotne. To by pak bylo nutne kopirovat iterativne cele schema pri zmene - napr. zmena property vyzaduje modifikaci entity, ve ktere je. Pokud chceme entitu immutable, tak se musi vytvorit dalsi. Tedy by bylo nutne zmenit property, ktere odkazovaly na tu entitu, tak, aby odkazovaly na entitu novou, atd...
 
 Co se tyce pojmenovani, tak mam rad vytvareni interfacu, i kdyz bude mit interface hlavni implementaci, z duvodu lehci testovatelnosti, mockovatelnosti a z toho duvodu, ze se ty interfacy treba jeste rozpadnou na mensi a neni potreba vse na vsech mistech menit, etc...
 
@@ -348,7 +351,7 @@ console.log(newInstanceModel.entity(nutrientsInstanceEntity.getId()).getProperti
 
 ### Pole
 
-Pole objektu v datech davaji vznikout entite ve schematu, ktera odkazuje na hodne instanci. Pri parsovani je nutne projit vsechny podstromy v poli a zmergovat je. Vyskyt hodne poli a hodne v nich ruznych objektu davaji vzniknout hodne ruznorodym datum. Zaroven je nutne nalinkovat data do nove zmergovane struktury (=schematu). Parser pro parsovani kombinaci objektu, poli a literalu je v [./schema-parser.ts](`schema-parser.ts`). Bohuzel jsem parser udelal nejdriv a pak jsem musel menit rozhrani pro schema, tedy je zakomentovane. Zaroven si nejsem jisty, jak presne ve schema reprezentovat, kdyz je na vstupu pole poli?
+Pole objektu v datech davaji vznikout entite ve schematu, ktera odkazuje na hodne instanci. Pri parsovani je nutne projit vsechny podstromy v poli a zmergovat je. Vyskyt hodne poli a hodne v nich ruznych objektu davaji vzniknout hodne ruznorodym datum. Zaroven je nutne nalinkovat data do nove zmergovane struktury (=schematu). Parser pro parsovani kombinaci objektu, poli a literalu je v `schema-parser.ts`. Bohuzel jsem parser udelal nejdriv a pak jsem musel menit rozhrani pro schema, tedy je parser zakomentovany. Zaroven si nejsem jisty, jak presne ve schema reprezentovat, kdyz je na vstupu ve strukture pole poli?
 
 Pole zaroven vytvareji i pozdeji problemy pri praci se schematem a instancemi - napriklad pri presunu property z jedne entity na druhou.
 
@@ -370,7 +373,7 @@ Oddeleni schema a dat vytvari docela slozitost. Struktury pro ukladani obojiho j
 
 ### Entita a literal
 
-Entita i literal oboji jsou stejne z urcitych podledu(e.g. z hlediska property). Ma cenu s nima zachazet stejne a zrusit ruzne rozhrani pro entitu a literal a treba je spojit a poskytovat flag a metodu pro rozliseni?
+Entita i literal oboji jsou stejne z urcitych pohledu (e.g. z hlediska property). Ma cenu s nima zachazet stejne a zrusit ruzne rozhrani pro entitu a literal a treba je spojit a poskytovat flag a metodu pro rozliseni?
 
 ### Kde ukladat dalsi data
 
@@ -383,3 +386,4 @@ Moznosti:
 -   Je mozne vse ulozit do objektu entit (atd...) primo, jenze pak je nutne se o informace starat pri updatovani - entity nebo commandy by musely vedet, co presne maji zavolat pro update. Nebo by se hodnoty neupdatovaly. Take by navrh rozhrani musel uz obsahovat vsechny tyto obohacovace a bez zvysovani komplexity fungoval vzdy na vsem. Neni mozne si v urcitych zpusobech konfigurovat napr. pro urcite doporuceni, jake obohacovace potrebuje, resp. by to hrozne zvysovalo slozitost rozhrani - asi? Nebo by rozhrani obohacovace neobsahovalo, ale kazda entita by dynamicky obsahovala informace od obohacovacu? Vyhoda je automaticke verzovani, ale na druhou stranu by se verzovalo spoustu informaci, ktere nikdy potreba nebudou??
 -   Mit normalne service, ktery pro danou entitu (atd...) poskytne obohaceni, ktere nabizi. Nevyhoda je, ze to neni primo na entite a je treba vedet, koho se zeptat. Zase je tady k dispozici uplna volnost, co do velikosti informaci pro entitu a konfigurovatelnost. Je ale treba nejak vyresit to, aby service vzdy poskytoval informace dle spravne verze - verzovani tady neni zadarmo. Asi se info muze pocitat vzdy znova? Neni asi jak, poznat kdy lze reusovat - leda nejak idckovat verze schematu a instanci.
 -   Mit service a nahackovat ho do modelu a v entitach (atd...) jen service volat. Nezeslozituje to zbytecne schema?
+-   Dat informace jako metadata entity a property do dat stejne jako jsou ulozena data samotna?
