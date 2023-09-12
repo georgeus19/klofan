@@ -13,19 +13,6 @@ import {
     LiteralInstance,
 } from './instance';
 const args = process.argv.slice(2);
-// require('util').inspect.defaultOptions.depth = null;
-
-// async function main() {
-//     console.log('args:', args);
-//     const data = await fs.readFile(args[0]);
-//     const obj = JSON.parse(data.toString())[0];
-//     const [schema, entities, literals, instances, schemaInstanceMap]: any = parseSchema(obj);
-//     // console.log(JSON.stringify(schema));
-//     // console.log('entities:', entities);
-//     console.log(schema);
-// }
-
-// main();
 schemaAndInstanceCommandExample();
 
 function schemaAndInstanceCommandExample() {
@@ -131,3 +118,17 @@ function schemaModelCommandExample() {
     // console.log(newSchema.entity('3'));
     // console.log(schema.entity('3'));
 }
+
+// require('util').inspect.defaultOptions.depth = null;
+
+// async function main() {
+//     console.log('args:', args);
+//     const data = await fs.readFile(args[0]);
+//     const obj = JSON.parse(data.toString())[0];
+//     const [schema, entities, literals, instances, schemaInstanceMap]: any = parseSchema(obj);
+//     // console.log(JSON.stringify(schema));
+//     // console.log('entities:', entities);
+//     console.log(schema);
+// }
+
+// main();

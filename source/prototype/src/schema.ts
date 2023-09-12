@@ -17,16 +17,19 @@ export class Entity implements IEntity {
     getId(): string {
         return this.id;
     }
+
     addProperty(schemaModel: ISchemaModel, property: IProperty): IEntity {
         const clone = this.clone(schemaModel);
         clone.propertyIds.push(property.getId());
         return clone;
     }
+
     removeProperty(schemaModel: ISchemaModel, property: IProperty): IEntity {
         const clone = this.clone(schemaModel);
         clone.propertyIds = clone.propertyIds.filter((propertyId) => propertyId !== property.getId());
         return clone;
     }
+
     getProperties(): IProperty[] {
         return this.propertyIds.map((propertyId) => this.schemaModel.property(propertyId)).filter((property) => property != null) as IProperty[];
     }
@@ -52,18 +55,23 @@ export class Property implements IProperty {
         private valudId: string,
         private uri?: string
     ) {}
+
     getId(): string {
         return this.id;
     }
+
     getUri(): string | undefined {
         return this.uri;
     }
+
     getName(): string {
         return this.name;
     }
+
     getValue(): IEntity | ILiteral {
         throw new Error('Method not implemented.');
     }
+
     changeValue(schemaModel: ISchemaModel, value: IEntity | ILiteral): IProperty {
         const clone = this.clone(schemaModel);
         clone.valudId = value.getId();
@@ -86,10 +94,10 @@ export class Literal implements ILiteral {
     }
 }
 
-export interface InstanceStore {
-    // Store for data in the form of EntityInstance, PropertyInstance, LiteralInstance.
-}
-
+/**
+ * Interface for accessing schema. When a change is done to schema, new schema model is created representing
+ * the schema after the change. This new schema model remembers old schema model before the change was done as base model.
+ */
 export interface ISchemaModel {
     entities(): IEntity[];
     properties(): IProperty[];
@@ -97,7 +105,6 @@ export interface ISchemaModel {
     entity(id: string): IEntity | null;
     property(id: string): IProperty | null;
     literal(id: string): ILiteral | null;
-
     getBaseSchemaModel(): ISchemaModel | null;
 }
 

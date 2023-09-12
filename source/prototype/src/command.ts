@@ -11,6 +11,9 @@ import {
     LiteralInstance,
 } from './instance';
 
+/**
+ * Interace for commands (actions) which modify the current schema or instances (=data).
+ */
 export interface Command {
     execute(): [ISchemaModel, IInstanceModel];
 }

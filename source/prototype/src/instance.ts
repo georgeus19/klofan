@@ -15,22 +15,27 @@ export class EntityInstance implements IEntityInstance {
         private propertyIds: string[],
         private uri?: string
     ) {}
+
     getId(): string {
         return this.id;
     }
+
     getUri(): string | undefined {
         return this.uri;
     }
+
     addProperty(instanceModel: IInstanceModel, property: IPropertyInstance): IEntityInstance {
         const clone = this.clone(instanceModel);
         clone.propertyIds.push(property.getId());
         return clone;
     }
+
     removeProperty(instanceModel: IInstanceModel, property: IPropertyInstance): IEntityInstance {
         const clone = this.clone(instanceModel);
         clone.propertyIds = clone.propertyIds.filter((propertyId) => propertyId !== property.getId());
         return clone;
     }
+
     getProperties(): IPropertyInstance[] {
         return this.propertyIds.map((propertyId) => this.instanceModel.property(propertyId));
     }
@@ -51,9 +56,11 @@ export class PropertyInstance implements IPropertyInstance {
         private id: string,
         private valueId: string
     ) {}
+
     getId(): string {
         return this.id;
     }
+
     getValue(): IEntityInstance | ILiteralInstance {
         throw new Error('Method not implemented.');
     }
@@ -64,25 +71,36 @@ export interface ILiteralInstance {
     getValue(): string;
     getType(): string | undefined;
 }
+
 export class LiteralInstance implements ILiteralInstance {
     constructor(
         private id: string,
         private value: string,
         private type?: string
     ) {}
+
     getId(): string {
         return this.id;
     }
+
     getValue(): string {
         return this.value;
     }
+
     getType(): string | undefined {
         return this.type;
     }
 }
 
+/**
+ * Interface for a model which provides access for instances (=data) in one time between change commands.
+ * When a change to instances is done, new instance model is created reflecting the new state and
+ * pointing to this instance as base instance model.
+ */
 export interface IInstanceModel {
+    // Get instances of given entity.
     getEntities(entity: IEntity): IEntityInstance[];
+    // Get property instance for given entity instance and proeprty from schema.
     getProperty(entity: IEntityInstance, property: IProperty): IPropertyInstance;
     entities(): IEntityInstance[];
     properties(): IPropertyInstance[];
@@ -90,11 +108,10 @@ export interface IInstanceModel {
     entity(id: string): IEntityInstance;
     property(id: string): IPropertyInstance;
     literal(id: string): ILiteralInstance;
-
     safeEntity(id: string): IEntityInstance | null;
     safeProperty(id: string): IPropertyInstance | null;
     safeLiteral(id: string): ILiteralInstance | null;
-
+    // This base model has contains all data before the current instance changes were applied.
     getBaseInstanceModel(): IInstanceModel | null;
 }
 
