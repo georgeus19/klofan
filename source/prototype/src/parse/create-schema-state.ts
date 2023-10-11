@@ -2,9 +2,10 @@ import { SafeMap } from '../safe-map';
 import { Entity, Property, SchemaState, id } from '../state/schema-state';
 import { EntityInput } from './create-entity-input';
 
-export function createSchemaState(schemaInput: EntityInput): [SchemaState, Entity] {
+export function createSchemaState(schemaInput: EntityInput): SchemaState {
     const state: SchemaState = { entities: new SafeMap<id, Entity>(), properties: new SafeMap<id, Property>() };
-    return [state, fillSchemaState(state, schemaInput)];
+    fillSchemaState(state, schemaInput);
+    return state;
 }
 
 function fillSchemaState(state: SchemaState, entityInput: EntityInput): Entity {

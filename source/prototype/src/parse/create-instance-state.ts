@@ -50,14 +50,14 @@ function fillInstanceProperties(
         properties.set(instanceKey(entityInput.id, propertyId), instanceProperties);
     });
 
-    entityInput.properties.forEach((value, key) => fillInstanceProperties(properties, value));
+    entityInput.properties.forEach((value) => fillInstanceProperties(properties, value));
 
     return properties;
 }
 
 function fillInstanceEntities(entities: SafeMap<id, EntityInstances>, entityInput: EntityInput): SafeMap<id, EntityInstances> {
     entities.set(entityInput.id, { count: entityInput.instanceCount });
-    entityInput.properties.forEach((value, key) => {
+    entityInput.properties.forEach((value) => {
         fillInstanceEntities(entities, value);
     });
     return entities;

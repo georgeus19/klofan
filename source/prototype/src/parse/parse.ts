@@ -12,7 +12,7 @@ export function parse(input: InstanceEntityInput): State {
 
     const entities = createEntityInput(input, induceSchemaEntities(input));
 
-    const [schemaState, rootSchemaEntity] = createSchemaState(entities);
+    const schemaState = createSchemaState(entities);
     const instanceState = createInstanceState(entities);
     return {
         schema: schemaState,
