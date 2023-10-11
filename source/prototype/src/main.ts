@@ -6,6 +6,9 @@ import { createDefaultOutputConfiguration } from './export/default-output-config
 import { exportSchema } from './export/export-schema';
 import { Writer } from 'n3';
 import { exportInstances } from './export/export-instances';
+import { MoveProperty } from './commands/move-property';
+import { AllToOneInstanceMapping } from './instance-mapping';
+import { AllToOneLiteralMapping } from './literal-mapping';
 require('util').inspect.defaultOptions.depth = null;
 
 async function main() {
@@ -16,6 +19,14 @@ async function main() {
     const data = (await fs.promises.readFile(inputFile)).toString();
     const state: State = parseJson(data);
     const model = new InMemoryModel(state);
+
+    // new MoveProperty({
+    //     source: '1',
+    //     target: '2',
+    //     property: 'p32-countries',
+    //     instanceMapping: new AllToOneInstanceMapping(0, [0]),
+    //     literalMapping: new AllToOneLiteralMapping(0, model.propertyInstances('1', 'p32-countries')[0].literals!),
+    // });
 
     const outputConfiguration = createDefaultOutputConfiguration(model);
     const instanceOutputWriter = new Writer(fs.createWriteStream(`${outputDir}/instances.ttl`));

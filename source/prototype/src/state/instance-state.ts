@@ -21,32 +21,9 @@ export interface InstanceState {
     properties: SafeMap<string, PropertyInstance[]>;
 }
 
-export type PropertyInstance = (InstanceEntities & InstanceLiterals) | InstanceEntities | InstanceLiterals | null;
-
-export function doesInstanceHaveNoProperty(
-    propertyInstances: (InstanceEntities & InstanceLiterals) | InstanceEntities | InstanceLiterals | null
-): propertyInstances is null {
-    return propertyInstances === null;
-}
-
-export function doesInstanceHaveLinkToOtherInstances(
-    propertyInstances: (InstanceEntities & InstanceLiterals) | InstanceEntities | InstanceLiterals | null
-): propertyInstances is InstanceEntities {
-    if (doesInstanceHaveNoProperty(propertyInstances)) {
-        return false;
-    }
-
-    return (propertyInstances as any).targetEntity !== undefined;
-}
-
-export function doesInstanceHaveLiterals(
-    propertyInstances: (InstanceEntities & InstanceLiterals) | InstanceEntities | InstanceLiterals | null
-): propertyInstances is InstanceLiterals {
-    if (doesInstanceHaveNoProperty(propertyInstances)) {
-        return false;
-    }
-
-    return (propertyInstances as any).literals !== undefined;
+export interface PropertyInstance {
+    entities?: InstanceEntities;
+    literals?: literal[];
 }
 
 export interface EntityInstances {

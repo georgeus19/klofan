@@ -1,12 +1,7 @@
 import { Model } from '../state/model';
 import { getProperties } from '../state/connected';
 import { EntityOutputConfiguration, OutputConfiguration } from './output-configuration';
-import {
-    PropertyInstance,
-    doesInstanceHaveLinkToOtherInstances,
-    doesInstanceHaveLiterals,
-    doesInstanceHaveNoProperty,
-} from '../state/instance-state';
+import { PropertyInstance } from '../state/instance-state';
 import { DataFactory, Writer } from 'n3';
 const { namedNode, literal } = DataFactory;
 
@@ -52,12 +47,9 @@ function writePropertyInstance(
         subjectEntityConfiguration.instances.baseUri,
         instance
     );
-    if (doesInstanceHaveNoProperty(propertyInstance)) {
-        return;
-    }
 
-    if (doesInstanceHaveLinkToOtherInstances(propertyInstance)) {
-        propertyInstance.indices
+    if (propertyInstance.entities !== undefined) {
+        propertyInstance.entities.indices
             .map((instanceIndex) =>
                 objectEntityConfiguration.instances.uriBuilder.composeUri(objectEntityConfiguration.instances.baseUri, instanceIndex)
             )
@@ -66,7 +58,7 @@ function writePropertyInstance(
             });
     }
 
-    if (doesInstanceHaveLiterals(propertyInstance)) {
+    if (propertyInstance.literals !== undefined) {
         (!Array.isArray(propertyInstance.literals) ? [propertyInstance.literals] : propertyInstance.literals).forEach((literalValue) => {
             outputWriter.addQuad(namedNode(subjectInstanceEntityUri), namedNode(propertyUri), literal(literalValue));
         });

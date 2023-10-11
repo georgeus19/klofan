@@ -1,8 +1,9 @@
 import { InstanceMapping } from '../instance-mapping';
-import { InstanceEntities, InstanceLiterals, instanceKey } from '../state/instance-state';
+import { PropertyInstance, instanceKey } from '../state/instance-state';
 import { Property, id } from '../state/schema-state';
 import { State, copyState } from '../state/state';
 import { Command } from './command';
+import * as _ from 'lodash';
 
 /**
  * Adds a property between two entities.
@@ -33,20 +34,27 @@ class AddPropertyLink implements Command {
         source.properties.push(this.property.id);
         newState.schema.entities.set(source.id, source);
 
-        const instances = [...Array(newState.instance.entities.safeGet(source.id).count).keys()].map((instance) => {
-            const mappedInstances: number[] = this.instanceMapping.mappedInstances(instance);
-            if (mappedInstances.length > 0) {
-                return {
-                    targetEntity: this.target,
-                    indices: mappedInstances,
-                };
-            } else {
-                return null;
-            }
-        });
+        const instances = this.processInstanceMapping(
+            _.range(0, newState.instance.entities.safeGet(source.id).count).map(() => {
+                return {};
+            })
+        );
 
         newState.instance.properties.set(instanceKey(source.id, this.property.id), instances);
 
         return newState;
+    }
+
+    processInstanceMapping(sourceInstances: PropertyInstance[]): PropertyInstance[] {
+        return sourceInstances.map((instance, index): PropertyInstance => {
+            const mappedInstances: number[] = this.instanceMapping.mappedInstances(index);
+            if (mappedInstances.length > 0) {
+                instance.entities = {
+                    targetEntity: this.target,
+                    indices: mappedInstances,
+                };
+            }
+            return instance;
+        });
     }
 }

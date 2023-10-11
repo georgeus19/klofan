@@ -1,34 +1,28 @@
 import { SafeMap } from '../safe-map';
-import { EntityInstances, InstanceEntities, InstanceState, InstanceLiterals, instanceKey } from '../state/instance-state';
+import { EntityInstances, InstanceState, instanceKey, PropertyInstance } from '../state/instance-state';
 import { id } from '../state/schema-state';
 import _ from 'lodash';
 import { EntityInput } from './create-entity-input';
 
 export function createInstanceState(entityInput: EntityInput): InstanceState {
     const entities = fillInstanceEntities(new SafeMap<id, EntityInstances>(), entityInput);
-    const properties = fillInstanceProperties(
-        new SafeMap<string, ((InstanceEntities & InstanceLiterals) | InstanceEntities | InstanceLiterals | null)[]>(),
-        entityInput
-    );
+    const properties = fillInstanceProperties(new SafeMap<string, PropertyInstance[]>(), entityInput);
     return {
         entities: entities,
         properties: properties,
     };
 }
 
-function fillInstanceProperties(
-    properties: SafeMap<string, ((InstanceEntities & InstanceLiterals) | InstanceEntities | InstanceLiterals | null)[]>,
-    entityInput: EntityInput
-): SafeMap<string, ((InstanceEntities & InstanceLiterals) | InstanceEntities | InstanceLiterals | null)[]> {
+function fillInstanceProperties(properties: SafeMap<string, PropertyInstance[]>, entityInput: EntityInput): SafeMap<string, PropertyInstance[]> {
     entityInput.instances.forEach((value, key) => {
         const propertyId = entityInput.propertyIds.safeGet(key);
 
         let targetInstanceIndex = 0;
 
         const instanceProperties = value.map((instanceInfo) => {
-            let instanceLinks: (InstanceEntities & InstanceLiterals) | InstanceEntities | InstanceLiterals | null = null;
+            const instanceLinks: PropertyInstance = {};
             if (instanceInfo.instances > 0) {
-                instanceLinks = {
+                instanceLinks.entities = {
                     targetEntity: entityInput.properties.safeGet(key).id,
                     indices: _.range(targetInstanceIndex, targetInstanceIndex + instanceInfo.instances),
                 };
@@ -36,10 +30,7 @@ function fillInstanceProperties(
             }
 
             if (instanceInfo.literals.length > 0) {
-                if (instanceLinks === null) {
-                    instanceLinks = { literals: [] };
-                }
-                (instanceLinks as InstanceLiterals).literals = instanceInfo.literals
+                instanceLinks.literals = instanceInfo.literals
                     .filter((literal): literal is number | string | boolean | bigint | symbol => literal !== null && literal !== undefined)
                     .map((literal) => literal.toString());
             }

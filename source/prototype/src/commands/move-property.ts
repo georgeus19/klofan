@@ -1,9 +1,10 @@
 import { InstanceMapping } from '../instance-mapping';
 import { LiteralMapping } from '../literal-mapping';
-import { InstanceEntities, InstanceLiterals, instanceKey } from '../state/instance-state';
+import { PropertyInstance, instanceKey } from '../state/instance-state';
 import { id } from '../state/schema-state';
 import { State, copyState } from '../state/state';
 import { Command } from './command';
+import * as _ from 'lodash';
 
 export class MoveProperty implements Command {
     private source: id;
@@ -31,44 +32,40 @@ export class MoveProperty implements Command {
         target.properties = target.properties.filter((p) => p !== this.property);
         newState.schema.entities.set(target.id, target);
 
-        const instanceProperties = this.processLiteralMapping(this.processInstanceMapping(newState.instance.entities.safeGet(source.id).count));
+        const instanceProperties = this.processLiteralMapping(
+            this.processInstanceMapping(
+                _.range(0, newState.instance.entities.safeGet(source.id).count).map(() => {
+                    return {};
+                })
+            )
+        );
 
         newState.instance.properties.set(instanceKey(source.id, this.property), instanceProperties);
 
         return newState;
     }
 
-    processInstanceMapping(sourceInstances: number): (InstanceEntities | null)[] {
-        return [...Array(sourceInstances).keys()].map((instance) => {
-            const mappedInstances: number[] = this.instanceMapping.mappedInstances(instance);
+    processInstanceMapping(sourceInstances: PropertyInstance[]): PropertyInstance[] {
+        return sourceInstances.map((instance, index): PropertyInstance => {
+            const mappedInstances: number[] = this.instanceMapping.mappedInstances(index);
             if (mappedInstances.length > 0) {
-                return {
+                instance.entities = {
                     targetEntity: this.target,
                     indices: mappedInstances,
                 };
-            } else {
-                return null;
             }
+            return instance;
         });
     }
 
-    processLiteralMapping(
-        sourceInstances: (InstanceEntities | null)[]
-    ): ((InstanceEntities & InstanceLiterals) | InstanceEntities | InstanceLiterals | null)[] {
+    processLiteralMapping(sourceInstances: PropertyInstance[]): PropertyInstance[] {
         return sourceInstances.map((instance, index) => {
             const mappedLiterals = this.literalMapping.mappedLiterals(index);
-            if (mappedLiterals.length === 0) {
-                return instance;
+            if (mappedLiterals.length > 0) {
+                instance.literals = mappedLiterals;
             }
 
-            if (instance !== null) {
-                (instance as InstanceEntities & InstanceLiterals).literals = mappedLiterals;
-                return instance;
-            } else {
-                return {
-                    literals: mappedLiterals,
-                };
-            }
+            return instance;
         });
     }
 }
