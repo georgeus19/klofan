@@ -1,4 +1,4 @@
-import { LiteralValue, literal } from './state/instance-state';
+import { literal } from './state/instance-state';
 
 /**
  * Represents the mapping which entity instances of given property have which literals.

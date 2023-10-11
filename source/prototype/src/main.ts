@@ -3,8 +3,9 @@ import { parseJson } from './parse/parse';
 import { State } from './state/state';
 import { InMemoryModel } from './state/in-memory-model';
 import { createDefaultOutputConfiguration } from './export/default-output-configuration';
-import { exportInstances, exportSchema } from './export/export';
+import { exportSchema } from './export/export-schema';
 import { Writer } from 'n3';
+import { exportInstances } from './export/export-instances';
 require('util').inspect.defaultOptions.depth = null;
 
 async function main() {

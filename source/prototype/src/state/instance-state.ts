@@ -18,35 +18,35 @@ export interface InstanceState {
      *  It was initially in `EntityInstances` but then adding a property requires copying of the object
      *  instead of now only adding a [key, value].
      */
-    properties: SafeMap<string, PropertyInstances>;
+    properties: SafeMap<string, PropertyInstance[]>;
 }
 
-export type PropertyInstances = ((InstanceLink & LiteralValue) | InstanceLink | LiteralValue | null)[];
+export type PropertyInstance = (InstanceEntities & InstanceLiterals) | InstanceEntities | InstanceLiterals | null;
 
 export function doesInstanceHaveNoProperty(
-    propertyInstances: (InstanceLink & LiteralValue) | InstanceLink | LiteralValue | null
+    propertyInstances: (InstanceEntities & InstanceLiterals) | InstanceEntities | InstanceLiterals | null
 ): propertyInstances is null {
     return propertyInstances === null;
 }
 
 export function doesInstanceHaveLinkToOtherInstances(
-    propertyInstances: (InstanceLink & LiteralValue) | InstanceLink | LiteralValue | null
-): propertyInstances is InstanceLink {
+    propertyInstances: (InstanceEntities & InstanceLiterals) | InstanceEntities | InstanceLiterals | null
+): propertyInstances is InstanceEntities {
     if (doesInstanceHaveNoProperty(propertyInstances)) {
         return false;
     }
 
-    return (propertyInstances as any).linkedInstance !== undefined;
+    return (propertyInstances as any).targetEntity !== undefined;
 }
 
 export function doesInstanceHaveLiterals(
-    propertyInstances: (InstanceLink & LiteralValue) | InstanceLink | LiteralValue | null
-): propertyInstances is LiteralValue {
+    propertyInstances: (InstanceEntities & InstanceLiterals) | InstanceEntities | InstanceLiterals | null
+): propertyInstances is InstanceLiterals {
     if (doesInstanceHaveNoProperty(propertyInstances)) {
         return false;
     }
 
-    return (propertyInstances as any).value !== undefined;
+    return (propertyInstances as any).literals !== undefined;
 }
 
 export interface EntityInstances {
@@ -56,13 +56,13 @@ export interface EntityInstances {
     count: number;
 }
 
-export interface InstanceLink {
-    linkedInstance: id;
+export interface InstanceEntities {
+    targetEntity: id;
     indices: number[];
 }
 
-export interface LiteralValue {
-    value: literal | literal[]; // Or just string[] for ease of use?
+export interface InstanceLiterals {
+    literals: literal | literal[]; // Or just string[] for ease of use?
 }
 
 export function instanceKey(entity: id, property: id): string {

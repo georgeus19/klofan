@@ -1,10 +1,16 @@
-export interface InstanceUriIdentifierMapping {
-    get(instance: number): string;
+export interface InstanceUriBuilder {
+    identifier(instance: number): string;
+    composeUri(entityUri: string, instance: number): string;
 }
 
-export class IdentityIdentifierMapping implements InstanceUriIdentifierMapping {
+export class IdentityInstanceUriBuilder implements InstanceUriBuilder {
     constructor() {}
-    get(instance: number): string {
+
+    identifier(instance: number): string {
         return instance.toString();
+    }
+
+    composeUri(entityUri: string, instance: number): string {
+        return entityUri + this.identifier(instance);
     }
 }

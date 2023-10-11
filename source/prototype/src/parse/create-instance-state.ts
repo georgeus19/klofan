@@ -1,5 +1,5 @@
 import { SafeMap } from '../safe-map';
-import { EntityInstances, InstanceLink, InstanceState, LiteralValue, instanceKey } from '../state/instance-state';
+import { EntityInstances, InstanceEntities, InstanceState, InstanceLiterals, instanceKey } from '../state/instance-state';
 import { id } from '../state/schema-state';
 import _ from 'lodash';
 import { EntityInput } from './create-entity-input';
@@ -7,7 +7,7 @@ import { EntityInput } from './create-entity-input';
 export function createInstanceState(entityInput: EntityInput): InstanceState {
     const entities = fillInstanceEntities(new SafeMap<id, EntityInstances>(), entityInput);
     const properties = fillInstanceProperties(
-        new SafeMap<string, ((InstanceLink & LiteralValue) | InstanceLink | LiteralValue | null)[]>(),
+        new SafeMap<string, ((InstanceEntities & InstanceLiterals) | InstanceEntities | InstanceLiterals | null)[]>(),
         entityInput
     );
     return {
@@ -17,19 +17,19 @@ export function createInstanceState(entityInput: EntityInput): InstanceState {
 }
 
 function fillInstanceProperties(
-    properties: SafeMap<string, ((InstanceLink & LiteralValue) | InstanceLink | LiteralValue | null)[]>,
+    properties: SafeMap<string, ((InstanceEntities & InstanceLiterals) | InstanceEntities | InstanceLiterals | null)[]>,
     entityInput: EntityInput
-): SafeMap<string, ((InstanceLink & LiteralValue) | InstanceLink | LiteralValue | null)[]> {
+): SafeMap<string, ((InstanceEntities & InstanceLiterals) | InstanceEntities | InstanceLiterals | null)[]> {
     entityInput.instances.forEach((value, key) => {
         const propertyId = entityInput.propertyIds.safeGet(key);
 
         let targetInstanceIndex = 0;
 
         const instanceProperties = value.map((instanceInfo) => {
-            let instanceLinks: (InstanceLink & LiteralValue) | InstanceLink | LiteralValue | null = null;
+            let instanceLinks: (InstanceEntities & InstanceLiterals) | InstanceEntities | InstanceLiterals | null = null;
             if (instanceInfo.instances > 0) {
                 instanceLinks = {
-                    linkedInstance: entityInput.properties.safeGet(key).id,
+                    targetEntity: entityInput.properties.safeGet(key).id,
                     indices: _.range(targetInstanceIndex, targetInstanceIndex + instanceInfo.instances),
                 };
                 targetInstanceIndex += instanceInfo.instances;
@@ -37,9 +37,9 @@ function fillInstanceProperties(
 
             if (instanceInfo.literals.length > 0) {
                 if (instanceLinks === null) {
-                    instanceLinks = { value: [] };
+                    instanceLinks = { literals: [] };
                 }
-                (instanceLinks as LiteralValue).value = instanceInfo.literals
+                (instanceLinks as InstanceLiterals).literals = instanceInfo.literals
                     .filter((literal): literal is number | string | boolean | bigint | symbol => literal !== null && literal !== undefined)
                     .map((literal) => literal.toString());
             }

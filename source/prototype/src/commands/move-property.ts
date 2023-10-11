@@ -1,6 +1,6 @@
 import { InstanceMapping } from '../instance-mapping';
 import { LiteralMapping } from '../literal-mapping';
-import { InstanceLink, LiteralValue, instanceKey } from '../state/instance-state';
+import { InstanceEntities, InstanceLiterals, instanceKey } from '../state/instance-state';
 import { id } from '../state/schema-state';
 import { State, copyState } from '../state/state';
 import { Command } from './command';
@@ -38,12 +38,12 @@ export class MoveProperty implements Command {
         return newState;
     }
 
-    processInstanceMapping(sourceInstances: number): (InstanceLink | null)[] {
+    processInstanceMapping(sourceInstances: number): (InstanceEntities | null)[] {
         return [...Array(sourceInstances).keys()].map((instance) => {
             const mappedInstances: number[] = this.instanceMapping.mappedInstances(instance);
             if (mappedInstances.length > 0) {
                 return {
-                    linkedInstance: this.target,
+                    targetEntity: this.target,
                     indices: mappedInstances,
                 };
             } else {
@@ -52,7 +52,9 @@ export class MoveProperty implements Command {
         });
     }
 
-    processLiteralMapping(sourceInstances: (InstanceLink | null)[]): ((InstanceLink & LiteralValue) | InstanceLink | LiteralValue | null)[] {
+    processLiteralMapping(
+        sourceInstances: (InstanceEntities | null)[]
+    ): ((InstanceEntities & InstanceLiterals) | InstanceEntities | InstanceLiterals | null)[] {
         return sourceInstances.map((instance, index) => {
             const mappedLiterals = this.literalMapping.mappedLiterals(index);
             if (mappedLiterals.length === 0) {
@@ -60,11 +62,11 @@ export class MoveProperty implements Command {
             }
 
             if (instance !== null) {
-                (instance as InstanceLink & LiteralValue).value = mappedLiterals;
+                (instance as InstanceEntities & InstanceLiterals).literals = mappedLiterals;
                 return instance;
             } else {
                 return {
-                    value: mappedLiterals,
+                    literals: mappedLiterals,
                 };
             }
         });

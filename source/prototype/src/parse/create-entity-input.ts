@@ -19,7 +19,7 @@ export interface EntityInput {
 
 export function createEntityInput(instanceInput: InstanceEntityInput, schemaInput: SchemaEntityInput): EntityInput {
     const entityInput = convertToEntityInput(schemaInput);
-    const { literals, instances } = parseInstances(fillInstancestoEntityInput(instanceInput, entityInput));
+    const { instances } = parseInstances(fillInstancestoEntityInput(instanceInput, entityInput));
     entityInput.instanceCount += instances;
     return entityInput;
 }

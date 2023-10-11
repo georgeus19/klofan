@@ -1,5 +1,5 @@
 import { InstanceMapping } from '../instance-mapping';
-import { InstanceLink, LiteralValue, instanceKey } from '../state/instance-state';
+import { InstanceEntities, InstanceLiterals, instanceKey } from '../state/instance-state';
 import { Property, id } from '../state/schema-state';
 import { State, copyState } from '../state/state';
 import { Command } from './command';
@@ -37,7 +37,7 @@ class AddPropertyLink implements Command {
             const mappedInstances: number[] = this.instanceMapping.mappedInstances(instance);
             if (mappedInstances.length > 0) {
                 return {
-                    linkedInstance: this.target,
+                    targetEntity: this.target,
                     indices: mappedInstances,
                 };
             } else {

@@ -1,18 +1,18 @@
 import { SafeMap } from '../safe-map';
 import { id } from '../state/schema-state';
-import { InstanceUriIdentifierMapping } from './instance-uri-identifier-mapping';
+import { InstanceUriBuilder } from './instance-uri-identifier-mapping';
 
 export interface OutputConfiguration {
     prefixes: SafeMap<string, string>;
-    entityUris: SafeMap<id, EntityOutputConfiguration>;
-    propertyUris: SafeMap<id, PropertyOutputConfiguration>;
+    entities: SafeMap<id, EntityOutputConfiguration>;
+    properties: SafeMap<id, PropertyOutputConfiguration>;
 }
 
 export interface EntityOutputConfiguration {
-    entityUri: { prefix?: string; uri: string };
-    instancesUri: { prefix?: string; baseUri: string; identifierMapping: InstanceUriIdentifierMapping };
+    entity: { prefix?: string; uri: string };
+    instances: { prefix?: string; baseUri: string; uriBuilder: InstanceUriBuilder };
 }
 
 export interface PropertyOutputConfiguration {
-    propertyUri: { prefix?: string; uri: string };
+    property: { prefix?: string; uri: string };
 }

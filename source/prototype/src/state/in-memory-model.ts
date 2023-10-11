@@ -1,4 +1,4 @@
-import { EntityInstances, PropertyInstances, instanceKey } from './instance-state';
+import { EntityInstances, PropertyInstance, instanceKey } from './instance-state';
 import { Model } from './model';
 import { Entity, Property, id } from './schema-state';
 import { State } from './state';
@@ -26,7 +26,7 @@ export class InMemoryModel implements Model {
         return this.state.instance.entities.safeGet(entityId);
     }
 
-    propertyInstances(entityId: id, propertyId: id): PropertyInstances {
+    propertyInstances(entityId: id, propertyId: id): PropertyInstance[] {
         return this.state.instance.properties.safeGet(instanceKey(entityId, propertyId));
     }
 }

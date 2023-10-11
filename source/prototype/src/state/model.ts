@@ -1,4 +1,4 @@
-import { EntityInstances, PropertyInstances } from './instance-state';
+import { EntityInstances, PropertyInstance } from './instance-state';
 import { Entity, Property, id } from './schema-state';
 
 export interface Model {
@@ -9,5 +9,5 @@ export interface Model {
     property(propertyId: id): Property;
 
     entityInstances(entityId: id): EntityInstances;
-    propertyInstances(entityId: id, propertyId: id): PropertyInstances;
+    propertyInstances(entityId: id, propertyId: id): PropertyInstance[];
 }

@@ -1,7 +1,7 @@
 import { SafeMap } from '../safe-map';
 import { Model } from '../state/model';
 import { id } from '../state/schema-state';
-import { IdentityIdentifierMapping } from './instance-uri-identifier-mapping';
+import { IdentityInstanceUriBuilder } from './instance-uri-identifier-mapping';
 import { EntityOutputConfiguration, OutputConfiguration, PropertyOutputConfiguration } from './output-configuration';
 
 export function createDefaultOutputConfiguration(model: Model): OutputConfiguration {
@@ -10,8 +10,8 @@ export function createDefaultOutputConfiguration(model: Model): OutputConfigurat
             return [
                 entity.id,
                 {
-                    entityUri: { uri: `http://example.com/entity/e${entity.id}` },
-                    instancesUri: { baseUri: `http://example.com/entity/e${entity.id}/`, identifierMapping: new IdentityIdentifierMapping() },
+                    entity: { uri: `http://example.com/entity/e${entity.id}` },
+                    instances: { baseUri: `http://example.com/entity/e${entity.id}/`, uriBuilder: new IdentityInstanceUriBuilder() },
                 },
             ];
         })
@@ -21,17 +21,17 @@ export function createDefaultOutputConfiguration(model: Model): OutputConfigurat
             return [
                 property.id,
                 {
-                    propertyUri: { uri: `http://example.com/property/p${property.id}` },
+                    property: { uri: `http://example.com/property/p${property.id}` },
                 },
             ];
         })
     );
     return {
-        entityUris: entityUris,
+        entities: entityUris,
         prefixes: new SafeMap<string, string>([
             ['ex-entity', 'http://example.com/entity/'],
             ['ex-property', 'http://example.com/property/'],
         ]),
-        propertyUris: propertyUris,
+        properties: propertyUris,
     };
 }
