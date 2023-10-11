@@ -23,15 +23,15 @@ export class MoveProperty implements Command {
     apply(state: State): State {
         const newState = copyState(state);
 
-        const source = structuredClone(newState.schema.entities.get(this.source));
-        const target = structuredClone(newState.schema.entities.get(this.target));
+        const source = structuredClone(newState.schema.entities.safeGet(this.source));
+        const target = structuredClone(newState.schema.entities.safeGet(this.target));
 
         source.properties.push(this.property);
         newState.schema.entities.set(source.id, source);
         target.properties = target.properties.filter((p) => p !== this.property);
         newState.schema.entities.set(target.id, target);
 
-        const instanceProperties = this.processLiteralMapping(this.processInstanceMapping(newState.instance.entities.get(source.id).count));
+        const instanceProperties = this.processLiteralMapping(this.processInstanceMapping(newState.instance.entities.safeGet(source.id).count));
 
         newState.instance.properties.set(instanceKey(source.id, this.property), instanceProperties);
 

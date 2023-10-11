@@ -18,7 +18,35 @@ export interface InstanceState {
      *  It was initially in `EntityInstances` but then adding a property requires copying of the object
      *  instead of now only adding a [key, value].
      */
-    properties: SafeMap<string, ((InstanceLink & LiteralValue) | InstanceLink | LiteralValue | null)[]>;
+    properties: SafeMap<string, PropertyInstances>;
+}
+
+export type PropertyInstances = ((InstanceLink & LiteralValue) | InstanceLink | LiteralValue | null)[];
+
+export function doesInstanceHaveNoProperty(
+    propertyInstances: (InstanceLink & LiteralValue) | InstanceLink | LiteralValue | null
+): propertyInstances is null {
+    return propertyInstances === null;
+}
+
+export function doesInstanceHaveLinkToOtherInstances(
+    propertyInstances: (InstanceLink & LiteralValue) | InstanceLink | LiteralValue | null
+): propertyInstances is InstanceLink {
+    if (doesInstanceHaveNoProperty(propertyInstances)) {
+        return false;
+    }
+
+    return (propertyInstances as any).linkedInstance !== undefined;
+}
+
+export function doesInstanceHaveLiterals(
+    propertyInstances: (InstanceLink & LiteralValue) | InstanceLink | LiteralValue | null
+): propertyInstances is LiteralValue {
+    if (doesInstanceHaveNoProperty(propertyInstances)) {
+        return false;
+    }
+
+    return (propertyInstances as any).value !== undefined;
 }
 
 export interface EntityInstances {
@@ -29,7 +57,7 @@ export interface EntityInstances {
 }
 
 export interface InstanceLink {
-    linkedInstance: string;
+    linkedInstance: id;
     indices: number[];
 }
 

@@ -26,14 +26,14 @@ class AddPropertyLink implements Command {
     apply(state: State): State {
         const newState = copyState(state);
 
-        const source = structuredClone(newState.schema.entities.get(this.source));
+        const source = structuredClone(newState.schema.entities.safeGet(this.source));
 
         newState.schema.properties.set(this.property.id, this.property);
 
         source.properties.push(this.property.id);
         newState.schema.entities.set(source.id, source);
 
-        const instances = [...Array(newState.instance.entities.get(source.id).count).keys()].map((instance) => {
+        const instances = [...Array(newState.instance.entities.safeGet(source.id).count).keys()].map((instance) => {
             const mappedInstances: number[] = this.instanceMapping.mappedInstances(instance);
             if (mappedInstances.length > 0) {
                 return {

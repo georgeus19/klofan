@@ -13,7 +13,11 @@ export class SafeMap<K, V> {
         }
     }
 
-    get(key: K): V {
+    get(key: K): V | undefined {
+        return this.map.get(key);
+    }
+
+    safeGet(key: K): V {
         const value = this.map.get(key);
         if (value) {
             return value;
@@ -28,5 +32,17 @@ export class SafeMap<K, V> {
 
     [Symbol.iterator]() {
         return this.map[Symbol.iterator]();
+    }
+
+    forEach(callbackfn: (value: V, key: K) => void) {
+        return this.map.forEach(callbackfn);
+    }
+
+    entries() {
+        return Array.from(this.map.entries());
+    }
+
+    values(): V[] {
+        return Array.from(this.map.values());
     }
 }

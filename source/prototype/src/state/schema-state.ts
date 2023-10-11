@@ -7,7 +7,8 @@ export type id = string;
 
 export interface Entity {
     id: id;
-    properties: string[];
+    literal: boolean;
+    properties: id[];
 }
 
 export interface Property {
