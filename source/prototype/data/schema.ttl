@@ -25,13 +25,14 @@ ex-property:p16-vegan a dsc:Property;
     dsc:technicalName "vegan".
 ex-property:p17-vegetarian a dsc:Property;
     dsc:technicalName "vegetarian".
-ex-entity:e18 dsc:Property ex-property:p25-calcium_100g, ex-property:p26-calcium_unit, ex-property:p27-carbohydrates_100g, ex-property:p28-carbohydrates_unit, ex-property:p29-energy-kcal_100g, ex-property:p30-energy-kcal_unit;
+ex-entity:e18 dsc:Property ex-property:p25-calcium_100g, ex-property:p26-calcium_unit, ex-property:p27-carbohydrates_100g, ex-property:p28-carbohydrates_unit, ex-property:p29-energy-kcal_100g, ex-property:p30-energy-kcal_unit, ex-property:p32-countries;
     ex-property:p25-calcium_100g ex-entity:e19;
     ex-property:p26-calcium_unit ex-entity:e20;
     ex-property:p27-carbohydrates_100g ex-entity:e21;
     ex-property:p28-carbohydrates_unit ex-entity:e22;
     ex-property:p29-energy-kcal_100g ex-entity:e23;
-    ex-property:p30-energy-kcal_unit ex-entity:e24.
+    ex-property:p30-energy-kcal_unit ex-entity:e24;
+    ex-property:p32-countries ex-entity:e4.
 ex-property:p25-calcium_100g a dsc:Property;
     dsc:technicalName "calcium_100g".
 ex-property:p26-calcium_unit a dsc:Property;
@@ -44,15 +45,14 @@ ex-property:p29-energy-kcal_100g a dsc:Property;
     dsc:technicalName "energy-kcal_100g".
 ex-property:p30-energy-kcal_unit a dsc:Property;
     dsc:technicalName "energy-kcal_unit".
-ex-entity:e2 dsc:Property ex-property:p31-product_name, ex-property:p32-countries, ex-property:p33-ingredients, ex-property:p34-nutriments;
+ex-property:p32-countries a dsc:Property;
+    dsc:technicalName "countries".
+ex-entity:e2 dsc:Property ex-property:p31-product_name, ex-property:p33-ingredients, ex-property:p34-nutriments;
     ex-property:p31-product_name ex-entity:e3;
-    ex-property:p32-countries ex-entity:e4;
     ex-property:p33-ingredients ex-entity:e5;
     ex-property:p34-nutriments ex-entity:e18.
 ex-property:p31-product_name a dsc:Property;
     dsc:technicalName "product_name".
-ex-property:p32-countries a dsc:Property;
-    dsc:technicalName "countries".
 ex-property:p33-ingredients a dsc:Property;
     dsc:technicalName "ingredients".
 ex-property:p34-nutriments a dsc:Property;

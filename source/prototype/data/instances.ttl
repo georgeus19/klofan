@@ -15,9 +15,9 @@
     ex-property:p27-carbohydrates_100g "71.15";
     ex-property:p28-carbohydrates_unit "g";
     ex-property:p29-energy-kcal_100g "385";
-    ex-property:p30-energy-kcal_unit "kcal".
+    ex-property:p30-energy-kcal_unit "kcal";
+    ex-property:p32-countries "United States".
 <http://example.com/entity/e2/0> ex-property:p31-product_name "Thai peanut noodle kit includes stir-fry rice noodles & thai peanut seasoning";
-    ex-property:p32-countries "United States";
     ex-property:p33-ingredients <http://example.com/entity/e5/0>, <http://example.com/entity/e5/1>;
     ex-property:p34-nutriments <http://example.com/entity/e18/0>.
 <http://example.com/entity/e1/0> ex-property:p35-product <http://example.com/entity/e2/0>.

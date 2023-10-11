@@ -18,15 +18,16 @@ async function main() {
     const outputDir = args[1];
     const data = (await fs.promises.readFile(inputFile)).toString();
     const state: State = parseJson(data);
-    const model = new InMemoryModel(state);
+    let model = new InMemoryModel(state);
 
-    // new MoveProperty({
-    //     source: '1',
-    //     target: '2',
-    //     property: 'p32-countries',
-    //     instanceMapping: new AllToOneInstanceMapping(0, [0]),
-    //     literalMapping: new AllToOneLiteralMapping(0, model.propertyInstances('1', 'p32-countries')[0].literals!),
-    // });
+    const newState = new MoveProperty({
+        source: '18',
+        target: '2',
+        property: '32-countries',
+        instanceMapping: new AllToOneInstanceMapping(0, []),
+        literalMapping: new AllToOneLiteralMapping(0, model.propertyInstances('2', '32-countries')[0].literals!),
+    }).apply(state);
+    model = new InMemoryModel(newState);
 
     const outputConfiguration = createDefaultOutputConfiguration(model);
     const instanceOutputWriter = new Writer(fs.createWriteStream(`${outputDir}/instances.ttl`));
