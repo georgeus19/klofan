@@ -4,6 +4,7 @@ import { InstanceEntityInput, isPrimitiveType } from './utils';
 import { createSchemaState } from './create-schema-state';
 import { createEntityInput } from './create-entity-input';
 import { createInstanceState } from './create-instance-state';
+import { parse as csvParse } from 'csv-parse/sync';
 
 export function parse(input: InstanceEntityInput): State {
     if (detectTopLevelLiterals(input)) {
@@ -18,6 +19,10 @@ export function parse(input: InstanceEntityInput): State {
         schema: schemaState,
         instance: instanceState,
     };
+}
+
+export function parseCsv(data: string): State {
+    return parse(csvParse(data, { columns: true, skip_empty_lines: true }));
 }
 
 export function parseJson(data: string): State {

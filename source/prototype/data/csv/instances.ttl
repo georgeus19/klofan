@@ -1,0 +1,822 @@
+@prefix ex-entity: <http://example.com/entity/>.
+@prefix ex-property: <http://example.com/property/>.
+
+<http://example.com/entity/e1/0> <http://example.com/property/p11-Kód území> "CZ0".
+<http://example.com/entity/e1/1> <http://example.com/property/p11-Kód území> "CZ010".
+<http://example.com/entity/e1/2> <http://example.com/property/p11-Kód území> "CZ020".
+<http://example.com/entity/e1/3> <http://example.com/property/p11-Kód území> "CZ031".
+<http://example.com/entity/e1/4> <http://example.com/property/p11-Kód území> "CZ032".
+<http://example.com/entity/e1/5> <http://example.com/property/p11-Kód území> "CZ041".
+<http://example.com/entity/e1/6> <http://example.com/property/p11-Kód území> "CZ042".
+<http://example.com/entity/e1/7> <http://example.com/property/p11-Kód území> "CZ051".
+<http://example.com/entity/e1/8> <http://example.com/property/p11-Kód území> "CZ052".
+<http://example.com/entity/e1/9> <http://example.com/property/p11-Kód území> "CZ053".
+<http://example.com/entity/e1/10> <http://example.com/property/p11-Kód území> "CZ063".
+<http://example.com/entity/e1/11> <http://example.com/property/p11-Kód území> "CZ064".
+<http://example.com/entity/e1/12> <http://example.com/property/p11-Kód území> "CZ071".
+<http://example.com/entity/e1/13> <http://example.com/property/p11-Kód území> "CZ072".
+<http://example.com/entity/e1/14> <http://example.com/property/p11-Kód území> "CZ080".
+<http://example.com/entity/e1/15> <http://example.com/property/p11-Kód území> "CZ0201".
+<http://example.com/entity/e1/16> <http://example.com/property/p11-Kód území> "CZ0202".
+<http://example.com/entity/e1/17> <http://example.com/property/p11-Kód území> "CZ0203".
+<http://example.com/entity/e1/18> <http://example.com/property/p11-Kód území> "CZ0204".
+<http://example.com/entity/e1/19> <http://example.com/property/p11-Kód území> "CZ0205".
+<http://example.com/entity/e1/20> <http://example.com/property/p11-Kód území> "CZ0206".
+<http://example.com/entity/e1/21> <http://example.com/property/p11-Kód území> "CZ0207".
+<http://example.com/entity/e1/22> <http://example.com/property/p11-Kód území> "CZ0208".
+<http://example.com/entity/e1/23> <http://example.com/property/p11-Kód území> "CZ0209".
+<http://example.com/entity/e1/24> <http://example.com/property/p11-Kód území> "CZ020A".
+<http://example.com/entity/e1/25> <http://example.com/property/p11-Kód území> "CZ020B".
+<http://example.com/entity/e1/26> <http://example.com/property/p11-Kód území> "CZ020C".
+<http://example.com/entity/e1/27> <http://example.com/property/p11-Kód území> "CZ0311".
+<http://example.com/entity/e1/28> <http://example.com/property/p11-Kód území> "CZ0312".
+<http://example.com/entity/e1/29> <http://example.com/property/p11-Kód území> "CZ0313".
+<http://example.com/entity/e1/30> <http://example.com/property/p11-Kód území> "CZ0314".
+<http://example.com/entity/e1/31> <http://example.com/property/p11-Kód území> "CZ0315".
+<http://example.com/entity/e1/32> <http://example.com/property/p11-Kód území> "CZ0316".
+<http://example.com/entity/e1/33> <http://example.com/property/p11-Kód území> "CZ0317".
+<http://example.com/entity/e1/34> <http://example.com/property/p11-Kód území> "CZ0321".
+<http://example.com/entity/e1/35> <http://example.com/property/p11-Kód území> "CZ0322".
+<http://example.com/entity/e1/36> <http://example.com/property/p11-Kód území> "CZ0323".
+<http://example.com/entity/e1/37> <http://example.com/property/p11-Kód území> "CZ0324".
+<http://example.com/entity/e1/38> <http://example.com/property/p11-Kód území> "CZ0325".
+<http://example.com/entity/e1/39> <http://example.com/property/p11-Kód území> "CZ0326".
+<http://example.com/entity/e1/40> <http://example.com/property/p11-Kód území> "CZ0327".
+<http://example.com/entity/e1/41> <http://example.com/property/p11-Kód území> "CZ0411".
+<http://example.com/entity/e1/42> <http://example.com/property/p11-Kód území> "CZ0412".
+<http://example.com/entity/e1/43> <http://example.com/property/p11-Kód území> "CZ0413".
+<http://example.com/entity/e1/44> <http://example.com/property/p11-Kód území> "CZ0421".
+<http://example.com/entity/e1/45> <http://example.com/property/p11-Kód území> "CZ0422".
+<http://example.com/entity/e1/46> <http://example.com/property/p11-Kód území> "CZ0423".
+<http://example.com/entity/e1/47> <http://example.com/property/p11-Kód území> "CZ0424".
+<http://example.com/entity/e1/48> <http://example.com/property/p11-Kód území> "CZ0425".
+<http://example.com/entity/e1/49> <http://example.com/property/p11-Kód území> "CZ0426".
+<http://example.com/entity/e1/50> <http://example.com/property/p11-Kód území> "CZ0427".
+<http://example.com/entity/e1/51> <http://example.com/property/p11-Kód území> "CZ0511".
+<http://example.com/entity/e1/52> <http://example.com/property/p11-Kód území> "CZ0512".
+<http://example.com/entity/e1/53> <http://example.com/property/p11-Kód území> "CZ0513".
+<http://example.com/entity/e1/54> <http://example.com/property/p11-Kód území> "CZ0514".
+<http://example.com/entity/e1/55> <http://example.com/property/p11-Kód území> "CZ0521".
+<http://example.com/entity/e1/56> <http://example.com/property/p11-Kód území> "CZ0522".
+<http://example.com/entity/e1/57> <http://example.com/property/p11-Kód území> "CZ0523".
+<http://example.com/entity/e1/58> <http://example.com/property/p11-Kód území> "CZ0524".
+<http://example.com/entity/e1/59> <http://example.com/property/p11-Kód území> "CZ0525".
+<http://example.com/entity/e1/60> <http://example.com/property/p11-Kód území> "CZ0531".
+<http://example.com/entity/e1/61> <http://example.com/property/p11-Kód území> "CZ0532".
+<http://example.com/entity/e1/62> <http://example.com/property/p11-Kód území> "CZ0533".
+<http://example.com/entity/e1/63> <http://example.com/property/p11-Kód území> "CZ0534".
+<http://example.com/entity/e1/64> <http://example.com/property/p11-Kód území> "CZ0631".
+<http://example.com/entity/e1/65> <http://example.com/property/p11-Kód území> "CZ0632".
+<http://example.com/entity/e1/66> <http://example.com/property/p11-Kód území> "CZ0633".
+<http://example.com/entity/e1/67> <http://example.com/property/p11-Kód území> "CZ0634".
+<http://example.com/entity/e1/68> <http://example.com/property/p11-Kód území> "CZ0635".
+<http://example.com/entity/e1/69> <http://example.com/property/p11-Kód území> "CZ0641".
+<http://example.com/entity/e1/70> <http://example.com/property/p11-Kód území> "CZ0642".
+<http://example.com/entity/e1/71> <http://example.com/property/p11-Kód území> "CZ0643".
+<http://example.com/entity/e1/72> <http://example.com/property/p11-Kód území> "CZ0644".
+<http://example.com/entity/e1/73> <http://example.com/property/p11-Kód území> "CZ0645".
+<http://example.com/entity/e1/74> <http://example.com/property/p11-Kód území> "CZ0646".
+<http://example.com/entity/e1/75> <http://example.com/property/p11-Kód území> "CZ0647".
+<http://example.com/entity/e1/76> <http://example.com/property/p11-Kód území> "CZ0711".
+<http://example.com/entity/e1/77> <http://example.com/property/p11-Kód území> "CZ0712".
+<http://example.com/entity/e1/78> <http://example.com/property/p11-Kód území> "CZ0713".
+<http://example.com/entity/e1/79> <http://example.com/property/p11-Kód území> "CZ0714".
+<http://example.com/entity/e1/80> <http://example.com/property/p11-Kód území> "CZ0715".
+<http://example.com/entity/e1/81> <http://example.com/property/p11-Kód území> "CZ0721".
+<http://example.com/entity/e1/82> <http://example.com/property/p11-Kód území> "CZ0722".
+<http://example.com/entity/e1/83> <http://example.com/property/p11-Kód území> "CZ0723".
+<http://example.com/entity/e1/84> <http://example.com/property/p11-Kód území> "CZ0724".
+<http://example.com/entity/e1/85> <http://example.com/property/p11-Kód území> "CZ0801".
+<http://example.com/entity/e1/86> <http://example.com/property/p11-Kód území> "CZ0802".
+<http://example.com/entity/e1/87> <http://example.com/property/p11-Kód území> "CZ0803".
+<http://example.com/entity/e1/88> <http://example.com/property/p11-Kód území> "CZ0804".
+<http://example.com/entity/e1/89> <http://example.com/property/p11-Kód území> "CZ0805".
+<http://example.com/entity/e1/90> <http://example.com/property/p11-Kód území> "CZ0806".
+<http://example.com/entity/e1/0> <http://example.com/property/p12-Region soudržnosti> "Česko".
+<http://example.com/entity/e1/1> <http://example.com/property/p12-Region soudržnosti> "Hlavní město Praha".
+<http://example.com/entity/e1/2> <http://example.com/property/p12-Region soudržnosti> "Středočeský kraj".
+<http://example.com/entity/e1/3> <http://example.com/property/p12-Region soudržnosti> "Jihočeský kraj".
+<http://example.com/entity/e1/4> <http://example.com/property/p12-Region soudržnosti> "Plzeňský kraj".
+<http://example.com/entity/e1/5> <http://example.com/property/p12-Region soudržnosti> "Karlovarský kraj".
+<http://example.com/entity/e1/6> <http://example.com/property/p12-Region soudržnosti> "Ústecký kraj".
+<http://example.com/entity/e1/7> <http://example.com/property/p12-Region soudržnosti> "Liberecký kraj".
+<http://example.com/entity/e1/8> <http://example.com/property/p12-Region soudržnosti> "Královéhradecký kraj".
+<http://example.com/entity/e1/9> <http://example.com/property/p12-Region soudržnosti> "Pardubický kraj".
+<http://example.com/entity/e1/10> <http://example.com/property/p12-Region soudržnosti> "Kraj Vysočina".
+<http://example.com/entity/e1/11> <http://example.com/property/p12-Region soudržnosti> "Jihomoravský kraj".
+<http://example.com/entity/e1/12> <http://example.com/property/p12-Region soudržnosti> "Olomoucký kraj".
+<http://example.com/entity/e1/13> <http://example.com/property/p12-Region soudržnosti> "Zlínský kraj".
+<http://example.com/entity/e1/14> <http://example.com/property/p12-Region soudržnosti> "Moravskoslezský kraj".
+<http://example.com/entity/e1/15> <http://example.com/property/p12-Region soudržnosti> "Benešov".
+<http://example.com/entity/e1/16> <http://example.com/property/p12-Region soudržnosti> "Beroun".
+<http://example.com/entity/e1/17> <http://example.com/property/p12-Region soudržnosti> "Kladno".
+<http://example.com/entity/e1/18> <http://example.com/property/p12-Region soudržnosti> "Kolín".
+<http://example.com/entity/e1/19> <http://example.com/property/p12-Region soudržnosti> "Kutná Hora".
+<http://example.com/entity/e1/20> <http://example.com/property/p12-Region soudržnosti> "Mělník".
+<http://example.com/entity/e1/21> <http://example.com/property/p12-Region soudržnosti> "Mladá Boleslav".
+<http://example.com/entity/e1/22> <http://example.com/property/p12-Region soudržnosti> "Nymburk".
+<http://example.com/entity/e1/23> <http://example.com/property/p12-Region soudržnosti> "Praha-východ".
+<http://example.com/entity/e1/24> <http://example.com/property/p12-Region soudržnosti> "Praha-západ".
+<http://example.com/entity/e1/25> <http://example.com/property/p12-Region soudržnosti> "Příbram".
+<http://example.com/entity/e1/26> <http://example.com/property/p12-Region soudržnosti> "Rakovník".
+<http://example.com/entity/e1/27> <http://example.com/property/p12-Region soudržnosti> "České Budějovice".
+<http://example.com/entity/e1/28> <http://example.com/property/p12-Region soudržnosti> "Český Krumlov".
+<http://example.com/entity/e1/29> <http://example.com/property/p12-Region soudržnosti> "Jindřichův Hradec".
+<http://example.com/entity/e1/30> <http://example.com/property/p12-Region soudržnosti> "Písek".
+<http://example.com/entity/e1/31> <http://example.com/property/p12-Region soudržnosti> "Prachatice".
+<http://example.com/entity/e1/32> <http://example.com/property/p12-Region soudržnosti> "Strakonice".
+<http://example.com/entity/e1/33> <http://example.com/property/p12-Region soudržnosti> "Tábor".
+<http://example.com/entity/e1/34> <http://example.com/property/p12-Region soudržnosti> "Domažlice".
+<http://example.com/entity/e1/35> <http://example.com/property/p12-Region soudržnosti> "Klatovy".
+<http://example.com/entity/e1/36> <http://example.com/property/p12-Region soudržnosti> "Plzeň-město".
+<http://example.com/entity/e1/37> <http://example.com/property/p12-Region soudržnosti> "Plzeň-jih".
+<http://example.com/entity/e1/38> <http://example.com/property/p12-Region soudržnosti> "Plzeň-sever".
+<http://example.com/entity/e1/39> <http://example.com/property/p12-Region soudržnosti> "Rokycany".
+<http://example.com/entity/e1/40> <http://example.com/property/p12-Region soudržnosti> "Tachov".
+<http://example.com/entity/e1/41> <http://example.com/property/p12-Region soudržnosti> "Cheb".
+<http://example.com/entity/e1/42> <http://example.com/property/p12-Region soudržnosti> "Karlovy Vary".
+<http://example.com/entity/e1/43> <http://example.com/property/p12-Region soudržnosti> "Sokolov".
+<http://example.com/entity/e1/44> <http://example.com/property/p12-Region soudržnosti> "Děčín".
+<http://example.com/entity/e1/45> <http://example.com/property/p12-Region soudržnosti> "Chomutov".
+<http://example.com/entity/e1/46> <http://example.com/property/p12-Region soudržnosti> "Litoměřice".
+<http://example.com/entity/e1/47> <http://example.com/property/p12-Region soudržnosti> "Louny".
+<http://example.com/entity/e1/48> <http://example.com/property/p12-Region soudržnosti> "Most".
+<http://example.com/entity/e1/49> <http://example.com/property/p12-Region soudržnosti> "Teplice".
+<http://example.com/entity/e1/50> <http://example.com/property/p12-Region soudržnosti> "Ústí nad Labem".
+<http://example.com/entity/e1/51> <http://example.com/property/p12-Region soudržnosti> "Česká Lípa".
+<http://example.com/entity/e1/52> <http://example.com/property/p12-Region soudržnosti> "Jablonec nad Nisou".
+<http://example.com/entity/e1/53> <http://example.com/property/p12-Region soudržnosti> "Liberec".
+<http://example.com/entity/e1/54> <http://example.com/property/p12-Region soudržnosti> "Semily".
+<http://example.com/entity/e1/55> <http://example.com/property/p12-Region soudržnosti> "Hradec Králové".
+<http://example.com/entity/e1/56> <http://example.com/property/p12-Region soudržnosti> "Jičín".
+<http://example.com/entity/e1/57> <http://example.com/property/p12-Region soudržnosti> "Náchod".
+<http://example.com/entity/e1/58> <http://example.com/property/p12-Region soudržnosti> "Rychnov nad Kněžnou".
+<http://example.com/entity/e1/59> <http://example.com/property/p12-Region soudržnosti> "Trutnov".
+<http://example.com/entity/e1/60> <http://example.com/property/p12-Region soudržnosti> "Chrudim".
+<http://example.com/entity/e1/61> <http://example.com/property/p12-Region soudržnosti> "Pardubice".
+<http://example.com/entity/e1/62> <http://example.com/property/p12-Region soudržnosti> "Svitavy".
+<http://example.com/entity/e1/63> <http://example.com/property/p12-Region soudržnosti> "Ústí nad Orlicí".
+<http://example.com/entity/e1/64> <http://example.com/property/p12-Region soudržnosti> "Havlíčkův Brod".
+<http://example.com/entity/e1/65> <http://example.com/property/p12-Region soudržnosti> "Jihlava".
+<http://example.com/entity/e1/66> <http://example.com/property/p12-Region soudržnosti> "Pelhřimov".
+<http://example.com/entity/e1/67> <http://example.com/property/p12-Region soudržnosti> "Třebíč".
+<http://example.com/entity/e1/68> <http://example.com/property/p12-Region soudržnosti> "Žďár nad Sázavou".
+<http://example.com/entity/e1/69> <http://example.com/property/p12-Region soudržnosti> "Blansko".
+<http://example.com/entity/e1/70> <http://example.com/property/p12-Region soudržnosti> "Brno-město".
+<http://example.com/entity/e1/71> <http://example.com/property/p12-Region soudržnosti> "Brno-venkov".
+<http://example.com/entity/e1/72> <http://example.com/property/p12-Region soudržnosti> "Břeclav".
+<http://example.com/entity/e1/73> <http://example.com/property/p12-Region soudržnosti> "Hodonín".
+<http://example.com/entity/e1/74> <http://example.com/property/p12-Region soudržnosti> "Vyškov".
+<http://example.com/entity/e1/75> <http://example.com/property/p12-Region soudržnosti> "Znojmo".
+<http://example.com/entity/e1/76> <http://example.com/property/p12-Region soudržnosti> "Jeseník".
+<http://example.com/entity/e1/77> <http://example.com/property/p12-Region soudržnosti> "Olomouc".
+<http://example.com/entity/e1/78> <http://example.com/property/p12-Region soudržnosti> "Prostějov".
+<http://example.com/entity/e1/79> <http://example.com/property/p12-Region soudržnosti> "Přerov".
+<http://example.com/entity/e1/80> <http://example.com/property/p12-Region soudržnosti> "Šumperk".
+<http://example.com/entity/e1/81> <http://example.com/property/p12-Region soudržnosti> "Kroměříž".
+<http://example.com/entity/e1/82> <http://example.com/property/p12-Region soudržnosti> "Uherské Hradiště".
+<http://example.com/entity/e1/83> <http://example.com/property/p12-Region soudržnosti> "Vsetín".
+<http://example.com/entity/e1/84> <http://example.com/property/p12-Region soudržnosti> "Zlín".
+<http://example.com/entity/e1/85> <http://example.com/property/p12-Region soudržnosti> "Bruntál".
+<http://example.com/entity/e1/86> <http://example.com/property/p12-Region soudržnosti> "Frýdek-Místek".
+<http://example.com/entity/e1/87> <http://example.com/property/p12-Region soudržnosti> "Karviná".
+<http://example.com/entity/e1/88> <http://example.com/property/p12-Region soudržnosti> "Nový Jičín".
+<http://example.com/entity/e1/89> <http://example.com/property/p12-Region soudržnosti> "Opava".
+<http://example.com/entity/e1/90> <http://example.com/property/p12-Region soudržnosti> "Ostrava-město".
+<http://example.com/entity/e1/0> <http://example.com/property/p13-Pocet celkem> "10494836".
+<http://example.com/entity/e1/1> <http://example.com/property/p13-Pocet celkem> "1259413".
+<http://example.com/entity/e1/2> <http://example.com/property/p13-Pocet celkem> "1372588".
+<http://example.com/entity/e1/3> <http://example.com/property/p13-Pocet celkem> "636422".
+<http://example.com/entity/e1/4> <http://example.com/property/p13-Pocet celkem> "576358".
+<http://example.com/entity/e1/5> <http://example.com/property/p13-Pocet celkem> "285020".
+<http://example.com/entity/e1/6> <http://example.com/property/p13-Pocet celkem> "801586".
+<http://example.com/entity/e1/7> <http://example.com/property/p13-Pocet celkem> "437522".
+<http://example.com/entity/e1/8> <http://example.com/property/p13-Pocet celkem> "544205".
+<http://example.com/entity/e1/9> <http://example.com/property/p13-Pocet celkem> "514413".
+<http://example.com/entity/e1/10> <http://example.com/property/p13-Pocet celkem> "504004".
+<http://example.com/entity/e1/11> <http://example.com/property/p13-Pocet celkem> "1181216".
+<http://example.com/entity/e1/12> <http://example.com/property/p13-Pocet celkem> "624931".
+<http://example.com/entity/e1/13> <http://example.com/property/p13-Pocet celkem> "573718".
+<http://example.com/entity/e1/14> <http://example.com/property/p13-Pocet celkem> "1183440".
+<http://example.com/entity/e1/15> <http://example.com/property/p13-Pocet celkem> "98766".
+<http://example.com/entity/e1/16> <http://example.com/property/p13-Pocet celkem> "94912".
+<http://example.com/entity/e1/17> <http://example.com/property/p13-Pocet celkem> "164149".
+<http://example.com/entity/e1/18> <http://example.com/property/p13-Pocet celkem> "102628".
+<http://example.com/entity/e1/19> <http://example.com/property/p13-Pocet celkem> "75317".
+<http://example.com/entity/e1/20> <http://example.com/property/p13-Pocet celkem> "108477".
+<http://example.com/entity/e1/21> <http://example.com/property/p13-Pocet celkem> "126965".
+<http://example.com/entity/e1/22> <http://example.com/property/p13-Pocet celkem> "100100".
+<http://example.com/entity/e1/23> <http://example.com/property/p13-Pocet celkem> "184383".
+<http://example.com/entity/e1/24> <http://example.com/property/p13-Pocet celkem> "148313".
+<http://example.com/entity/e1/25> <http://example.com/property/p13-Pocet celkem> "113817".
+<http://example.com/entity/e1/26> <http://example.com/property/p13-Pocet celkem> "54761".
+<http://example.com/entity/e1/27> <http://example.com/property/p13-Pocet celkem> "194750".
+<http://example.com/entity/e1/28> <http://example.com/property/p13-Pocet celkem> "60100".
+<http://example.com/entity/e1/29> <http://example.com/property/p13-Pocet celkem> "89438".
+<http://example.com/entity/e1/30> <http://example.com/property/p13-Pocet celkem> "70668".
+<http://example.com/entity/e1/31> <http://example.com/property/p13-Pocet celkem> "50235".
+<http://example.com/entity/e1/32> <http://example.com/property/p13-Pocet celkem> "69798".
+<http://example.com/entity/e1/33> <http://example.com/property/p13-Pocet celkem> "101433".
+<http://example.com/entity/e1/34> <http://example.com/property/p13-Pocet celkem> "54321".
+<http://example.com/entity/e1/35> <http://example.com/property/p13-Pocet celkem> "84899".
+<http://example.com/entity/e1/36> <http://example.com/property/p13-Pocet celkem> "187684".
+<http://example.com/entity/e1/37> <http://example.com/property/p13-Pocet celkem> "68496".
+<http://example.com/entity/e1/38> <http://example.com/property/p13-Pocet celkem> "79811".
+<http://example.com/entity/e1/39> <http://example.com/property/p13-Pocet celkem> "48408".
+<http://example.com/entity/e1/40> <http://example.com/property/p13-Pocet celkem> "52739".
+<http://example.com/entity/e1/41> <http://example.com/property/p13-Pocet celkem> "88539".
+<http://example.com/entity/e1/42> <http://example.com/property/p13-Pocet celkem> "110526".
+<http://example.com/entity/e1/43> <http://example.com/property/p13-Pocet celkem> "85955".
+<http://example.com/entity/e1/44> <http://example.com/property/p13-Pocet celkem> "127120".
+<http://example.com/entity/e1/45> <http://example.com/property/p13-Pocet celkem> "121959".
+<http://example.com/entity/e1/46> <http://example.com/property/p13-Pocet celkem> "117574".
+<http://example.com/entity/e1/47> <http://example.com/property/p13-Pocet celkem> "85550".
+<http://example.com/entity/e1/48> <http://example.com/property/p13-Pocet celkem> "107554".
+<http://example.com/entity/e1/49> <http://example.com/property/p13-Pocet celkem> "124523".
+<http://example.com/entity/e1/50> <http://example.com/property/p13-Pocet celkem> "117306".
+<http://example.com/entity/e1/51> <http://example.com/property/p13-Pocet celkem> "102237".
+<http://example.com/entity/e1/52> <http://example.com/property/p13-Pocet celkem> "90525".
+<http://example.com/entity/e1/53> <http://example.com/property/p13-Pocet celkem> "173098".
+<http://example.com/entity/e1/54> <http://example.com/property/p13-Pocet celkem> "71662".
+<http://example.com/entity/e1/55> <http://example.com/property/p13-Pocet celkem> "162350".
+<http://example.com/entity/e1/56> <http://example.com/property/p13-Pocet celkem> "78882".
+<http://example.com/entity/e1/57> <http://example.com/property/p13-Pocet celkem> "108475".
+<http://example.com/entity/e1/58> <http://example.com/property/p13-Pocet celkem> "78533".
+<http://example.com/entity/e1/59> <http://example.com/property/p13-Pocet celkem> "115965".
+<http://example.com/entity/e1/60> <http://example.com/property/p13-Pocet celkem> "103748".
+<http://example.com/entity/e1/61> <http://example.com/property/p13-Pocet celkem> "171329".
+<http://example.com/entity/e1/62> <http://example.com/property/p13-Pocet celkem> "102977".
+<http://example.com/entity/e1/63> <http://example.com/property/p13-Pocet celkem> "136359".
+<http://example.com/entity/e1/64> <http://example.com/property/p13-Pocet celkem> "93644".
+<http://example.com/entity/e1/65> <http://example.com/property/p13-Pocet celkem> "112189".
+<http://example.com/entity/e1/66> <http://example.com/property/p13-Pocet celkem> "71353".
+<http://example.com/entity/e1/67> <http://example.com/property/p13-Pocet celkem> "109564".
+<http://example.com/entity/e1/68> <http://example.com/property/p13-Pocet celkem> "117254".
+<http://example.com/entity/e1/69> <http://example.com/property/p13-Pocet celkem> "107750".
+<http://example.com/entity/e1/70> <http://example.com/property/p13-Pocet celkem> "378244".
+<http://example.com/entity/e1/71> <http://example.com/property/p13-Pocet celkem> "223644".
+<http://example.com/entity/e1/72> <http://example.com/property/p13-Pocet celkem> "114677".
+<http://example.com/entity/e1/73> <http://example.com/property/p13-Pocet celkem> "151746".
+<http://example.com/entity/e1/74> <http://example.com/property/p13-Pocet celkem> "91767".
+<http://example.com/entity/e1/75> <http://example.com/property/p13-Pocet celkem> "113388".
+<http://example.com/entity/e1/76> <http://example.com/property/p13-Pocet celkem> "37097".
+<http://example.com/entity/e1/77> <http://example.com/property/p13-Pocet celkem> "233837".
+<http://example.com/entity/e1/78> <http://example.com/property/p13-Pocet celkem> "107746".
+<http://example.com/entity/e1/79> <http://example.com/property/p13-Pocet celkem> "127300".
+<http://example.com/entity/e1/80> <http://example.com/property/p13-Pocet celkem> "118951".
+<http://example.com/entity/e1/81> <http://example.com/property/p13-Pocet celkem> "103862".
+<http://example.com/entity/e1/82> <http://example.com/property/p13-Pocet celkem> "139975".
+<http://example.com/entity/e1/83> <http://example.com/property/p13-Pocet celkem> "140526".
+<http://example.com/entity/e1/84> <http://example.com/property/p13-Pocet celkem> "189355".
+<http://example.com/entity/e1/85> <http://example.com/property/p13-Pocet celkem> "90288".
+<http://example.com/entity/e1/86> <http://example.com/property/p13-Pocet celkem> "212384".
+<http://example.com/entity/e1/87> <http://example.com/property/p13-Pocet celkem> "242449".
+<http://example.com/entity/e1/88> <http://example.com/property/p13-Pocet celkem> "149900".
+<http://example.com/entity/e1/89> <http://example.com/property/p13-Pocet celkem> "174059".
+<http://example.com/entity/e1/90> <http://example.com/property/p13-Pocet celkem> "314360".
+<http://example.com/entity/e1/0> <http://example.com/property/p14-Pocet muži> "5170902".
+<http://example.com/entity/e1/1> <http://example.com/property/p14-Pocet muži> "613316".
+<http://example.com/entity/e1/2> <http://example.com/property/p14-Pocet muži> "678250".
+<http://example.com/entity/e1/3> <http://example.com/property/p14-Pocet muži> "314988".
+<http://example.com/entity/e1/4> <http://example.com/property/p14-Pocet muži> "285530".
+<http://example.com/entity/e1/5> <http://example.com/property/p14-Pocet muži> "140871".
+<http://example.com/entity/e1/6> <http://example.com/property/p14-Pocet muži> "396341".
+<http://example.com/entity/e1/7> <http://example.com/property/p14-Pocet muži> "215962".
+<http://example.com/entity/e1/8> <http://example.com/property/p14-Pocet muži> "268571".
+<http://example.com/entity/e1/9> <http://example.com/property/p14-Pocet muži> "255233".
+<http://example.com/entity/e1/10> <http://example.com/property/p14-Pocet muži> "250788".
+<http://example.com/entity/e1/11> <http://example.com/property/p14-Pocet muži> "580588".
+<http://example.com/entity/e1/12> <http://example.com/property/p14-Pocet muži> "306607".
+<http://example.com/entity/e1/13> <http://example.com/property/p14-Pocet muži> "282182".
+<http://example.com/entity/e1/14> <http://example.com/property/p14-Pocet muži> "581675".
+<http://example.com/entity/e1/15> <http://example.com/property/p14-Pocet muži> "48832".
+<http://example.com/entity/e1/16> <http://example.com/property/p14-Pocet muži> "46905".
+<http://example.com/entity/e1/17> <http://example.com/property/p14-Pocet muži> "80474".
+<http://example.com/entity/e1/18> <http://example.com/property/p14-Pocet muži> "51089".
+<http://example.com/entity/e1/19> <http://example.com/property/p14-Pocet muži> "37395".
+<http://example.com/entity/e1/20> <http://example.com/property/p14-Pocet muži> "53768".
+<http://example.com/entity/e1/21> <http://example.com/property/p14-Pocet muži> "63774".
+<http://example.com/entity/e1/22> <http://example.com/property/p14-Pocet muži> "49200".
+<http://example.com/entity/e1/23> <http://example.com/property/p14-Pocet muži> "90939".
+<http://example.com/entity/e1/24> <http://example.com/property/p14-Pocet muži> "72547".
+<http://example.com/entity/e1/25> <http://example.com/property/p14-Pocet muži> "56168".
+<http://example.com/entity/e1/26> <http://example.com/property/p14-Pocet muži> "27159".
+<http://example.com/entity/e1/27> <http://example.com/property/p14-Pocet muži> "95615".
+<http://example.com/entity/e1/28> <http://example.com/property/p14-Pocet muži> "30357".
+<http://example.com/entity/e1/29> <http://example.com/property/p14-Pocet muži> "44223".
+<http://example.com/entity/e1/30> <http://example.com/property/p14-Pocet muži> "34925".
+<http://example.com/entity/e1/31> <http://example.com/property/p14-Pocet muži> "25240".
+<http://example.com/entity/e1/32> <http://example.com/property/p14-Pocet muži> "34547".
+<http://example.com/entity/e1/33> <http://example.com/property/p14-Pocet muži> "50081".
+<http://example.com/entity/e1/34> <http://example.com/property/p14-Pocet muži> "27037".
+<http://example.com/entity/e1/35> <http://example.com/property/p14-Pocet muži> "42046".
+<http://example.com/entity/e1/36> <http://example.com/property/p14-Pocet muži> "91484".
+<http://example.com/entity/e1/37> <http://example.com/property/p14-Pocet muži> "34361".
+<http://example.com/entity/e1/38> <http://example.com/property/p14-Pocet muži> "40000".
+<http://example.com/entity/e1/39> <http://example.com/property/p14-Pocet muži> "24146".
+<http://example.com/entity/e1/40> <http://example.com/property/p14-Pocet muži> "26456".
+<http://example.com/entity/e1/41> <http://example.com/property/p14-Pocet muži> "43736".
+<http://example.com/entity/e1/42> <http://example.com/property/p14-Pocet muži> "54188".
+<http://example.com/entity/e1/43> <http://example.com/property/p14-Pocet muži> "42947".
+<http://example.com/entity/e1/44> <http://example.com/property/p14-Pocet muži> "63028".
+<http://example.com/entity/e1/45> <http://example.com/property/p14-Pocet muži> "60589".
+<http://example.com/entity/e1/46> <http://example.com/property/p14-Pocet muži> "58305".
+<http://example.com/entity/e1/47> <http://example.com/property/p14-Pocet muži> "42390".
+<http://example.com/entity/e1/48> <http://example.com/property/p14-Pocet muži> "52944".
+<http://example.com/entity/e1/49> <http://example.com/property/p14-Pocet muži> "61513".
+<http://example.com/entity/e1/50> <http://example.com/property/p14-Pocet muži> "57572".
+<http://example.com/entity/e1/51> <http://example.com/property/p14-Pocet muži> "50742".
+<http://example.com/entity/e1/52> <http://example.com/property/p14-Pocet muži> "44446".
+<http://example.com/entity/e1/53> <http://example.com/property/p14-Pocet muži> "85069".
+<http://example.com/entity/e1/54> <http://example.com/property/p14-Pocet muži> "35705".
+<http://example.com/entity/e1/55> <http://example.com/property/p14-Pocet muži> "79225".
+<http://example.com/entity/e1/56> <http://example.com/property/p14-Pocet muži> "39188".
+<http://example.com/entity/e1/57> <http://example.com/property/p14-Pocet muži> "53677".
+<http://example.com/entity/e1/58> <http://example.com/property/p14-Pocet muži> "39149".
+<http://example.com/entity/e1/59> <http://example.com/property/p14-Pocet muži> "57332".
+<http://example.com/entity/e1/60> <http://example.com/property/p14-Pocet muži> "51653".
+<http://example.com/entity/e1/61> <http://example.com/property/p14-Pocet muži> "84752".
+<http://example.com/entity/e1/62> <http://example.com/property/p14-Pocet muži> "50985".
+<http://example.com/entity/e1/63> <http://example.com/property/p14-Pocet muži> "67843".
+<http://example.com/entity/e1/64> <http://example.com/property/p14-Pocet muži> "46492".
+<http://example.com/entity/e1/65> <http://example.com/property/p14-Pocet muži> "55888".
+<http://example.com/entity/e1/66> <http://example.com/property/p14-Pocet muži> "35538".
+<http://example.com/entity/e1/67> <http://example.com/property/p14-Pocet muži> "54393".
+<http://example.com/entity/e1/68> <http://example.com/property/p14-Pocet muži> "58477".
+<http://example.com/entity/e1/69> <http://example.com/property/p14-Pocet muži> "53158".
+<http://example.com/entity/e1/70> <http://example.com/property/p14-Pocet muži> "183606".
+<http://example.com/entity/e1/71> <http://example.com/property/p14-Pocet muži> "110652".
+<http://example.com/entity/e1/72> <http://example.com/property/p14-Pocet muži> "56604".
+<http://example.com/entity/e1/73> <http://example.com/property/p14-Pocet muži> "75060".
+<http://example.com/entity/e1/74> <http://example.com/property/p14-Pocet muži> "45432".
+<http://example.com/entity/e1/75> <http://example.com/property/p14-Pocet muži> "56076".
+<http://example.com/entity/e1/76> <http://example.com/property/p14-Pocet muži> "18427".
+<http://example.com/entity/e1/77> <http://example.com/property/p14-Pocet muži> "114059".
+<http://example.com/entity/e1/78> <http://example.com/property/p14-Pocet muži> "52835".
+<http://example.com/entity/e1/79> <http://example.com/property/p14-Pocet muži> "62628".
+<http://example.com/entity/e1/80> <http://example.com/property/p14-Pocet muži> "58658".
+<http://example.com/entity/e1/81> <http://example.com/property/p14-Pocet muži> "50960".
+<http://example.com/entity/e1/82> <http://example.com/property/p14-Pocet muži> "68987".
+<http://example.com/entity/e1/83> <http://example.com/property/p14-Pocet muži> "69280".
+<http://example.com/entity/e1/84> <http://example.com/property/p14-Pocet muži> "92955".
+<http://example.com/entity/e1/85> <http://example.com/property/p14-Pocet muži> "44905".
+<http://example.com/entity/e1/86> <http://example.com/property/p14-Pocet muži> "104895".
+<http://example.com/entity/e1/87> <http://example.com/property/p14-Pocet muži> "119219".
+<http://example.com/entity/e1/88> <http://example.com/property/p14-Pocet muži> "74095".
+<http://example.com/entity/e1/89> <http://example.com/property/p14-Pocet muži> "85398".
+<http://example.com/entity/e1/90> <http://example.com/property/p14-Pocet muži> "153163".
+<http://example.com/entity/e1/0> <http://example.com/property/p15-Pocet ženy> "5323934".
+<http://example.com/entity/e1/1> <http://example.com/property/p15-Pocet ženy> "646097".
+<http://example.com/entity/e1/2> <http://example.com/property/p15-Pocet ženy> "694338".
+<http://example.com/entity/e1/3> <http://example.com/property/p15-Pocet ženy> "321434".
+<http://example.com/entity/e1/4> <http://example.com/property/p15-Pocet ženy> "290828".
+<http://example.com/entity/e1/5> <http://example.com/property/p15-Pocet ženy> "144149".
+<http://example.com/entity/e1/6> <http://example.com/property/p15-Pocet ženy> "405245".
+<http://example.com/entity/e1/7> <http://example.com/property/p15-Pocet ženy> "221560".
+<http://example.com/entity/e1/8> <http://example.com/property/p15-Pocet ženy> "275634".
+<http://example.com/entity/e1/9> <http://example.com/property/p15-Pocet ženy> "259180".
+<http://example.com/entity/e1/10> <http://example.com/property/p15-Pocet ženy> "253216".
+<http://example.com/entity/e1/11> <http://example.com/property/p15-Pocet ženy> "600628".
+<http://example.com/entity/e1/12> <http://example.com/property/p15-Pocet ženy> "318324".
+<http://example.com/entity/e1/13> <http://example.com/property/p15-Pocet ženy> "291536".
+<http://example.com/entity/e1/14> <http://example.com/property/p15-Pocet ženy> "601765".
+<http://example.com/entity/e1/15> <http://example.com/property/p15-Pocet ženy> "49934".
+<http://example.com/entity/e1/16> <http://example.com/property/p15-Pocet ženy> "48007".
+<http://example.com/entity/e1/17> <http://example.com/property/p15-Pocet ženy> "83675".
+<http://example.com/entity/e1/18> <http://example.com/property/p15-Pocet ženy> "51539".
+<http://example.com/entity/e1/19> <http://example.com/property/p15-Pocet ženy> "37922".
+<http://example.com/entity/e1/20> <http://example.com/property/p15-Pocet ženy> "54709".
+<http://example.com/entity/e1/21> <http://example.com/property/p15-Pocet ženy> "63191".
+<http://example.com/entity/e1/22> <http://example.com/property/p15-Pocet ženy> "50900".
+<http://example.com/entity/e1/23> <http://example.com/property/p15-Pocet ženy> "93444".
+<http://example.com/entity/e1/24> <http://example.com/property/p15-Pocet ženy> "75766".
+<http://example.com/entity/e1/25> <http://example.com/property/p15-Pocet ženy> "57649".
+<http://example.com/entity/e1/26> <http://example.com/property/p15-Pocet ženy> "27602".
+<http://example.com/entity/e1/27> <http://example.com/property/p15-Pocet ženy> "99135".
+<http://example.com/entity/e1/28> <http://example.com/property/p15-Pocet ženy> "29743".
+<http://example.com/entity/e1/29> <http://example.com/property/p15-Pocet ženy> "45215".
+<http://example.com/entity/e1/30> <http://example.com/property/p15-Pocet ženy> "35743".
+<http://example.com/entity/e1/31> <http://example.com/property/p15-Pocet ženy> "24995".
+<http://example.com/entity/e1/32> <http://example.com/property/p15-Pocet ženy> "35251".
+<http://example.com/entity/e1/33> <http://example.com/property/p15-Pocet ženy> "51352".
+<http://example.com/entity/e1/34> <http://example.com/property/p15-Pocet ženy> "27284".
+<http://example.com/entity/e1/35> <http://example.com/property/p15-Pocet ženy> "42853".
+<http://example.com/entity/e1/36> <http://example.com/property/p15-Pocet ženy> "96200".
+<http://example.com/entity/e1/37> <http://example.com/property/p15-Pocet ženy> "34135".
+<http://example.com/entity/e1/38> <http://example.com/property/p15-Pocet ženy> "39811".
+<http://example.com/entity/e1/39> <http://example.com/property/p15-Pocet ženy> "24262".
+<http://example.com/entity/e1/40> <http://example.com/property/p15-Pocet ženy> "26283".
+<http://example.com/entity/e1/41> <http://example.com/property/p15-Pocet ženy> "44803".
+<http://example.com/entity/e1/42> <http://example.com/property/p15-Pocet ženy> "56338".
+<http://example.com/entity/e1/43> <http://example.com/property/p15-Pocet ženy> "43008".
+<http://example.com/entity/e1/44> <http://example.com/property/p15-Pocet ženy> "64092".
+<http://example.com/entity/e1/45> <http://example.com/property/p15-Pocet ženy> "61370".
+<http://example.com/entity/e1/46> <http://example.com/property/p15-Pocet ženy> "59269".
+<http://example.com/entity/e1/47> <http://example.com/property/p15-Pocet ženy> "43160".
+<http://example.com/entity/e1/48> <http://example.com/property/p15-Pocet ženy> "54610".
+<http://example.com/entity/e1/49> <http://example.com/property/p15-Pocet ženy> "63010".
+<http://example.com/entity/e1/50> <http://example.com/property/p15-Pocet ženy> "59734".
+<http://example.com/entity/e1/51> <http://example.com/property/p15-Pocet ženy> "51495".
+<http://example.com/entity/e1/52> <http://example.com/property/p15-Pocet ženy> "46079".
+<http://example.com/entity/e1/53> <http://example.com/property/p15-Pocet ženy> "88029".
+<http://example.com/entity/e1/54> <http://example.com/property/p15-Pocet ženy> "35957".
+<http://example.com/entity/e1/55> <http://example.com/property/p15-Pocet ženy> "83125".
+<http://example.com/entity/e1/56> <http://example.com/property/p15-Pocet ženy> "39694".
+<http://example.com/entity/e1/57> <http://example.com/property/p15-Pocet ženy> "54798".
+<http://example.com/entity/e1/58> <http://example.com/property/p15-Pocet ženy> "39384".
+<http://example.com/entity/e1/59> <http://example.com/property/p15-Pocet ženy> "58633".
+<http://example.com/entity/e1/60> <http://example.com/property/p15-Pocet ženy> "52095".
+<http://example.com/entity/e1/61> <http://example.com/property/p15-Pocet ženy> "86577".
+<http://example.com/entity/e1/62> <http://example.com/property/p15-Pocet ženy> "51992".
+<http://example.com/entity/e1/63> <http://example.com/property/p15-Pocet ženy> "68516".
+<http://example.com/entity/e1/64> <http://example.com/property/p15-Pocet ženy> "47152".
+<http://example.com/entity/e1/65> <http://example.com/property/p15-Pocet ženy> "56301".
+<http://example.com/entity/e1/66> <http://example.com/property/p15-Pocet ženy> "35815".
+<http://example.com/entity/e1/67> <http://example.com/property/p15-Pocet ženy> "55171".
+<http://example.com/entity/e1/68> <http://example.com/property/p15-Pocet ženy> "58777".
+<http://example.com/entity/e1/69> <http://example.com/property/p15-Pocet ženy> "54592".
+<http://example.com/entity/e1/70> <http://example.com/property/p15-Pocet ženy> "194638".
+<http://example.com/entity/e1/71> <http://example.com/property/p15-Pocet ženy> "112992".
+<http://example.com/entity/e1/72> <http://example.com/property/p15-Pocet ženy> "58073".
+<http://example.com/entity/e1/73> <http://example.com/property/p15-Pocet ženy> "76686".
+<http://example.com/entity/e1/74> <http://example.com/property/p15-Pocet ženy> "46335".
+<http://example.com/entity/e1/75> <http://example.com/property/p15-Pocet ženy> "57312".
+<http://example.com/entity/e1/76> <http://example.com/property/p15-Pocet ženy> "18670".
+<http://example.com/entity/e1/77> <http://example.com/property/p15-Pocet ženy> "119778".
+<http://example.com/entity/e1/78> <http://example.com/property/p15-Pocet ženy> "54911".
+<http://example.com/entity/e1/79> <http://example.com/property/p15-Pocet ženy> "64672".
+<http://example.com/entity/e1/80> <http://example.com/property/p15-Pocet ženy> "60293".
+<http://example.com/entity/e1/81> <http://example.com/property/p15-Pocet ženy> "52902".
+<http://example.com/entity/e1/82> <http://example.com/property/p15-Pocet ženy> "70988".
+<http://example.com/entity/e1/83> <http://example.com/property/p15-Pocet ženy> "71246".
+<http://example.com/entity/e1/84> <http://example.com/property/p15-Pocet ženy> "96400".
+<http://example.com/entity/e1/85> <http://example.com/property/p15-Pocet ženy> "45383".
+<http://example.com/entity/e1/86> <http://example.com/property/p15-Pocet ženy> "107489".
+<http://example.com/entity/e1/87> <http://example.com/property/p15-Pocet ženy> "123230".
+<http://example.com/entity/e1/88> <http://example.com/property/p15-Pocet ženy> "75805".
+<http://example.com/entity/e1/89> <http://example.com/property/p15-Pocet ženy> "88661".
+<http://example.com/entity/e1/90> <http://example.com/property/p15-Pocet ženy> "161197".
+<http://example.com/entity/e1/0> <http://example.com/property/p16-Prumerny vek celkem> "42.7".
+<http://example.com/entity/e1/1> <http://example.com/property/p16-Prumerny vek celkem> "42.4".
+<http://example.com/entity/e1/2> <http://example.com/property/p16-Prumerny vek celkem> "41.5".
+<http://example.com/entity/e1/3> <http://example.com/property/p16-Prumerny vek celkem> "43.1".
+<http://example.com/entity/e1/4> <http://example.com/property/p16-Prumerny vek celkem> "43.1".
+<http://example.com/entity/e1/5> <http://example.com/property/p16-Prumerny vek celkem> "43.5".
+<http://example.com/entity/e1/6> <http://example.com/property/p16-Prumerny vek celkem> "42.6".
+<http://example.com/entity/e1/7> <http://example.com/property/p16-Prumerny vek celkem> "42.6".
+<http://example.com/entity/e1/8> <http://example.com/property/p16-Prumerny vek celkem> "43.5".
+<http://example.com/entity/e1/9> <http://example.com/property/p16-Prumerny vek celkem> "42.8".
+<http://example.com/entity/e1/10> <http://example.com/property/p16-Prumerny vek celkem> "43.1".
+<http://example.com/entity/e1/11> <http://example.com/property/p16-Prumerny vek celkem> "42.6".
+<http://example.com/entity/e1/12> <http://example.com/property/p16-Prumerny vek celkem> "43.2".
+<http://example.com/entity/e1/13> <http://example.com/property/p16-Prumerny vek celkem> "43.5".
+<http://example.com/entity/e1/14> <http://example.com/property/p16-Prumerny vek celkem> "43.2".
+<http://example.com/entity/e1/15> <http://example.com/property/p16-Prumerny vek celkem> "42.7".
+<http://example.com/entity/e1/16> <http://example.com/property/p16-Prumerny vek celkem> "41.4".
+<http://example.com/entity/e1/17> <http://example.com/property/p16-Prumerny vek celkem> "42.2".
+<http://example.com/entity/e1/18> <http://example.com/property/p16-Prumerny vek celkem> "42".
+<http://example.com/entity/e1/19> <http://example.com/property/p16-Prumerny vek celkem> "43.4".
+<http://example.com/entity/e1/20> <http://example.com/property/p16-Prumerny vek celkem> "41.7".
+<http://example.com/entity/e1/21> <http://example.com/property/p16-Prumerny vek celkem> "41.9".
+<http://example.com/entity/e1/22> <http://example.com/property/p16-Prumerny vek celkem> "41.5".
+<http://example.com/entity/e1/23> <http://example.com/property/p16-Prumerny vek celkem> "38.8".
+<http://example.com/entity/e1/24> <http://example.com/property/p16-Prumerny vek celkem> "39.3".
+<http://example.com/entity/e1/25> <http://example.com/property/p16-Prumerny vek celkem> "43.2".
+<http://example.com/entity/e1/26> <http://example.com/property/p16-Prumerny vek celkem> "43.3".
+<http://example.com/entity/e1/27> <http://example.com/property/p16-Prumerny vek celkem> "42.3".
+<http://example.com/entity/e1/28> <http://example.com/property/p16-Prumerny vek celkem> "42".
+<http://example.com/entity/e1/29> <http://example.com/property/p16-Prumerny vek celkem> "43.8".
+<http://example.com/entity/e1/30> <http://example.com/property/p16-Prumerny vek celkem> "44".
+<http://example.com/entity/e1/31> <http://example.com/property/p16-Prumerny vek celkem> "42.9".
+<http://example.com/entity/e1/32> <http://example.com/property/p16-Prumerny vek celkem> "43.5".
+<http://example.com/entity/e1/33> <http://example.com/property/p16-Prumerny vek celkem> "43.7".
+<http://example.com/entity/e1/34> <http://example.com/property/p16-Prumerny vek celkem> "42.9".
+<http://example.com/entity/e1/35> <http://example.com/property/p16-Prumerny vek celkem> "44.1".
+<http://example.com/entity/e1/36> <http://example.com/property/p16-Prumerny vek celkem> "43.4".
+<http://example.com/entity/e1/37> <http://example.com/property/p16-Prumerny vek celkem> "42.8".
+<http://example.com/entity/e1/38> <http://example.com/property/p16-Prumerny vek celkem> "42.2".
+<http://example.com/entity/e1/39> <http://example.com/property/p16-Prumerny vek celkem> "43.2".
+<http://example.com/entity/e1/40> <http://example.com/property/p16-Prumerny vek celkem> "42.1".
+<http://example.com/entity/e1/41> <http://example.com/property/p16-Prumerny vek celkem> "43.3".
+<http://example.com/entity/e1/42> <http://example.com/property/p16-Prumerny vek celkem> "44.2".
+<http://example.com/entity/e1/43> <http://example.com/property/p16-Prumerny vek celkem> "42.8".
+<http://example.com/entity/e1/44> <http://example.com/property/p16-Prumerny vek celkem> "42.9".
+<http://example.com/entity/e1/45> <http://example.com/property/p16-Prumerny vek celkem> "42.2".
+<http://example.com/entity/e1/46> <http://example.com/property/p16-Prumerny vek celkem> "42.7".
+<http://example.com/entity/e1/47> <http://example.com/property/p16-Prumerny vek celkem> "42.4".
+<http://example.com/entity/e1/48> <http://example.com/property/p16-Prumerny vek celkem> "42.7".
+<http://example.com/entity/e1/49> <http://example.com/property/p16-Prumerny vek celkem> "42.7".
+<http://example.com/entity/e1/50> <http://example.com/property/p16-Prumerny vek celkem> "42.4".
+<http://example.com/entity/e1/51> <http://example.com/property/p16-Prumerny vek celkem> "42.2".
+<http://example.com/entity/e1/52> <http://example.com/property/p16-Prumerny vek celkem> "43".
+<http://example.com/entity/e1/53> <http://example.com/property/p16-Prumerny vek celkem> "42.2".
+<http://example.com/entity/e1/54> <http://example.com/property/p16-Prumerny vek celkem> "43.6".
+<http://example.com/entity/e1/55> <http://example.com/property/p16-Prumerny vek celkem> "43.6".
+<http://example.com/entity/e1/56> <http://example.com/property/p16-Prumerny vek celkem> "43.4".
+<http://example.com/entity/e1/57> <http://example.com/property/p16-Prumerny vek celkem> "43.7".
+<http://example.com/entity/e1/58> <http://example.com/property/p16-Prumerny vek celkem> "42.9".
+<http://example.com/entity/e1/59> <http://example.com/property/p16-Prumerny vek celkem> "43.7".
+<http://example.com/entity/e1/60> <http://example.com/property/p16-Prumerny vek celkem> "43".
+<http://example.com/entity/e1/61> <http://example.com/property/p16-Prumerny vek celkem> "42.8".
+<http://example.com/entity/e1/62> <http://example.com/property/p16-Prumerny vek celkem> "42.8".
+<http://example.com/entity/e1/63> <http://example.com/property/p16-Prumerny vek celkem> "42.7".
+<http://example.com/entity/e1/64> <http://example.com/property/p16-Prumerny vek celkem> "43.3".
+<http://example.com/entity/e1/65> <http://example.com/property/p16-Prumerny vek celkem> "42.6".
+<http://example.com/entity/e1/66> <http://example.com/property/p16-Prumerny vek celkem> "43.9".
+<http://example.com/entity/e1/67> <http://example.com/property/p16-Prumerny vek celkem> "43.4".
+<http://example.com/entity/e1/68> <http://example.com/property/p16-Prumerny vek celkem> "42.6".
+<http://example.com/entity/e1/69> <http://example.com/property/p16-Prumerny vek celkem> "42.8".
+<http://example.com/entity/e1/70> <http://example.com/property/p16-Prumerny vek celkem> "42.9".
+<http://example.com/entity/e1/71> <http://example.com/property/p16-Prumerny vek celkem> "41.2".
+<http://example.com/entity/e1/72> <http://example.com/property/p16-Prumerny vek celkem> "43.1".
+<http://example.com/entity/e1/73> <http://example.com/property/p16-Prumerny vek celkem> "43.9".
+<http://example.com/entity/e1/74> <http://example.com/property/p16-Prumerny vek celkem> "42.1".
+<http://example.com/entity/e1/75> <http://example.com/property/p16-Prumerny vek celkem> "42.6".
+<http://example.com/entity/e1/76> <http://example.com/property/p16-Prumerny vek celkem> "44.3".
+<http://example.com/entity/e1/77> <http://example.com/property/p16-Prumerny vek celkem> "42.6".
+<http://example.com/entity/e1/78> <http://example.com/property/p16-Prumerny vek celkem> "43.2".
+<http://example.com/entity/e1/79> <http://example.com/property/p16-Prumerny vek celkem> "43.8".
+<http://example.com/entity/e1/80> <http://example.com/property/p16-Prumerny vek celkem> "43.5".
+<http://example.com/entity/e1/81> <http://example.com/property/p16-Prumerny vek celkem> "43.7".
+<http://example.com/entity/e1/82> <http://example.com/property/p16-Prumerny vek celkem> "43.7".
+<http://example.com/entity/e1/83> <http://example.com/property/p16-Prumerny vek celkem> "43.2".
+<http://example.com/entity/e1/84> <http://example.com/property/p16-Prumerny vek celkem> "43.6".
+<http://example.com/entity/e1/85> <http://example.com/property/p16-Prumerny vek celkem> "43.7".
+<http://example.com/entity/e1/86> <http://example.com/property/p16-Prumerny vek celkem> "42.7".
+<http://example.com/entity/e1/87> <http://example.com/property/p16-Prumerny vek celkem> "43.9".
+<http://example.com/entity/e1/88> <http://example.com/property/p16-Prumerny vek celkem> "42.5".
+<http://example.com/entity/e1/89> <http://example.com/property/p16-Prumerny vek celkem> "42.9".
+<http://example.com/entity/e1/90> <http://example.com/property/p16-Prumerny vek celkem> "43.3".
+<http://example.com/entity/e1/0> <http://example.com/property/p17-Prumerny vek muži> "41.3".
+<http://example.com/entity/e1/1> <http://example.com/property/p17-Prumerny vek muži> "40.8".
+<http://example.com/entity/e1/2> <http://example.com/property/p17-Prumerny vek muži> "40.2".
+<http://example.com/entity/e1/3> <http://example.com/property/p17-Prumerny vek muži> "41.8".
+<http://example.com/entity/e1/4> <http://example.com/property/p17-Prumerny vek muži> "41.8".
+<http://example.com/entity/e1/5> <http://example.com/property/p17-Prumerny vek muži> "42.1".
+<http://example.com/entity/e1/6> <http://example.com/property/p17-Prumerny vek muži> "41.2".
+<http://example.com/entity/e1/7> <http://example.com/property/p17-Prumerny vek muži> "41.2".
+<http://example.com/entity/e1/8> <http://example.com/property/p17-Prumerny vek muži> "42".
+<http://example.com/entity/e1/9> <http://example.com/property/p17-Prumerny vek muži> "41.4".
+<http://example.com/entity/e1/10> <http://example.com/property/p17-Prumerny vek muži> "41.7".
+<http://example.com/entity/e1/11> <http://example.com/property/p17-Prumerny vek muži> "41.1".
+<http://example.com/entity/e1/12> <http://example.com/property/p17-Prumerny vek muži> "41.7".
+<http://example.com/entity/e1/13> <http://example.com/property/p17-Prumerny vek muži> "41.8".
+<http://example.com/entity/e1/14> <http://example.com/property/p17-Prumerny vek muži> "41.6".
+<http://example.com/entity/e1/15> <http://example.com/property/p17-Prumerny vek muži> "41.5".
+<http://example.com/entity/e1/16> <http://example.com/property/p17-Prumerny vek muži> "40.2".
+<http://example.com/entity/e1/17> <http://example.com/property/p17-Prumerny vek muži> "40.8".
+<http://example.com/entity/e1/18> <http://example.com/property/p17-Prumerny vek muži> "40.5".
+<http://example.com/entity/e1/19> <http://example.com/property/p17-Prumerny vek muži> "42".
+<http://example.com/entity/e1/20> <http://example.com/property/p17-Prumerny vek muži> "40.4".
+<http://example.com/entity/e1/21> <http://example.com/property/p17-Prumerny vek muži> "40.7".
+<http://example.com/entity/e1/22> <http://example.com/property/p17-Prumerny vek muži> "40.3".
+<http://example.com/entity/e1/23> <http://example.com/property/p17-Prumerny vek muži> "37.9".
+<http://example.com/entity/e1/24> <http://example.com/property/p17-Prumerny vek muži> "38.4".
+<http://example.com/entity/e1/25> <http://example.com/property/p17-Prumerny vek muži> "41.7".
+<http://example.com/entity/e1/26> <http://example.com/property/p17-Prumerny vek muži> "41.9".
+<http://example.com/entity/e1/27> <http://example.com/property/p17-Prumerny vek muži> "41".
+<http://example.com/entity/e1/28> <http://example.com/property/p17-Prumerny vek muži> "41".
+<http://example.com/entity/e1/29> <http://example.com/property/p17-Prumerny vek muži> "42.5".
+<http://example.com/entity/e1/30> <http://example.com/property/p17-Prumerny vek muži> "42.6".
+<http://example.com/entity/e1/31> <http://example.com/property/p17-Prumerny vek muži> "41.7".
+<http://example.com/entity/e1/32> <http://example.com/property/p17-Prumerny vek muži> "42".
+<http://example.com/entity/e1/33> <http://example.com/property/p17-Prumerny vek muži> "42.3".
+<http://example.com/entity/e1/34> <http://example.com/property/p17-Prumerny vek muži> "41.8".
+<http://example.com/entity/e1/35> <http://example.com/property/p17-Prumerny vek muži> "42.8".
+<http://example.com/entity/e1/36> <http://example.com/property/p17-Prumerny vek muži> "41.9".
+<http://example.com/entity/e1/37> <http://example.com/property/p17-Prumerny vek muži> "41.7".
+<http://example.com/entity/e1/38> <http://example.com/property/p17-Prumerny vek muži> "41.2".
+<http://example.com/entity/e1/39> <http://example.com/property/p17-Prumerny vek muži> "41.9".
+<http://example.com/entity/e1/40> <http://example.com/property/p17-Prumerny vek muži> "41.1".
+<http://example.com/entity/e1/41> <http://example.com/property/p17-Prumerny vek muži> "41.8".
+<http://example.com/entity/e1/42> <http://example.com/property/p17-Prumerny vek muži> "42.8".
+<http://example.com/entity/e1/43> <http://example.com/property/p17-Prumerny vek muži> "41.4".
+<http://example.com/entity/e1/44> <http://example.com/property/p17-Prumerny vek muži> "41.5".
+<http://example.com/entity/e1/45> <http://example.com/property/p17-Prumerny vek muži> "40.9".
+<http://example.com/entity/e1/46> <http://example.com/property/p17-Prumerny vek muži> "41.3".
+<http://example.com/entity/e1/47> <http://example.com/property/p17-Prumerny vek muži> "41.2".
+<http://example.com/entity/e1/48> <http://example.com/property/p17-Prumerny vek muži> "41.1".
+<http://example.com/entity/e1/49> <http://example.com/property/p17-Prumerny vek muži> "41.2".
+<http://example.com/entity/e1/50> <http://example.com/property/p17-Prumerny vek muži> "40.9".
+<http://example.com/entity/e1/51> <http://example.com/property/p17-Prumerny vek muži> "40.9".
+<http://example.com/entity/e1/52> <http://example.com/property/p17-Prumerny vek muži> "41.4".
+<http://example.com/entity/e1/53> <http://example.com/property/p17-Prumerny vek muži> "40.9".
+<http://example.com/entity/e1/54> <http://example.com/property/p17-Prumerny vek muži> "42.1".
+<http://example.com/entity/e1/55> <http://example.com/property/p17-Prumerny vek muži> "42".
+<http://example.com/entity/e1/56> <http://example.com/property/p17-Prumerny vek muži> "42".
+<http://example.com/entity/e1/57> <http://example.com/property/p17-Prumerny vek muži> "42.2".
+<http://example.com/entity/e1/58> <http://example.com/property/p17-Prumerny vek muži> "41.6".
+<http://example.com/entity/e1/59> <http://example.com/property/p17-Prumerny vek muži> "42.2".
+<http://example.com/entity/e1/60> <http://example.com/property/p17-Prumerny vek muži> "41.5".
+<http://example.com/entity/e1/61> <http://example.com/property/p17-Prumerny vek muži> "41.3".
+<http://example.com/entity/e1/62> <http://example.com/property/p17-Prumerny vek muži> "41.5".
+<http://example.com/entity/e1/63> <http://example.com/property/p17-Prumerny vek muži> "41.3".
+<http://example.com/entity/e1/64> <http://example.com/property/p17-Prumerny vek muži> "42".
+<http://example.com/entity/e1/65> <http://example.com/property/p17-Prumerny vek muži> "41.3".
+<http://example.com/entity/e1/66> <http://example.com/property/p17-Prumerny vek muži> "42.5".
+<http://example.com/entity/e1/67> <http://example.com/property/p17-Prumerny vek muži> "42".
+<http://example.com/entity/e1/68> <http://example.com/property/p17-Prumerny vek muži> "41.3".
+<http://example.com/entity/e1/69> <http://example.com/property/p17-Prumerny vek muži> "41.4".
+<http://example.com/entity/e1/70> <http://example.com/property/p17-Prumerny vek muži> "41.1".
+<http://example.com/entity/e1/71> <http://example.com/property/p17-Prumerny vek muži> "40".
+<http://example.com/entity/e1/72> <http://example.com/property/p17-Prumerny vek muži> "41.6".
+<http://example.com/entity/e1/73> <http://example.com/property/p17-Prumerny vek muži> "42.3".
+<http://example.com/entity/e1/74> <http://example.com/property/p17-Prumerny vek muži> "40.8".
+<http://example.com/entity/e1/75> <http://example.com/property/p17-Prumerny vek muži> "41.3".
+<http://example.com/entity/e1/76> <http://example.com/property/p17-Prumerny vek muži> "42.9".
+<http://example.com/entity/e1/77> <http://example.com/property/p17-Prumerny vek muži> "41.1".
+<http://example.com/entity/e1/78> <http://example.com/property/p17-Prumerny vek muži> "41.6".
+<http://example.com/entity/e1/79> <http://example.com/property/p17-Prumerny vek muži> "42.1".
+<http://example.com/entity/e1/80> <http://example.com/property/p17-Prumerny vek muži> "42".
+<http://example.com/entity/e1/81> <http://example.com/property/p17-Prumerny vek muži> "42".
+<http://example.com/entity/e1/82> <http://example.com/property/p17-Prumerny vek muži> "42.1".
+<http://example.com/entity/e1/83> <http://example.com/property/p17-Prumerny vek muži> "41.5".
+<http://example.com/entity/e1/84> <http://example.com/property/p17-Prumerny vek muži> "41.9".
+<http://example.com/entity/e1/85> <http://example.com/property/p17-Prumerny vek muži> "42.2".
+<http://example.com/entity/e1/86> <http://example.com/property/p17-Prumerny vek muži> "41.2".
+<http://example.com/entity/e1/87> <http://example.com/property/p17-Prumerny vek muži> "42.2".
+<http://example.com/entity/e1/88> <http://example.com/property/p17-Prumerny vek muži> "41".
+<http://example.com/entity/e1/89> <http://example.com/property/p17-Prumerny vek muži> "41.3".
+<http://example.com/entity/e1/90> <http://example.com/property/p17-Prumerny vek muži> "41.5".
+<http://example.com/entity/e1/0> <http://example.com/property/p18-Prumerny vek ženy> "44.2".
+<http://example.com/entity/e1/1> <http://example.com/property/p18-Prumerny vek ženy> "43.8".
+<http://example.com/entity/e1/2> <http://example.com/property/p18-Prumerny vek ženy> "42.7".
+<http://example.com/entity/e1/3> <http://example.com/property/p18-Prumerny vek ženy> "44.3".
+<http://example.com/entity/e1/4> <http://example.com/property/p18-Prumerny vek ženy> "44.3".
+<http://example.com/entity/e1/5> <http://example.com/property/p18-Prumerny vek ženy> "44.8".
+<http://example.com/entity/e1/6> <http://example.com/property/p18-Prumerny vek ženy> "43.9".
+<http://example.com/entity/e1/7> <http://example.com/property/p18-Prumerny vek ženy> "44".
+<http://example.com/entity/e1/8> <http://example.com/property/p18-Prumerny vek ženy> "45".
+<http://example.com/entity/e1/9> <http://example.com/property/p18-Prumerny vek ženy> "44.2".
+<http://example.com/entity/e1/10> <http://example.com/property/p18-Prumerny vek ženy> "44.5".
+<http://example.com/entity/e1/11> <http://example.com/property/p18-Prumerny vek ženy> "44.1".
+<http://example.com/entity/e1/12> <http://example.com/property/p18-Prumerny vek ženy> "44.7".
+<http://example.com/entity/e1/13> <http://example.com/property/p18-Prumerny vek ženy> "45.2".
+<http://example.com/entity/e1/14> <http://example.com/property/p18-Prumerny vek ženy> "44.8".
+<http://example.com/entity/e1/15> <http://example.com/property/p18-Prumerny vek ženy> "43.9".
+<http://example.com/entity/e1/16> <http://example.com/property/p18-Prumerny vek ženy> "42.6".
+<http://example.com/entity/e1/17> <http://example.com/property/p18-Prumerny vek ženy> "43.6".
+<http://example.com/entity/e1/18> <http://example.com/property/p18-Prumerny vek ženy> "43.4".
+<http://example.com/entity/e1/19> <http://example.com/property/p18-Prumerny vek ženy> "44.7".
+<http://example.com/entity/e1/20> <http://example.com/property/p18-Prumerny vek ženy> "43".
+<http://example.com/entity/e1/21> <http://example.com/property/p18-Prumerny vek ženy> "43.1".
+<http://example.com/entity/e1/22> <http://example.com/property/p18-Prumerny vek ženy> "42.8".
+<http://example.com/entity/e1/23> <http://example.com/property/p18-Prumerny vek ženy> "39.8".
+<http://example.com/entity/e1/24> <http://example.com/property/p18-Prumerny vek ženy> "40.1".
+<http://example.com/entity/e1/25> <http://example.com/property/p18-Prumerny vek ženy> "44.5".
+<http://example.com/entity/e1/26> <http://example.com/property/p18-Prumerny vek ženy> "44.6".
+<http://example.com/entity/e1/27> <http://example.com/property/p18-Prumerny vek ženy> "43.5".
+<http://example.com/entity/e1/28> <http://example.com/property/p18-Prumerny vek ženy> "43.1".
+<http://example.com/entity/e1/29> <http://example.com/property/p18-Prumerny vek ženy> "45.1".
+<http://example.com/entity/e1/30> <http://example.com/property/p18-Prumerny vek ženy> "45.3".
+<http://example.com/entity/e1/31> <http://example.com/property/p18-Prumerny vek ženy> "44.1".
+<http://example.com/entity/e1/32> <http://example.com/property/p18-Prumerny vek ženy> "44.9".
+<http://example.com/entity/e1/33> <http://example.com/property/p18-Prumerny vek ženy> "45".
+<http://example.com/entity/e1/34> <http://example.com/property/p18-Prumerny vek ženy> "43.9".
+<http://example.com/entity/e1/35> <http://example.com/property/p18-Prumerny vek ženy> "45.4".
+<http://example.com/entity/e1/36> <http://example.com/property/p18-Prumerny vek ženy> "44.8".
+<http://example.com/entity/e1/37> <http://example.com/property/p18-Prumerny vek ženy> "44".
+<http://example.com/entity/e1/38> <http://example.com/property/p18-Prumerny vek ženy> "43.2".
+<http://example.com/entity/e1/39> <http://example.com/property/p18-Prumerny vek ženy> "44.5".
+<http://example.com/entity/e1/40> <http://example.com/property/p18-Prumerny vek ženy> "43.2".
+<http://example.com/entity/e1/41> <http://example.com/property/p18-Prumerny vek ženy> "44.7".
+<http://example.com/entity/e1/42> <http://example.com/property/p18-Prumerny vek ženy> "45.5".
+<http://example.com/entity/e1/43> <http://example.com/property/p18-Prumerny vek ženy> "44.1".
+<http://example.com/entity/e1/44> <http://example.com/property/p18-Prumerny vek ženy> "44.3".
+<http://example.com/entity/e1/45> <http://example.com/property/p18-Prumerny vek ženy> "43.4".
+<http://example.com/entity/e1/46> <http://example.com/property/p18-Prumerny vek ženy> "44".
+<http://example.com/entity/e1/47> <http://example.com/property/p18-Prumerny vek ženy> "43.6".
+<http://example.com/entity/e1/48> <http://example.com/property/p18-Prumerny vek ženy> "44.2".
+<http://example.com/entity/e1/49> <http://example.com/property/p18-Prumerny vek ženy> "44.1".
+<http://example.com/entity/e1/50> <http://example.com/property/p18-Prumerny vek ženy> "43.8".
+<http://example.com/entity/e1/51> <http://example.com/property/p18-Prumerny vek ženy> "43.6".
+<http://example.com/entity/e1/52> <http://example.com/property/p18-Prumerny vek ženy> "44.5".
+<http://example.com/entity/e1/53> <http://example.com/property/p18-Prumerny vek ženy> "43.5".
+<http://example.com/entity/e1/54> <http://example.com/property/p18-Prumerny vek ženy> "45.2".
+<http://example.com/entity/e1/55> <http://example.com/property/p18-Prumerny vek ženy> "45.1".
+<http://example.com/entity/e1/56> <http://example.com/property/p18-Prumerny vek ženy> "44.9".
+<http://example.com/entity/e1/57> <http://example.com/property/p18-Prumerny vek ženy> "45.2".
+<http://example.com/entity/e1/58> <http://example.com/property/p18-Prumerny vek ženy> "44.3".
+<http://example.com/entity/e1/59> <http://example.com/property/p18-Prumerny vek ženy> "45.2".
+<http://example.com/entity/e1/60> <http://example.com/property/p18-Prumerny vek ženy> "44.4".
+<http://example.com/entity/e1/61> <http://example.com/property/p18-Prumerny vek ženy> "44.3".
+<http://example.com/entity/e1/62> <http://example.com/property/p18-Prumerny vek ženy> "44.1".
+<http://example.com/entity/e1/63> <http://example.com/property/p18-Prumerny vek ženy> "44.1".
+<http://example.com/entity/e1/64> <http://example.com/property/p18-Prumerny vek ženy> "44.6".
+<http://example.com/entity/e1/65> <http://example.com/property/p18-Prumerny vek ženy> "44".
+<http://example.com/entity/e1/66> <http://example.com/property/p18-Prumerny vek ženy> "45.3".
+<http://example.com/entity/e1/67> <http://example.com/property/p18-Prumerny vek ženy> "44.8".
+<http://example.com/entity/e1/68> <http://example.com/property/p18-Prumerny vek ženy> "44".
+<http://example.com/entity/e1/69> <http://example.com/property/p18-Prumerny vek ženy> "44.2".
+<http://example.com/entity/e1/70> <http://example.com/property/p18-Prumerny vek ženy> "44.6".
+<http://example.com/entity/e1/71> <http://example.com/property/p18-Prumerny vek ženy> "42.4".
+<http://example.com/entity/e1/72> <http://example.com/property/p18-Prumerny vek ženy> "44.6".
+<http://example.com/entity/e1/73> <http://example.com/property/p18-Prumerny vek ženy> "45.6".
+<http://example.com/entity/e1/74> <http://example.com/property/p18-Prumerny vek ženy> "43.4".
+<http://example.com/entity/e1/75> <http://example.com/property/p18-Prumerny vek ženy> "43.9".
+<http://example.com/entity/e1/76> <http://example.com/property/p18-Prumerny vek ženy> "45.7".
+<http://example.com/entity/e1/77> <http://example.com/property/p18-Prumerny vek ženy> "44.1".
+<http://example.com/entity/e1/78> <http://example.com/property/p18-Prumerny vek ženy> "44.7".
+<http://example.com/entity/e1/79> <http://example.com/property/p18-Prumerny vek ženy> "45.4".
+<http://example.com/entity/e1/80> <http://example.com/property/p18-Prumerny vek ženy> "45".
+<http://example.com/entity/e1/81> <http://example.com/property/p18-Prumerny vek ženy> "45.3".
+<http://example.com/entity/e1/82> <http://example.com/property/p18-Prumerny vek ženy> "45.3".
+<http://example.com/entity/e1/83> <http://example.com/property/p18-Prumerny vek ženy> "44.9".
+<http://example.com/entity/e1/84> <http://example.com/property/p18-Prumerny vek ženy> "45.3".
+<http://example.com/entity/e1/85> <http://example.com/property/p18-Prumerny vek ženy> "45.3".
+<http://example.com/entity/e1/86> <http://example.com/property/p18-Prumerny vek ženy> "44.2".
+<http://example.com/entity/e1/87> <http://example.com/property/p18-Prumerny vek ženy> "45.6".
+<http://example.com/entity/e1/88> <http://example.com/property/p18-Prumerny vek ženy> "43.9".
+<http://example.com/entity/e1/89> <http://example.com/property/p18-Prumerny vek ženy> "44.4".
+<http://example.com/entity/e1/90> <http://example.com/property/p18-Prumerny vek ženy> "45".
+<http://example.com/entity/e1/0> ex-property:p19-typ "zeme".
+<http://example.com/entity/e1/1> ex-property:p19-typ "kraj".
+<http://example.com/entity/e1/2> ex-property:p19-typ "kraj".
+<http://example.com/entity/e1/3> ex-property:p19-typ "kraj".
+<http://example.com/entity/e1/4> ex-property:p19-typ "kraj".
+<http://example.com/entity/e1/5> ex-property:p19-typ "kraj".
+<http://example.com/entity/e1/6> ex-property:p19-typ "kraj".
+<http://example.com/entity/e1/7> ex-property:p19-typ "kraj".
+<http://example.com/entity/e1/8> ex-property:p19-typ "kraj".
+<http://example.com/entity/e1/9> ex-property:p19-typ "kraj".
+<http://example.com/entity/e1/10> ex-property:p19-typ "kraj".
+<http://example.com/entity/e1/11> ex-property:p19-typ "kraj".
+<http://example.com/entity/e1/12> ex-property:p19-typ "kraj".
+<http://example.com/entity/e1/13> ex-property:p19-typ "kraj".
+<http://example.com/entity/e1/14> ex-property:p19-typ "kraj".
+<http://example.com/entity/e1/15> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/16> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/17> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/18> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/19> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/20> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/21> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/22> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/23> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/24> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/25> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/26> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/27> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/28> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/29> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/30> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/31> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/32> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/33> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/34> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/35> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/36> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/37> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/38> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/39> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/40> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/41> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/42> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/43> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/44> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/45> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/46> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/47> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/48> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/49> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/50> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/51> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/52> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/53> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/54> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/55> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/56> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/57> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/58> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/59> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/60> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/61> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/62> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/63> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/64> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/65> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/66> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/67> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/68> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/69> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/70> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/71> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/72> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/73> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/74> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/75> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/76> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/77> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/78> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/79> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/80> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/81> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/82> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/83> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/84> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/85> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/86> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/87> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/88> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/89> ex-property:p19-typ "okres".
+<http://example.com/entity/e1/90> ex-property:p19-typ "okres".
