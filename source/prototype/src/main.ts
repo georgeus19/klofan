@@ -16,14 +16,18 @@ async function main() {
     console.log('args:', args);
     const inputFile = args[0];
     const outputDir = args[1];
+    const format = args[2];
     const data = (await fs.promises.readFile(inputFile)).toString();
-    // jsonExample(data, outputDir);
-    csvExample(data, outputDir);
+    if (format === 'csv') {
+        csvExample(data, outputDir);
+    } else {
+        jsonExample(data, outputDir);
+    }
 }
 
 function csvExample(data: string, outputDir: string) {
     const state: State = parseCsv(data);
-    let model = new InMemoryModel(state);
+    const model = new InMemoryModel(state);
     const outputConfiguration = createDefaultOutputConfiguration(model);
     const instanceOutputWriter = new Writer(fs.createWriteStream(`${outputDir}/instances.ttl`));
     exportInstances(model, outputConfiguration, instanceOutputWriter);

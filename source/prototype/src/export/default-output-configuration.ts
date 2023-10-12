@@ -21,7 +21,7 @@ export function createDefaultOutputConfiguration(model: Model): OutputConfigurat
             return [
                 property.id,
                 {
-                    property: { uri: `http://example.com/property/p${property.id}` },
+                    property: { uri: `http://example.com/property/p${property.id}`.replaceAll(/\s/g, '_') },
                 },
             ];
         })

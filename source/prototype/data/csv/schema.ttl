@@ -3,31 +3,31 @@
 @prefix dsc: <http://example.com/data-schema/core/>.
 
 ex-entity:e1 a dsc:Entity;
-    dsc:Property <http://example.com/property/p11-Kód území>, <http://example.com/property/p12-Region soudržnosti>, <http://example.com/property/p13-Pocet celkem>, <http://example.com/property/p14-Pocet muži>, <http://example.com/property/p15-Pocet ženy>, <http://example.com/property/p16-Prumerny vek celkem>, <http://example.com/property/p17-Prumerny vek muži>, <http://example.com/property/p18-Prumerny vek ženy>, ex-property:p19-typ;
-    <http://example.com/property/p11-Kód území> ex-entity:e2;
-    <http://example.com/property/p12-Region soudržnosti> ex-entity:e3;
-    <http://example.com/property/p13-Pocet celkem> ex-entity:e4;
-    <http://example.com/property/p14-Pocet muži> ex-entity:e5;
-    <http://example.com/property/p15-Pocet ženy> ex-entity:e6;
-    <http://example.com/property/p16-Prumerny vek celkem> ex-entity:e7;
-    <http://example.com/property/p17-Prumerny vek muži> ex-entity:e8;
-    <http://example.com/property/p18-Prumerny vek ženy> ex-entity:e9;
+    dsc:Property <http://example.com/property/p11-Kód_území>, <http://example.com/property/p12-Region_soudržnosti>, ex-property:p13-Pocet_celkem, <http://example.com/property/p14-Pocet_muži>, <http://example.com/property/p15-Pocet_ženy>, ex-property:p16-Prumerny_vek_celkem, <http://example.com/property/p17-Prumerny_vek_muži>, <http://example.com/property/p18-Prumerny_vek_ženy>, ex-property:p19-typ;
+    <http://example.com/property/p11-Kód_území> ex-entity:e2;
+    <http://example.com/property/p12-Region_soudržnosti> ex-entity:e3;
+    ex-property:p13-Pocet_celkem ex-entity:e4;
+    <http://example.com/property/p14-Pocet_muži> ex-entity:e5;
+    <http://example.com/property/p15-Pocet_ženy> ex-entity:e6;
+    ex-property:p16-Prumerny_vek_celkem ex-entity:e7;
+    <http://example.com/property/p17-Prumerny_vek_muži> ex-entity:e8;
+    <http://example.com/property/p18-Prumerny_vek_ženy> ex-entity:e9;
     ex-property:p19-typ ex-entity:e10.
-<http://example.com/property/p11-Kód území> a dsc:Property;
+<http://example.com/property/p11-Kód_území> a dsc:Property;
     dsc:technicalName "Kód území".
-<http://example.com/property/p12-Region soudržnosti> a dsc:Property;
+<http://example.com/property/p12-Region_soudržnosti> a dsc:Property;
     dsc:technicalName "Region soudržnosti".
-<http://example.com/property/p13-Pocet celkem> a dsc:Property;
+ex-property:p13-Pocet_celkem a dsc:Property;
     dsc:technicalName "Pocet celkem".
-<http://example.com/property/p14-Pocet muži> a dsc:Property;
+<http://example.com/property/p14-Pocet_muži> a dsc:Property;
     dsc:technicalName "Pocet muži".
-<http://example.com/property/p15-Pocet ženy> a dsc:Property;
+<http://example.com/property/p15-Pocet_ženy> a dsc:Property;
     dsc:technicalName "Pocet ženy".
-<http://example.com/property/p16-Prumerny vek celkem> a dsc:Property;
+ex-property:p16-Prumerny_vek_celkem a dsc:Property;
     dsc:technicalName "Prumerny vek celkem".
-<http://example.com/property/p17-Prumerny vek muži> a dsc:Property;
+<http://example.com/property/p17-Prumerny_vek_muži> a dsc:Property;
     dsc:technicalName "Prumerny vek muži".
-<http://example.com/property/p18-Prumerny vek ženy> a dsc:Property;
+<http://example.com/property/p18-Prumerny_vek_ženy> a dsc:Property;
     dsc:technicalName "Prumerny vek ženy".
 ex-property:p19-typ a dsc:Property;
     dsc:technicalName "typ".
