@@ -5,6 +5,9 @@ import { PropertyInstance } from '../state/instance-state';
 import { DataFactory, Writer } from 'n3';
 const { namedNode, literal } = DataFactory;
 
+/**
+ * Export the data(instances) of `model` based on `outputConfiguration` to `outputWriter`.
+ */
 export function exportInstances(model: Model, outputConfiguration: OutputConfiguration, outputWriter: Writer) {
     outputWriter.addPrefixes(Object.fromEntries(outputConfiguration.prefixes.entries()));
 

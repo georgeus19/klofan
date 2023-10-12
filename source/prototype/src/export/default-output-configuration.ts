@@ -4,14 +4,23 @@ import { id } from '../state/schema-state';
 import { IdentityInstanceUriBuilder } from './instance-uri-identifier-mapping';
 import { EntityOutputConfiguration, OutputConfiguration, PropertyOutputConfiguration } from './output-configuration';
 
+const defaultBaseEntityUri = 'http://example.com/entity/';
+const defaultBasePropertyUri = 'http://example.com/property/';
+
+/**
+ * Create default output configuration.
+ * This means taking the data and generating patterned uris for entities and its instances.
+ * Uri for entities and properties take default uri base and then the entity/proprty id (with e/p prefix).
+ * The instance uri is then {EntityUri}/e{instanceIndex}. Property uris for instances are the same as corresponding schema property uris.
+ */
 export function createDefaultOutputConfiguration(model: Model): OutputConfiguration {
     const entityUris = new SafeMap<id, EntityOutputConfiguration>(
         model.entities().map((entity) => {
             return [
                 entity.id,
                 {
-                    entity: { uri: `http://example.com/entity/e${entity.id}` },
-                    instances: { baseUri: `http://example.com/entity/e${entity.id}/`, uriBuilder: new IdentityInstanceUriBuilder() },
+                    entity: { uri: `${defaultBaseEntityUri}e${entity.id}` },
+                    instances: { baseUri: `${defaultBaseEntityUri}e${entity.id}/`, uriBuilder: new IdentityInstanceUriBuilder() },
                 },
             ];
         })
@@ -21,7 +30,7 @@ export function createDefaultOutputConfiguration(model: Model): OutputConfigurat
             return [
                 property.id,
                 {
-                    property: { uri: `http://example.com/property/p${property.id}`.replaceAll(/\s/g, '_') },
+                    property: { uri: `${defaultBasePropertyUri}p${property.id}`.replaceAll(/\s/g, '_') },
                 },
             ];
         })
@@ -29,8 +38,8 @@ export function createDefaultOutputConfiguration(model: Model): OutputConfigurat
     return {
         entities: entityUris,
         prefixes: new SafeMap<string, string>([
-            ['ex-entity', 'http://example.com/entity/'],
-            ['ex-property', 'http://example.com/property/'],
+            ['ex-entity', defaultBaseEntityUri],
+            ['ex-property', defaultBasePropertyUri],
         ]),
         properties: propertyUris,
     };

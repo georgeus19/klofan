@@ -1,6 +1,22 @@
 import { Model } from './model';
 import { Entity, id } from './schema-state';
 
+export interface GraphProperty {
+    id: id;
+    name: string;
+    value: Entity;
+}
+
+/**
+ * Retrieve properties of an entity which has filled in the whole target entity instead of just its id.
+ */
+export function getProperties(model: Model, entityId: id): GraphProperty[] {
+    return model.entity(entityId).properties.map((propertyId) => {
+        const property = model.property(propertyId);
+        return { id: property.id, name: property.name, value: model.entity(property.value) };
+    });
+}
+
 export class ConnectedEntity {
     constructor(
         private model: Model,
@@ -37,17 +53,4 @@ export class ConnectedProperty {
     value(): ConnectedEntity {
         return new ConnectedEntity(this.model, this.model.property(this.propertyId).value);
     }
-}
-
-export interface GraphProperty {
-    id: id;
-    name: string;
-    value: Entity;
-}
-
-export function getProperties(model: Model, entityId: id): GraphProperty[] {
-    return model.entity(entityId).properties.map((propertyId) => {
-        const property = model.property(propertyId);
-        return { id: property.id, name: property.name, value: model.entity(property.value) };
-    });
 }

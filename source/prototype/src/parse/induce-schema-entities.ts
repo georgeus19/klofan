@@ -2,6 +2,14 @@ import { InstanceEntityInput, isPrimitiveType, isNotPrimitiveType, primitiveType
 
 export type SchemaEntityInput = object | primitiveType;
 
+/**
+ * Creates schema for tree like data - link to another level is only object property. Recursive arrays are perceived as flattened values on the level below where
+ * the top array is referenced (object property or root).
+ *
+ * Creating schema means merging all arrays on the same level to one object or literal.
+ * If the arrays on given level have at least one object/entity, the result is object with properties of all objects in the array.
+ * It the arrays on given level have only literals, the result is null - it is written as value of some property.
+ */
 export function induceSchemaEntities(input: InstanceEntityInput): SchemaEntityInput {
     if (isPrimitiveType(input)) {
         return input;

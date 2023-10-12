@@ -7,6 +7,9 @@ import { rdfType } from './rdf-terms';
 import { DataFactory, Writer } from 'n3';
 const { namedNode, literal } = DataFactory;
 
+/**
+ * Export the schema of `model` based on `outputConfiguration` to `outputWriter`.
+ */
 export function exportSchema(model: Model, outputConfiguration: OutputConfiguration, outputWriter: Writer) {
     outputWriter.addPrefixes({ ...Object.fromEntries(outputConfiguration.prefixes.entries()), ...dataSchema.prefixes });
 

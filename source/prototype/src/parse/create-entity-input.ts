@@ -17,6 +17,10 @@ export interface EntityInput {
     instanceCount: number;
 }
 
+/**
+ * Takes tree like instances(data) and their schema and merges them so that schema entity can reference easily the underlying data.
+ * Also adds ids to schema entities and properties.
+ */
 export function createEntityInput(instanceInput: InstanceEntityInput, schemaInput: SchemaEntityInput): EntityInput {
     const entityInput = convertToEntityInput(schemaInput);
     const { instances } = parseInstances(fillInstancestoEntityInput(instanceInput, entityInput));

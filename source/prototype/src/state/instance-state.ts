@@ -10,7 +10,7 @@ export interface InstanceState {
     entities: SafeMap<id, EntityInstances>;
     /**
      * Column representation of which entity instances have which properties and their values.
-     * All values (arrays) have the same length - the number of instances of the corresponding schema entity.
+     * All values (arrays) have the same length - the number of instances of the corresponding schema entity (which is the source entity of the property).
      *
      * Key format is: `${SchemaEntityId}.${SchemaPropertyId}`
      *
@@ -21,8 +21,12 @@ export interface InstanceState {
     properties: SafeMap<string, PropertyInstance[]>;
 }
 
+/**
+ * Type for storing information of one instance of source entity for one property.
+ * It contains the literals for the instance for the property and links to instances on the target entity.
+ */
 export interface PropertyInstance {
-    entities?: InstanceEntities;
+    entities?: TargetInstances;
     literals?: literal[];
 }
 
@@ -33,15 +37,20 @@ export interface EntityInstances {
     count: number;
 }
 
-export interface InstanceEntities {
+export interface TargetInstances {
+    /**
+     * Id of target schema entity.
+     */
     targetEntity: id;
+    /**
+     * Indices of instances of target entity which this instance points to via the property.
+     */
     indices: number[];
 }
 
-export interface InstanceLiterals {
-    literals: literal | literal[]; // Or just string[] for ease of use?
-}
-
+/**
+ * Create key (on `InstanceState.properties`) for getting instance information of `property` on `entity`.
+ */
 export function instanceKey(entity: id, property: id): string {
     return `${entity}.${property}`;
 }
