@@ -1,29 +1,26 @@
-import { SafeMap } from '../safe-map';
 import { EntityInstances, InstanceState, instanceKey, PropertyInstance } from '../state/instance-state';
 import { id } from '../state/schema-state';
 import _ from 'lodash';
 import { EntityInput } from './create-entity-input';
 
 export function createInstanceState(entityInput: EntityInput): InstanceState {
-    const entities = fillInstanceEntities(new SafeMap<id, EntityInstances>(), entityInput);
-    const properties = fillInstanceProperties(new SafeMap<string, PropertyInstance[]>(), entityInput);
+    const entities = fillInstanceEntities({}, entityInput);
+    const properties = fillInstanceProperties({}, entityInput);
     return {
-        entities: Object.fromEntries(entities.entries()),
-        properties: Object.fromEntries(properties.entries()),
+        entities: entities,
+        properties: properties,
     };
 }
 
-function fillInstanceProperties(properties: SafeMap<string, PropertyInstance[]>, entityInput: EntityInput): SafeMap<string, PropertyInstance[]> {
-    entityInput.instances.forEach((value, key) => {
-        const propertyId = entityInput.propertyIds.safeGet(key);
-
+function fillInstanceProperties(properties: { [key: string]: PropertyInstance[] }, entityInput: EntityInput): { [key: string]: PropertyInstance[] } {
+    Object.values(entityInput.properties).forEach((propertyInfo) => {
         let targetInstanceIndex = 0;
 
-        const instanceProperties = value.map((instanceInfo) => {
+        const instanceProperties = propertyInfo.instances.map((instanceInfo) => {
             const instanceLinks: PropertyInstance = {};
             if (instanceInfo.instances > 0) {
                 instanceLinks.entities = {
-                    targetEntity: entityInput.properties.safeGet(key).id,
+                    targetEntity: propertyInfo.targetEntity.id,
                     indices: _.range(targetInstanceIndex, targetInstanceIndex + instanceInfo.instances),
                 };
                 targetInstanceIndex += instanceInfo.instances;
@@ -38,18 +35,18 @@ function fillInstanceProperties(properties: SafeMap<string, PropertyInstance[]>,
             return instanceLinks;
         });
 
-        properties.set(instanceKey(entityInput.id, propertyId), instanceProperties);
+        properties[instanceKey(entityInput.id, propertyInfo.id)] = instanceProperties;
     });
 
-    entityInput.properties.forEach((value) => fillInstanceProperties(properties, value));
+    Object.values(entityInput.properties).forEach((propertyInfo) => fillInstanceProperties(properties, propertyInfo.targetEntity));
 
     return properties;
 }
 
-function fillInstanceEntities(entities: SafeMap<id, EntityInstances>, entityInput: EntityInput): SafeMap<id, EntityInstances> {
-    entities.set(entityInput.id, { count: entityInput.instanceCount });
-    entityInput.properties.forEach((value) => {
-        fillInstanceEntities(entities, value);
+function fillInstanceEntities(entities: { [key: id]: EntityInstances }, entityInput: EntityInput): { [key: id]: EntityInstances } {
+    entities[entityInput.id] = { count: entityInput.instanceCount };
+    Object.values(entityInput.properties).forEach((propertyInfo) => {
+        fillInstanceEntities(entities, propertyInfo.targetEntity);
     });
     return entities;
 }

@@ -9,11 +9,11 @@ export function createSchemaState(schemaInput: EntityInput): SchemaState {
 
 function fillSchemaState(state: SchemaState, entityInput: EntityInput): Entity {
     if (!entityInput.literal) {
-        const propertyIds: id[] = entityInput.properties.entries().map(([key, value]) => {
+        const propertyIds: id[] = Object.entries(entityInput.properties).map(([propertyName, propertyInfo]) => {
             const property: Property = {
-                id: entityInput.propertyIds.safeGet(key),
-                name: key,
-                value: fillSchemaState(state, value).id,
+                id: propertyInfo.id,
+                name: propertyName,
+                value: fillSchemaState(state, propertyInfo.targetEntity).id,
             };
             state.properties[property.id] = property;
             return property.id;

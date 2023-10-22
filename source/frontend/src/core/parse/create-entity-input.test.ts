@@ -1,18 +1,14 @@
 import { describe, expect, test } from '@jest/globals';
-import { EntityInput, InstanceInfo, createEntityInput } from './create-entity-input';
+import { EntityInput, createEntityInput } from './create-entity-input';
 import { SchemaEntityInput } from './induce-schema-entities';
 import { InstanceEntityInput, resetId } from './utils';
-import { SafeMap } from '../safe-map';
-import { id } from '../state/schema-state';
 
 function createLiteral(id: string): EntityInput {
     return {
         literal: true,
         id: id,
         instanceCount: 0,
-        propertyIds: new SafeMap<string, id>(),
-        properties: new SafeMap<string, EntityInput>(),
-        instances: new SafeMap<string, InstanceInfo[]>(),
+        properties: {},
     };
 }
 
@@ -38,9 +34,7 @@ describe('Parse Tests', () => {
                 literal: true,
                 id: '1',
                 instanceCount: 0,
-                propertyIds: new SafeMap<string, id>(),
-                properties: new SafeMap<string, EntityInput>(),
-                instances: new SafeMap<string, InstanceInfo[]>(),
+                properties: {},
             };
 
             expect(createEntityInput(instanceInput, schemaInput)).toEqual(expectedEntityInput);
@@ -58,18 +52,10 @@ describe('Parse Tests', () => {
                 literal: false,
                 id: '1',
                 instanceCount: 1,
-                propertyIds: new SafeMap<string, id>([
-                    ['name', '4-name'],
-                    ['weight', '5-weight'],
-                ]),
-                properties: new SafeMap<string, EntityInput>([
-                    ['name', createLiteral('2')],
-                    ['weight', createLiteral('3')],
-                ]),
-                instances: new SafeMap<string, InstanceInfo[]>([
-                    ['name', [{ instances: 0, literals: ['Salad'] }]],
-                    ['weight', [{ instances: 0, literals: [20] }]],
-                ]),
+                properties: {
+                    name: { id: '4-name', targetEntity: createLiteral('2'), instances: [{ instances: 0, literals: ['Salad'] }] },
+                    weight: { id: '5-weight', targetEntity: createLiteral('3'), instances: [{ instances: 0, literals: [20] }] },
+                },
             };
 
             expect(createEntityInput(instanceInput, schemaInput)).toEqual(expectedEntityInput);
@@ -98,41 +84,21 @@ describe('Parse Tests', () => {
                 literal: false,
                 id: '4',
                 instanceCount: 1,
-                propertyIds: new SafeMap<string, id>([
-                    ['country', '8-country'],
-                    ['city', '9-city'],
-                    ['zip', '10-zip'],
-                ]),
-                properties: new SafeMap<string, EntityInput>([
-                    ['country', createLiteral('5')],
-                    ['city', createLiteral('6')],
-                    ['zip', createLiteral('7')],
-                ]),
-                instances: new SafeMap<string, InstanceInfo[]>([
-                    ['country', [{ instances: 0, literals: ['Germany'] }]],
-                    ['city', [{ instances: 0, literals: ['Berlin'] }]],
-                    ['zip', [{ instances: 0, literals: [false] }]],
-                ]),
+                properties: {
+                    country: { id: '8-country', targetEntity: createLiteral('5'), instances: [{ instances: 0, literals: ['Germany'] }] },
+                    city: { id: '9-city', targetEntity: createLiteral('6'), instances: [{ instances: 0, literals: ['Berlin'] }] },
+                    zip: { id: '10-zip', targetEntity: createLiteral('7'), instances: [{ instances: 0, literals: [false] }] },
+                },
             };
             const expectedEntityInput: EntityInput = {
                 literal: false,
                 id: '1',
                 instanceCount: 1,
-                propertyIds: new SafeMap<string, id>([
-                    ['name', '11-name'],
-                    ['weight', '12-weight'],
-                    ['origin', '13-origin'],
-                ]),
-                properties: new SafeMap<string, EntityInput>([
-                    ['name', createLiteral('2')],
-                    ['weight', createLiteral('3')],
-                    ['origin', originEntityInput],
-                ]),
-                instances: new SafeMap<string, InstanceInfo[]>([
-                    ['name', [{ instances: 0, literals: ['Salad'] }]],
-                    ['weight', [{ instances: 0, literals: [null] }]],
-                    ['origin', [{ instances: 1, literals: [] }]],
-                ]),
+                properties: {
+                    name: { id: '11-name', targetEntity: createLiteral('2'), instances: [{ instances: 0, literals: ['Salad'] }] },
+                    weight: { id: '12-weight', targetEntity: createLiteral('3'), instances: [{ instances: 0, literals: [null] }] },
+                    origin: { id: '13-origin', targetEntity: originEntityInput, instances: [{ instances: 1, literals: [] }] },
+                },
             };
             expect(createEntityInput(instanceInput, schemaInput)).toEqual(expectedEntityInput);
         });
@@ -164,52 +130,44 @@ describe('Parse Tests', () => {
                 literal: false,
                 id: '1',
                 instanceCount: 3,
-                propertyIds: new SafeMap<string, id>([
-                    ['name', '6-name'],
-                    ['weight', '7-weight'],
-                    ['amount', '8-amount'],
-                    ['location', '9-location'],
-                ]),
-                properties: new SafeMap<string, EntityInput>([
-                    ['name', createLiteral('2')],
-                    ['weight', createLiteral('3')],
-                    ['amount', createLiteral('4')],
-                    ['location', createLiteral('5')],
-                ]),
-                instances: new SafeMap<string, InstanceInfo[]>([
-                    [
-                        'name',
-                        [
+                properties: {
+                    name: {
+                        id: '6-name',
+                        targetEntity: createLiteral('2'),
+                        instances: [
                             { instances: 0, literals: ['Salad'] },
                             { instances: 0, literals: ['Schnitzel'] },
                             { instances: 0, literals: [] },
                         ],
-                    ],
-                    [
-                        'weight',
-                        [
+                    },
+                    weight: {
+                        id: '7-weight',
+                        targetEntity: createLiteral('3'),
+                        instances: [
                             { instances: 0, literals: [20] },
                             { instances: 0, literals: [] },
                             { instances: 0, literals: [10] },
                         ],
-                    ],
-                    [
-                        'amount',
-                        [
+                    },
+                    amount: {
+                        id: '8-amount',
+                        targetEntity: createLiteral('4'),
+                        instances: [
                             { instances: 0, literals: [] },
                             { instances: 0, literals: ['200g'] },
                             { instances: 0, literals: [] },
                         ],
-                    ],
-                    [
-                        'location',
-                        [
+                    },
+                    location: {
+                        id: '9-location',
+                        targetEntity: createLiteral('5'),
+                        instances: [
                             { instances: 0, literals: [] },
                             { instances: 0, literals: [] },
                             { instances: 0, literals: [null] },
                         ],
-                    ],
-                ]),
+                    },
+                },
             };
 
             expect(createEntityInput(instanceInput, schemaInput)).toEqual(expectedEntityInput);
@@ -283,191 +241,161 @@ describe('Parse Tests', () => {
                 literal: false,
                 id: '10',
                 instanceCount: 5,
-                propertyIds: new SafeMap<string, id>([
-                    ['name', '13-name'],
-                    ['count', '14-count'],
-                ]),
-                properties: new SafeMap<string, EntityInput>([
-                    ['name', createLiteral('11')],
-                    ['count', createLiteral('12')],
-                ]),
-                instances: new SafeMap<string, InstanceInfo[]>([
-                    [
-                        'name',
-                        [
+                properties: {
+                    name: {
+                        id: '13-name',
+                        targetEntity: createLiteral('11'),
+                        instances: [
                             { instances: 0, literals: ['flour'] },
                             { instances: 0, literals: ['rice flour'] },
                             { instances: 0, literals: ['random'] },
                             { instances: 0, literals: ['chicken'] },
                             { instances: 0, literals: ['beef'] },
                         ],
-                    ],
-                    [
-                        'count',
-                        [
+                    },
+                    count: {
+                        id: '14-count',
+                        targetEntity: createLiteral('12'),
+                        instances: [
                             { instances: 0, literals: [20] },
                             { instances: 0, literals: [] },
                             { instances: 0, literals: [] },
                             { instances: 0, literals: [] },
                             { instances: 0, literals: [31] },
                         ],
-                    ],
-                ]),
+                    },
+                },
             };
             const ingredientsEntityInput: EntityInput = {
                 literal: false,
                 id: '5',
                 instanceCount: 5,
-                propertyIds: new SafeMap<string, id>([
-                    ['id', '18-id'],
-                    ['has_sub_ingredients', '19-has_sub_ingredients'],
-                    ['percent_estimate', '20-percent_estimate'],
-                    ['text', '21-text'],
-                    ['ingredients', '22-ingredients'],
-                    ['random_array', '23-random_array'],
-                    ['vegan', '24-vegan'],
-                    ['vegetarian', '25-vegetarian'],
-                ]),
-                properties: new SafeMap<string, EntityInput>([
-                    ['id', createLiteral('6')],
-                    ['has_sub_ingredients', createLiteral('7')],
-                    ['percent_estimate', createLiteral('8')],
-                    ['text', createLiteral('9')],
-                    ['ingredients', subIngredientsEntityInput],
-                    ['random_array', createLiteral('15')],
-                    ['vegan', createLiteral('16')],
-                    ['vegetarian', createLiteral('17')],
-                ]),
-                instances: new SafeMap<string, InstanceInfo[]>([
-                    [
-                        'id',
-                        [
+                properties: {
+                    id: {
+                        id: '18-id',
+                        targetEntity: createLiteral('6'),
+                        instances: [
                             { instances: 0, literals: ['en:noodle'] },
                             { instances: 0, literals: ['en:water'] },
                             { instances: 0, literals: [] },
                             { instances: 0, literals: [] },
                             { instances: 0, literals: [] },
                         ],
-                    ],
-                    [
-                        'has_sub_ingredients',
-                        [
+                    },
+                    has_sub_ingredients: {
+                        id: '19-has_sub_ingredients',
+                        targetEntity: createLiteral('7'),
+                        instances: [
                             { instances: 0, literals: ['yes'] },
                             { instances: 0, literals: [] },
                             { instances: 0, literals: [] },
                             { instances: 0, literals: [] },
                             { instances: 0, literals: [] },
                         ],
-                    ],
-                    [
-                        'percent_estimate',
-                        [
+                    },
+                    percent_estimate: {
+                        id: '20-percent_estimate',
+                        targetEntity: createLiteral('8'),
+                        instances: [
                             { instances: 0, literals: [53.8461538461538] },
                             { instances: 0, literals: [23.0769230769231] },
                             { instances: 0, literals: [] },
                             { instances: 0, literals: [] },
                             { instances: 0, literals: [] },
                         ],
-                    ],
-                    [
-                        'text',
-                        [
+                    },
+                    text: {
+                        id: '21-text',
+                        targetEntity: createLiteral('9'),
+                        instances: [
                             { instances: 0, literals: ['Noodle'] },
                             { instances: 0, literals: [] },
                             { instances: 0, literals: ['water'] },
                             { instances: 0, literals: [] },
                             { instances: 0, literals: [] },
                         ],
-                    ],
-                    [
-                        'ingredients',
-                        [
+                    },
+                    ingredients: {
+                        id: '22-ingredients',
+                        targetEntity: subIngredientsEntityInput,
+                        instances: [
                             { instances: 2, literals: [] },
                             { instances: 0, literals: [] },
                             { instances: 1, literals: [] },
                             { instances: 0, literals: ['none'] },
                             { instances: 2, literals: [] },
                         ],
-                    ],
-                    [
-                        'random_array',
-                        [
+                    },
+                    random_array: {
+                        id: '23-random_array',
+                        targetEntity: createLiteral('15'),
+                        instances: [
                             { instances: 0, literals: [] },
                             { instances: 0, literals: [1, 2, undefined, 4, 'neco'] },
                             { instances: 0, literals: [null, 'ahoj', true] },
                             { instances: 0, literals: [] },
                             { instances: 0, literals: [] },
                         ],
-                    ],
-                    [
-                        'vegan',
-                        [
+                    },
+                    vegan: {
+                        id: '24-vegan',
+                        targetEntity: createLiteral('16'),
+                        instances: [
                             { instances: 0, literals: [] },
                             { instances: 0, literals: ['yes'] },
                             { instances: 0, literals: [] },
                             { instances: 0, literals: [] },
                             { instances: 0, literals: [] },
                         ],
-                    ],
-                    [
-                        'vegetarian',
-                        [
+                    },
+                    vegetarian: {
+                        id: '25-vegetarian',
+                        targetEntity: createLiteral('17'),
+                        instances: [
                             { instances: 0, literals: [] },
                             { instances: 0, literals: ['yes'] },
                             { instances: 0, literals: [] },
                             { instances: 0, literals: [] },
                             { instances: 0, literals: [] },
                         ],
-                    ],
-                ]),
+                    },
+                },
             };
             const nutrimentsEntityInput: EntityInput = {
                 literal: false,
                 id: '26',
                 instanceCount: 1,
-                propertyIds: new SafeMap<string, id>([
-                    ['calcium_100g', '29-calcium_100g'],
-                    ['carbohydrates_100g', '30-carbohydrates_100g'],
-                ]),
-                properties: new SafeMap<string, EntityInput>([
-                    ['calcium_100g', createLiteral('27')],
-                    ['carbohydrates_100g', createLiteral('28')],
-                ]),
-                instances: new SafeMap<string, InstanceInfo[]>([
-                    ['calcium_100g', [{ instances: 0, literals: [0.038] }]],
-                    ['carbohydrates_100g', [{ instances: 0, literals: [71.15] }]],
-                ]),
+                properties: {
+                    calcium_100g: { id: '29-calcium_100g', targetEntity: createLiteral('27'), instances: [{ instances: 0, literals: [0.038] }] },
+                    carbohydrates_100g: {
+                        id: '30-carbohydrates_100g',
+                        targetEntity: createLiteral('28'),
+                        instances: [{ instances: 0, literals: [71.15] }],
+                    },
+                },
             };
             const productEntityInput: EntityInput = {
                 literal: false,
                 id: '2',
                 instanceCount: 1,
-                propertyIds: new SafeMap<string, id>([
-                    ['product_name', '31-product_name'],
-                    ['countries', '32-countries'],
-                    ['ingredients', '33-ingredients'],
-                    ['nutriments', '34-nutriments'],
-                ]),
-                properties: new SafeMap<string, EntityInput>([
-                    ['product_name', createLiteral('3')],
-                    ['countries', createLiteral('4')],
-                    ['ingredients', ingredientsEntityInput],
-                    ['nutriments', nutrimentsEntityInput],
-                ]),
-                instances: new SafeMap<string, InstanceInfo[]>([
-                    ['product_name', [{ instances: 0, literals: ['Thai peanut noodle kit includes stir-fry rice noodles & thai peanut seasoning'] }]],
-                    ['countries', [{ instances: 0, literals: ['United States'] }]],
-                    ['ingredients', [{ instances: 5, literals: [] }]],
-                    ['nutriments', [{ instances: 1, literals: [] }]],
-                ]),
+                properties: {
+                    product_name: {
+                        id: '31-product_name',
+                        targetEntity: createLiteral('3'),
+                        instances: [{ instances: 0, literals: ['Thai peanut noodle kit includes stir-fry rice noodles & thai peanut seasoning'] }],
+                    },
+                    countries: { id: '32-countries', targetEntity: createLiteral('4'), instances: [{ instances: 0, literals: ['United States'] }] },
+                    ingredients: { id: '33-ingredients', targetEntity: ingredientsEntityInput, instances: [{ instances: 5, literals: [] }] },
+                    nutriments: { id: '34-nutriments', targetEntity: nutrimentsEntityInput, instances: [{ instances: 1, literals: [] }] },
+                },
             };
             const expectedEntityInput: EntityInput = {
                 literal: false,
                 id: '1',
                 instanceCount: 1,
-                propertyIds: new SafeMap<string, id>([['product', '35-product']]),
-                properties: new SafeMap<string, EntityInput>([['product', productEntityInput]]),
-                instances: new SafeMap<string, InstanceInfo[]>([['product', [{ instances: 1, literals: [] }]]]),
+                properties: {
+                    product: { id: '35-product', targetEntity: productEntityInput, instances: [{ instances: 1, literals: [] }] },
+                },
             };
             expect(createEntityInput(instanceInput, schemaInput)).toEqual(expectedEntityInput);
         });
