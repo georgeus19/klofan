@@ -5,20 +5,21 @@ import { OutputConfiguration } from './output-configuration';
 import * as dataSchema from './data-schema';
 import { rdfType } from './rdf-terms';
 import { DataFactory, Writer } from 'n3';
+import { safeGet } from '../state/state';
 const { namedNode, literal } = DataFactory;
 
 /**
  * Export the schema of `model` based on `outputConfiguration` to `outputWriter`.
  */
 export function exportSchema(model: Model, outputConfiguration: OutputConfiguration, outputWriter: Writer) {
-    outputWriter.addPrefixes({ ...Object.fromEntries(outputConfiguration.prefixes.entries()), ...dataSchema.prefixes });
+    outputWriter.addPrefixes({ ...outputConfiguration.prefixes, ...dataSchema.prefixes });
 
     model
         .entities()
         .filter((entity) => !entity.literal)
         .forEach((entity) => {
             outputWriter.addQuad(
-                namedNode(outputConfiguration.entities.safeGet(entity.id).entity.uri),
+                namedNode(safeGet(outputConfiguration.entities, entity.id).entity.uri),
                 namedNode(rdfType),
                 namedNode(dataSchema.core.Entity)
             );
@@ -26,15 +27,15 @@ export function exportSchema(model: Model, outputConfiguration: OutputConfigurat
 
     model.entities().forEach((entity) => {
         const properties = getProperties(model, entity.id);
-        const entityUri = outputConfiguration.entities.safeGet(entity.id).entity.uri;
-        const propertyUri = (id: id) => outputConfiguration.properties.safeGet(id).property.uri;
+        const entityUri = safeGet(outputConfiguration.entities, entity.id).entity.uri;
+        const propertyUri = (id: id) => safeGet(outputConfiguration.properties, id).property.uri;
 
         properties.forEach((property) => {
             outputWriter.addQuad(namedNode(entityUri), namedNode(dataSchema.core.Property), namedNode(propertyUri(property.id)));
         });
 
         properties.forEach((property) => {
-            const objectUri = outputConfiguration.entities.safeGet(property.value.id).entity.uri;
+            const objectUri = safeGet(outputConfiguration.entities, property.value.id).entity.uri;
             outputWriter.addQuad(namedNode(entityUri), namedNode(propertyUri(property.id)), namedNode(objectUri));
         });
 

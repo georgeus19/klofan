@@ -3,20 +3,21 @@ import { getProperties } from '../state/connected';
 import { EntityOutputConfiguration, OutputConfiguration } from './output-configuration';
 import { PropertyInstance } from '../state/instance-state';
 import { DataFactory, Writer } from 'n3';
+import { safeGet } from '../state/state';
 const { namedNode, literal } = DataFactory;
 
 /**
  * Export the data(instances) of `model` based on `outputConfiguration` to `outputWriter`.
  */
 export function exportInstances(model: Model, outputConfiguration: OutputConfiguration, outputWriter: Writer) {
-    outputWriter.addPrefixes(Object.fromEntries(outputConfiguration.prefixes.entries()));
+    outputWriter.addPrefixes(outputConfiguration.prefixes);
 
     model.entities().forEach((entity) => {
         const properties = getProperties(model, entity.id);
-        const subjectEntityConfiguration = outputConfiguration.entities.safeGet(entity.id);
+        const subjectEntityConfiguration = safeGet(outputConfiguration.entities, entity.id);
         properties.forEach((property) => {
-            const objectEntityConfiguration = outputConfiguration.entities.safeGet(property.value.id);
-            const propertyUri = outputConfiguration.properties.safeGet(property.id).property.uri;
+            const objectEntityConfiguration = safeGet(outputConfiguration.entities, property.value.id);
+            const propertyUri = safeGet(outputConfiguration.properties, property.id).property.uri;
 
             model.propertyInstances(entity.id, property.id).forEach((propertyInstance, index) => {
                 writePropertyInstance(

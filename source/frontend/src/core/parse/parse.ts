@@ -4,7 +4,7 @@ import { InstanceEntityInput, isPrimitiveType } from './utils';
 import { createSchemaState } from './create-schema-state';
 import { createEntityInput } from './create-entity-input';
 import { createInstanceState } from './create-instance-state';
-import { parse as csvParse } from 'csv-parse/sync';
+import { parse as csvParse } from 'csv-parse/browser/esm/sync';
 
 /**
  * Parse the input where the input can be Array, Object or literal and produce schema with underlying instances.
@@ -14,7 +14,7 @@ import { parse as csvParse } from 'csv-parse/sync';
  * The structure can only be a tree structure (csv, json, xml), cycles break the algorithm.
  * If the top element is a literal or an array of just literals, an error is thrown since it corresponds to no schema.
  */
-export function parse(input: InstanceEntityInput): State {
+function parse(input: InstanceEntityInput): State {
     if (detectTopLevelLiterals(input)) {
         throw new Error('There are unbound literals at the top of the input.');
     }

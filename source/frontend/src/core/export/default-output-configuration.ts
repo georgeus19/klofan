@@ -1,8 +1,6 @@
-import { SafeMap } from '../safe-map';
 import { Model } from '../state/model';
-import { id } from '../state/schema-state';
 import { IdentityInstanceUriBuilder } from './instance-uri-identifier-mapping';
-import { EntityOutputConfiguration, OutputConfiguration, PropertyOutputConfiguration } from './output-configuration';
+import { OutputConfiguration } from './output-configuration';
 
 const defaultBaseEntityUri = 'http://example.com/entity/';
 const defaultBasePropertyUri = 'http://example.com/property/';
@@ -14,7 +12,7 @@ const defaultBasePropertyUri = 'http://example.com/property/';
  * The instance uri is then {EntityUri}/e{instanceIndex}. Property uris for instances are the same as corresponding schema property uris.
  */
 export function createDefaultOutputConfiguration(model: Model): OutputConfiguration {
-    const entityUris = new SafeMap<id, EntityOutputConfiguration>(
+    const entityUris = Object.fromEntries(
         model.entities().map((entity) => {
             return [
                 entity.id,
@@ -25,7 +23,7 @@ export function createDefaultOutputConfiguration(model: Model): OutputConfigurat
             ];
         })
     );
-    const propertyUris = new SafeMap<id, PropertyOutputConfiguration>(
+    const propertyUris = Object.fromEntries(
         model.properties().map((property) => {
             return [
                 property.id,
@@ -37,10 +35,10 @@ export function createDefaultOutputConfiguration(model: Model): OutputConfigurat
     );
     return {
         entities: entityUris,
-        prefixes: new SafeMap<string, string>([
-            ['ex-entity', defaultBaseEntityUri],
-            ['ex-property', defaultBasePropertyUri],
-        ]),
+        prefixes: {
+            'ex-entity': defaultBaseEntityUri,
+            'ex-property': defaultBasePropertyUri,
+        },
         properties: propertyUris,
     };
 }

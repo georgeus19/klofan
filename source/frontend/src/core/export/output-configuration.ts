@@ -1,11 +1,10 @@
-import { SafeMap } from '../safe-map';
 import { id } from '../state/schema-state';
 import { InstanceUriBuilder } from './instance-uri-identifier-mapping';
 
 export interface OutputConfiguration {
-    prefixes: SafeMap<string, string>;
-    entities: SafeMap<id, EntityOutputConfiguration>;
-    properties: SafeMap<id, PropertyOutputConfiguration>;
+    prefixes: { [key: string]: string };
+    entities: { [key: id]: EntityOutputConfiguration };
+    properties: { [key: id]: PropertyOutputConfiguration };
 }
 
 export interface EntityOutputConfiguration {
