@@ -85,7 +85,15 @@ describe('Parse Tests', () => {
                     zip: false,
                 },
             };
-            const schemaInput: SchemaEntityInput = structuredClone(instanceInput);
+            const schemaInput: SchemaEntityInput = {
+                name: 'Salad',
+                weight: null,
+                origin: {
+                    country: 'Germany',
+                    city: 'Berlin',
+                    zip: false,
+                },
+            };
             const originEntityInput: EntityInput = {
                 literal: false,
                 id: '4',

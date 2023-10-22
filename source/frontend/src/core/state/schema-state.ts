@@ -21,3 +21,7 @@ export interface SchemaState {
     entities: SafeMap<id, Entity>;
     properties: SafeMap<id, Property>;
 }
+
+export function createEmptySchemaState(): SchemaState {
+    return { entities: new SafeMap<id, Entity>(), properties: new SafeMap<id, Property>() };
+}

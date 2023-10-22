@@ -48,6 +48,10 @@ export interface TargetInstances {
     indices: number[];
 }
 
+export function CreateEmptyInstanceState(): InstanceState {
+    return { entities: new SafeMap<id, EntityInstances>(), properties: new SafeMap<id, PropertyInstance[]>() };
+}
+
 /**
  * Create key (on `InstanceState.properties`) for getting instance information of `property` on `entity`.
  */

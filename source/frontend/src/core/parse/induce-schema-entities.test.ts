@@ -59,7 +59,15 @@ describe('Parse Tests', () => {
                 },
             };
 
-            const expectedData = structuredClone(inputData);
+            const expectedData = {
+                name: 'Salad',
+                weight: 12,
+                fake: false,
+                ingredients: {
+                    name: 'tomato',
+                    weight: 13,
+                },
+            };
 
             expect(induceSchemaEntities(inputData)).toEqual(expectedData);
         });

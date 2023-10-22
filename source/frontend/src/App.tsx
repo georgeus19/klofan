@@ -1,10 +1,10 @@
-import './App.css'
+import './App.css';
+import EditorPage from './pages/editor/EditorPage';
 
-function App() {
-
-  return (
-    <></>
-  )
+export default function App() {
+    return (
+        <>
+            <EditorPage></EditorPage>
+        </>
+    );
 }
-
-export default App
