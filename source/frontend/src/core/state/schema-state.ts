@@ -1,5 +1,3 @@
-import { SafeMap } from '../safe-map';
-
 /**
  * Type for entity and property ids. Since it is primitive, it is lowercase.
  */
@@ -18,10 +16,10 @@ export interface Property {
 }
 
 export interface SchemaState {
-    entities: SafeMap<id, Entity>;
-    properties: SafeMap<id, Property>;
+    entities: { [key: id]: Entity };
+    properties: { [key: id]: Property };
 }
 
 export function createEmptySchemaState(): SchemaState {
-    return { entities: new SafeMap<id, Entity>(), properties: new SafeMap<id, Property>() };
+    return { entities: {}, properties: {} };
 }

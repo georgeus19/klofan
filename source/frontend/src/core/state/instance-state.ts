@@ -1,4 +1,3 @@
-import { SafeMap } from '../safe-map';
 import { id } from './schema-state';
 
 /**
@@ -7,7 +6,7 @@ import { id } from './schema-state';
 export type literal = string;
 
 export interface InstanceState {
-    entities: SafeMap<id, EntityInstances>;
+    entities: { [key: id]: EntityInstances };
     /**
      * Column representation of which entity instances have which properties and their values.
      * All values (arrays) have the same length - the number of instances of the corresponding schema entity (which is the source entity of the property).
@@ -18,7 +17,7 @@ export interface InstanceState {
      *  It was initially in `EntityInstances` but then adding a property requires copying of the object
      *  instead of now only adding a [key, value].
      */
-    properties: SafeMap<string, PropertyInstance[]>;
+    properties: { [key: string]: PropertyInstance[] };
 }
 
 /**
@@ -49,7 +48,7 @@ export interface TargetInstances {
 }
 
 export function CreateEmptyInstanceState(): InstanceState {
-    return { entities: new SafeMap<id, EntityInstances>(), properties: new SafeMap<id, PropertyInstance[]>() };
+    return { entities: {}, properties: {} };
 }
 
 /**

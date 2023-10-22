@@ -8,8 +8,8 @@ export function createInstanceState(entityInput: EntityInput): InstanceState {
     const entities = fillInstanceEntities(new SafeMap<id, EntityInstances>(), entityInput);
     const properties = fillInstanceProperties(new SafeMap<string, PropertyInstance[]>(), entityInput);
     return {
-        entities: entities,
-        properties: properties,
+        entities: Object.fromEntries(entities.entries()),
+        properties: Object.fromEntries(properties.entries()),
     };
 }
 

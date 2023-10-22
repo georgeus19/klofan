@@ -2,7 +2,7 @@ import { InstanceMapping } from '../instance-mapping';
 import { LiteralMapping } from '../literal-mapping';
 import { PropertyInstance, instanceKey } from '../state/instance-state';
 import { id } from '../state/schema-state';
-import { State, copyState } from '../state/state';
+import { State, copyState, safeGet } from '../state/state';
 import { Command } from './command';
 import * as _ from 'lodash';
 
@@ -24,23 +24,23 @@ export class MoveProperty implements Command {
     apply(state: State): State {
         const newState = copyState(state);
 
-        const source = structuredClone(newState.schema.entities.safeGet(this.source));
-        const target = structuredClone(newState.schema.entities.safeGet(this.target));
+        const source = structuredClone(safeGet(newState.schema.entities, this.source));
+        const target = structuredClone(safeGet(newState.schema.entities, this.target));
 
         source.properties.push(this.property);
-        newState.schema.entities.set(source.id, source);
+        newState.schema.entities[source.id] = source;
         target.properties = target.properties.filter((p) => p !== this.property);
-        newState.schema.entities.set(target.id, target);
+        newState.schema.entities[target.id] = target;
 
         const instanceProperties = this.processLiteralMapping(
             this.processInstanceMapping(
-                _.range(0, newState.instance.entities.safeGet(source.id).count).map(() => {
+                _.range(0, safeGet(newState.instance.entities, source.id).count).map(() => {
                     return {};
                 })
             )
         );
 
-        newState.instance.properties.set(instanceKey(source.id, this.property), instanceProperties);
+        newState.instance.properties[instanceKey(source.id, this.property)] = instanceProperties;
 
         return newState;
     }

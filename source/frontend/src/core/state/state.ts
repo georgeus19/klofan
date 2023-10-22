@@ -1,6 +1,5 @@
-import { SafeMap } from '../safe-map';
 import { CreateEmptyInstanceState, InstanceState } from './instance-state';
-import { createEmptySchemaState, SchemaState } from './schema-state';
+import { createEmptySchemaState, id, SchemaState } from './schema-state';
 
 export interface State {
     schema: SchemaState;
@@ -13,7 +12,15 @@ export function createEmptyState(): State {
 
 export function copyState(state: State): State {
     return {
-        schema: { entities: new SafeMap(state.schema.entities), properties: new SafeMap(state.schema.properties) },
-        instance: { entities: new SafeMap(state.instance.entities), properties: new SafeMap(state.instance.properties) },
+        schema: { entities: { ...state.schema.entities }, properties: { ...state.schema.properties } },
+        instance: { entities: { ...state.instance.entities }, properties: { ...state.instance.properties } },
     };
+}
+
+export function safeGet<V>(obj: { [key: id]: V }, key: id) {
+    if (Object.hasOwn(obj, key)) {
+        return obj[key];
+    }
+
+    throw new Error(`Key ${key} is not in ${obj}.`);
 }
