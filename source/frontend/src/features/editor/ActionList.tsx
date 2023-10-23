@@ -47,10 +47,10 @@ export default function ActionList() {
     return (
         <div className="flex gap-4 p-2 justify-center">
             <input type="file" ref={fileInput} id="import-input" hidden onChange={loadFile}></input>
-            <label htmlFor="import-input" className="p-2 rounded shadow">
+            <label htmlFor="import-input" className="p-2 rounded shadow bg-lime-100">
                 Import
             </label>
-            <button className="block p-2 rounded shadow" onClick={saveFile}>
+            <button className="block p-2 rounded shadow bg-lime-100" onClick={saveFile}>
                 Export
             </button>
         </div>
