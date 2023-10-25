@@ -190,26 +190,7 @@ function WrappedEntityDiagram({ layout, className, onModelImport }: EntityDiagra
                 markerEnd: { type: MarkerType.ArrowClosed },
             })),
         }));
-        // setNodes((previousNodes) =>
-
-        // );
-        // setEdges(() => );
     }, [model.state]);
-
-    // useLayoutEffect(() => {
-    //     let cancelled = false;
-    //     getLayoutedElements(graph.nodes, graph.edges, elkOptions).then(({ nodes, edges }) => {
-    //         if (!cancelled) {
-    //             setGraph({ nodes: nodes, edges: edges });
-    //             // setNodes(nodes);
-    //             // setEdges(edges);
-    //         }
-    //     });
-
-    //     return () => {
-    //         cancelled = true;
-    //     };
-    // }, [layout]);
 
     const onNodesChange = useCallback((changes: NodeChange[]) => setNodes((nds) => applyNodeChanges(changes, nds)), [setNodes]);
     const onEdgesChange = useCallback((changes: EdgeChange[]) => setEdges((eds) => applyEdgeChanges(changes, eds)), [setEdges]);

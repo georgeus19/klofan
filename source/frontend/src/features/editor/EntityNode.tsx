@@ -15,21 +15,13 @@ export default function EntityNode({ data, isConnectable, targetPosition = Posit
             </div>
         ));
 
-    // return (
-    //     <>
-    //         <Handle type='target' position={targetPosition} isConnectable={isConnectable} />
-    //         {'XXX'}
-    //         <Handle type='source' position={sourcePosition} isConnectable={isConnectable} />
-    //     </>
-    // );
-
     return (
         <>
             <div className='bg-slate-200 p-2 rounded shadow '>
                 <div className='flex flex-col gap-1'>{literalProperties}</div>
             </div>
-            <Handle type='target' position={targetPosition} />
-            <Handle type='source' position={sourcePosition} />
+            <Handle className='hidden' type='target' position={targetPosition} />
+            <Handle className='hidden' type='source' position={sourcePosition} />
         </>
     );
 }

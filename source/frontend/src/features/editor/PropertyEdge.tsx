@@ -37,7 +37,7 @@ export default function PropertyEdge({
 
     const { sx, sy, tx, ty, sourcePos, targetPos } = getEdgeParams(sourceNode, targetNode);
 
-    const [edgePath] = getBezierPath({
+    const [edgePath, labelX, labelY] = getBezierPath({
         sourceX: sx,
         sourceY: sy,
         sourcePosition: sourcePos,
@@ -45,8 +45,6 @@ export default function PropertyEdge({
         targetX: tx,
         targetY: ty,
     });
-
-    return <path id={id} className='react-flow__edge-path' d={edgePath} markerEnd={markerEnd} style={style} />;
 
     return (
         <>
