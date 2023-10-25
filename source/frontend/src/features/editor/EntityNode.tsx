@@ -3,7 +3,7 @@ import { Handle, Position } from 'reactflow';
 import { ModelContext } from './model';
 import { getProperties } from '../../core/state/connected';
 
-export default function EntityNode({ data }) {
+export default function EntityNode({ data, isConnectable, targetPosition = Position.Top, sourcePosition = Position.Bottom }) {
     const { model } = useContext(ModelContext);
 
     const entity = data.entity;
@@ -15,11 +15,21 @@ export default function EntityNode({ data }) {
             </div>
         ));
 
+    // return (
+    //     <>
+    //         <Handle type='target' position={targetPosition} isConnectable={isConnectable} />
+    //         {'XXX'}
+    //         <Handle type='source' position={sourcePosition} isConnectable={isConnectable} />
+    //     </>
+    // );
+
     return (
-        <div className='bg-slate-200 p-2 rounded shadow'>
-            <Handle type='target' position={Position.Top} />
-            <div className='flex flex-col gap-1'>{literalProperties}</div>
-            <Handle type='source' position={Position.Bottom} />
-        </div>
+        <>
+            <div className='bg-slate-200 p-2 rounded shadow '>
+                <div className='flex flex-col gap-1'>{literalProperties}</div>
+            </div>
+            <Handle type='target' position={targetPosition} />
+            <Handle type='source' position={sourcePosition} />
+        </>
     );
 }

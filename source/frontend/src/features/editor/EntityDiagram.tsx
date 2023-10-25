@@ -15,6 +15,7 @@ import ReactFlow, {
     XYPosition,
     Panel,
     useReactFlow,
+    ConnectionMode,
 } from 'reactflow';
 import { Model } from '../../core/state/model';
 import { useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react';
@@ -22,7 +23,7 @@ import { getProperties } from '../../core/state/connected';
 import EntityNode from './EntityNode';
 import PropertyEdge from './PropertyEdge';
 import { useEntityDiagramInstance } from './Editor';
-import ELK from 'elkjs/lib/elk.bundled.js';
+import ELK, { ElkNode } from 'elkjs/lib/elk.bundled.js';
 import { HTMLProps, useContext, useRef } from 'react';
 import { ModelContext } from './model';
 import { parseJson } from '../../core/parse/parse';
@@ -116,16 +117,30 @@ const getLayoutedElements = (nodes, edges, options = {}) => {
         children: nodes,
         edges: edges,
     };
-
+    console.log('CH', graph.children);
+    console.log('N', nodes);
+    // id: entity.id, position: nodePosition(newNodeNumber), data: { entity: entity }
     return elk
         .layout(graph)
         .then((layoutedGraph) => ({
-            nodes: layoutedGraph.children.map((node) => ({
-                ...node,
-                // React Flow expects a position property on the node instead of `x`
-                // and `y` fields.
-                position: { x: node.x, y: node.y },
-            })),
+            nodes: layoutedGraph.children
+                .map((node) => {
+                    console.log(node);
+                    return node;
+                })
+                .map((node: ElkNode) => ({
+                    ...node,
+                    position: { x: node.x, y: node.y },
+                    // id: node.id,
+                    // width: node.width,
+                    // height: node.height,
+                    // data: (node as any).data,
+                    // type: (node as any).type,
+                    // x: node.x,
+                    // y: node.y,
+                    // React Flow expects a position property on the node instead of `x`
+                    // and `y` fields.
+                })),
 
             edges: layoutedGraph.edges,
         }))
@@ -169,7 +184,11 @@ function WrappedEntityDiagram({ layout, className, onModelImport }: EntityDiagra
                     type: 'entity',
                 })
             ),
-            edges: createPropertyEdges(model).map((edge) => ({ ...edge, type: 'property', markerEnd: { type: MarkerType.ArrowClosed } })),
+            edges: createPropertyEdges(model).map((edge) => ({
+                ...edge,
+                type: 'property',
+                markerEnd: { type: MarkerType.ArrowClosed },
+            })),
         }));
         // setNodes((previousNodes) =>
 
@@ -230,13 +249,15 @@ function WrappedEntityDiagram({ layout, className, onModelImport }: EntityDiagra
             download(new File([result], 'instances.ttl', { type: 'text/turtle' }));
         });
     };
+    console.log(graph.nodes);
     return (
         <ReactFlow
             nodeTypes={nodeTypes}
             edgeTypes={edgeTypes}
             nodes={graph.nodes}
             edges={graph.edges}
-            fitView
+            // fitView
+            connectionMode={ConnectionMode.Loose}
             onNodesChange={onNodesChange}
             onEdgesChange={onEdgesChange}
             onConnect={onConnect}
@@ -248,21 +269,21 @@ function WrappedEntityDiagram({ layout, className, onModelImport }: EntityDiagra
             <Panel position='top-center' className='flex gap-2'>
                 <div className='relative group'>
                     <div className='p-2 rounded shadow bg-lime-100'>Auto Layout</div>
-                    <div className='absolute hidden group-hover:flex z-10 p-2 flex-col gap-4 bg-slate-300'>
+                    <div className='absolute hidden group-hover:flex z-10 flex-col bg-slate-300 min-w-[10rem] shadow rounded'>
                         <button
-                            className='p-2 rounded shadow bg-lime-100'
+                            className='p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
                             onClick={() => onLayout({ 'elk.algorithm': 'layered', 'elk.direction': 'DOWN' })}
                         >
                             vertical layout
                         </button>
                         <button
-                            className='p-2 rounded shadow bg-lime-100'
+                            className='p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
                             onClick={() => onLayout({ 'elk.algorithm': 'layered', 'elk.direction': 'RIGHT' })}
                         >
                             horizontal layout
                         </button>
                         <button
-                            className='p-2 rounded shadow bg-lime-100'
+                            className='p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
                             onClick={() =>
                                 onLayout({
                                     'elk.algorithm': 'org.eclipse.elk.radial',
@@ -272,7 +293,7 @@ function WrappedEntityDiagram({ layout, className, onModelImport }: EntityDiagra
                             radial layout
                         </button>
                         <button
-                            className='p-2 rounded shadow bg-lime-100'
+                            className='p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
                             onClick={() =>
                                 onLayout({
                                     'elk.algorithm': 'org.eclipse.elk.force',
