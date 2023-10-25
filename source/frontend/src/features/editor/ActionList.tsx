@@ -1,15 +1,20 @@
-import { useContext, useRef } from 'react';
+import { HTMLProps, useContext, useRef } from 'react';
 import { ModelContext } from './model';
 import { parseJson } from '../../core/parse/parse';
 import { createDefaultOutputConfiguration } from '../../core/export/default-output-configuration';
 import { exportSchema } from '../../core/export/export-schema';
 import { Writer } from 'n3';
 import { exportInstances } from '../../core/export/export-instances';
+import { twMerge } from 'tailwind-merge';
+import { State } from '../../core/state/state';
 
-export default function ActionList() {
+export interface ActionListProps extends HTMLProps<HTMLDivElement> {
+    onModelImport: (state: State) => void;
+}
+
+export default function ActionList({ className, onModelImport }: ActionListProps) {
     const fileInput = useRef<HTMLInputElement | null>(null);
-    const { model, updateModel } = useContext(ModelContext);
-    const exportDialog = useRef<HTMLDialogElement>(null);
+    const { model } = useContext(ModelContext);
 
     const loadFile = () => {
         // console.log('XXX');
@@ -21,7 +26,8 @@ export default function ActionList() {
                     // console.log(reader.result.toString());
                     const modelState = parseJson(reader.result.toString());
                     // console.log(modelState);
-                    updateModel(modelState);
+                    // updateModel(modelState);
+                    onModelImport(modelState);
                 }
             };
             reader.readAsText(file);
@@ -45,12 +51,12 @@ export default function ActionList() {
     };
 
     return (
-        <div className="flex gap-4 p-2 justify-center">
-            <input type="file" ref={fileInput} id="import-input" hidden onChange={loadFile}></input>
-            <label htmlFor="import-input" className="p-2 rounded shadow bg-lime-100">
+        <div className={twMerge('flex gap-4 p-2 justify-center', className)}>
+            <input type='file' ref={fileInput} id='import-input' hidden onChange={loadFile}></input>
+            <label htmlFor='import-input' className='p-2 rounded shadow bg-lime-100'>
                 Import
             </label>
-            <button className="block p-2 rounded shadow bg-lime-100" onClick={saveFile}>
+            <button className='block p-2 rounded shadow bg-lime-100' onClick={saveFile}>
                 Export
             </button>
         </div>

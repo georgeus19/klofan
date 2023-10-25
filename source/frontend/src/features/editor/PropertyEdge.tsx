@@ -36,9 +36,9 @@ export default function PropertyEdge({
                         // if you have an interactive element, set pointer-events: all
                         pointerEvents: 'all',
                     }}
-                    className="nodrag nopan"
+                    className='nodrag nopan'
                 >
-                    <div className="bg-slate-300 rounded p-1">{model.property(data.propertyId).name}</div>
+                    <div className='bg-slate-300 rounded p-1'>{data.property.name}</div>
                 </div>
             </EdgeLabelRenderer>
             <BaseEdge path={edgePath} markerEnd={markerEnd} style={style} />
