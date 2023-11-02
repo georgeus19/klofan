@@ -1,4 +1,4 @@
-import { State } from '../state/state';
+import { State } from '../utils/safe-get';
 
 /**
  * Interface for objects applying modifications to the state of the schema and its instances.

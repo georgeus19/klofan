@@ -1,7 +1,7 @@
-import { InstanceMapping } from '../instance-mapping';
-import { PropertyInstance, instanceKey } from '../state/instance-state';
-import { Property, id } from '../state/schema-state';
-import { State, copyState, safeGet } from '../state/state';
+import { InstanceMapping } from '../instances/transform/mapping/entityInstances/instance-mapping';
+import { InstanceProperty, instanceKey } from '../instances/representation/raw-instances';
+import { Property, identifier } from '../schema/utils/identifier';
+import { State, copyState, safeGet } from '../utils/safe-get';
 import { Command } from './command';
 import * as _ from 'lodash';
 
@@ -12,12 +12,12 @@ import * as _ from 'lodash';
  * So DO NOT use this to e.g. move property between entities!
  */
 class AddPropertyLink implements Command {
-    private source: id;
-    private target: id;
+    private source: identifier;
+    private target: identifier;
     private property: Property;
     private instanceMapping: InstanceMapping;
 
-    constructor(args: { source: id; target: id; property: Property; instanceMapping: InstanceMapping }) {
+    constructor(args: { source: identifier; target: identifier; property: Property; instanceMapping: InstanceMapping }) {
         this.source = args.source;
         this.target = args.target;
         this.property = args.property;
@@ -35,18 +35,18 @@ class AddPropertyLink implements Command {
         newState.schema.entities[source.id] = source;
 
         const instances = this.processInstanceMapping(
-            _.range(0, safeGet(newState.instance.entities, source.id).count).map(() => {
+            _.range(0, safeGet(newState.instance.entityInstances, source.id).count).map(() => {
                 return {};
             })
         );
 
-        newState.instance.properties[instanceKey(source.id, this.property.id)] = instances;
+        newState.instance.instanceProperties[instanceKey(source.id, this.property.id)] = instances;
 
         return newState;
     }
 
-    processInstanceMapping(sourceInstances: PropertyInstance[]): PropertyInstance[] {
-        return sourceInstances.map((instance, index): PropertyInstance => {
+    processInstanceMapping(sourceInstances: InstanceProperty[]): InstanceProperty[] {
+        return sourceInstances.map((instance, index): InstanceProperty => {
             const mappedInstances: number[] = this.instanceMapping.mappedInstances(index);
             if (mappedInstances.length > 0) {
                 instance.entities = {

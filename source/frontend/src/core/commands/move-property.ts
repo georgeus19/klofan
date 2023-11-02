@@ -1,19 +1,25 @@
-import { InstanceMapping } from '../instance-mapping';
-import { LiteralMapping } from '../literal-mapping';
-import { PropertyInstance, instanceKey } from '../state/instance-state';
-import { id } from '../state/schema-state';
-import { State, copyState, safeGet } from '../state/state';
+import { InstanceMapping } from '../instances/transform/mapping/entityInstances/instance-mapping';
+import { LiteralMapping } from '../instances/transform/mapping/literals/literal-mapping';
+import { InstanceProperty, instanceKey } from '../instances/representation/raw-instances';
+import { identifier } from '../schema/utils/identifier';
+import { State, copyState, safeGet } from '../utils/safe-get';
 import { Command } from './command';
 import * as _ from 'lodash';
 
 export class MoveProperty implements Command {
-    private source: id;
-    private target: id;
-    private property: id;
+    private source: identifier;
+    private target: identifier;
+    private property: identifier;
     private instanceMapping: InstanceMapping;
     private literalMapping: LiteralMapping;
 
-    constructor(args: { source: id; target: id; property: id; instanceMapping: InstanceMapping; literalMapping: LiteralMapping }) {
+    constructor(args: {
+        source: identifier;
+        target: identifier;
+        property: identifier;
+        instanceMapping: InstanceMapping;
+        literalMapping: LiteralMapping;
+    }) {
         this.source = args.source;
         this.target = args.target;
         this.property = args.property;
@@ -34,19 +40,19 @@ export class MoveProperty implements Command {
 
         const instanceProperties = this.processLiteralMapping(
             this.processInstanceMapping(
-                _.range(0, safeGet(newState.instance.entities, source.id).count).map(() => {
+                _.range(0, safeGet(newState.instance.entityInstances, source.id).count).map(() => {
                     return {};
                 })
             )
         );
 
-        newState.instance.properties[instanceKey(source.id, this.property)] = instanceProperties;
+        newState.instance.instanceProperties[instanceKey(source.id, this.property)] = instanceProperties;
 
         return newState;
     }
 
-    processInstanceMapping(sourceInstances: PropertyInstance[]): PropertyInstance[] {
-        return sourceInstances.map((instance, index): PropertyInstance => {
+    processInstanceMapping(sourceInstances: InstanceProperty[]): InstanceProperty[] {
+        return sourceInstances.map((instance, index): InstanceProperty => {
             const mappedInstances: number[] = this.instanceMapping.mappedInstances(index);
             if (mappedInstances.length > 0) {
                 instance.entities = {
@@ -58,7 +64,7 @@ export class MoveProperty implements Command {
         });
     }
 
-    processLiteralMapping(sourceInstances: PropertyInstance[]): PropertyInstance[] {
+    processLiteralMapping(sourceInstances: InstanceProperty[]): InstanceProperty[] {
         return sourceInstances.map((instance, index) => {
             const mappedLiterals = this.literalMapping.mappedLiterals(index);
             if (mappedLiterals.length > 0) {
