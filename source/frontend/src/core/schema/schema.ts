@@ -6,6 +6,7 @@ import { Relation } from './representation/relation/relation';
 import { RawSchema } from './representation/raw-schema';
 import { Entity, isEntity } from './representation/item/entity';
 import { Literal, isLiteral } from './representation/item/literal';
+import { Transformation } from './transform/transformations/transformation';
 
 export class Schema {
     constructor(private schema: RawSchema) {}
@@ -38,6 +39,18 @@ export class Schema {
         return safeGet(this.schema.items, id);
     }
 
+    hasItem(id: identifier): boolean {
+        return Object.hasOwn(this.schema.items, id);
+    }
+
+    hasEntity(id: identifier): boolean {
+        if (!this.hasItem(id)) {
+            return false;
+        }
+
+        return isEntity(this.item(id));
+    }
+
     entity(id: identifier): Entity {
         const item = this.item(id);
         if (isEntity(item)) {
@@ -60,6 +73,10 @@ export class Schema {
         return safeGet(this.schema.relations, id);
     }
 
+    hasRelation(id: identifier): boolean {
+        return Object.hasOwn(this.schema.relations, id);
+    }
+
     property(id: identifier): Property {
         const relation = this.relation(id);
         if (isProperty(relation)) {
@@ -69,7 +86,7 @@ export class Schema {
         throw new Error(`Relation ${id} does not reference property`);
     }
 
-    transform(transformation: SchemaTransformation): Schema {
+    transform(transformation: Transformation): Schema {
         throw new Error('Method not implemented.');
     }
 }

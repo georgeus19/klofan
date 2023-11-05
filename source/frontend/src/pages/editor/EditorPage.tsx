@@ -1,4 +1,4 @@
-import Editor from '../../features/editor/Editor';
+import Editor from '../../features/editor';
 import Header from '../../features/header/Header';
 
 /**
@@ -11,7 +11,7 @@ function EditorPage() {
                 <Header className='max-w-7xl m-auto'></Header>
             </div>
 
-            <Editor className='flex flex-col grow bg-slate-600'></Editor>
+            <Editor></Editor>
         </div>
     );
 }

@@ -1,35 +1,10 @@
-import { useCallback, useContext } from 'react';
+import { useCallback } from 'react';
 import { BaseEdge, EdgeLabelRenderer, EdgeProps, getBezierPath, useStore } from 'reactflow';
-import { ModelContext } from './model';
 import { getEdgeParams } from './utils';
 
-export default function PropertyEdge({
-    id,
-    data,
-    sourceX,
-    source,
-    sourceY,
-    target,
-    targetX,
-    targetY,
-    sourcePosition,
-    targetPosition,
-    style = {},
-    markerEnd,
-}: EdgeProps) {
-    const { model } = useContext(ModelContext);
-    // const [edgePath, labelX, labelY] = getBezierPath({
-    //     sourceX,
-    //     sourceY,
-    //     sourcePosition,
-    //     targetX,
-    //     targetY,
-    //     targetPosition,
-    // });
-
+export default function PropertyEdge({ data, source, target, style = {}, markerEnd }: EdgeProps) {
     const sourceNode = useStore(useCallback((store) => store.nodeInternals.get(source), [source]));
     const targetNode = useStore(useCallback((store) => store.nodeInternals.get(target), [target]));
-    console.log('SN', sourceNode);
 
     if (!sourceNode || !targetNode) {
         return null;
@@ -60,7 +35,7 @@ export default function PropertyEdge({
                     }}
                     className='nodrag nopan'
                 >
-                    <div className='bg-slate-300 rounded p-1'>{data.property.name}</div>
+                    <div className='bg-slate-300 rounded p-1'>{data.name}</div>
                 </div>
             </EdgeLabelRenderer>
             <BaseEdge path={edgePath} markerEnd={markerEnd} style={style} />
