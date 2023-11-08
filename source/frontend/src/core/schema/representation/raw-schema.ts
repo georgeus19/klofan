@@ -1,10 +1,10 @@
 import { Item } from './item/item';
 import { identifier } from '../utils/identifier';
-import { Property } from './relation/property';
+import { Relation } from './relation/relation';
 
 export interface RawSchema {
     items: { [key: identifier]: Item };
-    relations: { [key: identifier]: Property };
+    relations: { [key: identifier]: Relation };
 }
 
 export function copySchema(schema: RawSchema): RawSchema {

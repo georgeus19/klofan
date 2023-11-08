@@ -1,10 +1,11 @@
 import { identifier } from '../../../schema/utils/identifier';
-import { SchemaTree } from './schema-tree';
+import { SchemaTreeNode } from './schema-tree';
 import { getNewId } from '../../../utils/identifier-generator';
 import { Tree, isPrimitiveType, primitiveType } from '../tree';
 
-export interface EntityTree {
+export interface EntityTreeNode {
     literal: boolean;
+    name: string;
     id: identifier;
     properties: { [key: identifier]: PropertyInfo };
     instanceCount: number;
@@ -12,7 +13,7 @@ export interface EntityTree {
 
 export interface PropertyInfo {
     id: identifier;
-    targetEntity: EntityTree;
+    targetEntity: EntityTreeNode;
     instances: { literals: primitiveType[]; instances: number }[];
 }
 
@@ -20,24 +21,29 @@ export interface PropertyInfo {
  * Takes tree like instances(data) and their schema and merges them so that schema entity can reference easily the underlying data.
  * Also adds ids to schema entities and properties.
  */
-export function createEntityTree(instanceInput: Tree, schemaInput: SchemaTree): EntityTree {
-    const entityInput = convertToEntityInput(schemaInput);
-    const { instances } = parseInstances(fillInstancestoEntityInput(instanceInput, entityInput));
-    entityInput.instanceCount += instances;
-    return entityInput;
+export function createEntityTree(instanceTree: Tree, schemaTree: SchemaTreeNode): EntityTreeNode {
+    const entityTree = convertToEntityTree(schemaTree);
+    entityTree.name = 'root';
+    const { instances } = parseInstances(fillInstancestoEntityTree(instanceTree, entityTree));
+    entityTree.instanceCount += instances;
+    return entityTree;
 }
 
-function convertToEntityInput(schemaInput: SchemaTree): EntityTree {
-    if (isPrimitiveType(schemaInput)) {
+function convertToEntityTree(schemaTree: SchemaTreeNode): EntityTreeNode {
+    if (isPrimitiveType(schemaTree)) {
         return {
             id: getNewId(),
             literal: true,
+            name: '',
             properties: {},
             instanceCount: 0,
         };
     } else {
         const id = getNewId();
-        const propertyTargets = Object.entries(schemaInput).map(([key, value]): [identifier, EntityTree] => [key, convertToEntityInput(value)]);
+        const propertyTargets = Object.entries(schemaTree).map(([propertyName, targetSchemaNode]): [identifier, EntityTreeNode] => [
+            propertyName,
+            { ...convertToEntityTree(targetSchemaNode), name: propertyName },
+        ]);
         const properties = Object.fromEntries(
             propertyTargets.map(([propertyName, targetEntity]) => [
                 propertyName,
@@ -50,6 +56,7 @@ function convertToEntityInput(schemaInput: SchemaTree): EntityTree {
         );
         return {
             id: id,
+            name: '',
             literal: false,
             properties: properties,
             instanceCount: 0,
@@ -57,16 +64,16 @@ function convertToEntityInput(schemaInput: SchemaTree): EntityTree {
     }
 }
 
-function fillInstancestoEntityInput(input: Tree, entityInput: EntityTree): (object | primitiveType)[] {
-    if (isPrimitiveType(input)) {
-        return [input];
-    } else if (Array.isArray(input)) {
-        return input.map((instance) => fillInstancestoEntityInput(instance, entityInput)).flat();
+function fillInstancestoEntityTree(instanceTree: Tree, entityTree: EntityTreeNode): (object | primitiveType)[] {
+    if (isPrimitiveType(instanceTree)) {
+        return [instanceTree];
+    } else if (Array.isArray(instanceTree)) {
+        return instanceTree.map((instance) => fillInstancestoEntityTree(instance, entityTree)).flat();
     } else {
-        Object.entries(entityInput.properties).forEach(([property, propertyInfo]) => {
-            if (Object.hasOwn(input, property)) {
+        Object.entries(entityTree.properties).forEach(([property, propertyInfo]) => {
+            if (Object.hasOwn(instanceTree, property)) {
                 const { literals, instances } = parseInstances(
-                    fillInstancestoEntityInput(input[property as keyof typeof input], propertyInfo.targetEntity)
+                    fillInstancestoEntityTree(instanceTree[property as keyof typeof instanceTree], propertyInfo.targetEntity)
                 );
 
                 propertyInfo.instances.push({ literals: literals, instances: instances });

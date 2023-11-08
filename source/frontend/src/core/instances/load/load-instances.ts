@@ -4,11 +4,11 @@ import { instanceKey } from '../representation/raw-instances';
 import { EntityInstances } from '../representation/entity-instances';
 import { identifier } from '../../schema/utils/identifier';
 import { InMemoryInstanceReader } from '../in-memory-instance-reader';
-import { EntityTree } from '../../parse/tree/entity-tree/entity-tree';
+import { EntityTreeNode } from '../../parse/tree/entity-tree/entity-tree';
 import _ from 'lodash';
 import { Literal } from '../representation/literal';
 
-export function loadInstances(entityTree: EntityTree): Instances {
+export function loadInstances(entityTree: EntityTreeNode): Instances {
     const entities = fillInstanceEntities({}, entityTree);
     const properties = fillInstanceProperties({}, entityTree);
     return new InMemoryInstanceReader({
@@ -17,7 +17,10 @@ export function loadInstances(entityTree: EntityTree): Instances {
     });
 }
 
-function fillInstanceProperties(properties: { [key: string]: InstanceProperty[] }, entityTree: EntityTree): { [key: string]: InstanceProperty[] } {
+function fillInstanceProperties(
+    properties: { [key: string]: InstanceProperty[] },
+    entityTree: EntityTreeNode
+): { [key: string]: InstanceProperty[] } {
     Object.values(entityTree.properties).forEach((propertyInfo) => {
         let targetInstanceIndex = 0;
 
@@ -52,7 +55,7 @@ function fillInstanceProperties(properties: { [key: string]: InstanceProperty[] 
     return properties;
 }
 
-function fillInstanceEntities(entities: { [key: identifier]: EntityInstances }, entityTree: EntityTree): { [key: identifier]: EntityInstances } {
+function fillInstanceEntities(entities: { [key: identifier]: EntityInstances }, entityTree: EntityTreeNode): { [key: identifier]: EntityInstances } {
     entities[entityTree.id] = { count: entityTree.instanceCount };
     Object.values(entityTree.properties).forEach((propertyInfo) => {
         fillInstanceEntities(entities, propertyInfo.targetEntity);

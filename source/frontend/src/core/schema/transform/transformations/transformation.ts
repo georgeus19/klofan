@@ -1,6 +1,5 @@
-export type transformationType = 'add-entity';
+import { UpdateEntity } from './update-entity';
+import { UpdateItem } from './update-item';
+import { UpdateRelation } from './update-relation';
 
-export interface Transformation {
-    type: transformationType;
-    data: unknown;
-}
+export type Transformation = UpdateEntity | UpdateItem | UpdateRelation;

@@ -4,6 +4,6 @@ export type itemType = 'entity' | 'literal';
 
 export interface Item {
     id: identifier;
-    name?: string;
+    name: string;
     type: itemType;
 }

@@ -1,6 +1,6 @@
 import { Tree, isNotPrimitiveType, isPrimitiveType, primitiveType } from '../tree';
 
-export type SchemaTree = object | primitiveType;
+export type SchemaTreeNode = object | primitiveType;
 
 /**
  * Creates schema for tree like data - link to another level is only object property. Recursive arrays are perceived as flattened values on the level below where
@@ -10,7 +10,7 @@ export type SchemaTree = object | primitiveType;
  * If the arrays on given level have at least one object/entity, the result is object with properties of all objects in the array.
  * It the arrays on given level have only literals, the result is null - it is written as value of some property.
  */
-export function inferSchemaTree(input: Tree): SchemaTree {
+export function inferSchemaTree(input: Tree): SchemaTreeNode {
     if (isPrimitiveType(input)) {
         return input;
     } else if (Array.isArray(input)) {

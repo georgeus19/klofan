@@ -14,6 +14,8 @@ import ReactFlow, {
     applyNodeChanges,
     MarkerType,
     BackgroundVariant,
+    ReactFlowProvider,
+    useReactFlow,
 } from 'reactflow';
 import { Item as SchemaItem } from '../core/schema/representation/item/item';
 import { identifier } from '../core/schema/utils/identifier';
@@ -25,7 +27,7 @@ import { parseCsv } from '../core/parse/csv/parse-csv';
 import { Entity, getProperties, isEntity } from '../core/schema/representation/item/entity';
 import { toProperty } from '../core/schema/representation/relation/graph-property';
 import EntityNode from './entity-node';
-import { SchemaContextProvider } from './schema-context-provider';
+import { SchemaContextProvider } from './schema-context';
 import PropertyEdge from './property-edge';
 import { isProperty } from '../core/schema/representation/relation/property';
 import { FileLoader } from './file-loader';
@@ -35,6 +37,10 @@ import { FileSaver } from './file-saver';
 import { Writer } from 'n3';
 import { saveAsDataSchema } from '../core/schema/save/data-schema/save';
 import 'reactflow/dist/style.css';
+import { EntityNodeEventHandlerContextProvider } from './entity-node-event-handler-context';
+import { EntityNodeEventHandler } from './entity-node-event-handler';
+import { Transformation } from '../core/schema/transform/transformations/transformation';
+import { EntityDetail } from './entity-detail';
 
 export interface SchemaNode2<T> {
     diagram: ReactFlowNode<T>;
@@ -97,7 +103,9 @@ export default function Editor({ className }: HTMLProps<HTMLDivElement>) {
     const [schemaNodes, setSchemaNodes] = useState<SchemaNode[]>([]);
     const [schemaEdges, setSchemaEdges] = useState<SchemaEdge[]>([]);
     const [rawSchema, setSchema] = useState<RawSchema>({ items: {}, relations: {} });
+    const [rightSideMenuArguments, setRightSideMenuArguments] = useState<{ type: string; value: unknown }>({ type: 'none', value: null });
     const schema = new Schema(rawSchema);
+    const { fitView } = useReactFlow();
 
     const onNodesChange = useCallback((changes: NodeChange[]) => setSchemaNodes((nds) => applyNodeChanges(changes, nds)), [setSchemaNodes]);
     const onEdgesChange = useCallback(
@@ -135,7 +143,8 @@ export default function Editor({ className }: HTMLProps<HTMLDivElement>) {
         layoutNodes(schemaNodes, schemaEdges).then((schemaNodes: SchemaNode[]) => {
             setSchemaNodes(schemaNodes);
 
-            // window.requestAnimationFrame(() => fitView());
+            // fitView();
+            window.requestAnimationFrame(() => fitView());
         });
     };
 
@@ -155,67 +164,107 @@ export default function Editor({ className }: HTMLProps<HTMLDivElement>) {
         // });
     };
 
+    const entityNodeEventHandler: EntityNodeEventHandler = {
+        onNodeClick: (entity: Entity) => {
+            setRightSideMenuArguments({ type: 'entity-detail', value: entity });
+        },
+        onPropertyClick: (property: Property) => {},
+    };
+
+    const updateSchema = (transformations: Transformation[]) => {
+        const newSchema = schema.transform(transformations);
+        console.log('newSchema', newSchema);
+        setSchema(newSchema.raw());
+        setSchemaNodes((nodes) => updateEntityNodes(nodes, newSchema));
+        setSchemaEdges((edges) =>
+            updatePropertyEdges(edges, newSchema).map((edge) => {
+                edge.markerEnd = { type: MarkerType.ArrowClosed, color: '#91BF95' };
+                edge.style = {
+                    strokeWidth: 3,
+                    stroke: '#91BF95',
+                };
+                return edge;
+            })
+        );
+    };
+
     return (
-        <SchemaContextProvider schema={schema}>
-            <div className='grow flex'>
-                <div className='bg-slate-100 grow'>
-                    <ReactFlow
-                        nodeTypes={nodeTypes}
-                        edgeTypes={edgeTypes}
-                        nodes={schemaNodes}
-                        edges={schemaEdges}
-                        // fitView
-                        // connectionMode={ConnectionMode.Loose}
-                        onNodesChange={onNodesChange}
-                        onEdgesChange={onEdgesChange}
-                        onConnect={onConnect}
-                    >
-                        <Controls />
-                        <MiniMap />
-                        <Background variant={BackgroundVariant.Dots} gap={12} size={1} />
-                        <Panel position='top-center' className='flex gap-2'>
-                            <div className='relative group'>
-                                <div className='p-2 rounded shadow bg-lime-100'>Auto Layout</div>
-                                <div className='absolute hidden group-hover:flex z-10 flex-col bg-slate-300 min-w-[10rem] shadow rounded'>
-                                    <button
-                                        className='p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
-                                        onClick={() => onLayout(downHierarchyLayoutNodes)}
-                                    >
-                                        vertical layout
-                                    </button>
-                                    <button
-                                        className='p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
-                                        onClick={() => onLayout(rightHierarchyLayoutNodes)}
-                                    >
-                                        horizontal layout
-                                    </button>
-                                    <button className='p-2 rounded shadow bg-lime-100 hover:bg-lime-200' onClick={() => onLayout(radialLayoutNodes)}>
-                                        radial layout
-                                    </button>
-                                    <button className='p-2 rounded shadow bg-lime-100 hover:bg-lime-200' onClick={() => onLayout(forceLayoutNodes)}>
-                                        force layout
-                                    </button>
+        <SchemaContextProvider schema={schema} updateSchema={updateSchema}>
+            <EntityNodeEventHandlerContextProvider eventHandler={entityNodeEventHandler}>
+                <div className='grow flex'>
+                    <div className='bg-slate-100 grow'>
+                        <ReactFlow
+                            nodeTypes={nodeTypes}
+                            edgeTypes={edgeTypes}
+                            nodes={schemaNodes}
+                            edges={schemaEdges}
+                            // fitView
+                            // connectionMode={ConnectionMode.Loose}
+                            onNodesChange={onNodesChange}
+                            onEdgesChange={onEdgesChange}
+                            onConnect={onConnect}
+                            elementsSelectable={true}
+                            onSelect={(event) => {
+                                console.log('SELECT', event);
+                            }}
+                        >
+                            <Controls />
+                            <MiniMap />
+                            <Background variant={BackgroundVariant.Dots} gap={12} size={1} />
+                            <Panel position='top-center' className='flex gap-2'>
+                                <div className='relative group'>
+                                    <div className='p-2 rounded shadow bg-lime-100'>Auto Layout</div>
+                                    <div className='absolute hidden group-hover:flex z-10 flex-col bg-slate-300 min-w-[10rem] shadow rounded'>
+                                        <button
+                                            className='p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
+                                            onClick={() => onLayout(downHierarchyLayoutNodes)}
+                                        >
+                                            vertical layout
+                                        </button>
+                                        <button
+                                            className='p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
+                                            onClick={() => onLayout(rightHierarchyLayoutNodes)}
+                                        >
+                                            horizontal layout
+                                        </button>
+                                        <button
+                                            className='p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
+                                            onClick={() => onLayout(radialLayoutNodes)}
+                                        >
+                                            radial layout
+                                        </button>
+                                        <button
+                                            className='p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
+                                            onClick={() => onLayout(forceLayoutNodes)}
+                                        >
+                                            force layout
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                            <FileLoader className='p-2 rounded shadow bg-lime-100' onFileLoad={onImport}>
-                                Import
-                            </FileLoader>
-                            <div className='relative group'>
-                                <div className='p-2 rounded shadow bg-lime-100'>Export</div>
-                                <div className='absolute hidden group-hover:flex z-10 flex-col bg-slate-300 min-w-[10rem] shadow rounded'>
-                                    <FileSaver className='block p-2 rounded shadow bg-lime-100 hover:bg-lime-200' onFileSave={onSchemaExport}>
-                                        Schema
-                                    </FileSaver>
-                                    <FileSaver className='block p-2 rounded shadow bg-lime-100 hover:bg-lime-200' onFileSave={onInstancesExport}>
-                                        Instances
-                                    </FileSaver>
+                                <FileLoader className='p-2 rounded shadow bg-lime-100' onFileLoad={onImport}>
+                                    Import
+                                </FileLoader>
+                                <div className='relative group'>
+                                    <div className='p-2 rounded shadow bg-lime-100'>Export</div>
+                                    <div className='absolute hidden group-hover:flex z-10 flex-col bg-slate-300 min-w-[10rem] shadow rounded'>
+                                        <FileSaver className='block p-2 rounded shadow bg-lime-100 hover:bg-lime-200' onFileSave={onSchemaExport}>
+                                            Schema
+                                        </FileSaver>
+                                        <FileSaver className='block p-2 rounded shadow bg-lime-100 hover:bg-lime-200' onFileSave={onInstancesExport}>
+                                            Instances
+                                        </FileSaver>
+                                    </div>
                                 </div>
-                            </div>
-                        </Panel>
-                    </ReactFlow>
+                            </Panel>
+                        </ReactFlow>
+                    </div>
+                    <div className='relative w-96'>
+                        <div className='bg-slate-200 absolute top-0 bottom-0 overflow-y-auto'>
+                            {rightSideMenuArguments.type === 'entity-detail' && <EntityDetail entity={rightSideMenuArguments.value}></EntityDetail>}
+                        </div>
+                    </div>
                 </div>
-                <div className='w-96 bg-slate-200'>ccc</div>
-            </div>
+            </EntityNodeEventHandlerContextProvider>
         </SchemaContextProvider>
     );
 }

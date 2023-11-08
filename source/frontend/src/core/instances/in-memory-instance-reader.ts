@@ -15,7 +15,7 @@ export class InMemoryInstanceReader implements Instances {
         return Promise.resolve(safeGet(this.instances.instanceProperties, instanceKey(entityId, propertyId)));
     }
 
-    transform(transformation: Transformation): Promise<Instances> {
+    transform(transformations: Transformation[]): Promise<Instances> {
         throw new Error('Method not implemented.');
     }
 }
