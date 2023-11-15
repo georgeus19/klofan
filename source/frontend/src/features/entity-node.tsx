@@ -4,10 +4,18 @@ import { Entity, getProperties } from '../core/schema/representation/item/entity
 import { isLiteral } from '../core/schema/representation/item/literal';
 import { useEntityNodeEventHandlerContext } from './entity-node-event-handler-context';
 import { twMerge } from 'tailwind-merge';
+import { useNodeSelectionContext } from './editor';
 
-export default function EntityNode({ data: entity, selected, targetPosition = Position.Top, sourcePosition = Position.Bottom }: NodeProps<Entity>) {
+export default function EntityNode({
+    id,
+    data: entity,
+    selected,
+    targetPosition = Position.Top,
+    sourcePosition = Position.Bottom,
+}: NodeProps<Entity>) {
     const { schema } = useSchemaContext();
     const { eventHandler } = useEntityNodeEventHandlerContext();
+    const { selectedNode, selectedStyle } = useNodeSelectionContext();
     if (!schema.hasEntity(entity.id)) {
         return <></>;
     }
@@ -24,10 +32,11 @@ export default function EntityNode({ data: entity, selected, targetPosition = Po
         eventHandler.onNodeClick(entity);
     };
 
-    const selectedStyle = selected ? 'bg-yellow-200' : '';
+    const diagramSelectedStyle = selected ? 'border border-black' : '';
+    const style = id === selectedNode?.id ? selectedStyle : '';
     return (
         <>
-            <div className={twMerge('bg-slate-200 p-2 rounded shadow', selectedStyle)} onClick={onNodeClick}>
+            <div className={twMerge('bg-slate-200 p-2 rounded shadow', diagramSelectedStyle, style)} onClick={onNodeClick}>
                 <div>{entity.name}</div>
                 <div className='flex flex-col gap-1'>{literalProperties}</div>
             </div>

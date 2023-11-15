@@ -1,6 +1,6 @@
 import { ReactNode, useState } from 'react';
-import triangleDown from '../assets/triangle-down.png';
-import triangleRight from '../assets/triangle-right.png';
+import triangleDown from '../../assets/triangle-down.png';
+import triangleRight from '../../assets/triangle-right.png';
 import { twMerge } from 'tailwind-merge';
 
 export interface DetailDropdownProps {

@@ -1,4 +1,4 @@
-import { StandaloneInput } from './standalone-input';
+import { StandaloneInput } from '../standalone-input';
 
 export interface DetailLabelValueItemProps {
     initialValue: string;

@@ -1,4 +1,4 @@
-import { HTMLProps, useCallback, useMemo, useState } from 'react';
+import { HTMLProps, createContext, useCallback, useContext, useMemo, useState } from 'react';
 import ReactFlow, {
     Background,
     Controls,
@@ -14,8 +14,8 @@ import ReactFlow, {
     applyNodeChanges,
     MarkerType,
     BackgroundVariant,
-    ReactFlowProvider,
     useReactFlow,
+    NodeSelectionChange,
 } from 'reactflow';
 import { Item as SchemaItem } from '../core/schema/representation/item/item';
 import { identifier } from '../core/schema/utils/identifier';
@@ -29,7 +29,7 @@ import { toProperty } from '../core/schema/representation/relation/graph-propert
 import EntityNode from './entity-node';
 import { SchemaContextProvider } from './schema-context';
 import PropertyEdge from './property-edge';
-import { isProperty } from '../core/schema/representation/relation/property';
+import { Property, isProperty } from '../core/schema/representation/relation/property';
 import { FileLoader } from './file-loader';
 import { downHierarchyLayoutNodes, forceLayoutNodes, radialLayoutNodes, rightHierarchyLayoutNodes } from './layout';
 import { isLiteral } from '../core/schema/representation/item/literal';
@@ -40,14 +40,15 @@ import 'reactflow/dist/style.css';
 import { EntityNodeEventHandlerContextProvider } from './entity-node-event-handler-context';
 import { EntityNodeEventHandler } from './entity-node-event-handler';
 import { Transformation } from '../core/schema/transform/transformations/transformation';
-import { EntityDetail } from './entity-detail';
+import { RightSideBar, ShowComponent } from './right-side-bar/right-side-bar';
+import { RightSideActionContextProvider } from './right-side-bar/right-side-action-context';
 
 export interface SchemaNode2<T> {
     diagram: ReactFlowNode<T>;
     schema: SchemaItem;
 }
 
-export type SchemaNode = ReactFlowNode<SchemaItem, identifier>;
+export type SchemaNode = ReactFlowNode<Entity, identifier>;
 export type EntityNode = ReactFlowNode<Entity, identifier>;
 
 export type SchemaEdge = ReactFlowEdge<SchemaRelation> & { data: SchemaRelation };
@@ -60,7 +61,7 @@ function updateEntityNodes(schemaNodes: SchemaNode[], schema: Schema): SchemaNod
     const newNodes: EntityNode[] = schema
         .entities()
         .filter((item) => !nodeIds.has(item.id))
-        .map((item) => ({ id: item.id, position: { x: 0, y: 0 }, data: item }));
+        .map((item) => ({ id: item.id, position: { x: 0, y: 100 }, data: item }));
     const updatedNodes: EntityNode[] = schemaNodes
         .filter((node) => schema.hasEntity(node.data.id))
         .map((node) => ({ ...node, id: schema.entity(node.data.id).id, data: schema.entity(node.data.id) }));
@@ -99,15 +100,62 @@ function updatePropertyEdges(schemaEdges: SchemaEdge[], schema: Schema): SchemaE
     return [...notPropertyEdges, ...propertyEdges];
 }
 
+export interface NodeSelection {
+    selectedNode: EntityNode | null;
+    selectedStyle: string;
+    enableSelectedStyle: () => void;
+    disableSelectedStyle: () => void;
+    addSelectedNode: (node: EntityNode) => void;
+    clearSelectedNode: () => void;
+}
+
+export type NodeSelectionContext = NodeSelection;
+
+export const NodeSelectionContext = createContext<NodeSelectionContext | null>(null);
+
+export function NodeSelectionContextProvider({ children, nodeSelection }: { children: React.ReactNode; nodeSelection: NodeSelection }) {
+    return <NodeSelectionContext.Provider value={nodeSelection}>{children}</NodeSelectionContext.Provider>;
+}
+
+export function useNodeSelectionContext(): NodeSelectionContext {
+    const context = useContext(NodeSelectionContext);
+    if (!context) {
+        throw new Error('useNodeSelectionContext must be used in NodeSelectionContextProvider!');
+    }
+
+    return context;
+}
+
+export function useNodeSelection(): NodeSelection {
+    const [selectedNode, setSelectedNode] = useState<SchemaNode | null>(null);
+    const [selectedStyle, setSelectedStyle] = useState<string>('');
+
+    const addSelectedNode = useCallback((node: SchemaNode) => setSelectedNode(node), []);
+    const clearSelectedNode = useCallback(() => setSelectedNode(null), []);
+    const enableSelectedStyle = useCallback(() => setSelectedStyle('bg-yellow-200'), []);
+    const disableSelectedStyle = useCallback(() => setSelectedStyle(''), []);
+
+    return { selectedNode, clearSelectedNode, addSelectedNode, selectedStyle, enableSelectedStyle, disableSelectedStyle };
+}
+
 export default function Editor({ className }: HTMLProps<HTMLDivElement>) {
     const [schemaNodes, setSchemaNodes] = useState<SchemaNode[]>([]);
     const [schemaEdges, setSchemaEdges] = useState<SchemaEdge[]>([]);
     const [rawSchema, setSchema] = useState<RawSchema>({ items: {}, relations: {} });
-    const [rightSideMenuArguments, setRightSideMenuArguments] = useState<{ type: string; value: unknown }>({ type: 'none', value: null });
+    // Add locking mechanism - so that when creating a property, it cannot e.g. change to entity detail!
+    const [rightSideBarShowComponent, setRightSideBarShowComponent] = useState<ShowComponent>({ type: 'show-blank' });
+    const [locked, setLocked] = useState(false);
     const schema = new Schema(rawSchema);
     const { fitView } = useReactFlow();
+    const nodeSelection = useNodeSelection();
 
-    const onNodesChange = useCallback((changes: NodeChange[]) => setSchemaNodes((nds) => applyNodeChanges(changes, nds)), [setSchemaNodes]);
+    const onNodesChange = useCallback(
+        (changes: NodeChange[]) => {
+            setSchemaNodes((nds) => applyNodeChanges(changes, nds));
+        },
+
+        [setSchemaNodes, rawSchema, locked, nodeSelection, schemaNodes]
+    );
     const onEdgesChange = useCallback(
         (changes: EdgeChange[]) => setSchemaEdges((eds) => applyEdgeChanges(changes, eds) as unknown as SchemaEdge[]),
         [setSchemaEdges]
@@ -126,6 +174,7 @@ export default function Editor({ className }: HTMLProps<HTMLDivElement>) {
         const { schema } = file.type === 'application/json' ? parseJson(file.content) : parseCsv(file.content);
 
         setSchema(schema.raw());
+        setRightSideBarShowComponent({ type: 'show-blank' });
         setSchemaNodes((nodes) => updateEntityNodes(nodes, schema));
         setSchemaEdges((edges) =>
             updatePropertyEdges(edges, schema).map((edge) => {
@@ -166,7 +215,16 @@ export default function Editor({ className }: HTMLProps<HTMLDivElement>) {
 
     const entityNodeEventHandler: EntityNodeEventHandler = {
         onNodeClick: (entity: Entity) => {
-            setRightSideMenuArguments({ type: 'entity-detail', value: entity });
+            // const nodeSelectionChange = changes.find<NodeSelectionChange>((change): change is NodeSelectionChange => change.type === 'select');
+            const selectedNode = schemaNodes.find((node) => node.id === entity.id);
+            if (selectedNode) {
+                nodeSelection.addSelectedNode(selectedNode);
+                console.log('locked', locked);
+                if (!locked) {
+                    setRightSideBarShowComponent({ type: 'show-entity-detail', entity: schema.entity(selectedNode.id) });
+                }
+            }
+            // setRightSideBarShowComponent({ type: 'show-entity-detail', entity: entity });
         },
         onPropertyClick: (property: Property) => {},
     };
@@ -191,79 +249,128 @@ export default function Editor({ className }: HTMLProps<HTMLDivElement>) {
     return (
         <SchemaContextProvider schema={schema} updateSchema={updateSchema}>
             <EntityNodeEventHandlerContextProvider eventHandler={entityNodeEventHandler}>
-                <div className='grow flex'>
-                    <div className='bg-slate-100 grow'>
-                        <ReactFlow
-                            nodeTypes={nodeTypes}
-                            edgeTypes={edgeTypes}
-                            nodes={schemaNodes}
-                            edges={schemaEdges}
-                            // fitView
-                            // connectionMode={ConnectionMode.Loose}
-                            onNodesChange={onNodesChange}
-                            onEdgesChange={onEdgesChange}
-                            onConnect={onConnect}
-                            elementsSelectable={true}
-                            onSelect={(event) => {
-                                console.log('SELECT', event);
-                            }}
-                        >
-                            <Controls />
-                            <MiniMap />
-                            <Background variant={BackgroundVariant.Dots} gap={12} size={1} />
-                            <Panel position='top-center' className='flex gap-2'>
-                                <div className='relative group'>
-                                    <div className='p-2 rounded shadow bg-lime-100'>Auto Layout</div>
-                                    <div className='absolute hidden group-hover:flex z-10 flex-col bg-slate-300 min-w-[10rem] shadow rounded'>
-                                        <button
-                                            className='p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
-                                            onClick={() => onLayout(downHierarchyLayoutNodes)}
-                                        >
-                                            vertical layout
-                                        </button>
-                                        <button
-                                            className='p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
-                                            onClick={() => onLayout(rightHierarchyLayoutNodes)}
-                                        >
-                                            horizontal layout
-                                        </button>
-                                        <button
-                                            className='p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
-                                            onClick={() => onLayout(radialLayoutNodes)}
-                                        >
-                                            radial layout
-                                        </button>
-                                        <button
-                                            className='p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
-                                            onClick={() => onLayout(forceLayoutNodes)}
-                                        >
-                                            force layout
-                                        </button>
-                                    </div>
-                                </div>
-                                <FileLoader className='p-2 rounded shadow bg-lime-100' onFileLoad={onImport}>
-                                    Import
-                                </FileLoader>
-                                <div className='relative group'>
-                                    <div className='p-2 rounded shadow bg-lime-100'>Export</div>
-                                    <div className='absolute hidden group-hover:flex z-10 flex-col bg-slate-300 min-w-[10rem] shadow rounded'>
-                                        <FileSaver className='block p-2 rounded shadow bg-lime-100 hover:bg-lime-200' onFileSave={onSchemaExport}>
-                                            Schema
-                                        </FileSaver>
-                                        <FileSaver className='block p-2 rounded shadow bg-lime-100 hover:bg-lime-200' onFileSave={onInstancesExport}>
-                                            Instances
-                                        </FileSaver>
-                                    </div>
-                                </div>
-                            </Panel>
-                        </ReactFlow>
-                    </div>
-                    <div className='relative w-96'>
-                        <div className='bg-slate-200 absolute top-0 bottom-0 overflow-y-auto'>
-                            {rightSideMenuArguments.type === 'entity-detail' && <EntityDetail entity={rightSideMenuArguments.value}></EntityDetail>}
+                <RightSideActionContextProvider
+                    onActionDone={() => {
+                        setRightSideBarShowComponent({ type: 'show-blank' });
+                        nodeSelection.enableSelectedStyle();
+                        setLocked(false);
+                    }}
+                    showMoveProperty={(entity: Entity, property: Property) => {
+                        if (schema.hasEntity(property.value)) {
+                            setRightSideBarShowComponent({ type: 'show-move-entity-property', entity: entity, property: property });
+                            setLocked(true);
+                            nodeSelection.disableSelectedStyle();
+                            nodeSelection.clearSelectedNode();
+                        } else {
+                            setRightSideBarShowComponent({ type: 'show-move-literal-property', entity: entity, property: property });
+                            setLocked(true);
+                            nodeSelection.disableSelectedStyle();
+                            nodeSelection.clearSelectedNode();
+                        }
+                    }}
+                >
+                    <NodeSelectionContextProvider nodeSelection={nodeSelection}>
+                        <div className='grow flex'>
+                            <div className='bg-slate-100 grow'>
+                                <ReactFlow
+                                    nodeTypes={nodeTypes}
+                                    edgeTypes={edgeTypes}
+                                    nodes={schemaNodes}
+                                    edges={schemaEdges}
+                                    // fitView
+                                    // connectionMode={ConnectionMode.Loose}
+                                    onNodesChange={onNodesChange}
+                                    onEdgesChange={onEdgesChange}
+                                    onConnect={onConnect}
+                                    elementsSelectable={true}
+                                    onSelect={(event) => {
+                                        console.log('SELECT', event);
+                                    }}
+                                >
+                                    <Controls />
+                                    <MiniMap />
+                                    <Background variant={BackgroundVariant.Dots} gap={12} size={1} />
+                                    <Panel position='top-center' className='flex gap-2'>
+                                        <div className='relative group'>
+                                            <div className='p-2 rounded shadow bg-lime-100'>Auto Layout</div>
+                                            <div className='absolute hidden group-hover:flex z-10 flex-col bg-slate-300 min-w-[10rem] shadow rounded'>
+                                                <button
+                                                    className='p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
+                                                    onClick={() => onLayout(downHierarchyLayoutNodes)}
+                                                >
+                                                    vertical layout
+                                                </button>
+                                                <button
+                                                    className='p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
+                                                    onClick={() => onLayout(rightHierarchyLayoutNodes)}
+                                                >
+                                                    horizontal layout
+                                                </button>
+                                                <button
+                                                    className='p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
+                                                    onClick={() => onLayout(radialLayoutNodes)}
+                                                >
+                                                    radial layout
+                                                </button>
+                                                <button
+                                                    className='p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
+                                                    onClick={() => onLayout(forceLayoutNodes)}
+                                                >
+                                                    force layout
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div className='relative group'>
+                                            <div className='p-2 rounded shadow bg-lime-100'>Create</div>
+                                            <div className='absolute hidden group-hover:flex z-10 flex-col bg-slate-300 min-w-[10rem] shadow rounded'>
+                                                <button
+                                                    className='p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
+                                                    onClick={() => setRightSideBarShowComponent({ type: 'show-create-entity' })}
+                                                >
+                                                    entity
+                                                </button>
+                                                <button
+                                                    className='p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
+                                                    onClick={() => {
+                                                        setRightSideBarShowComponent({ type: 'show-create-property' });
+                                                        setLocked(true);
+                                                        nodeSelection.disableSelectedStyle();
+                                                        nodeSelection.clearSelectedNode();
+                                                    }}
+                                                >
+                                                    property
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <FileLoader className='p-2 rounded shadow bg-lime-100' onFileLoad={onImport}>
+                                            Import
+                                        </FileLoader>
+                                        <div className='relative group'>
+                                            <div className='p-2 rounded shadow bg-lime-100'>Export</div>
+                                            <div className='absolute hidden group-hover:flex z-10 flex-col bg-slate-300 min-w-[10rem] shadow rounded'>
+                                                <FileSaver
+                                                    className='block p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
+                                                    onFileSave={onSchemaExport}
+                                                >
+                                                    Schema
+                                                </FileSaver>
+                                                <FileSaver
+                                                    className='block p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
+                                                    onFileSave={onInstancesExport}
+                                                >
+                                                    Instances
+                                                </FileSaver>
+                                            </div>
+                                        </div>
+                                    </Panel>
+                                </ReactFlow>
+                            </div>
+                            <RightSideBar showComponent={rightSideBarShowComponent}></RightSideBar>
                         </div>
-                    </div>
-                </div>
+                    </NodeSelectionContextProvider>
+                </RightSideActionContextProvider>
             </EntityNodeEventHandlerContextProvider>
         </SchemaContextProvider>
     );

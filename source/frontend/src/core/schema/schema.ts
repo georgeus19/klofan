@@ -7,9 +7,7 @@ import { RawSchema, copySchema } from './representation/raw-schema';
 import { Entity, isEntity } from './representation/item/entity';
 import { Literal, isLiteral } from './representation/item/literal';
 import { Transformation } from './transform/transformations/transformation';
-import { updateItem } from './transform/transformations/update-item';
-import { updateEntity } from './transform/transformations/update-entity';
-import { updateRelation } from './transform/transformations/update-relation';
+import { applyTransformation } from './transform/apply-transformation';
 
 export class Schema {
     constructor(private schema: RawSchema) {}
@@ -92,19 +90,7 @@ export class Schema {
     transform(transformations: Transformation[]): Schema {
         const newSchema = copySchema(this.schema);
         for (const transformation of transformations) {
-            switch (transformation.type) {
-                case 'update-item':
-                    updateItem(newSchema, transformation);
-                    break;
-                case 'update-entity':
-                    updateEntity(newSchema, transformation);
-                    break;
-                case 'update-relation':
-                    updateRelation(newSchema, transformation);
-                    break;
-                default:
-                    throw new Error(`Transformation ${JSON.stringify(transformation)} is not supported.`);
-            }
+            applyTransformation(newSchema, transformation);
         }
         return new Schema(newSchema);
     }

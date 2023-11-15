@@ -1,16 +1,17 @@
 import { useState } from 'react';
-import { Entity, getProperties } from '../core/schema/representation/item/entity';
-import { useSchemaContext } from './schema-context';
-import { createUpdateItemNameTransformation } from '../core/transform/item-transformation-factory';
+import { Entity, getProperties, isEntity } from '../../core/schema/representation/item/entity';
+import { useSchemaContext } from '../schema-context';
+import { createUpdateItemNameTransformation } from '../../core/transform/item-transformation-factory';
 
 import { DetailLabelValueItem } from './detail-label-value-item';
-import { createUpdateEntityUriTransformation } from '../core/transform/entity-transformation-factory';
+import { createUpdateEntityUriTransformation } from '../../core/transform/entity-transformation-factory';
 import { DetailDropdown } from './detail-dropdown';
-import { createUpdateRelationNameTransformation } from '../core/transform/relation-transformation-factory';
-import { createUpdatePropertyUriTransformation } from '../core/transform/property-transformation-factory';
-import { isLiteral } from '../core/schema/representation/item/literal';
-import { GraphProperty } from '../core/schema/representation/relation/graph-property';
-import { StandaloneInput } from './standalone-input';
+import { createUpdateRelationNameTransformation } from '../../core/transform/relation-transformation-factory';
+import { createUpdatePropertyUriTransformation } from '../../core/transform/property-transformation-factory';
+import { isLiteral } from '../../core/schema/representation/item/literal';
+import { GraphProperty, toProperty } from '../../core/schema/representation/relation/graph-property';
+import { StandaloneInput } from '../standalone-input';
+import { useRightSideActionContext } from './right-side-action-context';
 
 export interface EntityDetailProps {
     entity: Entity;
@@ -20,9 +21,11 @@ export function EntityDetail({ entity }: EntityDetailProps) {
     const [showProperties, setShowProperties] = useState(false);
     const [showInstances, setShowInstances] = useState(false);
 
+    const { showMoveProperty } = useRightSideActionContext();
+
     const { schema, updateSchema } = useSchemaContext();
     const properties = getProperties(schema, entity.id);
-    console.log('entity', entity);
+    // console.log('entity', entity);
 
     const handleEntityNameChange = (name: string) => {
         const transformation = createUpdateItemNameTransformation(schema, entity.id, name);
@@ -64,6 +67,7 @@ export function EntityDetail({ entity }: EntityDetailProps) {
                     updateSchema(transformation.schemaTransformations);
                 }}
             ></DetailLabelValueItem>
+            <button onClick={() => showMoveProperty(entity, toProperty(property))}>Move property</button>
         </li>
     );
 

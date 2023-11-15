@@ -10,9 +10,10 @@ export interface UpdateEntity {
 }
 
 export function updateEntity(schema: RawSchema, transformation: UpdateEntity) {
-    if (new Schema(schema).hasEntity(transformation.data.entity.id)) {
-        schema.items[transformation.data.entity.id] = transformation.data.entity;
+    console.log('updateEntity', schema);
+    if (!new Schema(schema).hasEntity(transformation.data.entity.id)) {
+        throw new Error(`Entity ${transformation.data.entity.id} cannot be updated because it is not in schema.`);
     }
 
-    throw new Error(`Entity ${transformation.data.entity.id} cannot be updated because it is not in schema.`);
+    schema.items[transformation.data.entity.id] = transformation.data.entity;
 }

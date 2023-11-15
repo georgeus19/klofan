@@ -1,9 +1,8 @@
 import { useCallback } from 'react';
 import { BaseEdge, EdgeLabelRenderer, EdgeProps, getBezierPath, useStore } from 'reactflow';
 import { getEdgeParams } from './utils';
-import { twMerge } from 'tailwind-merge';
 
-export default function PropertyEdge({ data, source, target, style = {}, selected, markerEnd }: EdgeProps) {
+export default function PropertyEdge({ data, source, target, style = {}, markerEnd }: EdgeProps) {
     const sourceNode = useStore(useCallback((store) => store.nodeInternals.get(source), [source]));
     const targetNode = useStore(useCallback((store) => store.nodeInternals.get(target), [target]));
 
@@ -22,8 +21,6 @@ export default function PropertyEdge({ data, source, target, style = {}, selecte
         targetY: ty,
     });
 
-    const selectedStyle = selected ? 'bg-yellow-200' : '';
-
     return (
         <>
             <EdgeLabelRenderer>
@@ -38,7 +35,7 @@ export default function PropertyEdge({ data, source, target, style = {}, selecte
                     }}
                     className='nodrag nopan'
                 >
-                    <div className={twMerge('bg-slate-300 rounded p-1', selectedStyle)}>{data.name}</div>
+                    <div className={'bg-slate-300 rounded p-1'}>{data.name}</div>
                 </div>
             </EdgeLabelRenderer>
             <BaseEdge path={edgePath} markerEnd={markerEnd} style={style} />
