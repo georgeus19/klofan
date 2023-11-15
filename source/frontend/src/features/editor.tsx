@@ -128,7 +128,7 @@ export function useNodeSelectionContext(): NodeSelectionContext {
 
 export function useNodeSelection(): NodeSelection {
     const [selectedNode, setSelectedNode] = useState<SchemaNode | null>(null);
-    const [selectedStyle, setSelectedStyle] = useState<string>('');
+    const [selectedStyle, setSelectedStyle] = useState<string>('bg-yellow-200');
 
     const addSelectedNode = useCallback((node: SchemaNode) => setSelectedNode(node), []);
     const clearSelectedNode = useCallback(() => setSelectedNode(null), []);

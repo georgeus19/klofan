@@ -67,7 +67,12 @@ export function EntityDetail({ entity }: EntityDetailProps) {
                     updateSchema(transformation.schemaTransformations);
                 }}
             ></DetailLabelValueItem>
-            <button onClick={() => showMoveProperty(entity, toProperty(property))}>Move property</button>
+            <button
+                className='col-span-2 p-1 rounded shadow bg-lime-100 hover:bg-lime-200'
+                onClick={() => showMoveProperty(entity, toProperty(property))}
+            >
+                Move
+            </button>
         </li>
     );
 

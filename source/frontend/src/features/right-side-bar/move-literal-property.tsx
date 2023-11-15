@@ -48,6 +48,17 @@ export function MoveLiteralProperty({ entity, property }: MoveLiteralPropertyPro
             <div className='p-2 text-center font-bold bg-slate-300'>Move Property</div>
             <div>
                 <div className='grid grid-cols-12 px-3 py-1'>
+                    <label className='col-span-4'>Property</label>
+                    <input
+                        className='col-span-8 rounded bg-transparent border-2 border-slate-400 px-1'
+                        type='text'
+                        readOnly
+                        value={`${entity.name}.${property.name}`}
+                    />
+                </div>
+            </div>
+            <div>
+                <div className='grid grid-cols-12 px-3 py-1'>
                     <label className='col-span-4'>Source</label>
                     <input
                         className='col-span-6 rounded bg-transparent border-2 border-slate-400 px-1'
