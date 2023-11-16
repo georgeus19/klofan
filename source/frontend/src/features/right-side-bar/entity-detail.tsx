@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Entity, getProperties, isEntity } from '../../core/schema/representation/item/entity';
+import { useEffect, useState } from 'react';
+import { Entity, getProperties } from '../../core/schema/representation/item/entity';
 import { useSchemaContext } from '../schema-context';
 import { createUpdateItemNameTransformation } from '../../core/transform/item-transformation-factory';
 
@@ -10,22 +10,32 @@ import { createUpdateRelationNameTransformation } from '../../core/transform/rel
 import { createUpdatePropertyUriTransformation } from '../../core/transform/property-transformation-factory';
 import { isLiteral } from '../../core/schema/representation/item/literal';
 import { GraphProperty, toProperty } from '../../core/schema/representation/relation/graph-property';
-import { StandaloneInput } from '../standalone-input';
 import { useRightSideActionContext } from './right-side-action-context';
+import { useInstancesContext } from '../instances-context';
+import { EntityInstances } from '../../core/instances/entity-instances';
+import { identifier } from '../../core/schema/utils/identifier';
 
 export interface EntityDetailProps {
     entity: Entity;
 }
 
 export function EntityDetail({ entity }: EntityDetailProps) {
-    const [showProperties, setShowProperties] = useState(false);
-    const [showInstances, setShowInstances] = useState(false);
+    const [entityInstances, setEntityInstances] = useState<EntityInstances>([]);
+    const [entityInstanceForEntity, setEntityInstanceForEntity] = useState<identifier>(entity.id);
 
     const { showMoveProperty } = useRightSideActionContext();
 
     const { schema, updateSchema } = useSchemaContext();
+    const { instances } = useInstancesContext();
     const properties = getProperties(schema, entity.id);
-    // console.log('entity', entity);
+
+    useEffect(() => {
+        instances.entityInstances(entity).then((entityInstances) => {
+            setEntityInstances(entityInstances);
+            setEntityInstanceForEntity(entity.id);
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [entity]);
 
     const handleEntityNameChange = (name: string) => {
         const transformation = createUpdateItemNameTransformation(schema, entity.id, name);
@@ -49,15 +59,6 @@ export function EntityDetail({ entity }: EntityDetailProps) {
                     updateSchema(transformation.schemaTransformations);
                 }}
             ></DetailLabelValueItem>
-            {/* <StandaloneInput
-                id={`${property.id}name`}
-                className='col-span-8 rounded bg-transparent border-2 border-slate-400 px-1 focus:bg-yellow-200'
-                initialValue={property.name}
-                onChangeDone={(name: string) => {
-                    const transformation = createUpdateRelationNameTransformation(schema, property.id, name);
-                    updateSchema(transformation.schemaTransformations);
-                }}
-            ></StandaloneInput> */}
             <DetailLabelValueItem
                 id={`${property.id}uri`}
                 label='Uri'
@@ -106,16 +107,46 @@ export function EntityDetail({ entity }: EntityDetailProps) {
                 </DetailDropdown>
             </DetailDropdown>
 
-            <div>
-                <div onClick={() => setShowInstances((prev) => !prev)}>Instances</div>
-                {showInstances && (
-                    <ul>
-                        <li>A</li>
-                        <li>B</li>
-                        <li>C</li>
-                    </ul>
-                )}
-            </div>
+            {entityInstanceForEntity === entity.id && (
+                <DetailDropdown headerLabel='Instance' showInitially={false}>
+                    <div className='flex flex-col'>
+                        {entityInstances.map((entityInstance, instanceIndex) => {
+                            return (
+                                <DetailDropdown className='mx-2' headerLabel={`${entity.name}.${instanceIndex}`} showInitially={false}>
+                                    <div className='mx-4 grid grid-cols-3 items-center gap-1'>
+                                        <div className='bg-slate-300 overflow-auto p-2 text-center'>
+                                            {entity.name}.{instanceIndex}
+                                        </div>
+                                        {properties
+                                            .filter(
+                                                (property) =>
+                                                    entityInstance[property.id].literals.length > 0 ||
+                                                    entityInstance[property.id].targetInstanceIndices.length > 0
+                                            )
+                                            .map((property) => {
+                                                return (
+                                                    <>
+                                                        <div className='col-start-2 overflow-auto p-2 bg-slate-300 text-center'>{property.name}</div>
+                                                        {entityInstance[property.id].literals.map((literal) => (
+                                                            <div className='col-start-3 overflow-auto p-2 bg-blue-200 text-center'>
+                                                                "{literal.value}"
+                                                            </div>
+                                                        ))}
+                                                        {entityInstance[property.id].targetInstanceIndices.map((targetInstanceIndex) => (
+                                                            <div className='col-start-3 overflow-auto p-2 bg-purple-200 text-center'>
+                                                                {property.value.name}.{targetInstanceIndex}
+                                                            </div>
+                                                        ))}
+                                                    </>
+                                                );
+                                            })}
+                                    </div>
+                                </DetailDropdown>
+                            );
+                        })}
+                    </div>
+                </DetailDropdown>
+            )}
         </div>
     );
 }

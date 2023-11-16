@@ -15,7 +15,6 @@ import ReactFlow, {
     MarkerType,
     BackgroundVariant,
     useReactFlow,
-    NodeSelectionChange,
 } from 'reactflow';
 import { Item as SchemaItem } from '../core/schema/representation/item/item';
 import { identifier } from '../core/schema/utils/identifier';
@@ -42,6 +41,11 @@ import { EntityNodeEventHandler } from './entity-node-event-handler';
 import { Transformation } from '../core/schema/transform/transformations/transformation';
 import { RightSideBar, ShowComponent } from './right-side-bar/right-side-bar';
 import { RightSideActionContextProvider } from './right-side-bar/right-side-action-context';
+import { RawInstances } from '../core/instances/representation/raw-instances';
+import { InMemoryInstances } from '../core/instances/in-memory-instances';
+import { InstancesContextProvider } from './instances-context';
+import { save } from '../core/instances/save/save';
+import { IdentityEntityInstanceUriBuilder } from '../core/instances/save/uri-builders/identity-instance-uri-builder';
 
 export interface SchemaNode2<T> {
     diagram: ReactFlowNode<T>;
@@ -142,10 +146,12 @@ export default function Editor({ className }: HTMLProps<HTMLDivElement>) {
     const [schemaNodes, setSchemaNodes] = useState<SchemaNode[]>([]);
     const [schemaEdges, setSchemaEdges] = useState<SchemaEdge[]>([]);
     const [rawSchema, setSchema] = useState<RawSchema>({ items: {}, relations: {} });
-    // Add locking mechanism - so that when creating a property, it cannot e.g. change to entity detail!
+    const [rawInstances, setInstances] = useState<RawInstances>({ entityInstances: {}, instanceProperties: {} });
     const [rightSideBarShowComponent, setRightSideBarShowComponent] = useState<ShowComponent>({ type: 'show-blank' });
+    // Add locking mechanism - so that when creating a property, it cannot e.g. change to entity detail!
     const [locked, setLocked] = useState(false);
     const schema = new Schema(rawSchema);
+    const instances = new InMemoryInstances(rawInstances);
     const { fitView } = useReactFlow();
     const nodeSelection = useNodeSelection();
 
@@ -171,9 +177,10 @@ export default function Editor({ className }: HTMLProps<HTMLDivElement>) {
     );
 
     const onImport = (file: { content: string; type: string }) => {
-        const { schema } = file.type === 'application/json' ? parseJson(file.content) : parseCsv(file.content);
+        const { schema, instances } = file.type === 'application/json' ? parseJson(file.content) : parseCsv(file.content);
 
         setSchema(schema.raw());
+        setInstances(instances.raw());
         setRightSideBarShowComponent({ type: 'show-blank' });
         setSchemaNodes((nodes) => updateEntityNodes(nodes, schema));
         setSchemaEdges((edges) =>
@@ -192,25 +199,35 @@ export default function Editor({ className }: HTMLProps<HTMLDivElement>) {
         layoutNodes(schemaNodes, schemaEdges).then((schemaNodes: SchemaNode[]) => {
             setSchemaNodes(schemaNodes);
 
-            // fitView();
-            window.requestAnimationFrame(() => fitView());
+            window.requestAnimationFrame(() => fitView({ duration: 1 }));
         });
     };
 
     const onSchemaExport = (download: (file: File) => void) => {
         const writer = new Writer();
-        saveAsDataSchema(schema, { defaultEntityUri: 'http://example/entity', defaultPropertyUri: 'http://example/property' }, writer);
+        saveAsDataSchema(schema, { defaultEntityUri: 'http://example.com/entity', defaultPropertyUri: 'http://example.com/property' }, writer);
         writer.end((error, result: string) => {
             download(new File([result], 'schema.ttl', { type: 'text/turtle' }));
         });
     };
 
     const onInstancesExport = (download: (file: File) => void) => {
-        // const writer = new Writer();
-        // save(instances, schema, {defaultPropertyUri: 'http://example/property', entityInstanceUriBuilders}, writer);
-        // writer2.end((error, result: string) => {
-        //     download(new File([result], 'instances.ttl', { type: 'text/turtle' }));
-        // });
+        const writer = new Writer();
+        const entityInstanceUriBuilders = Object.fromEntries(
+            schema
+                .entities()
+                .map((entity) => [entity.id, new IdentityEntityInstanceUriBuilder(entity.uri ?? `http://example.com/entity/${entity.name}`)])
+        );
+        save(
+            instances,
+            schema,
+            { defaultPropertyUri: 'http://example.com/property', entityInstanceUriBuilders: entityInstanceUriBuilders },
+            writer
+        ).then(() => {
+            writer.end((error, result: string) => {
+                download(new File([result], 'instances.ttl', { type: 'text/turtle' }));
+            });
+        });
     };
 
     const entityNodeEventHandler: EntityNodeEventHandler = {
@@ -248,130 +265,132 @@ export default function Editor({ className }: HTMLProps<HTMLDivElement>) {
 
     return (
         <SchemaContextProvider schema={schema} updateSchema={updateSchema}>
-            <EntityNodeEventHandlerContextProvider eventHandler={entityNodeEventHandler}>
-                <RightSideActionContextProvider
-                    onActionDone={() => {
-                        setRightSideBarShowComponent({ type: 'show-blank' });
-                        nodeSelection.enableSelectedStyle();
-                        setLocked(false);
-                    }}
-                    showMoveProperty={(entity: Entity, property: Property) => {
-                        if (schema.hasEntity(property.value)) {
-                            setRightSideBarShowComponent({ type: 'show-move-entity-property', entity: entity, property: property });
-                            setLocked(true);
-                            nodeSelection.disableSelectedStyle();
-                            nodeSelection.clearSelectedNode();
-                        } else {
-                            setRightSideBarShowComponent({ type: 'show-move-literal-property', entity: entity, property: property });
-                            setLocked(true);
-                            nodeSelection.disableSelectedStyle();
-                            nodeSelection.clearSelectedNode();
-                        }
-                    }}
-                >
-                    <NodeSelectionContextProvider nodeSelection={nodeSelection}>
-                        <div className='grow flex'>
-                            <div className='bg-slate-100 grow'>
-                                <ReactFlow
-                                    nodeTypes={nodeTypes}
-                                    edgeTypes={edgeTypes}
-                                    nodes={schemaNodes}
-                                    edges={schemaEdges}
-                                    // fitView
-                                    // connectionMode={ConnectionMode.Loose}
-                                    onNodesChange={onNodesChange}
-                                    onEdgesChange={onEdgesChange}
-                                    onConnect={onConnect}
-                                    elementsSelectable={true}
-                                    onSelect={(event) => {
-                                        console.log('SELECT', event);
-                                    }}
-                                >
-                                    <Controls />
-                                    <MiniMap />
-                                    <Background variant={BackgroundVariant.Dots} gap={12} size={1} />
-                                    <Panel position='top-center' className='flex gap-2'>
-                                        <div className='relative group'>
-                                            <div className='p-2 rounded shadow bg-lime-100'>Auto Layout</div>
-                                            <div className='absolute hidden group-hover:flex z-10 flex-col bg-slate-300 min-w-[10rem] shadow rounded'>
-                                                <button
-                                                    className='p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
-                                                    onClick={() => onLayout(downHierarchyLayoutNodes)}
-                                                >
-                                                    vertical layout
-                                                </button>
-                                                <button
-                                                    className='p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
-                                                    onClick={() => onLayout(rightHierarchyLayoutNodes)}
-                                                >
-                                                    horizontal layout
-                                                </button>
-                                                <button
-                                                    className='p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
-                                                    onClick={() => onLayout(radialLayoutNodes)}
-                                                >
-                                                    radial layout
-                                                </button>
-                                                <button
-                                                    className='p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
-                                                    onClick={() => onLayout(forceLayoutNodes)}
-                                                >
-                                                    force layout
-                                                </button>
+            <InstancesContextProvider instances={instances}>
+                <EntityNodeEventHandlerContextProvider eventHandler={entityNodeEventHandler}>
+                    <RightSideActionContextProvider
+                        onActionDone={() => {
+                            setRightSideBarShowComponent({ type: 'show-blank' });
+                            nodeSelection.enableSelectedStyle();
+                            setLocked(false);
+                        }}
+                        showMoveProperty={(entity: Entity, property: Property) => {
+                            if (schema.hasEntity(property.value)) {
+                                setRightSideBarShowComponent({ type: 'show-move-entity-property', entity: entity, property: property });
+                                setLocked(true);
+                                nodeSelection.disableSelectedStyle();
+                                nodeSelection.clearSelectedNode();
+                            } else {
+                                setRightSideBarShowComponent({ type: 'show-move-literal-property', entity: entity, property: property });
+                                setLocked(true);
+                                nodeSelection.disableSelectedStyle();
+                                nodeSelection.clearSelectedNode();
+                            }
+                        }}
+                    >
+                        <NodeSelectionContextProvider nodeSelection={nodeSelection}>
+                            <div className='grow flex'>
+                                <div className='bg-slate-100 grow'>
+                                    <ReactFlow
+                                        nodeTypes={nodeTypes}
+                                        edgeTypes={edgeTypes}
+                                        nodes={schemaNodes}
+                                        edges={schemaEdges}
+                                        // fitView
+                                        // connectionMode={ConnectionMode.Loose}
+                                        onNodesChange={onNodesChange}
+                                        onEdgesChange={onEdgesChange}
+                                        onConnect={onConnect}
+                                        elementsSelectable={true}
+                                        onSelect={(event) => {
+                                            console.log('SELECT', event);
+                                        }}
+                                    >
+                                        <Controls />
+                                        <MiniMap />
+                                        <Background variant={BackgroundVariant.Dots} gap={12} size={1} />
+                                        <Panel position='top-center' className='flex gap-2'>
+                                            <div className='relative group'>
+                                                <div className='p-2 rounded shadow bg-lime-100'>Auto Layout</div>
+                                                <div className='absolute hidden group-hover:flex z-10 flex-col bg-slate-300 min-w-[10rem] shadow rounded'>
+                                                    <button
+                                                        className='p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
+                                                        onClick={() => onLayout(downHierarchyLayoutNodes)}
+                                                    >
+                                                        vertical layout
+                                                    </button>
+                                                    <button
+                                                        className='p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
+                                                        onClick={() => onLayout(rightHierarchyLayoutNodes)}
+                                                    >
+                                                        horizontal layout
+                                                    </button>
+                                                    <button
+                                                        className='p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
+                                                        onClick={() => onLayout(radialLayoutNodes)}
+                                                    >
+                                                        radial layout
+                                                    </button>
+                                                    <button
+                                                        className='p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
+                                                        onClick={() => onLayout(forceLayoutNodes)}
+                                                    >
+                                                        force layout
+                                                    </button>
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <div className='relative group'>
-                                            <div className='p-2 rounded shadow bg-lime-100'>Create</div>
-                                            <div className='absolute hidden group-hover:flex z-10 flex-col bg-slate-300 min-w-[10rem] shadow rounded'>
-                                                <button
-                                                    className='p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
-                                                    onClick={() => setRightSideBarShowComponent({ type: 'show-create-entity' })}
-                                                >
-                                                    entity
-                                                </button>
-                                                <button
-                                                    className='p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
-                                                    onClick={() => {
-                                                        setRightSideBarShowComponent({ type: 'show-create-property' });
-                                                        setLocked(true);
-                                                        nodeSelection.disableSelectedStyle();
-                                                        nodeSelection.clearSelectedNode();
-                                                    }}
-                                                >
-                                                    property
-                                                </button>
+                                            <div className='relative group'>
+                                                <div className='p-2 rounded shadow bg-lime-100'>Create</div>
+                                                <div className='absolute hidden group-hover:flex z-10 flex-col bg-slate-300 min-w-[10rem] shadow rounded'>
+                                                    <button
+                                                        className='p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
+                                                        onClick={() => setRightSideBarShowComponent({ type: 'show-create-entity' })}
+                                                    >
+                                                        entity
+                                                    </button>
+                                                    <button
+                                                        className='p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
+                                                        onClick={() => {
+                                                            setRightSideBarShowComponent({ type: 'show-create-property' });
+                                                            setLocked(true);
+                                                            nodeSelection.disableSelectedStyle();
+                                                            nodeSelection.clearSelectedNode();
+                                                        }}
+                                                    >
+                                                        property
+                                                    </button>
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <FileLoader className='p-2 rounded shadow bg-lime-100' onFileLoad={onImport}>
-                                            Import
-                                        </FileLoader>
-                                        <div className='relative group'>
-                                            <div className='p-2 rounded shadow bg-lime-100'>Export</div>
-                                            <div className='absolute hidden group-hover:flex z-10 flex-col bg-slate-300 min-w-[10rem] shadow rounded'>
-                                                <FileSaver
-                                                    className='block p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
-                                                    onFileSave={onSchemaExport}
-                                                >
-                                                    Schema
-                                                </FileSaver>
-                                                <FileSaver
-                                                    className='block p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
-                                                    onFileSave={onInstancesExport}
-                                                >
-                                                    Instances
-                                                </FileSaver>
+                                            <FileLoader className='p-2 rounded shadow bg-lime-100' onFileLoad={onImport}>
+                                                Import
+                                            </FileLoader>
+                                            <div className='relative group'>
+                                                <div className='p-2 rounded shadow bg-lime-100'>Export</div>
+                                                <div className='absolute hidden group-hover:flex z-10 flex-col bg-slate-300 min-w-[10rem] shadow rounded'>
+                                                    <FileSaver
+                                                        className='block p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
+                                                        onFileSave={onSchemaExport}
+                                                    >
+                                                        Schema
+                                                    </FileSaver>
+                                                    <FileSaver
+                                                        className='block p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
+                                                        onFileSave={onInstancesExport}
+                                                    >
+                                                        Instances
+                                                    </FileSaver>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </Panel>
-                                </ReactFlow>
+                                        </Panel>
+                                    </ReactFlow>
+                                </div>
+                                <RightSideBar showComponent={rightSideBarShowComponent}></RightSideBar>
                             </div>
-                            <RightSideBar showComponent={rightSideBarShowComponent}></RightSideBar>
-                        </div>
-                    </NodeSelectionContextProvider>
-                </RightSideActionContextProvider>
-            </EntityNodeEventHandlerContextProvider>
+                        </NodeSelectionContextProvider>
+                    </RightSideActionContextProvider>
+                </EntityNodeEventHandlerContextProvider>
+            </InstancesContextProvider>
         </SchemaContextProvider>
     );
 }

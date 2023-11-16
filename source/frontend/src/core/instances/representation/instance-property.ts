@@ -9,6 +9,7 @@ export interface InstanceProperty {
     literals: Literal[];
 }
 
+// *OLD version
 // export type propertyType = 'literalLink' | 'entityLink';
 
 // export interface InstanceProperty {

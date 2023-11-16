@@ -3,7 +3,7 @@ import { InstanceProperty } from '../representation/instance-property';
 import { instanceKey } from '../representation/raw-instances';
 import { EntityInstances } from '../representation/entity-instances';
 import { identifier } from '../../schema/utils/identifier';
-import { InMemoryInstanceReader } from '../in-memory-instance-reader';
+import { InMemoryInstances } from '../in-memory-instances';
 import { EntityTreeNode } from '../../parse/tree/entity-tree/entity-tree';
 import _ from 'lodash';
 import { Literal } from '../representation/literal';
@@ -11,7 +11,7 @@ import { Literal } from '../representation/literal';
 export function loadInstances(entityTree: EntityTreeNode): Instances {
     const entities = fillInstanceEntities({}, entityTree);
     const properties = fillInstanceProperties({}, entityTree);
-    return new InMemoryInstanceReader({
+    return new InMemoryInstances({
         entityInstances: entities,
         instanceProperties: properties,
     });
