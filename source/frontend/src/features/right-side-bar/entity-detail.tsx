@@ -12,7 +12,7 @@ import { isLiteral } from '../../core/schema/representation/item/literal';
 import { GraphProperty, toProperty } from '../../core/schema/representation/relation/graph-property';
 import { useRightSideActionContext } from './right-side-action-context';
 import { useInstancesContext } from '../instances-context';
-import { EntityInstances } from '../../core/instances/entity-instances';
+import { EntityInstance } from '../../core/instances/entity-instances';
 import { identifier } from '../../core/schema/utils/identifier';
 
 export interface EntityDetailProps {
@@ -20,7 +20,7 @@ export interface EntityDetailProps {
 }
 
 export function EntityDetail({ entity }: EntityDetailProps) {
-    const [entityInstances, setEntityInstances] = useState<EntityInstances>([]);
+    const [entityInstances, setEntityInstances] = useState<EntityInstance[]>([]);
     const [entityInstanceForEntity, setEntityInstanceForEntity] = useState<identifier>(entity.id);
 
     const { showMoveProperty } = useRightSideActionContext();
@@ -120,19 +120,19 @@ export function EntityDetail({ entity }: EntityDetailProps) {
                                         {properties
                                             .filter(
                                                 (property) =>
-                                                    entityInstance[property.id].literals.length > 0 ||
-                                                    entityInstance[property.id].targetInstanceIndices.length > 0
+                                                    entityInstance.properties[property.id].literals.length > 0 ||
+                                                    entityInstance.properties[property.id].targetInstanceIndices.length > 0
                                             )
                                             .map((property) => {
                                                 return (
                                                     <>
                                                         <div className='col-start-2 overflow-auto p-2 bg-slate-300 text-center'>{property.name}</div>
-                                                        {entityInstance[property.id].literals.map((literal) => (
+                                                        {entityInstance.properties[property.id].literals.map((literal) => (
                                                             <div className='col-start-3 overflow-auto p-2 bg-blue-200 text-center'>
                                                                 "{literal.value}"
                                                             </div>
                                                         ))}
-                                                        {entityInstance[property.id].targetInstanceIndices.map((targetInstanceIndex) => (
+                                                        {entityInstance.properties[property.id].targetInstanceIndices.map((targetInstanceIndex) => (
                                                             <div className='col-start-3 overflow-auto p-2 bg-purple-200 text-center'>
                                                                 {property.value.name}.{targetInstanceIndex}
                                                             </div>

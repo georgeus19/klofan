@@ -38,7 +38,7 @@ import { saveAsDataSchema } from '../core/schema/save/data-schema/save';
 import 'reactflow/dist/style.css';
 import { EntityNodeEventHandlerContextProvider } from './entity-node-event-handler-context';
 import { EntityNodeEventHandler } from './entity-node-event-handler';
-import { Transformation } from '../core/schema/transform/transformations/transformation';
+import { Transformation as SchemaTransformation } from '../core/schema/transform/transformations/transformation';
 import { RightSideBar, ShowComponent } from './right-side-bar/right-side-bar';
 import { RightSideActionContextProvider } from './right-side-bar/right-side-action-context';
 import { RawInstances } from '../core/instances/representation/raw-instances';
@@ -46,6 +46,7 @@ import { InMemoryInstances } from '../core/instances/in-memory-instances';
 import { InstancesContextProvider } from './instances-context';
 import { save } from '../core/instances/save/save';
 import { IdentityEntityInstanceUriBuilder } from '../core/instances/save/uri-builders/identity-instance-uri-builder';
+import { Transformation as InstanceTransformation } from '../core/instances/transform/transformations/transformation';
 
 export interface SchemaNode2<T> {
     diagram: ReactFlowNode<T>;
@@ -246,7 +247,7 @@ export default function Editor({ className }: HTMLProps<HTMLDivElement>) {
         onPropertyClick: (property: Property) => {},
     };
 
-    const updateSchema = (transformations: Transformation[]) => {
+    const updateSchema = (transformations: SchemaTransformation[]) => {
         const newSchema = schema.transform(transformations);
         console.log('newSchema', newSchema);
         setSchema(newSchema.raw());
@@ -263,9 +264,16 @@ export default function Editor({ className }: HTMLProps<HTMLDivElement>) {
         );
     };
 
+    const updateInstances = (transformations: InstanceTransformation[]) => {
+        instances.transform(transformations).then((newInstances) => {
+            setInstances(newInstances.raw());
+            console.log('newInstances.raw()', newInstances.raw());
+        });
+    };
+
     return (
         <SchemaContextProvider schema={schema} updateSchema={updateSchema}>
-            <InstancesContextProvider instances={instances}>
+            <InstancesContextProvider instances={instances} updateInstances={updateInstances}>
                 <EntityNodeEventHandlerContextProvider eventHandler={entityNodeEventHandler}>
                     <RightSideActionContextProvider
                         onActionDone={() => {
@@ -344,7 +352,12 @@ export default function Editor({ className }: HTMLProps<HTMLDivElement>) {
                                                 <div className='absolute hidden group-hover:flex z-10 flex-col bg-slate-300 min-w-[10rem] shadow rounded'>
                                                     <button
                                                         className='p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
-                                                        onClick={() => setRightSideBarShowComponent({ type: 'show-create-entity' })}
+                                                        onClick={() => {
+                                                            setRightSideBarShowComponent({ type: 'show-create-entity' });
+                                                            setLocked(true);
+                                                            nodeSelection.disableSelectedStyle();
+                                                            nodeSelection.clearSelectedNode();
+                                                        }}
                                                     >
                                                         entity
                                                     </button>

@@ -1,6 +1,3 @@
-export type transformationType = 'add-entity-instances';
+import { CreateEntityInstances } from './create-entity-instances';
 
-export interface Transformation {
-    type: transformationType;
-    data: unknown;
-}
+export type Transformation = CreateEntityInstances | CreateInstanceProperty;

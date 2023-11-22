@@ -1,6 +1,6 @@
 import { Instances } from '../instances';
 import { InstanceProperty } from '../representation/instance-property';
-import { instanceKey } from '../representation/raw-instances';
+import { instancePropertyKey } from '../representation/raw-instances';
 import { EntityInstances } from '../representation/entity-instances';
 import { identifier } from '../../schema/utils/identifier';
 import { InMemoryInstances } from '../in-memory-instances';
@@ -47,7 +47,7 @@ function fillInstanceProperties(
             return instanceLinks;
         });
 
-        properties[instanceKey(entityTree.id, propertyInfo.id)] = instanceProperties;
+        properties[instancePropertyKey(entityTree.id, propertyInfo.id)] = instanceProperties;
     });
 
     Object.values(entityTree.properties).forEach((propertyInfo) => fillInstanceProperties(properties, propertyInfo.targetEntity));

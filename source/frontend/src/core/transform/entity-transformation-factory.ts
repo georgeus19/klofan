@@ -1,3 +1,4 @@
+import { CreateEntityInstances } from '../instances/transform/transformations/create-entity-instances';
 import { Entity } from '../schema/representation/item/entity';
 import { Schema } from '../schema/schema';
 import { CreateEntity } from '../schema/transform/transformations/create-entity';
@@ -15,7 +16,13 @@ export function createUpdateEntityUriTransformation(schema: Schema, entityId: id
     };
 }
 
-export function createCreateEntityTransformation({ name }: { name: string }): Transformation {
+export function createCreateEntityTransformation({
+    schema: { name },
+    instances: { count },
+}: {
+    schema: { name: string };
+    instances: { count: number };
+}): Transformation {
     const entity: Entity = {
         id: getNewId(),
         name: name,
@@ -24,8 +31,16 @@ export function createCreateEntityTransformation({ name }: { name: string }): Tr
     };
     const createEntityTransformation: CreateEntity = { type: 'create-entity', data: { entity: entity } };
 
+    const createEntityInstancesTransformation: CreateEntityInstances = {
+        type: 'create-entity-instances',
+        data: {
+            entity: entity,
+            count: count,
+        },
+    };
+
     return {
         schemaTransformations: [createEntityTransformation],
-        instanceTransformations: [],
+        instanceTransformations: [createEntityInstancesTransformation],
     };
 }

@@ -72,13 +72,10 @@ export function MoveLiteralProperty({ entity, property }: MoveLiteralPropertyPro
                 </div>
             </div>
             <div className='grid grid-cols-12 p-3'>
-                <button
-                    className=' col-start-3 col-span-3 p-2 bg-green-300 shadow rounded hover:bg-green-600 hover:text-white'
-                    onClick={moveProperty}
-                >
+                <button className='col-start-3 col-span-3 p-2 bg-green-300 shadow rounded hover:bg-green-600 hover:text-white' onClick={moveProperty}>
                     Ok
                 </button>
-                <button className=' col-start-7 col-span-3 p-2 bg-red-300 shadow rounded hover:bg-red-600 hover:text-white' onClick={cancel}>
+                <button className='col-start-7 col-span-3 p-2 bg-red-300 shadow rounded hover:bg-red-600 hover:text-white' onClick={cancel}>
                     Cancel
                 </button>
             </div>
