@@ -1,5 +1,5 @@
 import { identifier } from '../../schema/utils/identifier';
-import { InstanceProperty } from './instance-property';
+import { PropertyInstance } from './property-instance';
 
 export interface RawInstances {
     entityInstances: { [key: identifier]: { count: number } };
@@ -10,20 +10,20 @@ export interface RawInstances {
      * Key format is: `${EntityId}.${PropertyId}`
      *
      */
-    instanceProperties: { [key: string]: InstanceProperty[] };
+    propertyInstances: { [key: string]: PropertyInstance[] };
 }
 
 export function copyInstances(instances: RawInstances): RawInstances {
-    return { entityInstances: { ...instances.entityInstances }, instanceProperties: { ...instances.instanceProperties } };
+    return { entityInstances: { ...instances.entityInstances }, propertyInstances: { ...instances.propertyInstances } };
 }
 
 export function createEmptyInstanceState(): RawInstances {
-    return { entityInstances: {}, instanceProperties: {} };
+    return { entityInstances: {}, propertyInstances: {} };
 }
 
 /**
- * Create key (on `RawInstances.instanceProperties`) for getting instance information of `property` on `entity`.
+ * Create key (on `RawInstances.propertyInstances`) for getting instance information of `property` on `entity`.
  */
-export function instancePropertyKey(entity: identifier, property: identifier): string {
+export function propertyInstanceKey(entity: identifier, property: identifier): string {
     return `${entity}.${property}`;
 }

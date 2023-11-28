@@ -1,10 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Entity } from '../../core/schema/representation/item/entity';
 import { Property } from '../../core/schema/representation/relation/property';
 import { useSchemaContext } from '../schema-context';
 import { useNodeSelectionContext } from '../editor';
 import { useRightSideActionContext } from './right-side-action-context';
-import { createMovePropertyTransformation } from '../../core/transform/property-transformation-factory';
+import { useBipartiteEntityLiteralInstanceDiagram } from './bipartite-diagram/use-bipartite-entity-literal-instance-diagram';
+import { BipartiteDiagram } from './bipartite-diagram/bipartite-diagram';
+import SourceNodeComponent from './bipartite-diagram/source-node';
+import LiteralTargetNode from './bipartite-diagram/literal-target-node';
+import { NodeSelect } from './node-select';
+import { createMovePropertyTransformation } from '../../core/transform/factory/move-property-transformation';
+import { useInstancesContext } from '../instances-context';
 
 export interface MoveLiteralPropertyProps {
     entity: Entity;
@@ -16,8 +22,14 @@ export function MoveLiteralProperty({ entity, property }: MoveLiteralPropertyPro
     const [nodeSelection, setNodeSelection] = useState<boolean>(false);
     const [sourceEntity, setSourceEntity] = useState<Entity>(entity);
 
+    const { updateInstances } = useInstancesContext();
     const { selectedNode, clearSelectedNode } = useNodeSelectionContext();
     const { onActionDone } = useRightSideActionContext();
+
+    const { sourceNodes, targetNodes, edges, onConnect, getPropertyInstances, layout } = useBipartiteEntityLiteralInstanceDiagram(
+        sourceEntity,
+        property.id
+    );
 
     useEffect(() => {
         if (selectedNode && nodeSelection) {
@@ -30,18 +42,22 @@ export function MoveLiteralProperty({ entity, property }: MoveLiteralPropertyPro
     }, [selectedNode]);
 
     const moveProperty = () => {
-        // implement move property
         const transformation = createMovePropertyTransformation(schema, {
-            source: entity.id,
+            originalSource: entity.id,
             property: property.id,
             newSource: sourceEntity.id,
+            propertyInstances: getPropertyInstances(),
         });
         updateSchema(transformation.schemaTransformations);
+        updateInstances(transformation.instanceTransformations);
         onActionDone();
     };
     const cancel = () => {
         onActionDone();
     };
+
+    const nodeTypes = useMemo(() => ({ source: SourceNodeComponent, target: LiteralTargetNode, literal: LiteralTargetNode }), []);
+    const edgeTypes = useMemo(() => ({}), []);
 
     return (
         <div>
@@ -58,19 +74,17 @@ export function MoveLiteralProperty({ entity, property }: MoveLiteralPropertyPro
                 </div>
             </div>
             <div>
-                <div className='grid grid-cols-12 px-3 py-1'>
-                    <label className='col-span-4'>Source</label>
-                    <input
-                        className='col-span-6 rounded bg-transparent border-2 border-slate-400 px-1'
-                        type='text'
-                        readOnly
-                        value={sourceEntity?.name}
-                    />
-                    <button className='col-span-2 mx-1 rounded shadow bg-lime-100 hover:bg-lime-200' onClick={() => setNodeSelection(true)}>
-                        Select
-                    </button>
-                </div>
+                <NodeSelect label='Source' displayValue={sourceEntity?.name} onSelect={() => setNodeSelection(true)}></NodeSelect>
             </div>
+            <BipartiteDiagram
+                sourceNodes={sourceNodes}
+                targetNodes={targetNodes}
+                edges={edges}
+                nodeTypes={nodeTypes}
+                edgeTypes={edgeTypes}
+                layout={layout}
+                onConnect={onConnect}
+            ></BipartiteDiagram>
             <div className='grid grid-cols-12 p-3'>
                 <button className='col-start-3 col-span-3 p-2 bg-green-300 shadow rounded hover:bg-green-600 hover:text-white' onClick={moveProperty}>
                     Ok

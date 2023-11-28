@@ -1,6 +1,6 @@
 import { Instances } from '../instances';
-import { InstanceProperty } from '../representation/instance-property';
-import { instancePropertyKey } from '../representation/raw-instances';
+import { PropertyInstance } from '../representation/property-instance';
+import { propertyInstanceKey } from '../representation/raw-instances';
 import { EntityInstances } from '../representation/entity-instances';
 import { identifier } from '../../schema/utils/identifier';
 import { InMemoryInstances } from '../in-memory-instances';
@@ -13,19 +13,19 @@ export function loadInstances(entityTree: EntityTreeNode): Instances {
     const properties = fillInstanceProperties({}, entityTree);
     return new InMemoryInstances({
         entityInstances: entities,
-        instanceProperties: properties,
+        propertyInstances: properties,
     });
 }
 
 function fillInstanceProperties(
-    properties: { [key: string]: InstanceProperty[] },
+    properties: { [key: string]: PropertyInstance[] },
     entityTree: EntityTreeNode
-): { [key: string]: InstanceProperty[] } {
+): { [key: string]: PropertyInstance[] } {
     Object.values(entityTree.properties).forEach((propertyInfo) => {
         let targetInstanceIndex = 0;
 
         const instanceProperties = propertyInfo.instances.map((instanceInfo) => {
-            const instanceLinks: InstanceProperty = {
+            const instanceLinks: PropertyInstance = {
                 targetInstanceIndices: _.range(targetInstanceIndex, targetInstanceIndex + instanceInfo.instances),
                 literals: instanceInfo.literals
                     .filter((literal): literal is number | string | boolean | bigint | symbol => literal !== null && literal !== undefined)
@@ -47,7 +47,7 @@ function fillInstanceProperties(
             return instanceLinks;
         });
 
-        properties[instancePropertyKey(entityTree.id, propertyInfo.id)] = instanceProperties;
+        properties[propertyInstanceKey(entityTree.id, propertyInfo.id)] = instanceProperties;
     });
 
     Object.values(entityTree.properties).forEach((propertyInfo) => fillInstanceProperties(properties, propertyInfo.targetEntity));

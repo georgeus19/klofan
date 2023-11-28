@@ -1,10 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Entity } from '../../core/schema/representation/item/entity';
 import { Property } from '../../core/schema/representation/relation/property';
 import { useSchemaContext } from '../schema-context';
 import { useNodeSelectionContext } from '../editor';
 import { useRightSideActionContext } from './right-side-action-context';
-import { createMovePropertyTransformation } from '../../core/transform/property-transformation-factory';
+import { useBipartiteEntityInstanceDiagram } from './bipartite-diagram/use-bipartite-entity-instance-diagram';
+import { NodeSelect } from './node-select';
+import { BipartiteDiagram } from './bipartite-diagram/bipartite-diagram';
+import SourceNodeComponent from './bipartite-diagram/source-node';
+import TargetNodeComponent from './bipartite-diagram/target-node';
+import LiteralTargetNode from './bipartite-diagram/literal-target-node';
+import { createMovePropertyTransformation } from '../../core/transform/factory/move-property-transformation';
+import { useInstancesContext } from '../instances-context';
 
 export interface MoveEntityPropertyProps {
     entity: Entity;
@@ -17,8 +24,15 @@ export function MoveEntityProperty({ entity, property }: MoveEntityPropertyProps
     const [sourceEntity, setSourceEntity] = useState<Entity>(entity);
     const [targetEntity, setTargetEntity] = useState<Entity>(schema.entity(property.value));
 
+    const { updateInstances } = useInstancesContext();
     const { selectedNode, clearSelectedNode } = useNodeSelectionContext();
     const { onActionDone } = useRightSideActionContext();
+
+    const { sourceNodes, targetNodes, edges, onConnect, getPropertyInstances, layout } = useBipartiteEntityInstanceDiagram(
+        sourceEntity,
+        targetEntity,
+        property.id
+    );
 
     useEffect(() => {
         if (selectedNode && nodeSelection) {
@@ -36,17 +50,22 @@ export function MoveEntityProperty({ entity, property }: MoveEntityPropertyProps
 
     const moveProperty = () => {
         const transformation = createMovePropertyTransformation(schema, {
-            source: entity.id,
+            originalSource: entity.id,
             property: property.id,
             newSource: sourceEntity.id,
             newTarget: targetEntity.id,
+            propertyInstances: getPropertyInstances(),
         });
         updateSchema(transformation.schemaTransformations);
+        updateInstances(transformation.instanceTransformations);
         onActionDone();
     };
     const cancel = () => {
         onActionDone();
     };
+
+    const nodeTypes = useMemo(() => ({ source: SourceNodeComponent, target: TargetNodeComponent, literal: LiteralTargetNode }), []);
+    const edgeTypes = useMemo(() => ({}), []);
 
     return (
         <div>
@@ -63,38 +82,18 @@ export function MoveEntityProperty({ entity, property }: MoveEntityPropertyProps
                 </div>
             </div>
             <div>
-                <div className='grid grid-cols-12 px-3 py-1'>
-                    <label className='col-span-4'>Source</label>
-                    <input
-                        className='col-span-6 rounded bg-transparent border-2 border-slate-400 px-1'
-                        type='text'
-                        readOnly
-                        value={sourceEntity?.name}
-                    />
-                    <button
-                        className='col-span-2 mx-1 rounded shadow bg-lime-100 hover:bg-lime-200'
-                        onClick={() => setNodeSelection({ type: 'source' })}
-                    >
-                        Select
-                    </button>
-                </div>
-
-                <div className='grid grid-cols-12 px-3 py-1'>
-                    <label className='col-span-4'>Target</label>
-                    <input
-                        className='col-span-6 rounded bg-transparent border-2 border-slate-400 px-1'
-                        type='text'
-                        readOnly
-                        value={targetEntity?.name}
-                    />
-                    <button
-                        className='col-span-2 mx-1 rounded shadow bg-lime-100 hover:bg-lime-200'
-                        onClick={() => setNodeSelection({ type: 'target' })}
-                    >
-                        Select
-                    </button>
-                </div>
+                <NodeSelect label='Source' displayValue={sourceEntity?.name} onSelect={() => setNodeSelection({ type: 'source' })}></NodeSelect>
+                <NodeSelect label='Target' displayValue={targetEntity?.name} onSelect={() => setNodeSelection({ type: 'target' })}></NodeSelect>
             </div>
+            <BipartiteDiagram
+                sourceNodes={sourceNodes}
+                targetNodes={targetNodes}
+                edges={edges}
+                nodeTypes={nodeTypes}
+                edgeTypes={edgeTypes}
+                layout={layout}
+                onConnect={onConnect}
+            ></BipartiteDiagram>
             <div className='grid grid-cols-12 p-3'>
                 <button
                     className=' col-start-3 col-span-3 p-2 bg-green-300 shadow rounded hover:bg-green-600 hover:text-white'

@@ -147,7 +147,7 @@ export default function Editor({ className }: HTMLProps<HTMLDivElement>) {
     const [schemaNodes, setSchemaNodes] = useState<SchemaNode[]>([]);
     const [schemaEdges, setSchemaEdges] = useState<SchemaEdge[]>([]);
     const [rawSchema, setSchema] = useState<RawSchema>({ items: {}, relations: {} });
-    const [rawInstances, setInstances] = useState<RawInstances>({ entityInstances: {}, instanceProperties: {} });
+    const [rawInstances, setInstances] = useState<RawInstances>({ entityInstances: {}, propertyInstances: {} });
     const [rightSideBarShowComponent, setRightSideBarShowComponent] = useState<ShowComponent>({ type: 'show-blank' });
     // Add locking mechanism - so that when creating a property, it cannot e.g. change to entity detail!
     const [locked, setLocked] = useState(false);

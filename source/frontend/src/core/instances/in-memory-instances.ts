@@ -1,8 +1,8 @@
 import { safeGet } from '../utils/safe-get';
-import { InstanceProperty } from './representation/instance-property';
+import { PropertyInstance } from './representation/property-instance';
 import { Instances } from './instances';
-import { RawInstances, copyInstances, instancePropertyKey } from './representation/raw-instances';
-import { EntityInstance } from './entity-instances';
+import { RawInstances, copyInstances, propertyInstanceKey } from './representation/raw-instances';
+import { EntityInstance } from './entity-instance';
 import { Entity } from '../schema/representation/item/entity';
 import { applyTransformation } from './transform/apply-transformation';
 import { Transformation } from './transform/transformations/transformation';
@@ -21,15 +21,15 @@ export class InMemoryInstances implements Instances {
         }));
 
         entity.properties.forEach((propertyId) => {
-            safeGet(this.instances.instanceProperties, instancePropertyKey(entity.id, propertyId)).forEach((propertyInstance, instanceIndex) => {
+            safeGet(this.instances.propertyInstances, propertyInstanceKey(entity.id, propertyId)).forEach((propertyInstance, instanceIndex) => {
                 entityInstances[instanceIndex].properties[propertyId] = propertyInstance;
             });
         });
         return Promise.resolve(entityInstances);
     }
 
-    instanceProperties(entityId: string, propertyId: string): Promise<InstanceProperty[]> {
-        return Promise.resolve(safeGet(this.instances.instanceProperties, instancePropertyKey(entityId, propertyId)));
+    propertyInstances(entityId: string, propertyId: string): Promise<PropertyInstance[]> {
+        return Promise.resolve(safeGet(this.instances.propertyInstances, propertyInstanceKey(entityId, propertyId)));
     }
 
     transform(transformations: Transformation[]): Promise<Instances> {

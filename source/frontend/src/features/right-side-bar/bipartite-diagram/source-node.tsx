@@ -1,10 +1,12 @@
 import { Handle, NodeProps, Position } from 'reactflow';
-import { EntityInstance } from '../../../core/instances/entity-instances';
+import { EntityInstance } from '../../../core/instances/entity-instance';
 import { Entity, getProperties } from '../../../core/schema/representation/item/entity';
 import { useSchemaContext } from '../../schema-context';
 import { EntityInstanceDetail } from '../entity-instance-detail';
+import { twMerge } from 'tailwind-merge';
+import { LayoutOptions } from './common';
 
-export type SourceNodeData = { entity: Entity; entityInstance: EntityInstance };
+export type SourceNodeData = { entity: Entity; entityInstance: EntityInstance; layout: LayoutOptions };
 
 export default function SourceNodeComponent({ data }: NodeProps<SourceNodeData>) {
     const { schema } = useSchemaContext();
@@ -12,7 +14,9 @@ export default function SourceNodeComponent({ data }: NodeProps<SourceNodeData>)
 
     return (
         <>
-            <div className='bg-slate-200 p-2 rounded relative shadow group w-32 h-10 '>
+            <div
+                className={twMerge('bg-slate-200 p-2 rounded relative shadow group', data.layout.node.widthTailwind, data.layout.node.heightTailwind)}
+            >
                 <div className='overflow-clip'>
                     {data.entity.name}.{data.entityInstance.id}
                 </div>

@@ -1,4 +1,4 @@
-import { EntityInstance } from '../../core/instances/entity-instances';
+import { EntityInstance } from '../../core/instances/entity-instance';
 import { Entity } from '../../core/schema/representation/item/entity';
 import { GraphProperty } from '../../core/schema/representation/relation/graph-property';
 

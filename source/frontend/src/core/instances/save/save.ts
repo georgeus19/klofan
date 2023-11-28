@@ -15,7 +15,7 @@ export async function save(instances: Instances, schema: Schema, saveConfigurati
             const objectItem = schema.item(property.value.id);
             const propertyUri = property.uri ? property.uri : `${saveConfiguration.defaultPropertyUri}/${property.id.replaceAll(/\s/g, '_')}`;
 
-            for (const [index, instanceProperty] of (await instances.instanceProperties(entity.id, property.id)).entries()) {
+            for (const [index, instanceProperty] of (await instances.propertyInstances(entity.id, property.id)).entries()) {
                 const subjectInstanceUri = subjectUriBuilder.createUri(index);
                 if (isLiteral(objectItem)) {
                     instanceProperty.literals.forEach((l) => {

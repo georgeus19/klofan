@@ -10,23 +10,28 @@ import { useInstancesContext } from '../instances-context';
 import SourceNodeComponent from './bipartite-diagram/source-node';
 import TargetNodeComponent from './bipartite-diagram/target-node';
 import { createCreatePropertyTransformation } from '../../core/transform/factory/create-property-transformation';
-import { InstanceProperty } from '../../core/instances/representation/instance-property';
+import { PropertyInstance } from '../../core/instances/representation/property-instance';
 import { Literal } from '../../core/instances/representation/literal';
 import LiteralTargetNode from './bipartite-diagram/literal-target-node';
 import { BipartiteDiagram } from './bipartite-diagram/bipartite-diagram';
 import { NodeSelect } from './node-select';
-import { useBipartiteEntityInstanceDiagram, SourceNode, TargetNode } from './bipartite-diagram/use-bipartite-instance-diagram';
+import {
+    useBipartiteEntityInstanceDiagram,
+    EntityInstanceSourceNode,
+    EntityInstanceTargetNode,
+} from './bipartite-diagram/use-bipartite-entity-instance-diagram';
+import { LayoutOptions } from './bipartite-diagram/common';
 
 export interface CreatePropertyProps {}
 
 export type tabOption = 'literal' | 'entity';
 
-export type LiteralNodeData = { literal: Literal; onLiteralValueChange: (literalNodeId: string, value: string) => void };
+export type LiteralNodeData = { literal: Literal; onLiteralValueChange: (literalNodeId: string, value: string) => void; layout: LayoutOptions };
 
 export type LiteralNode = ReactFlowNode<LiteralNodeData, identifier> & {
     type: 'literal';
 };
-export type InstanceNode = SourceNode | TargetNode;
+export type InstanceNode = EntityInstanceSourceNode | EntityInstanceTargetNode;
 
 export type TargetLiteralEdge = ReactFlowEdge<never>;
 
@@ -49,7 +54,8 @@ export function CreateProperty() {
         targetNodes: entityTargetNodes,
         edges: entityTargetEdges,
         onConnect: onInstanceTargetConnect,
-    } = useBipartiteEntityInstanceDiagram(sourceEntity, targetEntity);
+        layout,
+    } = useBipartiteEntityInstanceDiagram(sourceEntity, targetEntity, '');
 
     useEffect(() => {
         if (selectedNode && nodeSelection) {
@@ -71,19 +77,19 @@ export function CreateProperty() {
         onActionDone();
     };
 
-    const getInstanceProperties = (tab: tabOption): InstanceProperty[] => {
+    const getPropertyInstances = (tab: tabOption): PropertyInstance[] => {
         const sourceNodesMap = new Map(sourceNodes.map((node) => [node.id, node]));
         const targetEntityNodesMap = new Map(entityTargetNodes.map((node) => [node.id, node]));
         const literalTargetNodesMap = new Map(literalTargetNodes.map((node) => [node.id, node]));
 
-        const instanceProperties: InstanceProperty[] = sourceNodes.map((): InstanceProperty => ({ literals: [], targetInstanceIndices: [] }));
+        const propertyInstances: PropertyInstance[] = sourceNodes.map((): PropertyInstance => ({ literals: [], targetInstanceIndices: [] }));
 
         if (tab === 'entity') {
             entityTargetEdges.forEach((edge) => {
                 const source = sourceNodesMap.get(edge.source);
                 const target = targetEntityNodesMap.get(edge.target);
                 if (source && target) {
-                    instanceProperties[source.data.entityInstance.id].targetInstanceIndices.push(target.data.entityInstance.id);
+                    propertyInstances[source.data.entityInstance.id].targetInstanceIndices.push(target.data.entityInstance.id);
                 }
             });
         } else {
@@ -91,24 +97,24 @@ export function CreateProperty() {
                 const source = sourceNodesMap.get(edge.source);
                 const literal = literalTargetNodesMap.get(edge.target);
                 if (source && literal) {
-                    instanceProperties[source.data.entityInstance.id].literals.push(literal.data.literal);
+                    propertyInstances[source.data.entityInstance.id].literals.push(literal.data.literal);
                 }
             });
         }
-        return instanceProperties;
+        return propertyInstances;
     };
 
     const createProperty = () => {
         console.log('schema', schema.raw());
 
-        const instanceProperties = getInstanceProperties(tab);
+        const propertyInstances = getPropertyInstances(tab);
         const transformation = createCreatePropertyTransformation(schema, {
             property: {
                 name: propertyName,
                 value: tab === 'entity' ? { type: 'entity', entityId: targetEntity.id } : { type: 'literal' },
             },
             sourceEntityId: sourceEntity.id,
-            instanceProperties: instanceProperties,
+            propertyInstances: propertyInstances,
         });
         updateSchema(transformation.schemaTransformations);
         updateInstances(transformation.instanceTransformations);
@@ -143,6 +149,7 @@ export function CreateProperty() {
                 data: {
                     literal: { value: '' },
                     onLiteralValueChange: changeLiteralValue,
+                    layout,
                 },
             },
         ]);
@@ -199,6 +206,7 @@ export function CreateProperty() {
                                     nodeTypes={nodeTypes}
                                     edgeTypes={edgeTypes}
                                     onConnect={onInstanceTargetConnect}
+                                    layout={layout}
                                 ></BipartiteDiagram>
                             )}
                         </>
@@ -216,6 +224,7 @@ export function CreateProperty() {
                                     edges={literalTargetEdges}
                                     nodeTypes={nodeTypes}
                                     edgeTypes={edgeTypes}
+                                    layout={layout}
                                     onConnect={onLiteralTargetConnect}
                                 >
                                     <Panel position='bottom-center'>

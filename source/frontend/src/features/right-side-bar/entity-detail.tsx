@@ -12,7 +12,7 @@ import { isLiteral } from '../../core/schema/representation/item/literal';
 import { GraphProperty, toProperty } from '../../core/schema/representation/relation/graph-property';
 import { useRightSideActionContext } from './right-side-action-context';
 import { useInstancesContext } from '../instances-context';
-import { EntityInstance } from '../../core/instances/entity-instances';
+import { EntityInstance } from '../../core/instances/entity-instance';
 import { identifier } from '../../core/schema/utils/identifier';
 
 export interface EntityDetailProps {

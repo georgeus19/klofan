@@ -1,10 +1,13 @@
 import { Handle, NodeProps, Position } from 'reactflow';
 import { LiteralNodeData } from '../create-property';
+import { twMerge } from 'tailwind-merge';
 
 export default function LiteralTargetNode({ id, data }: NodeProps<LiteralNodeData>) {
     return (
         <>
-            <div className='bg-slate-200 p-2 rounded relative shadow group w-32 h-10 '>
+            <div
+                className={twMerge('bg-slate-200 p-2 rounded relative shadow group', data.layout.node.widthTailwind, data.layout.node.heightTailwind)}
+            >
                 <input
                     className='w-28 rounded bg-transparent border-2 border-slate-400 px-1'
                     type='text'

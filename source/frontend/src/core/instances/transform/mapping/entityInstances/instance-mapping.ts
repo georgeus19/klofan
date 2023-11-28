@@ -7,3 +7,7 @@
 export interface InstanceMapping {
     mappedInstances(source: number): number[];
 }
+
+export interface IM {
+    sourceInstances: { sourceIndex: number; targetInstanceIndices: number[] }[];
+}

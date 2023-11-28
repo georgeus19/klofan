@@ -4,7 +4,7 @@ import { Literal } from './literal';
  * Type for storing information of one instance of source entity for one property.
  * It contains the literals for the instance for the property and links to instances on the target entity.
  */
-export interface InstanceProperty {
+export interface PropertyInstance {
     targetInstanceIndices: number[];
     literals: Literal[];
 }

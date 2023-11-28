@@ -9,32 +9,32 @@ import { getNewId } from '../../utils/identifier-generator';
 import { Transformation } from './../transformation';
 import { Transformation as SchemaTransformation } from '../../schema/transform/transformations/transformation';
 import { Entity } from '../../schema/representation/item/entity';
-import { CreateInstanceProperty } from '../../instances/transform/transformations/create-instance-property';
-import { InstanceProperty } from '../../instances/representation/instance-property';
+import { CreatePropertyInstances } from '../../instances/transform/transformations/create-property-instances';
+import { PropertyInstance } from '../../instances/representation/property-instance';
 
 export function createCreatePropertyTransformation(
     schema: Schema,
     {
         property: { name, value },
         sourceEntityId,
-        instanceProperties,
+        propertyInstances,
     }: {
         property: {
             name: string;
             value: { type: 'entity'; entityId: identifier } | { type: 'literal' };
         };
         sourceEntityId: identifier;
-        instanceProperties: InstanceProperty[];
+        propertyInstances: PropertyInstance[];
     }
 ): Transformation {
     const sourceEntity = schema.entity(sourceEntityId);
     const { property, schemaTransformations } = createSchemaTransformations(name, value, sourceEntity);
-    const createInstancePropertyTransformation: CreateInstanceProperty = {
-        type: 'create-instance-property',
+    const createInstancePropertyTransformation: CreatePropertyInstances = {
+        type: 'create-property-instances',
         data: {
             entity: sourceEntity,
             property: property,
-            instanceProperties: instanceProperties,
+            propertyInstances: propertyInstances,
         },
     };
     return {
