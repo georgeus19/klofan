@@ -16,7 +16,6 @@ import ReactFlow, {
     BackgroundVariant,
     useReactFlow,
 } from 'reactflow';
-import { Item as SchemaItem } from '../core/schema/representation/item/item';
 import { identifier } from '../core/schema/utils/identifier';
 import { Relation as SchemaRelation } from '../core/schema/representation/relation/relation';
 import { RawSchema } from '../core/schema/representation/raw-schema';
@@ -25,132 +24,45 @@ import { parseJson } from '../core/parse/json/parse-json';
 import { parseCsv } from '../core/parse/csv/parse-csv';
 import { Entity, getProperties, isEntity } from '../core/schema/representation/item/entity';
 import { toProperty } from '../core/schema/representation/relation/graph-property';
-import EntityNode from './entity-node';
+import EntityNode from './diagram/entity-node';
 import { SchemaContextProvider } from './schema-context';
-import PropertyEdge from './property-edge';
+import PropertyEdge from './diagram/property-edge';
 import { Property, isProperty } from '../core/schema/representation/relation/property';
-import { FileLoader } from './file-loader';
-import { downHierarchyLayoutNodes, forceLayoutNodes, radialLayoutNodes, rightHierarchyLayoutNodes } from './layout';
+import { FileLoader } from './file/file-loader';
+import { downHierarchyLayoutNodes, forceLayoutNodes, radialLayoutNodes, rightHierarchyLayoutNodes } from './diagram/layout';
 import { isLiteral } from '../core/schema/representation/item/literal';
-import { FileSaver } from './file-saver';
+import { FileSaver } from './file/file-saver';
 import { Writer } from 'n3';
 import { saveAsDataSchema } from '../core/schema/save/data-schema/save';
 import 'reactflow/dist/style.css';
-import { EntityNodeEventHandlerContextProvider } from './entity-node-event-handler-context';
-import { EntityNodeEventHandler } from './entity-node-event-handler';
+import { EntityNodeEventHandlerContextProvider } from './diagram/node-events/entity-node-event-handler-context';
+import { EntityNodeEventHandler } from './diagram/node-events/entity-node-event-handler';
 import { Transformation as SchemaTransformation } from '../core/schema/transform/transformations/transformation';
-import { RightSideBar, ShowComponent } from './right-side-bar/right-side-bar';
-import { RightSideActionContextProvider } from './right-side-bar/right-side-action-context';
+import { ActionBar } from './action-bar/action-bar';
+import { ActionContextProvider } from './action-bar/action-context';
 import { RawInstances } from '../core/instances/representation/raw-instances';
 import { InMemoryInstances } from '../core/instances/in-memory-instances';
 import { InstancesContextProvider } from './instances-context';
 import { save } from '../core/instances/save/save';
 import { IdentityEntityInstanceUriBuilder } from '../core/instances/save/uri-builders/identity-instance-uri-builder';
 import { Transformation as InstanceTransformation } from '../core/instances/transform/transformations/transformation';
-
-export interface SchemaNode2<T> {
-    diagram: ReactFlowNode<T>;
-    schema: SchemaItem;
-}
+import { ShowAction } from './action-bar/actions';
+import { useNodeSelection } from './diagram/node-selection/use-node-selection';
+import { NodeSelectionContextProvider } from './diagram/node-selection/node-selection-context';
 
 export type SchemaNode = ReactFlowNode<Entity, identifier>;
 export type EntityNode = ReactFlowNode<Entity, identifier>;
 
 export type SchemaEdge = ReactFlowEdge<SchemaRelation> & { data: SchemaRelation };
 
-function updateEntityNodes(schemaNodes: SchemaNode[], schema: Schema): SchemaNode[] {
-    const nodeIds = new Set(schemaNodes.map((node) => node.data.id));
-
-    const notEntityNodes = schemaNodes.filter((node) => !isEntity(node.data));
-
-    const newNodes: EntityNode[] = schema
-        .entities()
-        .filter((item) => !nodeIds.has(item.id))
-        .map((item) => ({ id: item.id, position: { x: 0, y: 100 }, data: item }));
-    const updatedNodes: EntityNode[] = schemaNodes
-        .filter((node) => schema.hasEntity(node.data.id))
-        .map((node) => ({ ...node, id: schema.entity(node.data.id).id, data: schema.entity(node.data.id) }));
-
-    const entityNodes = [...updatedNodes, ...newNodes].map((node) => {
-        node.type = 'entity';
-        return node;
-    });
-
-    return [...notEntityNodes, ...entityNodes];
-}
-
-function updatePropertyEdges(schemaEdges: SchemaEdge[], schema: Schema): SchemaEdge[] {
-    const oldEdges = Object.fromEntries(schemaEdges.map((edge) => [edge.data.id, edge]));
-
-    const notPropertyEdges = schemaEdges.filter((edge) => !isProperty(edge.data));
-
-    const properties = schema
-        .entities()
-        .flatMap((entity) => getProperties(schema, entity.id).map((property) => ({ ...property, source: entity.id })));
-
-    const newEdges: SchemaEdge[] = properties
-        .filter((property) => !Object.hasOwn(oldEdges, property.id))
-        .filter((property) => !isLiteral(schema.item(property.value.id)))
-        .map((property) => ({ id: property.id, source: property.source, target: property.value.id, data: toProperty(property) }));
-
-    const updatedEdges: SchemaEdge[] = properties
-        .filter((property) => Object.hasOwn(oldEdges, property.id))
-        .map((property) => ({ ...oldEdges[property.id], source: property.source, target: property.value.id, data: toProperty(property) }));
-
-    const propertyEdges = [...updatedEdges, ...newEdges].map((edge) => {
-        edge.type = 'property';
-        return edge;
-    });
-
-    return [...notPropertyEdges, ...propertyEdges];
-}
-
-export interface NodeSelection {
-    selectedNode: EntityNode | null;
-    selectedStyle: string;
-    enableSelectedStyle: () => void;
-    disableSelectedStyle: () => void;
-    addSelectedNode: (node: EntityNode) => void;
-    clearSelectedNode: () => void;
-}
-
-export type NodeSelectionContext = NodeSelection;
-
-export const NodeSelectionContext = createContext<NodeSelectionContext | null>(null);
-
-export function NodeSelectionContextProvider({ children, nodeSelection }: { children: React.ReactNode; nodeSelection: NodeSelection }) {
-    return <NodeSelectionContext.Provider value={nodeSelection}>{children}</NodeSelectionContext.Provider>;
-}
-
-export function useNodeSelectionContext(): NodeSelectionContext {
-    const context = useContext(NodeSelectionContext);
-    if (!context) {
-        throw new Error('useNodeSelectionContext must be used in NodeSelectionContextProvider!');
-    }
-
-    return context;
-}
-
-export function useNodeSelection(): NodeSelection {
-    const [selectedNode, setSelectedNode] = useState<SchemaNode | null>(null);
-    const [selectedStyle, setSelectedStyle] = useState<string>('bg-yellow-200');
-
-    const addSelectedNode = useCallback((node: SchemaNode) => setSelectedNode(node), []);
-    const clearSelectedNode = useCallback(() => setSelectedNode(null), []);
-    const enableSelectedStyle = useCallback(() => setSelectedStyle('bg-yellow-200'), []);
-    const disableSelectedStyle = useCallback(() => setSelectedStyle(''), []);
-
-    return { selectedNode, clearSelectedNode, addSelectedNode, selectedStyle, enableSelectedStyle, disableSelectedStyle };
-}
-
 export default function Editor({ className }: HTMLProps<HTMLDivElement>) {
     const [schemaNodes, setSchemaNodes] = useState<SchemaNode[]>([]);
     const [schemaEdges, setSchemaEdges] = useState<SchemaEdge[]>([]);
     const [rawSchema, setSchema] = useState<RawSchema>({ items: {}, relations: {} });
     const [rawInstances, setInstances] = useState<RawInstances>({ entityInstances: {}, propertyInstances: {} });
-    const [rightSideBarShowComponent, setRightSideBarShowComponent] = useState<ShowComponent>({ type: 'show-blank' });
+    const [sideAction, setSideAction] = useState<ShowAction>({ type: 'show-blank' });
     // Add locking mechanism - so that when creating a property, it cannot e.g. change to entity detail!
-    const [locked, setLocked] = useState(false);
+    const [sideActionLocked, setSideActionLocked] = useState(false);
     const schema = new Schema(rawSchema);
     const instances = new InMemoryInstances(rawInstances);
     const { fitView } = useReactFlow();
@@ -161,7 +73,7 @@ export default function Editor({ className }: HTMLProps<HTMLDivElement>) {
             setSchemaNodes((nds) => applyNodeChanges(changes, nds));
         },
 
-        [setSchemaNodes, rawSchema, locked, nodeSelection, schemaNodes]
+        [setSchemaNodes]
     );
     const onEdgesChange = useCallback(
         (changes: EdgeChange[]) => setSchemaEdges((eds) => applyEdgeChanges(changes, eds) as unknown as SchemaEdge[]),
@@ -182,7 +94,7 @@ export default function Editor({ className }: HTMLProps<HTMLDivElement>) {
 
         setSchema(schema.raw());
         setInstances(instances.raw());
-        setRightSideBarShowComponent({ type: 'show-blank' });
+        setSideAction({ type: 'show-blank' });
         setSchemaNodes((nodes) => updateEntityNodes(nodes, schema));
         setSchemaEdges((edges) =>
             updatePropertyEdges(edges, schema).map((edge) => {
@@ -233,16 +145,13 @@ export default function Editor({ className }: HTMLProps<HTMLDivElement>) {
 
     const entityNodeEventHandler: EntityNodeEventHandler = {
         onNodeClick: (entity: Entity) => {
-            // const nodeSelectionChange = changes.find<NodeSelectionChange>((change): change is NodeSelectionChange => change.type === 'select');
             const selectedNode = schemaNodes.find((node) => node.id === entity.id);
             if (selectedNode) {
                 nodeSelection.addSelectedNode(selectedNode);
-                console.log('locked', locked);
-                if (!locked) {
-                    setRightSideBarShowComponent({ type: 'show-entity-detail', entity: schema.entity(selectedNode.id) });
+                if (!sideActionLocked) {
+                    setSideAction({ type: 'show-entity-detail', entity: schema.entity(selectedNode.id) });
                 }
             }
-            // setRightSideBarShowComponent({ type: 'show-entity-detail', entity: entity });
         },
         onPropertyClick: (property: Property) => {},
     };
@@ -275,21 +184,21 @@ export default function Editor({ className }: HTMLProps<HTMLDivElement>) {
         <SchemaContextProvider schema={schema} updateSchema={updateSchema}>
             <InstancesContextProvider instances={instances} updateInstances={updateInstances}>
                 <EntityNodeEventHandlerContextProvider eventHandler={entityNodeEventHandler}>
-                    <RightSideActionContextProvider
+                    <ActionContextProvider
                         onActionDone={() => {
-                            setRightSideBarShowComponent({ type: 'show-blank' });
+                            setSideAction({ type: 'show-blank' });
                             nodeSelection.enableSelectedStyle();
-                            setLocked(false);
+                            setSideActionLocked(false);
                         }}
                         showMoveProperty={(entity: Entity, property: Property) => {
                             if (schema.hasEntity(property.value)) {
-                                setRightSideBarShowComponent({ type: 'show-move-entity-property', entity: entity, property: property });
-                                setLocked(true);
+                                setSideAction({ type: 'show-move-entity-property', entity: entity, property: property });
+                                setSideActionLocked(true);
                                 nodeSelection.disableSelectedStyle();
                                 nodeSelection.clearSelectedNode();
                             } else {
-                                setRightSideBarShowComponent({ type: 'show-move-literal-property', entity: entity, property: property });
-                                setLocked(true);
+                                setSideAction({ type: 'show-move-literal-property', entity: entity, property: property });
+                                setSideActionLocked(true);
                                 nodeSelection.disableSelectedStyle();
                                 nodeSelection.clearSelectedNode();
                             }
@@ -353,8 +262,8 @@ export default function Editor({ className }: HTMLProps<HTMLDivElement>) {
                                                     <button
                                                         className='p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
                                                         onClick={() => {
-                                                            setRightSideBarShowComponent({ type: 'show-create-entity' });
-                                                            setLocked(true);
+                                                            setSideAction({ type: 'show-create-entity' });
+                                                            setSideActionLocked(true);
                                                             nodeSelection.disableSelectedStyle();
                                                             nodeSelection.clearSelectedNode();
                                                         }}
@@ -364,8 +273,8 @@ export default function Editor({ className }: HTMLProps<HTMLDivElement>) {
                                                     <button
                                                         className='p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
                                                         onClick={() => {
-                                                            setRightSideBarShowComponent({ type: 'show-create-property' });
-                                                            setLocked(true);
+                                                            setSideAction({ type: 'show-create-property' });
+                                                            setSideActionLocked(true);
                                                             nodeSelection.disableSelectedStyle();
                                                             nodeSelection.clearSelectedNode();
                                                         }}
@@ -398,12 +307,59 @@ export default function Editor({ className }: HTMLProps<HTMLDivElement>) {
                                         </Panel>
                                     </ReactFlow>
                                 </div>
-                                <RightSideBar showComponent={rightSideBarShowComponent}></RightSideBar>
+                                <ActionBar action={sideAction}></ActionBar>
                             </div>
                         </NodeSelectionContextProvider>
-                    </RightSideActionContextProvider>
+                    </ActionContextProvider>
                 </EntityNodeEventHandlerContextProvider>
             </InstancesContextProvider>
         </SchemaContextProvider>
     );
+}
+
+function updateEntityNodes(schemaNodes: SchemaNode[], schema: Schema): SchemaNode[] {
+    const nodeIds = new Set(schemaNodes.map((node) => node.data.id));
+
+    const notEntityNodes = schemaNodes.filter((node) => !isEntity(node.data));
+
+    const newNodes: EntityNode[] = schema
+        .entities()
+        .filter((item) => !nodeIds.has(item.id))
+        .map((item) => ({ id: item.id, position: { x: 0, y: 100 }, data: item }));
+    const updatedNodes: EntityNode[] = schemaNodes
+        .filter((node) => schema.hasEntity(node.data.id))
+        .map((node) => ({ ...node, id: schema.entity(node.data.id).id, data: schema.entity(node.data.id) }));
+
+    const entityNodes = [...updatedNodes, ...newNodes].map((node) => {
+        node.type = 'entity';
+        return node;
+    });
+
+    return [...notEntityNodes, ...entityNodes];
+}
+
+function updatePropertyEdges(schemaEdges: SchemaEdge[], schema: Schema): SchemaEdge[] {
+    const oldEdges = Object.fromEntries(schemaEdges.map((edge) => [edge.data.id, edge]));
+
+    const notPropertyEdges = schemaEdges.filter((edge) => !isProperty(edge.data));
+
+    const properties = schema
+        .entities()
+        .flatMap((entity) => getProperties(schema, entity.id).map((property) => ({ ...property, source: entity.id })));
+
+    const newEdges: SchemaEdge[] = properties
+        .filter((property) => !Object.hasOwn(oldEdges, property.id))
+        .filter((property) => !isLiteral(schema.item(property.value.id)))
+        .map((property) => ({ id: property.id, source: property.source, target: property.value.id, data: toProperty(property) }));
+
+    const updatedEdges: SchemaEdge[] = properties
+        .filter((property) => Object.hasOwn(oldEdges, property.id))
+        .map((property) => ({ ...oldEdges[property.id], source: property.source, target: property.value.id, data: toProperty(property) }));
+
+    const propertyEdges = [...updatedEdges, ...newEdges].map((edge) => {
+        edge.type = 'property';
+        return edge;
+    });
+
+    return [...notPropertyEdges, ...propertyEdges];
 }

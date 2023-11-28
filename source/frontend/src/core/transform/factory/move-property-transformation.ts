@@ -1,4 +1,3 @@
-import { property } from 'lodash';
 import { MovePropertyInstances } from '../../instances/transform/transformations/move-property-instances';
 import { Schema } from '../../schema/schema';
 import { MoveProperty } from '../../schema/transform/transformations/move-property';

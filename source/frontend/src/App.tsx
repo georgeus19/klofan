@@ -1,5 +1,5 @@
 import './App.css';
-import EditorPage from './pages/editor/EditorPage';
+import EditorPage from './features/editor-page';
 
 export default function App() {
     return (
