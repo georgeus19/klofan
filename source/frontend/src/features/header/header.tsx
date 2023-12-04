@@ -1,4 +1,5 @@
 import { HTMLAttributes } from 'react';
+import { Divider } from '../utils/divider';
 
 export default function Header({ className }: HTMLAttributes<HTMLDivElement>) {
     return (
@@ -12,7 +13,7 @@ export default function Header({ className }: HTMLAttributes<HTMLDivElement>) {
                             ['Catalog', '/'],
                         ].map(([title, url], i) => (
                             <li key={i}>
-                                <a className='block bg-lime-100 p-3 rounded shadow' href={url}>
+                                <a className='block bg-blue-200 p-3 rounded shadow' href={url}>
                                     {title}
                                 </a>
                             </li>
@@ -20,11 +21,7 @@ export default function Header({ className }: HTMLAttributes<HTMLDivElement>) {
                     </ul>
                 </nav>
             </div>
-            <div className='flex py- items-center'>
-                <div className='w-20'></div>
-                <div className='flex-grow border-t border-y-2 rounded border-gray-200'></div>
-                <div className='w-20'></div>
-            </div>
+            <Divider></Divider>
         </header>
     );
 }

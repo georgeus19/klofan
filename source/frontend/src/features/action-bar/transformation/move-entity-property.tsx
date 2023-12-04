@@ -12,6 +12,10 @@ import UpdatableLiteralTargetNode from '../bipartite-diagram/nodes/updatable-lit
 import { createMovePropertyTransformation } from '../../../core/transform/factory/move-property-transformation';
 import { useInstancesContext } from '../../instances-context';
 import { useNodeSelectionContext } from '../../diagram/node-selection/node-selection-context';
+import { ActionOkCancel } from '../utils/action-ok-cancel';
+import { Header } from '../utils/header';
+import { DetailLabelValueItem } from '../utils/detail-label-value-item';
+import { LabelReadonlyInput } from '../utils/label-readonly-input';
 
 export interface MoveEntityPropertyProps {
     entity: Entity;
@@ -72,22 +76,10 @@ export function MoveEntityProperty({ entity, property }: MoveEntityPropertyProps
 
     return (
         <div>
-            <div className='p-2 text-center font-bold bg-slate-300'>Move Property</div>
-            <div>
-                <div className='grid grid-cols-12 px-3 py-1'>
-                    <label className='col-span-4'>Property</label>
-                    <input
-                        className='col-span-8 rounded bg-transparent border-2 border-slate-400 px-1'
-                        type='text'
-                        readOnly
-                        value={`${entity.name}.${property.name}`}
-                    />
-                </div>
-            </div>
-            <div>
-                <NodeSelect label='Source' displayValue={sourceEntity?.name} onSelect={() => setNodeSelection({ type: 'source' })}></NodeSelect>
-                <NodeSelect label='Target' displayValue={targetEntity?.name} onSelect={() => setNodeSelection({ type: 'target' })}></NodeSelect>
-            </div>
+            <Header label='Move Property'></Header>
+            <LabelReadonlyInput label='Property' value={`${entity.name}.${property.name}`}></LabelReadonlyInput>
+            <NodeSelect label='Source' displayValue={sourceEntity?.name} onSelect={() => setNodeSelection({ type: 'source' })}></NodeSelect>
+            <NodeSelect label='Target' displayValue={targetEntity?.name} onSelect={() => setNodeSelection({ type: 'target' })}></NodeSelect>
             <BipartiteDiagram
                 sourceNodes={sourceNodes}
                 targetNodes={targetNodes}
@@ -97,17 +89,7 @@ export function MoveEntityProperty({ entity, property }: MoveEntityPropertyProps
                 layout={layout}
                 onConnect={onConnect}
             ></BipartiteDiagram>
-            <div className='grid grid-cols-12 p-3'>
-                <button
-                    className=' col-start-3 col-span-3 p-2 bg-green-300 shadow rounded hover:bg-green-600 hover:text-white'
-                    onClick={moveProperty}
-                >
-                    Ok
-                </button>
-                <button className=' col-start-7 col-span-3 p-2 bg-red-300 shadow rounded hover:bg-red-600 hover:text-white' onClick={cancel}>
-                    Cancel
-                </button>
-            </div>
+            <ActionOkCancel onOk={moveProperty} onCancel={cancel}></ActionOkCancel>
         </div>
     );
 }

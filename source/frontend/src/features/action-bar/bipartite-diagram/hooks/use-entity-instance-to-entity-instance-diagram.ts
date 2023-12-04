@@ -7,6 +7,8 @@ import { EntityInstance } from '../../../../core/instances/entity-instance';
 import { PropertyInstance } from '../../../../core/instances/representation/property-instance';
 import { SourceNode, TargetNode, sourceIdPrefix, sourceNodes, targetIdPrefix, targetNodes } from '../common';
 import { defaultLayout } from '../layout';
+import { useSchemaContext } from '../../../schema-context';
+import { Schema } from '../../../../core/schema/schema';
 
 export type EntityInstanceSourceNode = SourceNode<{ entity: Entity; entityInstance: EntityInstance }>;
 export type EntityInstanceTargetNode = TargetNode<{ entity: Entity; entityInstance: EntityInstance }>;
@@ -16,6 +18,7 @@ export function useEntityInstanceToEntityInstanceDiagram(sourceEntity: Entity | 
     const [nodes, setNodes] = useState<(EntityInstanceSourceNode | EntityInstanceTargetNode)[]>([]);
     const [edges, setEdges] = useState<ReactFlowEdge<never>[]>([]);
     const { instances } = useInstancesContext();
+    const { schema } = useSchemaContext();
     const layout = defaultLayout;
     useEffect(() => {
         if (sourceEntity) {
@@ -27,7 +30,7 @@ export function useEntityInstanceToEntityInstanceDiagram(sourceEntity: Entity | 
                     data: { entity: sourceEntity, entityInstance: entityInstance, layout: layout },
                 }));
                 if (targetEntity) {
-                    setEdges(getEdgesBetweenEntities(sourceEntity, sourceNodes, propertyId, targetEntity));
+                    setEdges(getEdgesBetweenEntities(schema, sourceEntity, sourceNodes, propertyId, targetEntity));
                 } else {
                     setEdges([]);
                 }
@@ -48,7 +51,7 @@ export function useEntityInstanceToEntityInstanceDiagram(sourceEntity: Entity | 
 
                 setNodes((prevNodes) => {
                     if (sourceEntity) {
-                        setEdges(getEdgesBetweenEntities(sourceEntity, sourceNodes(prevNodes), propertyId, targetEntity));
+                        setEdges(getEdgesBetweenEntities(schema, sourceEntity, sourceNodes(prevNodes), propertyId, targetEntity));
                     } else {
                         setEdges([]);
                     }
@@ -83,8 +86,15 @@ export function useEntityInstanceToEntityInstanceDiagram(sourceEntity: Entity | 
     return { sourceNodes: sourceNodes(nodes), targetNodes: targetNodes(nodes), edges, onConnect, getPropertyInstances, layout: layout };
 }
 
-function getEdgesBetweenEntities(sourceEntity: Entity, sourceNodes: EntityInstanceSourceNode[], propertyId: identifier, targetEntity: Entity) {
-    if (!sourceEntity.properties.find((property) => property === propertyId)) {
+function getEdgesBetweenEntities(
+    schema: Schema,
+    sourceEntity: Entity,
+    sourceNodes: EntityInstanceSourceNode[],
+    propertyId: identifier,
+    targetEntity: Entity
+) {
+    const propCheck = schema.hasRelation(propertyId) && schema.property(propertyId).value !== targetEntity.id;
+    if (propCheck || !sourceEntity.properties.find((property) => property === propertyId)) {
         return [];
     }
     return sourceNodes.flatMap((sourceNode) =>

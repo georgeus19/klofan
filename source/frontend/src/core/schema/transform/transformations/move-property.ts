@@ -17,6 +17,10 @@ export function moveProperty(schema: RawSchema, { data: { originalSource, newSou
     const updatedSource: Entity = { ...originalSource, properties: originalSource.properties.filter((propertyId) => propertyId !== property.id) };
     schema.items[originalSource.id] = updatedSource;
 
+    if (updatedSource.id === newSource.id) {
+        newSource = updatedSource;
+    }
+
     const updatedNewSource: Entity = { ...newSource, properties: newSource.properties.concat(property.id) };
     schema.items[newSource.id] = updatedNewSource;
 

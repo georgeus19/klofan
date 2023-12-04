@@ -1,5 +1,5 @@
 import { twMerge } from 'tailwind-merge';
-import { CreateProperty } from './transformation/create-property';
+import { CreateProperty } from './transformation/create-property/create-property';
 import { CreateEntity } from './transformation/create-entity';
 import { EntityDetail } from './detail/entity-detail';
 import { MoveEntityProperty } from './transformation/move-entity-property';

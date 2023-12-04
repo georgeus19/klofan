@@ -4,6 +4,10 @@ import { createCreateEntityTransformation } from '../../../core/transform/factor
 import { useActionContext } from '../action-context';
 import { useInstancesContext } from '../../instances-context';
 import { useNodeSelectionContext } from '../../diagram/node-selection/node-selection-context';
+import { ActionOkCancel } from '../utils/action-ok-cancel';
+import { NodeSelect } from '../utils/node-select';
+import { LabelInput } from '../utils/label-input';
+import { Header } from '../utils/header';
 
 export interface CreateEntityProps {}
 
@@ -43,20 +47,8 @@ export function CreateEntity() {
 
     return (
         <div>
-            <div className='p-2 text-center font-bold bg-slate-300'>Create Entity</div>
-            <div className='grid grid-cols-12 px-3 py-1'>
-                <label className='col-span-4' htmlFor='create-entity-name'>
-                    Name
-                </label>
-                <input
-                    id='create-entity-name'
-                    value={entityName}
-                    onChange={(event) => {
-                        setEntityName(event.target.value);
-                    }}
-                    className='col-span-8 rounded bg-transparent border-2 border-slate-400 px-1 focus:bg-yellow-200'
-                ></input>
-            </div>
+            <Header label='Create Entity'></Header>
+            <LabelInput label='Name' value={entityName} onChange={(value) => setEntityName(value)}></LabelInput>
             <div className='grid grid-cols-12 px-3 py-1'>
                 <label className='col-span-4'>Instances</label>
                 <input
@@ -65,21 +57,11 @@ export function CreateEntity() {
                     value={instanceCount}
                     onChange={(event) => setInstanceCount(Number(event.target.value))}
                 />
-                <button className='col-span-2 mx-1 rounded shadow bg-lime-100 hover:bg-lime-200' onClick={() => setNodeSelection(true)}>
+                <button className='col-span-2 mx-1 rounded shadow bg-blue-200 hover:bg-blue-300' onClick={() => setNodeSelection(true)}>
                     Select
                 </button>
             </div>
-            <div className='grid grid-cols-12 p-3'>
-                <button
-                    className=' col-start-3 col-span-3 p-2 bg-green-300 shadow rounded hover:bg-green-600 hover:text-white'
-                    onClick={createEntity}
-                >
-                    Ok
-                </button>
-                <button className='col-start-7 col-span-3 p-2 bg-red-300 shadow rounded hover:bg-red-600 hover:text-white' onClick={cancel}>
-                    Cancel
-                </button>
-            </div>
+            <ActionOkCancel onOk={createEntity} onCancel={cancel}></ActionOkCancel>
         </div>
     );
 }

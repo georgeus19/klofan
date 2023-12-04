@@ -69,7 +69,7 @@ export function EntityDetail({ entity }: EntityDetailProps) {
                 }}
             ></DetailLabelValueItem>
             <button
-                className='col-span-2 p-1 rounded shadow bg-lime-100 hover:bg-lime-200'
+                className='col-span-2 p-1 rounded shadow bg-blue-200 hover:bg-blue-300'
                 onClick={() => showMoveProperty(entity, toProperty(property))}
             >
                 Move
@@ -128,7 +128,7 @@ export function EntityDetail({ entity }: EntityDetailProps) {
                                                     <>
                                                         <div className='col-start-2 overflow-auto p-2 bg-slate-300 text-center'>{property.name}</div>
                                                         {entityInstance.properties[property.id].literals.map((literal) => (
-                                                            <div className='col-start-3 overflow-auto p-2 bg-blue-200 text-center'>
+                                                            <div className='col-start-3 overflow-auto p-2 bg-blue-300 text-center'>
                                                                 "{literal.value}"
                                                             </div>
                                                         ))}

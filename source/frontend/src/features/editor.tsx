@@ -49,6 +49,9 @@ import { Transformation as InstanceTransformation } from '../core/instances/tran
 import { ShowAction } from './action-bar/actions';
 import { useNodeSelection } from './diagram/node-selection/use-node-selection';
 import { NodeSelectionContextProvider } from './diagram/node-selection/node-selection-context';
+import { useHelp } from './help/use-help';
+import { HelpContextProvider } from './help/help-context';
+import { Help } from './help/help';
 
 export type SchemaNode = ReactFlowNode<Entity, identifier>;
 export type EntityNode = ReactFlowNode<Entity, identifier>;
@@ -63,6 +66,9 @@ export default function Editor({ className }: HTMLProps<HTMLDivElement>) {
     const [sideAction, setSideAction] = useState<ShowAction>({ type: 'show-blank' });
     // Add locking mechanism - so that when creating a property, it cannot e.g. change to entity detail!
     const [sideActionLocked, setSideActionLocked] = useState(false);
+
+    const help = useHelp();
+
     const schema = new Schema(rawSchema);
     const instances = new InMemoryInstances(rawInstances);
     const { fitView } = useReactFlow();
@@ -98,10 +104,10 @@ export default function Editor({ className }: HTMLProps<HTMLDivElement>) {
         setSchemaNodes((nodes) => updateEntityNodes(nodes, schema));
         setSchemaEdges((edges) =>
             updatePropertyEdges(edges, schema).map((edge) => {
-                edge.markerEnd = { type: MarkerType.ArrowClosed, color: '#91BF95' };
+                edge.markerEnd = { type: MarkerType.ArrowClosed, color: '#718de4' };
                 edge.style = {
                     strokeWidth: 3,
-                    stroke: '#91BF95',
+                    stroke: '#718de4',
                 };
                 return edge;
             })
@@ -163,10 +169,10 @@ export default function Editor({ className }: HTMLProps<HTMLDivElement>) {
         setSchemaNodes((nodes) => updateEntityNodes(nodes, newSchema));
         setSchemaEdges((edges) =>
             updatePropertyEdges(edges, newSchema).map((edge) => {
-                edge.markerEnd = { type: MarkerType.ArrowClosed, color: '#91BF95' };
+                edge.markerEnd = { type: MarkerType.ArrowClosed, color: '#718de4' };
                 edge.style = {
                     strokeWidth: 3,
-                    stroke: '#91BF95',
+                    stroke: '#718de4',
                 };
                 return edge;
             })
@@ -184,133 +190,136 @@ export default function Editor({ className }: HTMLProps<HTMLDivElement>) {
         <SchemaContextProvider schema={schema} updateSchema={updateSchema}>
             <InstancesContextProvider instances={instances} updateInstances={updateInstances}>
                 <EntityNodeEventHandlerContextProvider eventHandler={entityNodeEventHandler}>
-                    <ActionContextProvider
-                        onActionDone={() => {
-                            setSideAction({ type: 'show-blank' });
-                            nodeSelection.enableSelectedStyle();
-                            setSideActionLocked(false);
-                        }}
-                        showMoveProperty={(entity: Entity, property: Property) => {
-                            if (schema.hasEntity(property.value)) {
-                                setSideAction({ type: 'show-move-entity-property', entity: entity, property: property });
-                                setSideActionLocked(true);
-                                nodeSelection.disableSelectedStyle();
-                                nodeSelection.clearSelectedNode();
-                            } else {
-                                setSideAction({ type: 'show-move-literal-property', entity: entity, property: property });
-                                setSideActionLocked(true);
-                                nodeSelection.disableSelectedStyle();
-                                nodeSelection.clearSelectedNode();
-                            }
-                        }}
-                    >
-                        <NodeSelectionContextProvider nodeSelection={nodeSelection}>
-                            <div className='grow flex'>
-                                <div className='bg-slate-100 grow'>
-                                    <ReactFlow
-                                        nodeTypes={nodeTypes}
-                                        edgeTypes={edgeTypes}
-                                        nodes={schemaNodes}
-                                        edges={schemaEdges}
-                                        // fitView
-                                        // connectionMode={ConnectionMode.Loose}
-                                        onNodesChange={onNodesChange}
-                                        onEdgesChange={onEdgesChange}
-                                        onConnect={onConnect}
-                                        elementsSelectable={true}
-                                        onSelect={(event) => {
-                                            console.log('SELECT', event);
-                                        }}
-                                    >
-                                        <Controls />
-                                        <MiniMap />
-                                        <Background variant={BackgroundVariant.Dots} gap={12} size={1} />
-                                        <Panel position='top-center' className='flex gap-2'>
-                                            <div className='relative group'>
-                                                <div className='p-2 rounded shadow bg-lime-100'>Auto Layout</div>
-                                                <div className='absolute hidden group-hover:flex z-10 flex-col bg-slate-300 min-w-[10rem] shadow rounded'>
-                                                    <button
-                                                        className='p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
-                                                        onClick={() => onLayout(downHierarchyLayoutNodes)}
-                                                    >
-                                                        vertical layout
-                                                    </button>
-                                                    <button
-                                                        className='p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
-                                                        onClick={() => onLayout(rightHierarchyLayoutNodes)}
-                                                    >
-                                                        horizontal layout
-                                                    </button>
-                                                    <button
-                                                        className='p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
-                                                        onClick={() => onLayout(radialLayoutNodes)}
-                                                    >
-                                                        radial layout
-                                                    </button>
-                                                    <button
-                                                        className='p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
-                                                        onClick={() => onLayout(forceLayoutNodes)}
-                                                    >
-                                                        force layout
-                                                    </button>
+                    <HelpContextProvider context={help}>
+                        <ActionContextProvider
+                            onActionDone={() => {
+                                setSideAction({ type: 'show-blank' });
+                                nodeSelection.enableSelectedStyle();
+                                setSideActionLocked(false);
+                            }}
+                            showMoveProperty={(entity: Entity, property: Property) => {
+                                if (schema.hasEntity(property.value)) {
+                                    setSideAction({ type: 'show-move-entity-property', entity: entity, property: property });
+                                    setSideActionLocked(true);
+                                    nodeSelection.disableSelectedStyle();
+                                    nodeSelection.clearSelectedNode();
+                                } else {
+                                    setSideAction({ type: 'show-move-literal-property', entity: entity, property: property });
+                                    setSideActionLocked(true);
+                                    nodeSelection.disableSelectedStyle();
+                                    nodeSelection.clearSelectedNode();
+                                }
+                            }}
+                        >
+                            <NodeSelectionContextProvider nodeSelection={nodeSelection}>
+                                <div className='grow flex'>
+                                    <div className='bg-slate-100 grow'>
+                                        <ReactFlow
+                                            nodeTypes={nodeTypes}
+                                            edgeTypes={edgeTypes}
+                                            nodes={schemaNodes}
+                                            edges={schemaEdges}
+                                            // fitView
+                                            // connectionMode={ConnectionMode.Loose}
+                                            onNodesChange={onNodesChange}
+                                            onEdgesChange={onEdgesChange}
+                                            onConnect={onConnect}
+                                            elementsSelectable={true}
+                                            onSelect={(event) => {
+                                                console.log('SELECT', event);
+                                            }}
+                                        >
+                                            <Controls />
+                                            <MiniMap />
+                                            <Background variant={BackgroundVariant.Dots} gap={12} size={1} />
+                                            <Panel position='top-center' className='flex gap-2'>
+                                                <div className='relative group'>
+                                                    <div className='p-2 rounded shadow bg-blue-200'>Auto Layout</div>
+                                                    <div className='absolute hidden group-hover:flex z-10 flex-col bg-slate-300 min-w-[10rem] shadow rounded'>
+                                                        <button
+                                                            className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300'
+                                                            onClick={() => onLayout(downHierarchyLayoutNodes)}
+                                                        >
+                                                            vertical layout
+                                                        </button>
+                                                        <button
+                                                            className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300'
+                                                            onClick={() => onLayout(rightHierarchyLayoutNodes)}
+                                                        >
+                                                            horizontal layout
+                                                        </button>
+                                                        <button
+                                                            className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300'
+                                                            onClick={() => onLayout(radialLayoutNodes)}
+                                                        >
+                                                            radial layout
+                                                        </button>
+                                                        <button
+                                                            className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300'
+                                                            onClick={() => onLayout(forceLayoutNodes)}
+                                                        >
+                                                            force layout
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                            </div>
 
-                                            <div className='relative group'>
-                                                <div className='p-2 rounded shadow bg-lime-100'>Create</div>
-                                                <div className='absolute hidden group-hover:flex z-10 flex-col bg-slate-300 min-w-[10rem] shadow rounded'>
-                                                    <button
-                                                        className='p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
-                                                        onClick={() => {
-                                                            setSideAction({ type: 'show-create-entity' });
-                                                            setSideActionLocked(true);
-                                                            nodeSelection.disableSelectedStyle();
-                                                            nodeSelection.clearSelectedNode();
-                                                        }}
-                                                    >
-                                                        entity
-                                                    </button>
-                                                    <button
-                                                        className='p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
-                                                        onClick={() => {
-                                                            setSideAction({ type: 'show-create-property' });
-                                                            setSideActionLocked(true);
-                                                            nodeSelection.disableSelectedStyle();
-                                                            nodeSelection.clearSelectedNode();
-                                                        }}
-                                                    >
-                                                        property
-                                                    </button>
+                                                <div className='relative group'>
+                                                    <div className='p-2 rounded shadow bg-blue-200'>Create</div>
+                                                    <div className='absolute hidden group-hover:flex z-10 flex-col bg-slate-300 min-w-[10rem] shadow rounded'>
+                                                        <button
+                                                            className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300'
+                                                            onClick={() => {
+                                                                setSideAction({ type: 'show-create-entity' });
+                                                                setSideActionLocked(true);
+                                                                nodeSelection.disableSelectedStyle();
+                                                                nodeSelection.clearSelectedNode();
+                                                            }}
+                                                        >
+                                                            entity
+                                                        </button>
+                                                        <button
+                                                            className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300'
+                                                            onClick={() => {
+                                                                setSideAction({ type: 'show-create-property' });
+                                                                setSideActionLocked(true);
+                                                                nodeSelection.disableSelectedStyle();
+                                                                nodeSelection.clearSelectedNode();
+                                                            }}
+                                                        >
+                                                            property
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                            </div>
 
-                                            <FileLoader className='p-2 rounded shadow bg-lime-100' onFileLoad={onImport}>
-                                                Import
-                                            </FileLoader>
-                                            <div className='relative group'>
-                                                <div className='p-2 rounded shadow bg-lime-100'>Export</div>
-                                                <div className='absolute hidden group-hover:flex z-10 flex-col bg-slate-300 min-w-[10rem] shadow rounded'>
-                                                    <FileSaver
-                                                        className='block p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
-                                                        onFileSave={onSchemaExport}
-                                                    >
-                                                        Schema
-                                                    </FileSaver>
-                                                    <FileSaver
-                                                        className='block p-2 rounded shadow bg-lime-100 hover:bg-lime-200'
-                                                        onFileSave={onInstancesExport}
-                                                    >
-                                                        Instances
-                                                    </FileSaver>
+                                                <FileLoader className='p-2 rounded shadow bg-blue-200' onFileLoad={onImport}>
+                                                    Import
+                                                </FileLoader>
+                                                <div className='relative group'>
+                                                    <div className='p-2 rounded shadow bg-blue-200'>Export</div>
+                                                    <div className='absolute hidden group-hover:flex z-10 flex-col bg-slate-300 min-w-[10rem] shadow rounded'>
+                                                        <FileSaver
+                                                            className='block p-2 rounded shadow bg-blue-200 hover:bg-blue-300'
+                                                            onFileSave={onSchemaExport}
+                                                        >
+                                                            Schema
+                                                        </FileSaver>
+                                                        <FileSaver
+                                                            className='block p-2 rounded shadow bg-blue-200 hover:bg-blue-300'
+                                                            onFileSave={onInstancesExport}
+                                                        >
+                                                            Instances
+                                                        </FileSaver>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </Panel>
-                                    </ReactFlow>
+                                            </Panel>
+                                        </ReactFlow>
+                                    </div>
+                                    {help.help.show && <Help className='absolute right-96 m-1 w-96' content={help.help.content}></Help>}
+                                    <ActionBar action={sideAction}></ActionBar>
                                 </div>
-                                <ActionBar action={sideAction}></ActionBar>
-                            </div>
-                        </NodeSelectionContextProvider>
-                    </ActionContextProvider>
+                            </NodeSelectionContextProvider>
+                        </ActionContextProvider>
+                    </HelpContextProvider>
                 </EntityNodeEventHandlerContextProvider>
             </InstancesContextProvider>
         </SchemaContextProvider>
