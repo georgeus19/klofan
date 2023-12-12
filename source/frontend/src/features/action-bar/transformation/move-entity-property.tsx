@@ -14,8 +14,8 @@ import { useInstancesContext } from '../../instances-context';
 import { useNodeSelectionContext } from '../../diagram/node-selection/node-selection-context';
 import { ActionOkCancel } from '../utils/action-ok-cancel';
 import { Header } from '../utils/header';
-import { DetailLabelValueItem } from '../utils/detail-label-value-item';
 import { LabelReadonlyInput } from '../utils/label-readonly-input';
+import { useHelpContext } from '../../help/help-context';
 
 export interface MoveEntityPropertyProps {
     entity: Entity;
@@ -31,6 +31,7 @@ export function MoveEntityProperty({ entity, property }: MoveEntityPropertyProps
     const { updateInstances } = useInstancesContext();
     const { selectedNode, clearSelectedNode } = useNodeSelectionContext();
     const { onActionDone } = useActionContext();
+    const { showNodeSelectionHelp, showEntityInstanceToEntityInstanceDiagramHelp, hideHelp } = useHelpContext();
 
     const { sourceNodes, targetNodes, edges, onConnect, getPropertyInstances, layout } = useEntityInstanceToEntityInstanceDiagram(
         sourceEntity,
@@ -44,6 +45,10 @@ export function MoveEntityProperty({ entity, property }: MoveEntityPropertyProps
                 setSourceEntity(selectedNode.data);
             } else {
                 setTargetEntity(selectedNode.data);
+            }
+
+            if ((sourceEntity && nodeSelection.type === 'target') || (targetEntity && nodeSelection.type === 'source')) {
+                showEntityInstanceToEntityInstanceDiagramHelp();
             }
 
             clearSelectedNode();
@@ -63,9 +68,11 @@ export function MoveEntityProperty({ entity, property }: MoveEntityPropertyProps
         updateSchema(transformation.schemaTransformations);
         updateInstances(transformation.instanceTransformations);
         onActionDone();
+        hideHelp();
     };
     const cancel = () => {
         onActionDone();
+        hideHelp();
     };
 
     const nodeTypes = useMemo(
@@ -78,8 +85,22 @@ export function MoveEntityProperty({ entity, property }: MoveEntityPropertyProps
         <div>
             <Header label='Move Property'></Header>
             <LabelReadonlyInput label='Property' value={`${entity.name}.${property.name}`}></LabelReadonlyInput>
-            <NodeSelect label='Source' displayValue={sourceEntity?.name} onSelect={() => setNodeSelection({ type: 'source' })}></NodeSelect>
-            <NodeSelect label='Target' displayValue={targetEntity?.name} onSelect={() => setNodeSelection({ type: 'target' })}></NodeSelect>
+            <NodeSelect
+                label='Source'
+                displayValue={sourceEntity?.name}
+                onSelect={() => {
+                    showNodeSelectionHelp();
+                    setNodeSelection({ type: 'source' });
+                }}
+            ></NodeSelect>
+            <NodeSelect
+                label='Target'
+                displayValue={targetEntity?.name}
+                onSelect={() => {
+                    showNodeSelectionHelp();
+                    setNodeSelection({ type: 'target' });
+                }}
+            ></NodeSelect>
             <BipartiteDiagram
                 sourceNodes={sourceNodes}
                 targetNodes={targetNodes}

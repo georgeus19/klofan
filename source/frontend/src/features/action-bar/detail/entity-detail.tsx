@@ -94,13 +94,13 @@ export function EntityDetail({ entity }: EntityDetailProps) {
                 ></DetailLabelValueItem>
             </Dropdown>
 
-            <Dropdown headerLabel='Properties' showInitially={false}>
-                <Dropdown className='mx-2' headerLabel='Literal' showInitially={false}>
+            <Dropdown headerLabel='Properties' showInitially={true}>
+                <Dropdown className='mx-2' headerLabel='Literal' showInitially={true}>
                     <ul className='mx-4'>
                         {properties.filter((property) => isLiteral(property.value)).map((property) => generatePropertyDetail(property))}
                     </ul>
                 </Dropdown>
-                <Dropdown className='mx-2' headerLabel='Other' showInitially={false}>
+                <Dropdown className='mx-2' headerLabel='Other' showInitially={true}>
                     <ul className='mx-4'>
                         {properties.filter((property) => !isLiteral(property.value)).map((property) => generatePropertyDetail(property))}
                     </ul>
@@ -108,7 +108,7 @@ export function EntityDetail({ entity }: EntityDetailProps) {
             </Dropdown>
 
             {entityInstanceForEntity === entity.id && (
-                <Dropdown headerLabel='Instance' showInitially={false}>
+                <Dropdown headerLabel='Instance' showInitially={true}>
                     <div className='flex flex-col'>
                         {entityInstances.map((entityInstance, instanceIndex) => {
                             return (

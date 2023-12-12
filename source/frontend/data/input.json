@@ -19,7 +19,7 @@
         ],
         "nutriments": {
             "calcium_100g": 0.038,
-            "calcium_unit": "mg",
+            "calcium_unit": "g",
             "carbohydrates_100g": 71.15,
             "carbohydrates_unit": "g",
             "energy-kcal_100g": 385,

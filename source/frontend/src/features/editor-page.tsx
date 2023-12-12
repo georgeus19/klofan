@@ -1,5 +1,5 @@
 import { ReactFlowProvider } from 'reactflow';
-import Editor from './editor';
+import Editor from './editor/editor';
 import Header from './header/header';
 
 /**

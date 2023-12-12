@@ -95,3 +95,16 @@ export class Schema {
         return new Schema(newSchema);
     }
 }
+
+// export interface Schema {
+//     // Raw schema for the purpose of storing it as state in react.
+//     raw(): RawSchema;
+
+//     // Query schema.
+//     items(): Item[];
+//     entities(): Entity[];
+//     // ... other methods
+
+//     // Transform schema by producing a new schema with applied transformations.
+//     transform(transformations: Transformation[]): Schema;
+// }

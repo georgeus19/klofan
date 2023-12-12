@@ -1,0 +1,19 @@
+@prefix gr: <http://purl.org/goodrelations/v1#> .
+@prefix food: <http://purl.org/foodontology#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+@prefix ex: <http://example.org/> .
+
+ex:noodles a food:Food ;
+    gr:name "Thai peanut noodle kit" ;
+    ex:countryOfOrigin <http://publications.europa.eu/resource/authority/country/USA> ;
+    food:carbohydratesPer100g [ 
+        a gr:QuantitativeValueFloat;
+        gr:hasUnitOfMeasurement "GRM"^^xsd:string;
+        gr:hasValueFloat 71.15
+    ] ;
+    food:energyPer100g [
+        a gr:QuantitativeValueFloat;
+        gr:hasUnitOfMeasurement "K51"^^xsd:string;
+        gr:hasValueFloat 385.0
+    ] .

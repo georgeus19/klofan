@@ -14,6 +14,7 @@ import { useNodeSelectionContext } from '../../diagram/node-selection/node-selec
 import { ActionOkCancel } from '../utils/action-ok-cancel';
 import { Header } from '../utils/header';
 import { LabelReadonlyInput } from '../utils/label-readonly-input';
+import { useHelpContext } from '../../help/help-context';
 
 export interface MoveLiteralPropertyProps {
     entity: Entity;
@@ -28,6 +29,7 @@ export function MoveLiteralProperty({ entity, property }: MoveLiteralPropertyPro
     const { updateInstances } = useInstancesContext();
     const { selectedNode, clearSelectedNode } = useNodeSelectionContext();
     const { onActionDone } = useActionContext();
+    const { showEntityInstanceToLiteralInstanceDiagramHelp, showNodeSelectionHelp, hideHelp } = useHelpContext();
 
     const { sourceNodes, targetNodes, edges, onConnect, getPropertyInstances, layout } = useEntityInstanceToLiteralInstanceDiagram(
         sourceEntity,
@@ -37,6 +39,8 @@ export function MoveLiteralProperty({ entity, property }: MoveLiteralPropertyPro
     useEffect(() => {
         if (selectedNode && nodeSelection) {
             setSourceEntity(selectedNode.data);
+
+            showEntityInstanceToLiteralInstanceDiagramHelp();
 
             clearSelectedNode();
             setNodeSelection(false);
@@ -54,9 +58,11 @@ export function MoveLiteralProperty({ entity, property }: MoveLiteralPropertyPro
         updateSchema(transformation.schemaTransformations);
         updateInstances(transformation.instanceTransformations);
         onActionDone();
+        hideHelp();
     };
     const cancel = () => {
         onActionDone();
+        hideHelp();
     };
 
     const nodeTypes = useMemo(() => ({ source: EntityInstanceSourceNode, target: LiteralTargetNode }), []);
@@ -66,7 +72,14 @@ export function MoveLiteralProperty({ entity, property }: MoveLiteralPropertyPro
         <div>
             <Header label='Move Property'></Header>
             <LabelReadonlyInput label='Property' value={`${entity.name}.${property.name}`}></LabelReadonlyInput>
-            <NodeSelect label='Source' displayValue={sourceEntity?.name} onSelect={() => setNodeSelection(true)}></NodeSelect>
+            <NodeSelect
+                label='Source'
+                displayValue={sourceEntity?.name}
+                onSelect={() => {
+                    showNodeSelectionHelp();
+                    setNodeSelection(true);
+                }}
+            ></NodeSelect>
             <BipartiteDiagram
                 sourceNodes={sourceNodes}
                 targetNodes={targetNodes}

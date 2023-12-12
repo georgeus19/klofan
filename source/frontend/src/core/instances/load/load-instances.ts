@@ -1,7 +1,6 @@
 import { Instances } from '../instances';
 import { PropertyInstance } from '../representation/property-instance';
 import { propertyInstanceKey } from '../representation/raw-instances';
-import { EntityInstances } from '../representation/entity-instances';
 import { identifier } from '../../schema/utils/identifier';
 import { InMemoryInstances } from '../in-memory-instances';
 import { EntityTreeNode } from '../../parse/tree/entity-tree/entity-tree';
@@ -33,17 +32,6 @@ function fillInstanceProperties(
             };
             targetInstanceIndex += instanceInfo.instances;
 
-            // if (instanceInfo.instances > 0) {
-            //     instanceLinks.entities = {
-            //         targetEntity: propertyInfo.targetEntity.id,
-            //         indices: _.range(targetInstanceIndex, targetInstanceIndex + instanceInfo.instances),
-            //     };
-            // }
-
-            // if (instanceInfo.literals.length > 0) {
-            //     instanceLinks.literals = ;
-            // }
-
             return instanceLinks;
         });
 
@@ -55,7 +43,10 @@ function fillInstanceProperties(
     return properties;
 }
 
-function fillInstanceEntities(entities: { [key: identifier]: EntityInstances }, entityTree: EntityTreeNode): { [key: identifier]: EntityInstances } {
+function fillInstanceEntities(
+    entities: { [key: identifier]: { count: number } },
+    entityTree: EntityTreeNode
+): { [key: identifier]: { count: number } } {
     entities[entityTree.id] = { count: entityTree.instanceCount };
     Object.values(entityTree.properties).forEach((propertyInfo) => {
         fillInstanceEntities(entities, propertyInfo.targetEntity);

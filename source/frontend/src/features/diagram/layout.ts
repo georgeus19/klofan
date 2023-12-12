@@ -1,5 +1,5 @@
 import ELK, { ElkExtendedEdge, ElkNode, LayoutOptions } from 'elkjs/lib/elk.bundled.js';
-import { SchemaEdge, SchemaNode } from '../editor';
+import { SchemaEdge, SchemaNode } from '../editor/editor';
 
 const elk = new ELK();
 

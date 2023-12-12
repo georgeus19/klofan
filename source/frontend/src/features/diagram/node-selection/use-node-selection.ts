@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { EntityNode, SchemaNode } from '../../editor';
+import { EntityNode, SchemaNode } from '../../editor/editor';
 
 export interface NodeSelection {
     selectedNode: EntityNode | null;

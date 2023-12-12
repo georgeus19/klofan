@@ -5,9 +5,9 @@ import { useActionContext } from '../action-context';
 import { useInstancesContext } from '../../instances-context';
 import { useNodeSelectionContext } from '../../diagram/node-selection/node-selection-context';
 import { ActionOkCancel } from '../utils/action-ok-cancel';
-import { NodeSelect } from '../utils/node-select';
 import { LabelInput } from '../utils/label-input';
 import { Header } from '../utils/header';
+import { useHelpContext } from '../../help/help-context';
 
 export interface CreateEntityProps {}
 
@@ -21,6 +21,7 @@ export function CreateEntity() {
     const { instances, updateInstances } = useInstancesContext();
 
     const { selectedNode, clearSelectedNode } = useNodeSelectionContext();
+    const { showNodeSelectionHelp, hideHelp } = useHelpContext();
 
     useEffect(() => {
         if (selectedNode && nodeSelection) {
@@ -30,6 +31,7 @@ export function CreateEntity() {
 
             clearSelectedNode();
             setNodeSelection(false);
+            hideHelp();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedNode]);
@@ -39,9 +41,11 @@ export function CreateEntity() {
         updateSchema(transformation.schemaTransformations);
         updateInstances(transformation.instanceTransformations);
         onActionDone();
+        hideHelp();
     };
 
     const cancel = () => {
+        hideHelp();
         onActionDone();
     };
 
@@ -57,7 +61,13 @@ export function CreateEntity() {
                     value={instanceCount}
                     onChange={(event) => setInstanceCount(Number(event.target.value))}
                 />
-                <button className='col-span-2 mx-1 rounded shadow bg-blue-200 hover:bg-blue-300' onClick={() => setNodeSelection(true)}>
+                <button
+                    className='col-span-2 mx-1 rounded shadow bg-blue-200 hover:bg-blue-300'
+                    onClick={() => {
+                        showNodeSelectionHelp();
+                        setNodeSelection(true);
+                    }}
+                >
                     Select
                 </button>
             </div>
