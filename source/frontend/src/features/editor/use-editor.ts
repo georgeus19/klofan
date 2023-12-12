@@ -1,4 +1,14 @@
-import { HTMLProps, createContext, useCallback, useContext, useMemo, useState } from 'react';
+import {
+    HTMLProps,
+    createContext,
+    useCallback,
+    useContext,
+    MouseEvent as ReactMouseEvent,
+    useMemo,
+    useState,
+    useLayoutEffect,
+    useEffect,
+} from 'react';
 import ReactFlow, {
     Background,
     Controls,
@@ -15,6 +25,7 @@ import ReactFlow, {
     MarkerType,
     BackgroundVariant,
     useReactFlow,
+    NodePositionChange,
 } from 'reactflow';
 import { identifier } from '../../core/schema/utils/identifier';
 import { Relation as SchemaRelation } from '../../core/schema/representation/relation/relation';
@@ -83,11 +94,7 @@ export function useEditor() {
 
     // Get latest state
     const { diagram, schema: rawSchema, instances: rawInstances } = history.states[history.current];
-    console.log(rawSchema.items);
 
-    // const [sideAction, setSideAction] = useState<ShowAction>({ type: 'show-blank' });
-    // Add locking mechanism - so that when creating a property, it cannot e.g. change to entity detail!
-    // const [sideActionLocked, setSideActionLocked] = useState(false);
     const nodeSelection = useNodeSelection();
 
     const help = useHelp();
@@ -97,44 +104,53 @@ export function useEditor() {
     const { fitView } = useReactFlow();
     const manualActions = useManualActions(nodeSelection, schema);
 
-    // !!! OLD !!!
-    // const [schemaNodes, setSchemaNodes] = useState<SchemaNode[]>([]);
-    // const [schemaEdges, setSchemaEdges] = useState<SchemaEdge[]>([]);
-    // const [rawSchema, setSchema] = useState<RawSchema>({ items: {}, relations: {} });
-    // const [rawInstances, setInstances] = useState<RawInstances>({ entityInstances: {}, propertyInstances: {} });
+    const onNodeDragStop = (event: ReactMouseEvent, node: SchemaNode, allDraggedNodes: SchemaNode[]) => {
+        setHistory((currentHistory) => {
+            const currentState = currentHistory.states[currentHistory.current];
 
-    // const [sideAction, setSideAction] = useState<ShowAction>({ type: 'show-blank' });
+            const newState = {
+                ...currentState,
+                diagram: {
+                    ...currentState.diagram,
+                    nodes: currentState.diagram.nodes.map((node) => {
+                        const draggedNode = allDraggedNodes.find((draggedNode) => draggedNode.id === node.id);
+                        if (!draggedNode) {
+                            return node;
+                        }
+
+                        return { ...node, position: draggedNode.position };
+                    }),
+                },
+            };
+
+            return { states: [...currentHistory.states.slice(0, currentHistory.current + 1), newState], current: currentHistory.current + 1 };
+        });
+    };
 
     const onNodesChange = useCallback(
         (changes: NodeChange[]) => {
-            // setSchemaNodes((nds) => applyNodeChanges(changes, nds));
             setHistory((currentHistory) => {
                 const currentState = currentHistory.states[currentHistory.current];
 
                 const newState = {
                     ...currentState,
-                    diagram: { ...currentState.diagram, nodes: applyNodeChanges(changes, currentState.diagram.nodes) },
+                    diagram: {
+                        ...currentState.diagram,
+                        nodes: applyNodeChanges(changes, currentState.diagram.nodes),
+                    },
                 };
 
-                return { states: [...currentHistory.states.slice(0, currentHistory.current + 1), newState], current: currentHistory.current + 1 };
+                // Replace the current state
+                return { states: [...currentHistory.states.slice(0, currentHistory.current), newState], current: currentHistory.current };
             });
         },
 
         [setHistory]
     );
-    // const onEdgesChange = useCallback(
-    //     (changes: EdgeChange[]) => setSchemaEdges((eds) => applyEdgeChanges(changes, eds) as unknown as SchemaEdge[]),
-    //     [setSchemaEdges]
-    // );
 
     const nodeTypes = useMemo(() => ({ entity: EntityNode }), []);
 
     const edgeTypes = useMemo(() => ({ property: PropertyEdge }), []);
-
-    // const onConnect = useCallback(
-    //     (connection: Connection) => setSchemaEdges((eds) => addEdge(connection, eds) as unknown as SchemaEdge[]),
-    //     [setSchemaEdges]
-    // );
 
     const onImport = (file: { content: string; type: string }) => {
         const { schema, instances } = file.type === 'application/json' ? parseJson(file.content) : parseCsv(file.content);
@@ -160,40 +176,33 @@ export function useEditor() {
 
             return { states: [...currentHistory.states.slice(0, currentHistory.current + 1), newState], current: currentHistory.current + 1 };
         });
-
-        // setSchema(schema.raw());
-        // setInstances(instances.raw());
-        // setSideAction({ type: 'show-blank' });
-        // setSchemaNodes((nodes) => updateEntityNodes(nodes, schema));
-        // setSchemaEdges((edges) =>
-        //     updatePropertyEdges(edges, schema).map((edge) => {
-        //         edge.markerEnd = { type: MarkerType.ArrowClosed, color: '#718de4' };
-        //         edge.style = {
-        //             strokeWidth: 3,
-        //             stroke: '#718de4',
-        //         };
-        //         return edge;
-        //     })
-        // );
     };
 
-    const onLayout = (layoutNodes: (schemaNodes: SchemaNode[], schemaEdges: SchemaEdge[]) => Promise<SchemaNode[]>) => {
-        layoutNodes(diagram.nodes, diagram.edges).then((nodes: SchemaNode[]) => {
-            // setSchemaNodes(nodes);
-            setHistory((currentHistory) => {
-                const currentState = currentHistory.states[currentHistory.current];
+    const [tt, setTt] = useState<boolean>(false);
 
-                const newState = {
-                    ...currentState,
-                    diagram: { ...currentState.diagram, nodes: nodes },
-                };
+    const onLayout = (
+        layoutNodes: (schemaNodes: SchemaNode[], schemaEdges: SchemaEdge[]) => Promise<{ nodes: SchemaNode[]; positionsUpdated: boolean }>
+    ) => {
+        layoutNodes(diagram.nodes, diagram.edges).then(({ nodes, positionsUpdated }) => {
+            if (positionsUpdated) {
+                setHistory((currentHistory) => {
+                    const currentState = currentHistory.states[currentHistory.current];
 
-                return { states: [...currentHistory.states.slice(0, currentHistory.current + 1), newState], current: currentHistory.current + 1 };
-            });
+                    const newState = {
+                        ...currentState,
+                        diagram: { ...currentState.diagram, nodes: nodes },
+                    };
 
-            window.requestAnimationFrame(() => fitView({ duration: 1 }));
+                    return { states: [...currentHistory.states.slice(0, currentHistory.current + 1), newState], current: currentHistory.current + 1 };
+                });
+                setTt(!tt);
+            }
         });
     };
+
+    useEffect(() => {
+        fitView();
+    }, [tt, fitView]);
 
     const onSchemaExport = (download: (file: File) => void) => {
         const writer = new Writer();
@@ -228,9 +237,6 @@ export function useEditor() {
             if (selectedNode) {
                 nodeSelection.addSelectedNode(selectedNode);
                 manualActions.showEntityDetail(schema.entity(selectedNode.id));
-                // if (!sideActionLocked) {
-                //     setSideAction({ type: 'show-entity-detail', entity: schema.entity(selectedNode.id) });
-                // }
             }
         },
         onPropertyClick: (property: Property) => {},
@@ -260,18 +266,6 @@ export function useEditor() {
 
             return { states: [...currentHistory.states.slice(0, currentHistory.current + 1), newState], current: currentHistory.current + 1 };
         });
-        // setSchema(newSchema.raw());
-        // setSchemaNodes((nodes) => updateEntityNodes(nodes, newSchema));
-        // setSchemaEdges((edges) =>
-        //     updatePropertyEdges(edges, newSchema).map((edge) => {
-        //         edge.markerEnd = { type: MarkerType.ArrowClosed, color: '#718de4' };
-        //         edge.style = {
-        //             strokeWidth: 3,
-        //             stroke: '#718de4',
-        //         };
-        //         return edge;
-        //     })
-        // );
     };
 
     const updateInstances = (transformations: InstanceTransformation[]) => {
@@ -333,9 +327,8 @@ export function useEditor() {
             edges: diagram.edges,
             nodeTypes: nodeTypes,
             edgeTypes: edgeTypes,
-            // onConnect: onConnect,
             onNodesChange,
-            // onEdgesChange,
+            onNodeDragStop,
             layoutNodes: onLayout,
             nodeSelection: nodeSelection,
             nodeEvents: {

@@ -1,5 +1,5 @@
 import 'reactflow/dist/style.css';
-import { HTMLProps } from 'react';
+import { HTMLProps, useCallback } from 'react';
 import ReactFlow, { Background, Controls, MiniMap, Panel, Node as ReactFlowNode, Edge as ReactFlowEdge, BackgroundVariant } from 'reactflow';
 import { identifier } from '../../core/schema/utils/identifier';
 import { Relation as SchemaRelation } from '../../core/schema/representation/relation/relation';
@@ -26,7 +26,7 @@ export type SchemaEdge = ReactFlowEdge<SchemaRelation> & { data: SchemaRelation 
 export default function Editor({ className }: HTMLProps<HTMLDivElement>) {
     const {
         userData: { schema, instances, updateSchema, updateInstances, onImport, onSchemaExport, onInstancesExport },
-        diagram: { nodes, edges, nodeTypes, layoutNodes, edgeTypes, nodeEvents: nodeEvents, onNodesChange, nodeSelection },
+        diagram: { nodes, edges, nodeTypes, layoutNodes, edgeTypes, nodeEvents: nodeEvents, onNodesChange, onNodeDragStop, nodeSelection },
         manualActions,
         help,
         history,
@@ -47,10 +47,9 @@ export default function Editor({ className }: HTMLProps<HTMLDivElement>) {
                                             nodes={nodes}
                                             edges={edges}
                                             // fitView
-                                            // connectionMode={ConnectionMode.Loose}
                                             onNodesChange={onNodesChange}
-                                            // onEdgesChange={onEdgesChange}
-                                            // onConnect={onConnect}
+                                            draggable={true}
+                                            onNodeDragStop={onNodeDragStop}
                                             elementsSelectable={true}
                                             onSelect={(event) => {
                                                 console.log('SELECT', event);

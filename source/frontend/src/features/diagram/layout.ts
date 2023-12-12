@@ -14,27 +14,31 @@ const defaultLayoutOptions = {
     'elk.spacing.nodeNode': '80',
 };
 
-export function forceLayoutNodes(nodes: SchemaNode[], edges: SchemaEdge[]): Promise<SchemaNode[]> {
+export function forceLayoutNodes(nodes: SchemaNode[], edges: SchemaEdge[]): Promise<{ nodes: SchemaNode[]; positionsUpdated: boolean }> {
     return layoutNodes(nodes, edges, {
         'elk.algorithm': 'org.eclipse.elk.force',
     });
 }
 
-export function radialLayoutNodes(nodes: SchemaNode[], edges: SchemaEdge[]): Promise<SchemaNode[]> {
+export function radialLayoutNodes(nodes: SchemaNode[], edges: SchemaEdge[]): Promise<{ nodes: SchemaNode[]; positionsUpdated: boolean }> {
     return layoutNodes(nodes, edges, {
         'elk.algorithm': 'org.eclipse.elk.radial',
     });
 }
 
-export function rightHierarchyLayoutNodes(nodes: SchemaNode[], edges: SchemaEdge[]): Promise<SchemaNode[]> {
+export function rightHierarchyLayoutNodes(nodes: SchemaNode[], edges: SchemaEdge[]): Promise<{ nodes: SchemaNode[]; positionsUpdated: boolean }> {
     return layoutNodes(nodes, edges, { 'elk.algorithm': 'layered', 'elk.direction': 'RIGHT' });
 }
 
-export function downHierarchyLayoutNodes(nodes: SchemaNode[], edges: SchemaEdge[]): Promise<SchemaNode[]> {
+export function downHierarchyLayoutNodes(nodes: SchemaNode[], edges: SchemaEdge[]): Promise<{ nodes: SchemaNode[]; positionsUpdated: boolean }> {
     return layoutNodes(nodes, edges, { 'elk.algorithm': 'layered', 'elk.direction': 'DOWN' });
 }
 
-function layoutNodes(nodes: SchemaNode[], edges: SchemaEdge[], options: LayoutOptions = {}): Promise<SchemaNode[]> {
+function layoutNodes(
+    nodes: SchemaNode[],
+    edges: SchemaEdge[],
+    options: LayoutOptions = {}
+): Promise<{ nodes: SchemaNode[]; positionsUpdated: boolean }> {
     const layoutOptions = { ...defaultLayoutOptions, ...options };
     const graph: ElkNode = {
         id: 'root',
@@ -50,7 +54,17 @@ function layoutNodes(nodes: SchemaNode[], edges: SchemaEdge[], options: LayoutOp
                     node.x !== undefined && node.y !== undefined ? { x: node.x, y: node.y } : null,
                 ])
             );
-            return nodes.map((node) => ({ ...node, position: positions[node.id] ?? node.position }));
+            let positionsUpdated = false;
+            const updatedNodes = nodes.map((node) => {
+                if (node.position.x !== positions[node.id]?.x || node.position.y !== positions[node.id]?.y) {
+                    positionsUpdated = true;
+                }
+                return { ...node, position: positions[node.id] ?? node.position };
+            });
+            return {
+                nodes: updatedNodes,
+                positionsUpdated: positionsUpdated,
+            };
         } else {
             return Promise.reject('Layouted graph contains no children.');
         }
