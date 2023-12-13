@@ -45,7 +45,6 @@ import { isLiteral } from '../../core/schema/representation/item/literal';
 import { FileSaver } from '../file/file-saver';
 import { Writer } from 'n3';
 import { saveAsDataSchema } from '../../core/schema/save/data-schema/save';
-import 'reactflow/dist/style.css';
 import { EntityNodeEventHandlerContextProvider } from '../diagram/node-events/entity-node-event-handler-context';
 import { EntityNodeEventHandler } from '../diagram/node-events/entity-node-event-handler';
 import { Transformation as SchemaTransformation } from '../../core/schema/transform/transformations/transformation';
@@ -66,6 +65,7 @@ import { Help } from '../help/help';
 import { Transformation } from '../../core/transform/transformation';
 import { Instances } from '../../core/instances/instances';
 import { useManualActions } from './use-manual-actions';
+import { useHistory } from './use-history';
 
 export type SchemaNode = ReactFlowNode<Entity, identifier>;
 export type EntityNode = ReactFlowNode<Entity, identifier>;
@@ -85,15 +85,13 @@ export type History = {
 };
 
 export function useEditor() {
-    const [history, setHistory] = useState<History>({
-        states: [
-            { diagram: { nodes: [], edges: [] }, schema: { items: {}, relations: {} }, instances: { entityInstances: {}, propertyInstances: {} } },
-        ],
-        current: 0,
-    });
-
-    // Get latest state
-    const { diagram, schema: rawSchema, instances: rawInstances } = history.states[history.current];
+    const {
+        current: { diagram, schema: rawSchema, instances: rawInstances },
+        update: updateHistory,
+        updateCurrentState: updateCurrentHistoryState,
+        undo,
+        redo,
+    } = useHistory();
 
     const nodeSelection = useNodeSelection();
 
@@ -105,48 +103,29 @@ export function useEditor() {
     const manualActions = useManualActions(nodeSelection, schema);
 
     const onNodeDragStop = (event: ReactMouseEvent, node: SchemaNode, allDraggedNodes: SchemaNode[]) => {
-        setHistory((currentHistory) => {
-            const currentState = currentHistory.states[currentHistory.current];
+        updateHistory((currentState) => ({
+            diagram: {
+                ...currentState.diagram,
+                nodes: currentState.diagram.nodes.map((node) => {
+                    const draggedNode = allDraggedNodes.find((draggedNode) => draggedNode.id === node.id);
+                    if (!draggedNode) {
+                        return node;
+                    }
 
-            const newState = {
-                ...currentState,
-                diagram: {
-                    ...currentState.diagram,
-                    nodes: currentState.diagram.nodes.map((node) => {
-                        const draggedNode = allDraggedNodes.find((draggedNode) => draggedNode.id === node.id);
-                        if (!draggedNode) {
-                            return node;
-                        }
-
-                        return { ...node, position: draggedNode.position };
-                    }),
-                },
-            };
-
-            return { states: [...currentHistory.states.slice(0, currentHistory.current + 1), newState], current: currentHistory.current + 1 };
-        });
+                    return { ...node, position: draggedNode.position };
+                }),
+            },
+        }));
     };
 
-    const onNodesChange = useCallback(
-        (changes: NodeChange[]) => {
-            setHistory((currentHistory) => {
-                const currentState = currentHistory.states[currentHistory.current];
-
-                const newState = {
-                    ...currentState,
-                    diagram: {
-                        ...currentState.diagram,
-                        nodes: applyNodeChanges(changes, currentState.diagram.nodes),
-                    },
-                };
-
-                // Replace the current state
-                return { states: [...currentHistory.states.slice(0, currentHistory.current), newState], current: currentHistory.current };
-            });
-        },
-
-        [setHistory]
-    );
+    const onNodesChange = (changes: NodeChange[]) => {
+        updateCurrentHistoryState((currentState) => ({
+            diagram: {
+                ...currentState.diagram,
+                nodes: applyNodeChanges(changes, currentState.diagram.nodes),
+            },
+        }));
+    };
 
     const nodeTypes = useMemo(() => ({ entity: EntityNode }), []);
 
@@ -155,27 +134,21 @@ export function useEditor() {
     const onImport = (file: { content: string; type: string }) => {
         const { schema, instances } = file.type === 'application/json' ? parseJson(file.content) : parseCsv(file.content);
 
-        setHistory((currentHistory) => {
-            const currentState = currentHistory.states[currentHistory.current];
-
-            const newState = {
-                schema: schema.raw(),
-                instances: instances.raw() as RawInstances,
-                diagram: {
-                    nodes: updateEntityNodes(currentState.diagram.nodes, schema),
-                    edges: updatePropertyEdges(currentState.diagram.edges, schema).map((edge) => {
-                        edge.markerEnd = { type: MarkerType.ArrowClosed, color: '#718de4' };
-                        edge.style = {
-                            strokeWidth: 3,
-                            stroke: '#718de4',
-                        };
-                        return edge;
-                    }),
-                },
-            };
-
-            return { states: [...currentHistory.states.slice(0, currentHistory.current + 1), newState], current: currentHistory.current + 1 };
-        });
+        updateHistory((currentState) => ({
+            schema: schema.raw(),
+            instances: instances.raw() as RawInstances,
+            diagram: {
+                nodes: updateEntityNodes(currentState.diagram.nodes, schema),
+                edges: updatePropertyEdges(currentState.diagram.edges, schema).map((edge) => {
+                    edge.markerEnd = { type: MarkerType.ArrowClosed, color: '#718de4' };
+                    edge.style = {
+                        strokeWidth: 3,
+                        stroke: '#718de4',
+                    };
+                    return edge;
+                }),
+            },
+        }));
     };
 
     const [tt, setTt] = useState<boolean>(false);
@@ -185,16 +158,9 @@ export function useEditor() {
     ) => {
         layoutNodes(diagram.nodes, diagram.edges).then(({ nodes, positionsUpdated }) => {
             if (positionsUpdated) {
-                setHistory((currentHistory) => {
-                    const currentState = currentHistory.states[currentHistory.current];
-
-                    const newState = {
-                        ...currentState,
-                        diagram: { ...currentState.diagram, nodes: nodes },
-                    };
-
-                    return { states: [...currentHistory.states.slice(0, currentHistory.current + 1), newState], current: currentHistory.current + 1 };
-                });
+                updateHistory((currentState) => ({
+                    diagram: { ...currentState.diagram, nodes: nodes },
+                }));
                 setTt(!tt);
             }
         });
@@ -245,41 +211,27 @@ export function useEditor() {
     const updateSchema = (transformations: SchemaTransformation[]) => {
         const newSchema = schema.transform(transformations);
         console.log('newSchema', newSchema);
-        setHistory((currentHistory) => {
-            const currentState = currentHistory.states[currentHistory.current];
-
-            const newState = {
-                ...currentState,
-                schema: newSchema.raw(),
-                diagram: {
-                    nodes: updateEntityNodes(currentState.diagram.nodes, newSchema),
-                    edges: updatePropertyEdges(currentState.diagram.edges, newSchema).map((edge) => {
-                        edge.markerEnd = { type: MarkerType.ArrowClosed, color: '#718de4' };
-                        edge.style = {
-                            strokeWidth: 3,
-                            stroke: '#718de4',
-                        };
-                        return edge;
-                    }),
-                },
-            };
-
-            return { states: [...currentHistory.states.slice(0, currentHistory.current + 1), newState], current: currentHistory.current + 1 };
-        });
+        updateHistory((currentState) => ({
+            schema: newSchema.raw(),
+            diagram: {
+                nodes: updateEntityNodes(currentState.diagram.nodes, newSchema),
+                edges: updatePropertyEdges(currentState.diagram.edges, newSchema).map((edge) => {
+                    edge.markerEnd = { type: MarkerType.ArrowClosed, color: '#718de4' };
+                    edge.style = {
+                        strokeWidth: 3,
+                        stroke: '#718de4',
+                    };
+                    return edge;
+                }),
+            },
+        }));
     };
 
     const updateInstances = (transformations: InstanceTransformation[]) => {
         instances.transform(transformations).then((newInstances) => {
-            setHistory((currentHistory) => {
-                const currentState = currentHistory.states[currentHistory.current];
-
-                const newState = {
-                    ...currentState,
-                    instances: newInstances.raw() as RawInstances,
-                };
-
-                return { states: [...currentHistory.states.slice(0, currentHistory.current + 1), newState], current: currentHistory.current + 1 };
-            });
+            updateHistory(() => ({
+                instances: newInstances.raw() as RawInstances,
+            }));
         });
     };
 
@@ -292,24 +244,8 @@ export function useEditor() {
 
     return {
         history: {
-            undo: () => {
-                setHistory((currentHistory) => {
-                    if (currentHistory.current === 0) {
-                        return currentHistory;
-                    }
-
-                    return { states: currentHistory.states, current: currentHistory.current - 1 };
-                });
-            },
-            redo: () => {
-                setHistory((currentHistory) => {
-                    if (currentHistory.current === currentHistory.states.length - 1) {
-                        return currentHistory;
-                    }
-
-                    return { states: currentHistory.states, current: currentHistory.current + 1 };
-                });
-            },
+            undo: undo,
+            redo: redo,
         },
         userData: {
             schema: schema,

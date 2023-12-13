@@ -1,10 +1,6 @@
 import 'reactflow/dist/style.css';
-import { HTMLProps, useCallback } from 'react';
-import ReactFlow, { Background, Controls, MiniMap, Panel, Node as ReactFlowNode, Edge as ReactFlowEdge, BackgroundVariant } from 'reactflow';
-import { identifier } from '../../core/schema/utils/identifier';
-import { Relation as SchemaRelation } from '../../core/schema/representation/relation/relation';
-import { Entity } from '../../core/schema/representation/item/entity';
-import EntityNode from '../diagram/entity-node';
+import { HTMLProps } from 'react';
+import ReactFlow, { Background, Controls, MiniMap, Panel, BackgroundVariant } from 'reactflow';
 import { SchemaContextProvider } from '../schema-context';
 import { FileLoader } from '../file/file-loader';
 import { downHierarchyLayoutNodes, forceLayoutNodes, radialLayoutNodes, rightHierarchyLayoutNodes } from '../diagram/layout';
@@ -17,11 +13,6 @@ import { HelpContextProvider } from '../help/help-context';
 import { Help } from '../help/help';
 import { useEditor } from './use-editor';
 import { EntityNodeEventHandlerContextProvider } from '../diagram/node-events/entity-node-event-handler-context';
-
-export type SchemaNode = ReactFlowNode<Entity, identifier>;
-export type EntityNode = ReactFlowNode<Entity, identifier>;
-
-export type SchemaEdge = ReactFlowEdge<SchemaRelation> & { data: SchemaRelation };
 
 export default function Editor({ className }: HTMLProps<HTMLDivElement>) {
     const {
