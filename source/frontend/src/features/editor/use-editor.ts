@@ -6,7 +6,7 @@ import { InMemoryInstances } from '../../core/instances/in-memory-instances';
 import { NodeSelection, useNodeSelection } from '../diagram/use-node-selection';
 import { Help, useHelp } from '../help/use-help';
 import { Transformation } from '../../core/transform/transformation';
-import { ManualActions, useManualActions } from './use-manual-actions';
+import { ManualActionsPane, useManualActionsPane } from '../manual-actions-pane/use-manual-actions-pane';
 import { useHistory } from './use-history';
 import { Positioning, SchemaEdge, SchemaNode, usePositioning } from '../diagram/use-positioning';
 import { useNodeEvents } from '../diagram/use-node-events';
@@ -34,7 +34,7 @@ export type Editor = {
     updateSchemaAndInstances: (transformation: Transformation) => void;
     addSchemaAndInstances: (data: { schema: Schema; instances: Instances }) => void;
     diagram: SchemaDiagram;
-    manualActions: ManualActions;
+    manualActions: ManualActionsPane;
     help: Help;
 };
 
@@ -55,7 +55,7 @@ export function useEditor(): Editor {
 
     const schema = new Schema(rawSchema);
     const instances = new InMemoryInstances(rawInstances);
-    const manualActions = useManualActions(nodeSelection, schema);
+    const manualActions = useManualActionsPane(nodeSelection, schema);
     const nodeEvents = useNodeEvents({ diagram: rawDiagram, nodeSelection, manualActions, schema });
     const diagram: SchemaDiagram = { ...rawDiagram, nodePositioning: nodePositioning, nodeEvents: nodeEvents, nodeSelection: nodeSelection };
 

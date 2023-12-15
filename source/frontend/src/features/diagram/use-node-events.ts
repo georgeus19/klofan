@@ -1,6 +1,6 @@
 import { Entity } from '../../core/schema/representation/item/entity';
 import { Schema } from '../../core/schema/schema';
-import { ManualActions } from '../editor/use-manual-actions';
+import { ManualActionsPane } from '../manual-actions-pane/use-manual-actions-pane';
 import { EntityNodeEventHandler } from './node-events/entity-node-event-handler';
 import { NodeSelection } from './use-node-selection';
 import { SchemaEdge, SchemaNode } from './use-positioning';
@@ -14,7 +14,7 @@ export function useNodeEvents({
     diagram: { nodes: SchemaNode[]; edges: SchemaEdge[] };
     schema: Schema;
     nodeSelection: NodeSelection;
-    manualActions: ManualActions;
+    manualActions: ManualActionsPane;
 }) {
     const entityNodeEventHandler: EntityNodeEventHandler = {
         onNodeClick: (entity: Entity) => {

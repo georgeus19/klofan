@@ -1,5 +1,5 @@
 import ELK, { ElkExtendedEdge, ElkNode, LayoutOptions } from 'elkjs/lib/elk.bundled.js';
-import { SchemaEdge, SchemaNode } from '../editor/editor';
+import { SchemaEdge, SchemaNode } from './use-positioning';
 
 const elk = new ELK();
 
@@ -14,27 +14,7 @@ const defaultLayoutOptions = {
     'elk.spacing.nodeNode': '80',
 };
 
-export function forceLayoutNodes(nodes: SchemaNode[], edges: SchemaEdge[]): Promise<{ nodes: SchemaNode[]; positionsUpdated: boolean }> {
-    return layoutNodes(nodes, edges, {
-        'elk.algorithm': 'org.eclipse.elk.force',
-    });
-}
-
-export function radialLayoutNodes(nodes: SchemaNode[], edges: SchemaEdge[]): Promise<{ nodes: SchemaNode[]; positionsUpdated: boolean }> {
-    return layoutNodes(nodes, edges, {
-        'elk.algorithm': 'org.eclipse.elk.radial',
-    });
-}
-
-export function rightHierarchyLayoutNodes(nodes: SchemaNode[], edges: SchemaEdge[]): Promise<{ nodes: SchemaNode[]; positionsUpdated: boolean }> {
-    return layoutNodes(nodes, edges, { 'elk.algorithm': 'layered', 'elk.direction': 'RIGHT' });
-}
-
-export function downHierarchyLayoutNodes(nodes: SchemaNode[], edges: SchemaEdge[]): Promise<{ nodes: SchemaNode[]; positionsUpdated: boolean }> {
-    return layoutNodes(nodes, edges, { 'elk.algorithm': 'layered', 'elk.direction': 'DOWN' });
-}
-
-function layoutNodes(
+export function layoutNodes(
     nodes: SchemaNode[],
     edges: SchemaEdge[],
     options: LayoutOptions = {}

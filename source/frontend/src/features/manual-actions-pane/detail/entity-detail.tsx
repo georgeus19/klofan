@@ -106,7 +106,12 @@ export function EntityDetail({ entity }: EntityDetailProps) {
                     <div className='flex flex-col'>
                         {entityInstances.map((entityInstance, instanceIndex) => {
                             return (
-                                <Dropdown className='mx-2' headerLabel={`${entity.name}.${instanceIndex}`} showInitially={false}>
+                                <Dropdown
+                                    className='mx-2'
+                                    headerLabel={`${entity.name}.${instanceIndex}`}
+                                    showInitially={false}
+                                    key={`${entity.id}${entityInstance.id}`}
+                                >
                                     <div className='mx-4 grid grid-cols-3 items-center gap-1'>
                                         <div className='bg-slate-300 overflow-auto p-2 text-center'>
                                             {entity.name}.{instanceIndex}
@@ -119,19 +124,27 @@ export function EntityDetail({ entity }: EntityDetailProps) {
                                             )
                                             .map((property) => {
                                                 return (
-                                                    <>
+                                                    <div key={property.id}>
                                                         <div className='col-start-2 overflow-auto p-2 bg-slate-300 text-center'>{property.name}</div>
-                                                        {entityInstance.properties[property.id].literals.map((literal) => (
-                                                            <div className='col-start-3 overflow-auto p-2 bg-blue-300 text-center'>
+                                                        {entityInstance.properties[property.id].literals.map((literal, index) => (
+                                                            <div
+                                                                className='col-start-3 overflow-auto p-2 bg-blue-300 text-center'
+                                                                key={`L${literal.value}${index}`}
+                                                            >
                                                                 "{literal.value}"
                                                             </div>
                                                         ))}
-                                                        {entityInstance.properties[property.id].targetInstanceIndices.map((targetInstanceIndex) => (
-                                                            <div className='col-start-3 overflow-auto p-2 bg-purple-200 text-center'>
-                                                                {property.value.name}.{targetInstanceIndex}
-                                                            </div>
-                                                        ))}
-                                                    </>
+                                                        {entityInstance.properties[property.id].targetInstanceIndices.map(
+                                                            (targetInstanceIndex, index) => (
+                                                                <div
+                                                                    className='col-start-3 overflow-auto p-2 bg-purple-200 text-center'
+                                                                    key={`E${index}`}
+                                                                >
+                                                                    {property.value.name}.{targetInstanceIndex}
+                                                                </div>
+                                                            )
+                                                        )}
+                                                    </div>
                                                 );
                                             })}
                                     </div>

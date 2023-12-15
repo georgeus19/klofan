@@ -1,12 +1,17 @@
 import { useState } from 'react';
-import { ShowAction } from '../action-bar/actions';
 import { NodeSelection } from '../diagram/use-node-selection';
 import { Entity } from '../../core/schema/representation/item/entity';
 import { Property } from '../../core/schema/representation/relation/property';
 import { Schema } from '../../core/schema/schema';
+import { ManualActionShown } from './actions';
+import { MoveEntityProperty } from './transformation/move-entity-property';
+import { MoveLiteralProperty } from './transformation/move-literal-property';
+import { CreateEntity } from './transformation/create-entity';
+import { CreateProperty } from './transformation/create-property/create-property';
+import { EntityDetail } from './detail/entity-detail';
 
-export type ManualActions = {
-    shownAction: ShowAction;
+export type ManualActionsPane = {
+    shownAction: ManualActionShown;
     onActionDone: () => void;
     showMoveProperty: (entity: Entity, property: Property) => void;
     showCreateEntity: () => void;
@@ -15,50 +20,56 @@ export type ManualActions = {
     hide: () => void;
 };
 
-export function useManualActions(nodeSelection: NodeSelection, schema: Schema): ManualActions {
-    const [sideAction, setSideAction] = useState<ShowAction>({ type: 'show-blank' });
+export function useManualActionsPane(nodeSelection: NodeSelection, schema: Schema): ManualActionsPane {
+    const [sideAction, setSideAction] = useState<ManualActionShown>({ type: 'blank-shown', component: <div></div> });
     // Add locking mechanism - so that when creating a property, it cannot e.g. change to entity detail!
     const [sideActionLocked, setSideActionLocked] = useState(false);
 
     return {
         shownAction: sideAction,
         onActionDone: () => {
-            setSideAction({ type: 'show-blank' });
+            setSideAction({ type: 'blank-shown', component: <div></div> });
             nodeSelection.enableSelectedStyle();
             setSideActionLocked(false);
         },
         showMoveProperty: (entity: Entity, property: Property) => {
             if (schema.hasEntity(property.value)) {
-                setSideAction({ type: 'show-move-entity-property', entity: entity, property: property });
+                setSideAction({
+                    type: 'move-entity-property-shown',
+                    component: <MoveEntityProperty entity={entity} property={property}></MoveEntityProperty>,
+                });
                 setSideActionLocked(true);
                 nodeSelection.disableSelectedStyle();
                 nodeSelection.clearSelectedNode();
             } else {
-                setSideAction({ type: 'show-move-literal-property', entity: entity, property: property });
+                setSideAction({
+                    type: 'move-literal-property-shown',
+                    component: <MoveLiteralProperty entity={entity} property={property}></MoveLiteralProperty>,
+                });
                 setSideActionLocked(true);
                 nodeSelection.disableSelectedStyle();
                 nodeSelection.clearSelectedNode();
             }
         },
         showCreateEntity: () => {
-            setSideAction({ type: 'show-create-entity' });
+            setSideAction({ type: 'create-entity-shown', component: <CreateEntity></CreateEntity> });
             setSideActionLocked(true);
             nodeSelection.disableSelectedStyle();
             nodeSelection.clearSelectedNode();
         },
         showCreateProperty: () => {
-            setSideAction({ type: 'show-create-property' });
+            setSideAction({ type: 'create-property-shown', component: <CreateProperty></CreateProperty> });
             setSideActionLocked(true);
             nodeSelection.disableSelectedStyle();
             nodeSelection.clearSelectedNode();
         },
         showEntityDetail: (entity: Entity) => {
             if (!sideActionLocked) {
-                setSideAction({ type: 'show-entity-detail', entity: entity });
+                setSideAction({ type: 'entity-detail-shown', component: <EntityDetail entity={entity}></EntityDetail> });
             }
         },
         hide: () => {
-            setSideAction({ type: 'show-blank' });
+            setSideAction({ type: 'blank-shown', component: <div></div> });
             nodeSelection.clearSelectedNode();
             nodeSelection.enableSelectedStyle();
         },
