@@ -1,8 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Entity } from '../../../core/schema/representation/item/entity';
 import { Property } from '../../../core/schema/representation/relation/property';
-import { useSchemaContext } from '../../schema-context';
-import { useActionContext } from '../action-context';
 import { useEntityInstanceToEntityInstanceDiagram } from '../bipartite-diagram/hooks/use-entity-instance-to-entity-instance-diagram';
 import { NodeSelect } from '../utils/node-select';
 import { BipartiteDiagram } from '../bipartite-diagram/bipartite-diagram';
@@ -10,12 +8,10 @@ import EntityInstanceSourceNode from '../bipartite-diagram/nodes/entity-instance
 import EntityInstanceTargetNode from '../bipartite-diagram/nodes/entity-instance-target-node';
 import UpdatableLiteralTargetNode from '../bipartite-diagram/nodes/updatable-literal-target-node';
 import { createMovePropertyTransformation } from '../../../core/transform/factory/move-property-transformation';
-import { useInstancesContext } from '../../instances-context';
-import { useNodeSelectionContext } from '../../diagram/node-selection/node-selection-context';
 import { ActionOkCancel } from '../utils/action-ok-cancel';
 import { Header } from '../utils/header';
 import { LabelReadonlyInput } from '../utils/label-readonly-input';
-import { useHelpContext } from '../../help/help-context';
+import { useEditorContext } from '../../editor/editor-context';
 
 export interface MoveEntityPropertyProps {
     entity: Entity;
@@ -23,15 +19,19 @@ export interface MoveEntityPropertyProps {
 }
 
 export function MoveEntityProperty({ entity, property }: MoveEntityPropertyProps) {
-    const { schema, updateSchema } = useSchemaContext();
+    const {
+        schema,
+        updateSchemaAndInstances,
+        diagram: {
+            nodeSelection: { selectedNode, clearSelectedNode },
+        },
+        help,
+        manualActions: { onActionDone },
+    } = useEditorContext();
+
     const [nodeSelection, setNodeSelection] = useState<{ type: 'source' } | { type: 'target' } | null>(null);
     const [sourceEntity, setSourceEntity] = useState<Entity>(entity);
     const [targetEntity, setTargetEntity] = useState<Entity>(schema.entity(property.value));
-
-    const { updateInstances } = useInstancesContext();
-    const { selectedNode, clearSelectedNode } = useNodeSelectionContext();
-    const { onActionDone } = useActionContext();
-    const { showNodeSelectionHelp, showEntityInstanceToEntityInstanceDiagramHelp, hideHelp } = useHelpContext();
 
     const { sourceNodes, targetNodes, edges, onConnect, getPropertyInstances, layout } = useEntityInstanceToEntityInstanceDiagram(
         sourceEntity,
@@ -48,7 +48,7 @@ export function MoveEntityProperty({ entity, property }: MoveEntityPropertyProps
             }
 
             if ((sourceEntity && nodeSelection.type === 'target') || (targetEntity && nodeSelection.type === 'source')) {
-                showEntityInstanceToEntityInstanceDiagramHelp();
+                help.showEntityInstanceToEntityInstanceDiagramHelp();
             }
 
             clearSelectedNode();
@@ -65,14 +65,13 @@ export function MoveEntityProperty({ entity, property }: MoveEntityPropertyProps
             newTarget: targetEntity.id,
             propertyInstances: getPropertyInstances(),
         });
-        updateSchema(transformation.schemaTransformations);
-        updateInstances(transformation.instanceTransformations);
+        updateSchemaAndInstances(transformation);
         onActionDone();
-        hideHelp();
+        help.hideHelp();
     };
     const cancel = () => {
         onActionDone();
-        hideHelp();
+        help.hideHelp();
     };
 
     const nodeTypes = useMemo(
@@ -89,7 +88,7 @@ export function MoveEntityProperty({ entity, property }: MoveEntityPropertyProps
                 label='Source'
                 displayValue={sourceEntity?.name}
                 onSelect={() => {
-                    showNodeSelectionHelp();
+                    help.showNodeSelectionHelp();
                     setNodeSelection({ type: 'source' });
                 }}
             ></NodeSelect>
@@ -97,7 +96,7 @@ export function MoveEntityProperty({ entity, property }: MoveEntityPropertyProps
                 label='Target'
                 displayValue={targetEntity?.name}
                 onSelect={() => {
-                    showNodeSelectionHelp();
+                    help.showNodeSelectionHelp();
                     setNodeSelection({ type: 'target' });
                 }}
             ></NodeSelect>

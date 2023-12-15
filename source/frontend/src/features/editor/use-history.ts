@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { RawInstances } from '../../core/instances/representation/raw-instances';
 import { RawSchema } from '../../core/schema/representation/raw-schema';
-import { SchemaEdge, SchemaNode } from './use-editor';
+import { SchemaEdge, SchemaNode } from '../diagram/use-positioning';
 
 export type EditorState = {
     schema: RawSchema;
@@ -15,13 +15,21 @@ export type EditorStateUpdate = {
     diagram?: { nodes: SchemaNode[]; edges: SchemaEdge[] };
 };
 
-export type History = {
+export type HistoryState = {
     states: EditorState[];
     current: number;
 };
 
-export function useHistory() {
-    const [history, setHistory] = useState<History>({
+export type EditorHistory = {
+    undo: () => void;
+    redo: () => void;
+    updateCurrentState: (newState: (prev: EditorState) => EditorStateUpdate) => void;
+    update: (newState: (prev: EditorState) => EditorStateUpdate) => void;
+    current: EditorState;
+};
+
+export function useHistory(): EditorHistory {
+    const [history, setHistory] = useState<HistoryState>({
         states: [
             { diagram: { nodes: [], edges: [] }, schema: { items: {}, relations: {} }, instances: { entityInstances: {}, propertyInstances: {} } },
         ],

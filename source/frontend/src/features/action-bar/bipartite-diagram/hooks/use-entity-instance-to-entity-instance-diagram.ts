@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useInstancesContext } from '../../../instances-context';
 import { Entity } from '../../../../core/schema/representation/item/entity';
 import { identifier } from '../../../../core/schema/utils/identifier';
 import { Edge as ReactFlowEdge, addEdge, Connection } from 'reactflow';
@@ -7,8 +6,8 @@ import { EntityInstance } from '../../../../core/instances/entity-instance';
 import { PropertyInstance } from '../../../../core/instances/representation/property-instance';
 import { SourceNode, TargetNode, sourceIdPrefix, sourceNodes, targetIdPrefix, targetNodes } from '../common';
 import { defaultLayout } from '../layout';
-import { useSchemaContext } from '../../../schema-context';
 import { Schema } from '../../../../core/schema/schema';
+import { useEditorContext } from '../../../editor/editor-context';
 
 export type EntityInstanceSourceNode = SourceNode<{ entity: Entity; entityInstance: EntityInstance }>;
 export type EntityInstanceTargetNode = TargetNode<{ entity: Entity; entityInstance: EntityInstance }>;
@@ -17,8 +16,7 @@ export type SourceTargetEdge = ReactFlowEdge<never>;
 export function useEntityInstanceToEntityInstanceDiagram(sourceEntity: Entity | null, targetEntity: Entity | null, propertyId: identifier) {
     const [nodes, setNodes] = useState<(EntityInstanceSourceNode | EntityInstanceTargetNode)[]>([]);
     const [edges, setEdges] = useState<ReactFlowEdge<never>[]>([]);
-    const { instances } = useInstancesContext();
-    const { schema } = useSchemaContext();
+    const { schema, instances } = useEditorContext();
     const layout = defaultLayout;
     useEffect(() => {
         if (sourceEntity) {

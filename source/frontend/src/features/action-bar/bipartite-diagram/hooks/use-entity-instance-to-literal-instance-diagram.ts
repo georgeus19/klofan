@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useInstancesContext } from '../../../instances-context';
 import { Entity } from '../../../../core/schema/representation/item/entity';
 import { identifier } from '../../../../core/schema/utils/identifier';
 import { Edge as ReactFlowEdge, addEdge, Connection } from 'reactflow';
@@ -8,6 +7,7 @@ import { Literal } from '../../../../core/instances/representation/literal';
 import { SourceNode, TargetNode, sourceIdPrefix, sourceNodes, targetIdPrefix, targetNodes } from '../common';
 import { EntityInstance } from '../../../../core/instances/entity-instance';
 import { defaultLayout } from '../layout';
+import { useEditorContext } from '../../../editor/editor-context';
 
 export type EntityInstanceSourceNode = SourceNode<{ entity: Entity; entityInstance: EntityInstance }>;
 export type LiteralInstanceTargetNode = TargetNode<{ literal: Literal; id: number }>;
@@ -17,7 +17,7 @@ export function useEntityInstanceToLiteralInstanceDiagram(sourceEntity: Entity |
     const [nodes, setNodes] = useState<(EntityInstanceSourceNode | LiteralInstanceTargetNode)[]>([]);
     const [targetLiteralsSet, setTargetLiteralsSet] = useState<boolean>(false);
     const [edges, setEdges] = useState<ReactFlowEdge<never>[]>([]);
-    const { instances } = useInstancesContext();
+    const { instances } = useEditorContext();
     const layout = defaultLayout;
 
     useEffect(() => {

@@ -1,27 +1,24 @@
 import { useEffect, useState } from 'react';
-import { useSchemaContext } from '../../schema-context';
 import { createCreateEntityTransformation } from '../../../core/transform/factory/create-entity-transformation';
-import { useActionContext } from '../action-context';
-import { useInstancesContext } from '../../instances-context';
-import { useNodeSelectionContext } from '../../diagram/node-selection/node-selection-context';
 import { ActionOkCancel } from '../utils/action-ok-cancel';
 import { LabelInput } from '../utils/label-input';
 import { Header } from '../utils/header';
-import { useHelpContext } from '../../help/help-context';
-
-export interface CreateEntityProps {}
+import { useEditorContext } from '../../editor/editor-context';
 
 export function CreateEntity() {
     const [entityName, setEntityName] = useState('');
     const [instanceCount, setInstanceCount] = useState(1);
     const [nodeSelection, setNodeSelection] = useState<boolean>(false);
-    const { onActionDone } = useActionContext();
 
-    const { updateSchema } = useSchemaContext();
-    const { instances, updateInstances } = useInstancesContext();
-
-    const { selectedNode, clearSelectedNode } = useNodeSelectionContext();
-    const { showNodeSelectionHelp, hideHelp } = useHelpContext();
+    const {
+        instances,
+        updateSchemaAndInstances,
+        diagram: {
+            nodeSelection: { selectedNode, clearSelectedNode },
+        },
+        help,
+        manualActions: { onActionDone },
+    } = useEditorContext();
 
     useEffect(() => {
         if (selectedNode && nodeSelection) {
@@ -31,21 +28,20 @@ export function CreateEntity() {
 
             clearSelectedNode();
             setNodeSelection(false);
-            hideHelp();
+            help.hideHelp();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedNode]);
 
     const createEntity = () => {
         const transformation = createCreateEntityTransformation({ schema: { name: entityName }, instances: { count: instanceCount } });
-        updateSchema(transformation.schemaTransformations);
-        updateInstances(transformation.instanceTransformations);
+        updateSchemaAndInstances(transformation);
         onActionDone();
-        hideHelp();
+        help.hideHelp();
     };
 
     const cancel = () => {
-        hideHelp();
+        help.hideHelp();
         onActionDone();
     };
 
@@ -64,7 +60,7 @@ export function CreateEntity() {
                 <button
                     className='col-span-2 mx-1 rounded shadow bg-blue-200 hover:bg-blue-300'
                     onClick={() => {
-                        showNodeSelectionHelp();
+                        help.showNodeSelectionHelp();
                         setNodeSelection(true);
                     }}
                 >

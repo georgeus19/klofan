@@ -1,11 +1,21 @@
 import { useState } from 'react';
 import { ShowAction } from '../action-bar/actions';
-import { NodeSelection } from '../diagram/node-selection/use-node-selection';
+import { NodeSelection } from '../diagram/use-node-selection';
 import { Entity } from '../../core/schema/representation/item/entity';
 import { Property } from '../../core/schema/representation/relation/property';
 import { Schema } from '../../core/schema/schema';
 
-export function useManualActions(nodeSelection: NodeSelection, schema: Schema) {
+export type ManualActions = {
+    shownAction: ShowAction;
+    onActionDone: () => void;
+    showMoveProperty: (entity: Entity, property: Property) => void;
+    showCreateEntity: () => void;
+    showCreateProperty: () => void;
+    showEntityDetail: (entity: Entity) => void;
+    hide: () => void;
+};
+
+export function useManualActions(nodeSelection: NodeSelection, schema: Schema): ManualActions {
     const [sideAction, setSideAction] = useState<ShowAction>({ type: 'show-blank' });
     // Add locking mechanism - so that when creating a property, it cannot e.g. change to entity detail!
     const [sideActionLocked, setSideActionLocked] = useState(false);
@@ -46,6 +56,11 @@ export function useManualActions(nodeSelection: NodeSelection, schema: Schema) {
             if (!sideActionLocked) {
                 setSideAction({ type: 'show-entity-detail', entity: entity });
             }
+        },
+        hide: () => {
+            setSideAction({ type: 'show-blank' });
+            nodeSelection.clearSelectedNode();
+            nodeSelection.enableSelectedStyle();
         },
     };
 }

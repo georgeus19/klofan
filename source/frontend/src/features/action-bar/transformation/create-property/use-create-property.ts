@@ -1,10 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useSchemaContext } from '../../../schema-context';
-import { useActionContext } from '../../action-context';
 import { Entity } from '../../../../core/schema/representation/item/entity';
 import { Node as ReactFlowNode, Edge as ReactFlowEdge, addEdge, Connection } from 'reactflow';
 import { identifier } from '../../../../core/schema/utils/identifier';
-import { useInstancesContext } from '../../../instances-context';
 import EntityInstanceSourceNode from '../../bipartite-diagram/nodes/entity-instance-source-node';
 import EntityInstanceTargetNode from '../../bipartite-diagram/nodes/entity-instance-target-node';
 import { createCreatePropertyTransformation } from '../../../../core/transform/factory/create-property-transformation';
@@ -13,8 +10,7 @@ import { Literal } from '../../../../core/instances/representation/literal';
 import UpdatableLiteralTargetNode from '../../bipartite-diagram/nodes/updatable-literal-target-node';
 import { useEntityInstanceToEntityInstanceDiagram } from '../../bipartite-diagram/hooks/use-entity-instance-to-entity-instance-diagram';
 import { LayoutOptions } from '../../bipartite-diagram/layout';
-import { useNodeSelectionContext } from '../../../diagram/node-selection/node-selection-context';
-import { useHelpContext } from '../../../help/help-context';
+import { useEditorContext } from '../../../editor/editor-context';
 
 export type tabOption = 'literal' | 'entity';
 
@@ -28,7 +24,6 @@ export type TargetLiteralEdge = ReactFlowEdge<never>;
 
 export function useCreateProperty() {
     const [propertyName, setPropertyName] = useState('');
-    const { onActionDone } = useActionContext();
     const [tab, setTab] = useState<tabOption>('literal');
     const [nodeSelection, setNodeSelection] = useState<{ type: 'source' } | { type: 'target' } | null>(null);
     const [sourceEntity, setSourceEntity] = useState<Entity | null>(null);
@@ -36,11 +31,15 @@ export function useCreateProperty() {
     const [literalTargetNodes, setLiteralTargetNodes] = useState<LiteralNode[]>([]);
     const [literalTargetEdges, setLiteralTargetEdges] = useState<TargetLiteralEdge[]>([]);
 
-    const { selectedNode, clearSelectedNode } = useNodeSelectionContext();
-    const { schema, updateSchema } = useSchemaContext();
-    const { updateInstances } = useInstancesContext();
-    const { showNodeSelectionHelp, hideHelp, showEntityInstanceToEntityInstanceDiagramHelp, showEntityInstanceToLiteralInstanceDiagramHelp } =
-        useHelpContext();
+    const {
+        schema,
+        updateSchemaAndInstances,
+        help,
+        diagram: {
+            nodeSelection: { selectedNode, clearSelectedNode },
+        },
+        manualActions: { onActionDone },
+    } = useEditorContext();
 
     const {
         sourceNodes,
@@ -58,14 +57,14 @@ export function useCreateProperty() {
             } else {
                 setTargetEntity(selectedNode.data);
             }
-            hideHelp();
+            help.hideHelp();
 
             if (sourceEntity || nodeSelection.type === 'source') {
                 if (tab === 'entity' && (targetEntity || nodeSelection.type === 'target')) {
-                    showEntityInstanceToEntityInstanceDiagramHelp();
+                    help.showEntityInstanceToEntityInstanceDiagramHelp();
                 }
                 if (tab === 'literal') {
-                    showEntityInstanceToLiteralInstanceDiagramHelp();
+                    help.showEntityInstanceToLiteralInstanceDiagramHelp();
                 }
             }
 
@@ -82,7 +81,7 @@ export function useCreateProperty() {
     const edgeTypes = useMemo(() => ({}), []);
     const cancel = () => {
         onActionDone();
-        hideHelp();
+        help.hideHelp();
     };
 
     const getLiteralTargetPropertyInstances = () => {
@@ -112,10 +111,9 @@ export function useCreateProperty() {
             sourceEntityId: sourceEntity.id,
             propertyInstances: propertyInstances,
         });
-        updateSchema(transformation.schemaTransformations);
-        updateInstances(transformation.instanceTransformations);
+        updateSchemaAndInstances(transformation);
         onActionDone();
-        hideHelp();
+        help.hideHelp();
     };
 
     const onLiteralTargetConnect = useCallback(
@@ -152,22 +150,22 @@ export function useCreateProperty() {
         ]);
 
     const switchToEntityTargetTab = () => {
-        hideHelp();
+        help.hideHelp();
         clearSelectedNode();
         setNodeSelection(null);
         setTab('entity');
         if (sourceEntity && targetEntity) {
-            showEntityInstanceToEntityInstanceDiagramHelp();
+            help.showEntityInstanceToEntityInstanceDiagramHelp();
         }
     };
 
     const switchToLiteralTargetTab = () => {
-        hideHelp();
+        help.hideHelp();
         clearSelectedNode();
         setNodeSelection(null);
         setTab('literal');
         if (sourceEntity) {
-            showEntityInstanceToLiteralInstanceDiagramHelp();
+            help.showEntityInstanceToLiteralInstanceDiagramHelp();
         }
     };
 
@@ -193,11 +191,11 @@ export function useCreateProperty() {
         },
         nodeSelection: {
             onSourceNodeSelect: () => {
-                showNodeSelectionHelp();
+                help.showNodeSelectionHelp();
                 setNodeSelection({ type: 'source' });
             },
             onTargetNodeSelect: () => {
-                showNodeSelectionHelp();
+                help.showNodeSelectionHelp();
                 setNodeSelection({ type: 'target' });
             },
         },

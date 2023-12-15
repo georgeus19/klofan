@@ -1,19 +1,16 @@
 import { useEffect, useState } from 'react';
 import { Entity, getProperties } from '../../../core/schema/representation/item/entity';
-import { useSchemaContext } from '../../schema-context';
 import { createUpdateItemNameTransformation } from '../../../core/transform/factory/update-item-name-transformation';
-
 import { DetailLabelValueItem } from '../utils/detail-label-value-item';
 import { Dropdown } from '../utils/dropdown';
 import { createUpdateRelationNameTransformation } from '../../../core/transform/factory/update-relation-name-transformation';
 import { createUpdatePropertyUriTransformation } from '../../../core/transform/factory/update-property-uri-transformation';
 import { isLiteral } from '../../../core/schema/representation/item/literal';
 import { GraphProperty, toProperty } from '../../../core/schema/representation/relation/graph-property';
-import { useActionContext } from '../action-context';
-import { useInstancesContext } from '../../instances-context';
 import { EntityInstance } from '../../../core/instances/entity-instance';
 import { identifier } from '../../../core/schema/utils/identifier';
 import { createUpdateEntityUriTransformation } from '../../../core/transform/factory/update-entity-uri-transformation';
+import { useEditorContext } from '../../editor/editor-context';
 
 export interface EntityDetailProps {
     entity: Entity;
@@ -23,10 +20,7 @@ export function EntityDetail({ entity }: EntityDetailProps) {
     const [entityInstances, setEntityInstances] = useState<EntityInstance[]>([]);
     const [entityInstanceForEntity, setEntityInstanceForEntity] = useState<identifier>(entity.id);
 
-    const { showMoveProperty } = useActionContext();
-
-    const { schema, updateSchema } = useSchemaContext();
-    const { instances } = useInstancesContext();
+    const { schema, instances, updateSchemaAndInstances, manualActions } = useEditorContext();
     const properties = getProperties(schema, entity.id);
 
     useEffect(() => {
@@ -39,12 +33,12 @@ export function EntityDetail({ entity }: EntityDetailProps) {
 
     const handleEntityNameChange = (name: string) => {
         const transformation = createUpdateItemNameTransformation(schema, entity.id, name);
-        updateSchema(transformation.schemaTransformations);
+        updateSchemaAndInstances(transformation);
     };
 
     const handleEntityUriChange = (uri: string) => {
         const transformation = createUpdateEntityUriTransformation(schema, entity.id, uri);
-        updateSchema(transformation.schemaTransformations);
+        updateSchemaAndInstances(transformation);
     };
 
     const generatePropertyDetail = (property: GraphProperty) => (
@@ -56,7 +50,7 @@ export function EntityDetail({ entity }: EntityDetailProps) {
                 initialValue={property.name}
                 onChangeDone={(name: string) => {
                     const transformation = createUpdateRelationNameTransformation(schema, property.id, name);
-                    updateSchema(transformation.schemaTransformations);
+                    updateSchemaAndInstances(transformation);
                 }}
             ></DetailLabelValueItem>
             <DetailLabelValueItem
@@ -65,12 +59,12 @@ export function EntityDetail({ entity }: EntityDetailProps) {
                 initialValue={property.uri ?? ''}
                 onChangeDone={(uri: string) => {
                     const transformation = createUpdatePropertyUriTransformation(schema, property.id, uri);
-                    updateSchema(transformation.schemaTransformations);
+                    updateSchemaAndInstances(transformation);
                 }}
             ></DetailLabelValueItem>
             <button
                 className='col-span-2 p-1 rounded shadow bg-blue-200 hover:bg-blue-300'
-                onClick={() => showMoveProperty(entity, toProperty(property))}
+                onClick={() => manualActions.showMoveProperty(entity, toProperty(property))}
             >
                 Move
             </button>

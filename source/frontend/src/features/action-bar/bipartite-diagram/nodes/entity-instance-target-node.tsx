@@ -1,13 +1,13 @@
 import { Handle, NodeProps, Position } from 'reactflow';
 import { EntityInstance } from '../../../../core/instances/entity-instance';
 import { Entity, getProperties } from '../../../../core/schema/representation/item/entity';
-import { useSchemaContext } from '../../../schema-context';
 import { EntityInstanceDetail } from '../../detail/entity-instance-detail';
 import { twMerge } from 'tailwind-merge';
 import { LayoutOptions } from '../layout';
+import { useEditorContext } from '../../../editor/editor-context';
 
 export default function EntityInstanceTargetNode({ data }: NodeProps<{ entity: Entity; entityInstance: EntityInstance; layout: LayoutOptions }>) {
-    const { schema } = useSchemaContext();
+    const { schema } = useEditorContext();
     const properties = getProperties(schema, data.entity.id);
     return (
         <>

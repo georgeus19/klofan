@@ -1,20 +1,16 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Entity } from '../../../core/schema/representation/item/entity';
 import { Property } from '../../../core/schema/representation/relation/property';
-import { useSchemaContext } from '../../schema-context';
-import { useActionContext } from '../action-context';
 import { useEntityInstanceToLiteralInstanceDiagram } from '../bipartite-diagram/hooks/use-entity-instance-to-literal-instance-diagram';
 import { BipartiteDiagram } from '../bipartite-diagram/bipartite-diagram';
 import EntityInstanceSourceNode from '../bipartite-diagram/nodes/entity-instance-source-node';
 import { NodeSelect } from '../utils/node-select';
 import { createMovePropertyTransformation } from '../../../core/transform/factory/move-property-transformation';
-import { useInstancesContext } from '../../instances-context';
 import LiteralTargetNode from '../bipartite-diagram/nodes/literal-target-node';
-import { useNodeSelectionContext } from '../../diagram/node-selection/node-selection-context';
 import { ActionOkCancel } from '../utils/action-ok-cancel';
 import { Header } from '../utils/header';
 import { LabelReadonlyInput } from '../utils/label-readonly-input';
-import { useHelpContext } from '../../help/help-context';
+import { useEditorContext } from '../../editor/editor-context';
 
 export interface MoveLiteralPropertyProps {
     entity: Entity;
@@ -22,14 +18,18 @@ export interface MoveLiteralPropertyProps {
 }
 
 export function MoveLiteralProperty({ entity, property }: MoveLiteralPropertyProps) {
-    const { schema, updateSchema } = useSchemaContext();
     const [nodeSelection, setNodeSelection] = useState<boolean>(false);
     const [sourceEntity, setSourceEntity] = useState<Entity>(entity);
 
-    const { updateInstances } = useInstancesContext();
-    const { selectedNode, clearSelectedNode } = useNodeSelectionContext();
-    const { onActionDone } = useActionContext();
-    const { showEntityInstanceToLiteralInstanceDiagramHelp, showNodeSelectionHelp, hideHelp } = useHelpContext();
+    const {
+        schema,
+        updateSchemaAndInstances,
+        diagram: {
+            nodeSelection: { selectedNode, clearSelectedNode },
+        },
+        help,
+        manualActions: { onActionDone },
+    } = useEditorContext();
 
     const { sourceNodes, targetNodes, edges, onConnect, getPropertyInstances, layout } = useEntityInstanceToLiteralInstanceDiagram(
         sourceEntity,
@@ -40,7 +40,7 @@ export function MoveLiteralProperty({ entity, property }: MoveLiteralPropertyPro
         if (selectedNode && nodeSelection) {
             setSourceEntity(selectedNode.data);
 
-            showEntityInstanceToLiteralInstanceDiagramHelp();
+            help.showEntityInstanceToLiteralInstanceDiagramHelp();
 
             clearSelectedNode();
             setNodeSelection(false);
@@ -55,14 +55,13 @@ export function MoveLiteralProperty({ entity, property }: MoveLiteralPropertyPro
             newSource: sourceEntity.id,
             propertyInstances: getPropertyInstances(),
         });
-        updateSchema(transformation.schemaTransformations);
-        updateInstances(transformation.instanceTransformations);
+        updateSchemaAndInstances(transformation);
         onActionDone();
-        hideHelp();
+        help.hideHelp();
     };
     const cancel = () => {
         onActionDone();
-        hideHelp();
+        help.hideHelp();
     };
 
     const nodeTypes = useMemo(() => ({ source: EntityInstanceSourceNode, target: LiteralTargetNode }), []);
@@ -76,7 +75,7 @@ export function MoveLiteralProperty({ entity, property }: MoveLiteralPropertyPro
                 label='Source'
                 displayValue={sourceEntity?.name}
                 onSelect={() => {
-                    showNodeSelectionHelp();
+                    help.showNodeSelectionHelp();
                     setNodeSelection(true);
                 }}
             ></NodeSelect>

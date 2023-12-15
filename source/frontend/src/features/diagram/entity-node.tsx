@@ -1,10 +1,8 @@
 import { Handle, NodeProps, Position } from 'reactflow';
-import { useSchemaContext } from '../schema-context';
 import { Entity, getProperties } from '../../core/schema/representation/item/entity';
 import { isLiteral } from '../../core/schema/representation/item/literal';
-import { useEntityNodeEventHandlerContext } from './node-events/entity-node-event-handler-context';
 import { twMerge } from 'tailwind-merge';
-import { useNodeSelectionContext } from './node-selection/node-selection-context';
+import { useEditorContext } from '../editor/editor-context';
 
 export default function EntityNode({
     id,
@@ -13,9 +11,14 @@ export default function EntityNode({
     targetPosition = Position.Top,
     sourcePosition = Position.Bottom,
 }: NodeProps<Entity>) {
-    const { schema } = useSchemaContext();
-    const { eventHandler } = useEntityNodeEventHandlerContext();
-    const { selectedNode, selectedStyle } = useNodeSelectionContext();
+    const {
+        schema,
+        diagram: {
+            nodeEvents: { entityNodeHandler },
+            nodeSelection: { selectedNode, selectedStyle },
+        },
+    } = useEditorContext();
+
     if (!schema.hasEntity(entity.id)) {
         return <></>;
     }
@@ -29,7 +32,7 @@ export default function EntityNode({
         ));
 
     const onNodeClick = () => {
-        eventHandler.onNodeClick(entity);
+        entityNodeHandler.onNodeClick(entity);
     };
 
     const diagramSelectedStyle = selected ? 'border border-black' : '';

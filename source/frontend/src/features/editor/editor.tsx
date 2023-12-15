@@ -1,141 +1,25 @@
 import 'reactflow/dist/style.css';
 import { HTMLProps } from 'react';
-import ReactFlow, { Background, Controls, MiniMap, Panel, BackgroundVariant } from 'reactflow';
-import { SchemaContextProvider } from '../schema-context';
-import { FileLoader } from '../file/file-loader';
-import { downHierarchyLayoutNodes, forceLayoutNodes, radialLayoutNodes, rightHierarchyLayoutNodes } from '../diagram/layout';
-import { FileSaver } from '../file/file-saver';
 import { ActionBar } from '../action-bar/action-bar';
-import { ActionContextProvider } from '../action-bar/action-context';
-import { InstancesContextProvider } from '../instances-context';
-import { NodeSelectionContextProvider } from '../diagram/node-selection/node-selection-context';
-import { HelpContextProvider } from '../help/help-context';
 import { Help } from '../help/help';
 import { useEditor } from './use-editor';
-import { EntityNodeEventHandlerContextProvider } from '../diagram/node-events/entity-node-event-handler-context';
+import { EditorContextProvider } from './editor-context';
+import { Diagram } from '../diagram/diagram';
 
 export default function Editor({ className }: HTMLProps<HTMLDivElement>) {
+    const editor = useEditor();
     const {
-        userData: { schema, instances, updateSchema, updateInstances, onImport, onSchemaExport, onInstancesExport },
-        diagram: { nodes, edges, nodeTypes, layoutNodes, edgeTypes, nodeEvents: nodeEvents, onNodesChange, onNodeDragStop, nodeSelection },
         manualActions,
-        help,
-        history,
-    } = useEditor();
+        help: { help },
+    } = editor;
 
     return (
-        <SchemaContextProvider schema={schema} updateSchema={updateSchema}>
-            <InstancesContextProvider instances={instances} updateInstances={updateInstances}>
-                <EntityNodeEventHandlerContextProvider eventHandler={nodeEvents.entityNodeHandler}>
-                    <HelpContextProvider context={help}>
-                        <ActionContextProvider onActionDone={manualActions.onActionDone} showMoveProperty={manualActions.showMoveProperty}>
-                            <NodeSelectionContextProvider nodeSelection={nodeSelection}>
-                                <div className='grow flex'>
-                                    <div className='bg-slate-100 grow'>
-                                        <ReactFlow
-                                            nodeTypes={nodeTypes}
-                                            edgeTypes={edgeTypes}
-                                            nodes={nodes}
-                                            edges={edges}
-                                            // fitView
-                                            onNodesChange={onNodesChange}
-                                            draggable={true}
-                                            onNodeDragStop={onNodeDragStop}
-                                            elementsSelectable={true}
-                                            onSelect={(event) => {
-                                                console.log('SELECT', event);
-                                            }}
-                                        >
-                                            <Controls />
-                                            <MiniMap />
-                                            <Background variant={BackgroundVariant.Dots} gap={12} size={1} />
-                                            <Panel position='top-center' className='flex gap-2'>
-                                                <div className='relative group'>
-                                                    <div className='p-2 rounded shadow bg-blue-200'>Auto Layout</div>
-                                                    <div className='absolute hidden group-hover:flex z-10 flex-col bg-slate-300 min-w-[10rem] shadow rounded'>
-                                                        <button
-                                                            className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300'
-                                                            onClick={() => layoutNodes(downHierarchyLayoutNodes)}
-                                                        >
-                                                            vertical layout
-                                                        </button>
-                                                        <button
-                                                            className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300'
-                                                            onClick={() => layoutNodes(rightHierarchyLayoutNodes)}
-                                                        >
-                                                            horizontal layout
-                                                        </button>
-                                                        <button
-                                                            className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300'
-                                                            onClick={() => layoutNodes(radialLayoutNodes)}
-                                                        >
-                                                            radial layout
-                                                        </button>
-                                                        <button
-                                                            className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300'
-                                                            onClick={() => layoutNodes(forceLayoutNodes)}
-                                                        >
-                                                            force layout
-                                                        </button>
-                                                    </div>
-                                                </div>
-
-                                                <div className='relative group'>
-                                                    <div className='p-2 rounded shadow bg-blue-200'>Create</div>
-                                                    <div className='absolute hidden group-hover:flex z-10 flex-col bg-slate-300 min-w-[10rem] shadow rounded'>
-                                                        <button
-                                                            className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300'
-                                                            onClick={manualActions.showCreateEntity}
-                                                        >
-                                                            entity
-                                                        </button>
-                                                        <button
-                                                            className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300'
-                                                            onClick={manualActions.showCreateProperty}
-                                                        >
-                                                            property
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                                <button className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300' onClick={history.undo}>
-                                                    Undo
-                                                </button>
-
-                                                <button className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300' onClick={history.redo}>
-                                                    Redo
-                                                </button>
-
-                                                <FileLoader className='p-2 rounded shadow bg-blue-200' onFileLoad={onImport}>
-                                                    Import
-                                                </FileLoader>
-                                                <div className='relative group'>
-                                                    <div className='p-2 rounded shadow bg-blue-200'>Export</div>
-                                                    <div className='absolute hidden group-hover:flex z-10 flex-col bg-slate-300 min-w-[10rem] shadow rounded'>
-                                                        <FileSaver
-                                                            className='block p-2 rounded shadow bg-blue-200 hover:bg-blue-300'
-                                                            onFileSave={onSchemaExport}
-                                                        >
-                                                            Schema
-                                                        </FileSaver>
-                                                        <FileSaver
-                                                            className='block p-2 rounded shadow bg-blue-200 hover:bg-blue-300'
-                                                            onFileSave={onInstancesExport}
-                                                        >
-                                                            Instances
-                                                        </FileSaver>
-                                                    </div>
-                                                </div>
-                                            </Panel>
-                                        </ReactFlow>
-                                    </div>
-                                    {help.help.show && <Help className='absolute right-96 m-1 w-96' content={help.help.content}></Help>}
-                                    <ActionBar action={manualActions.shownAction}></ActionBar>
-                                </div>
-                            </NodeSelectionContextProvider>
-                        </ActionContextProvider>
-                    </HelpContextProvider>
-                </EntityNodeEventHandlerContextProvider>
-            </InstancesContextProvider>
-        </SchemaContextProvider>
+        <EditorContextProvider editor={editor}>
+            <div className='grow flex'>
+                <Diagram className='bg-slate-100 grow'></Diagram>
+                {help.show && <Help className='absolute right-96 m-1 w-96' content={help.content}></Help>}
+                <ActionBar action={manualActions.shownAction}></ActionBar>
+            </div>
+        </EditorContextProvider>
     );
 }

@@ -1,7 +1,15 @@
 import { useState } from 'react';
 import { HelpContent } from './help';
 
-export function useHelp() {
+export type Help = {
+    help: { show: true; content: HelpContent } | { show: false };
+    showNodeSelectionHelp: () => void;
+    showEntityInstanceToEntityInstanceDiagramHelp: () => void;
+    showEntityInstanceToLiteralInstanceDiagramHelp: () => void;
+    hideHelp: () => void;
+};
+
+export function useHelp(): Help {
     const [help, setHelp] = useState<{ show: true; content: HelpContent } | { show: false }>({ show: false });
 
     return {
