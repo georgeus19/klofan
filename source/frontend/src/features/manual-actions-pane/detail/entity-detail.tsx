@@ -124,7 +124,7 @@ export function EntityDetail({ entity }: EntityDetailProps) {
                                             )
                                             .map((property) => {
                                                 return (
-                                                    <div key={property.id}>
+                                                    <div key={property.id} className='contents'>
                                                         <div className='col-start-2 overflow-auto p-2 bg-slate-300 text-center'>{property.name}</div>
                                                         {entityInstance.properties[property.id].literals.map((literal, index) => (
                                                             <div

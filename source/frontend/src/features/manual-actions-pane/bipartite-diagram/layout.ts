@@ -2,7 +2,7 @@ export interface LayoutOptions {
     width: number;
     widthTailwind: string;
     height: number;
-    heightTailwind: string;
+    maxDiagramHeight: number;
     node: {
         sourceX: number;
         targetX: number;
@@ -20,7 +20,7 @@ export const defaultLayout: LayoutOptions = {
     width: 384,
     widthTailwind: 'w-96',
     height: 384,
-    heightTailwind: 'h-96',
+    maxDiagramHeight: 384,
     node: {
         sourceX: 10,
         targetX: 248,

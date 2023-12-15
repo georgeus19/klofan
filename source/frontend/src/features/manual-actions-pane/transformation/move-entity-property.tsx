@@ -12,13 +12,14 @@ import { ActionOkCancel } from '../utils/action-ok-cancel';
 import { Header } from '../utils/header';
 import { LabelReadonlyInput } from '../utils/label-readonly-input';
 import { useEditorContext } from '../../editor/editor-context';
+import { Dropdown } from '../utils/dropdown';
 
 export interface MoveEntityPropertyProps {
     entity: Entity;
     property: Property;
 }
 
-export function MoveEntityProperty({ entity, property }: MoveEntityPropertyProps) {
+export function MoveEntityProperty({ entity: originalSourceEntity, property }: MoveEntityPropertyProps) {
     const {
         schema,
         updateSchemaAndInstances,
@@ -29,15 +30,23 @@ export function MoveEntityProperty({ entity, property }: MoveEntityPropertyProps
         manualActions: { onActionDone },
     } = useEditorContext();
 
+    const originalTargetEntity = schema.entity(property.value);
     const [nodeSelection, setNodeSelection] = useState<{ type: 'source' } | { type: 'target' } | null>(null);
-    const [sourceEntity, setSourceEntity] = useState<Entity>(entity);
-    const [targetEntity, setTargetEntity] = useState<Entity>(schema.entity(property.value));
+    const [sourceEntity, setSourceEntity] = useState<Entity>(originalSourceEntity);
+    const [targetEntity, setTargetEntity] = useState<Entity>(originalTargetEntity);
 
     const { sourceNodes, targetNodes, edges, onConnect, getPropertyInstances, layout } = useEntityInstanceToEntityInstanceDiagram(
         sourceEntity,
         targetEntity,
         property.id
     );
+
+    const {
+        sourceNodes: originalSourceNodes,
+        targetNodes: originalTargetNodes,
+        edges: originalEdges,
+        layout: originalLayout,
+    } = useEntityInstanceToEntityInstanceDiagram(originalSourceEntity, originalTargetEntity, property.id);
 
     useEffect(() => {
         if (selectedNode && nodeSelection) {
@@ -59,7 +68,7 @@ export function MoveEntityProperty({ entity, property }: MoveEntityPropertyProps
 
     const moveProperty = () => {
         const transformation = createMovePropertyTransformation(schema, {
-            originalSource: entity.id,
+            originalSource: originalSourceEntity.id,
             property: property.id,
             newSource: sourceEntity.id,
             newTarget: targetEntity.id,
@@ -83,32 +92,46 @@ export function MoveEntityProperty({ entity, property }: MoveEntityPropertyProps
     return (
         <div>
             <Header label='Move Property'></Header>
-            <LabelReadonlyInput label='Property' value={`${entity.name}.${property.name}`}></LabelReadonlyInput>
-            <NodeSelect
-                label='Source'
-                displayValue={sourceEntity?.name}
-                onSelect={() => {
-                    help.showNodeSelectionHelp();
-                    setNodeSelection({ type: 'source' });
-                }}
-            ></NodeSelect>
-            <NodeSelect
-                label='Target'
-                displayValue={targetEntity?.name}
-                onSelect={() => {
-                    help.showNodeSelectionHelp();
-                    setNodeSelection({ type: 'target' });
-                }}
-            ></NodeSelect>
-            <BipartiteDiagram
-                sourceNodes={sourceNodes}
-                targetNodes={targetNodes}
-                edges={edges}
-                nodeTypes={nodeTypes}
-                edgeTypes={edgeTypes}
-                layout={layout}
-                onConnect={onConnect}
-            ></BipartiteDiagram>
+            <LabelReadonlyInput label='Property' value={`${originalSourceEntity.name}.${property.name}`}></LabelReadonlyInput>
+            <Dropdown headerLabel='Original Mapping' showInitially={false}>
+                <LabelReadonlyInput label='Original Source' value={originalSourceEntity.name}></LabelReadonlyInput>
+                <LabelReadonlyInput label='Original Target' value={originalTargetEntity.name}></LabelReadonlyInput>
+                <BipartiteDiagram
+                    sourceNodes={originalSourceNodes}
+                    targetNodes={originalTargetNodes}
+                    edges={originalEdges}
+                    layout={originalLayout}
+                    nodeTypes={nodeTypes}
+                    edgeTypes={edgeTypes}
+                ></BipartiteDiagram>
+            </Dropdown>
+            <Dropdown headerLabel='New Mapping' showInitially>
+                <NodeSelect
+                    label='Source'
+                    displayValue={sourceEntity?.name}
+                    onSelect={() => {
+                        help.showNodeSelectionHelp();
+                        setNodeSelection({ type: 'source' });
+                    }}
+                ></NodeSelect>
+                <NodeSelect
+                    label='Target'
+                    displayValue={targetEntity?.name}
+                    onSelect={() => {
+                        help.showNodeSelectionHelp();
+                        setNodeSelection({ type: 'target' });
+                    }}
+                ></NodeSelect>
+                <BipartiteDiagram
+                    sourceNodes={sourceNodes}
+                    targetNodes={targetNodes}
+                    edges={edges}
+                    nodeTypes={nodeTypes}
+                    edgeTypes={edgeTypes}
+                    layout={layout}
+                    onConnect={onConnect}
+                ></BipartiteDiagram>
+            </Dropdown>
             <ActionOkCancel onOk={moveProperty} onCancel={cancel}></ActionOkCancel>
         </div>
     );

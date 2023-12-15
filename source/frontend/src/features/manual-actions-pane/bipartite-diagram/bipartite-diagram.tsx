@@ -10,7 +10,7 @@ export interface BipartiteDiagramProps {
     edges: ReactFlowEdge[];
     nodeTypes: NodeTypes;
     edgeTypes: EdgeTypes;
-    onConnect: OnConnect;
+    onConnect?: OnConnect;
     children?: ReactNode;
     layout: LayoutOptions;
 }
@@ -23,7 +23,7 @@ export function BipartiteDiagram({ sourceNodes, targetNodes, edges, nodeTypes, e
     const maxY = max([layout.height, ...targetNodes.map((node) => node.position.y + layout.node.height + layout.bottomPadding)]) ?? layout.height;
     return (
         <ReactFlowProvider>
-            <div className={twMerge('bg-slate-300', layout.heightTailwind)}>
+            <div className={twMerge('bg-slate-300')} style={{ height: layout.maxDiagramHeight }}>
                 <ReactFlow
                     nodes={nodes}
                     edges={edges}

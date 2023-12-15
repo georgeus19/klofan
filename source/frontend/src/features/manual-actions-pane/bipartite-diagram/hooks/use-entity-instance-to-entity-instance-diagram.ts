@@ -8,6 +8,7 @@ import { SourceNode, TargetNode, sourceIdPrefix, sourceNodes, targetIdPrefix, ta
 import { defaultLayout } from '../layout';
 import { Schema } from '../../../../core/schema/schema';
 import { useEditorContext } from '../../../editor/editor-context';
+import { max, min } from 'lodash';
 
 export type EntityInstanceSourceNode = SourceNode<{ entity: Entity; entityInstance: EntityInstance }>;
 export type EntityInstanceTargetNode = TargetNode<{ entity: Entity; entityInstance: EntityInstance }>;
@@ -18,6 +19,7 @@ export function useEntityInstanceToEntityInstanceDiagram(sourceEntity: Entity | 
     const [edges, setEdges] = useState<ReactFlowEdge<never>[]>([]);
     const { schema, instances } = useEditorContext();
     const layout = defaultLayout;
+
     useEffect(() => {
         if (sourceEntity) {
             instances.entityInstances(sourceEntity).then((entityInstances) => {
@@ -81,7 +83,16 @@ export function useEntityInstanceToEntityInstanceDiagram(sourceEntity: Entity | 
         return propertyInstances;
     };
 
-    return { sourceNodes: sourceNodes(nodes), targetNodes: targetNodes(nodes), edges, onConnect, getPropertyInstances, layout: layout };
+    const adaptedHeight =
+        min([max(nodes.map((node) => node.position.y + layout.node.height + layout.bottomPadding)), layout.height]) ?? layout.height;
+    return {
+        sourceNodes: sourceNodes(nodes),
+        targetNodes: targetNodes(nodes),
+        edges,
+        onConnect,
+        getPropertyInstances,
+        layout: { ...layout, maxDiagramHeight: adaptedHeight },
+    };
 }
 
 function getEdgesBetweenEntities(

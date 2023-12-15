@@ -8,6 +8,7 @@ import { SourceNode, TargetNode, sourceIdPrefix, sourceNodes, targetIdPrefix, ta
 import { EntityInstance } from '../../../../core/instances/entity-instance';
 import { defaultLayout } from '../layout';
 import { useEditorContext } from '../../../editor/editor-context';
+import { min, max } from 'lodash';
 
 export type EntityInstanceSourceNode = SourceNode<{ entity: Entity; entityInstance: EntityInstance }>;
 export type LiteralInstanceTargetNode = TargetNode<{ literal: Literal; id: number }>;
@@ -94,13 +95,15 @@ export function useEntityInstanceToLiteralInstanceDiagram(sourceEntity: Entity |
         return propertyInstances;
     };
 
+    const adaptedHeight =
+        min([max(nodes.map((node) => node.position.y + layout.node.height + layout.bottomPadding)), layout.height]) ?? layout.height;
     return {
         sourceNodes: sourceNodes<{ entity: Entity; entityInstance: EntityInstance }, { literal: Literal; id: number }>(nodes),
         targetNodes: targetNodes<{ entity: Entity; entityInstance: EntityInstance }, { literal: Literal; id: number }>(nodes),
         edges,
         onConnect,
         getPropertyInstances,
-        layout: defaultLayout,
+        layout: { ...layout, maxDiagramHeight: adaptedHeight },
     };
 }
 
