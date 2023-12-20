@@ -5,7 +5,7 @@ import { Edge as ReactFlowEdge, addEdge, Connection } from 'reactflow';
 import { EntityInstance } from '../../../../core/instances/entity-instance';
 import { PropertyInstance } from '../../../../core/instances/representation/property-instance';
 import { SourceNode, TargetNode, sourceIdPrefix, sourceNodes, targetIdPrefix, targetNodes } from '../common';
-import { defaultLayout } from '../layout';
+import { calculateSourceNodePosition, calculateTargetNodePosition, defaultLayout } from '../layout';
 import { Schema } from '../../../../core/schema/schema';
 import { useEditorContext } from '../../../editor/editor-context';
 import { max, min } from 'lodash';
@@ -26,7 +26,7 @@ export function useEntityInstanceToEntityInstanceDiagram(sourceEntity: Entity | 
                 const sourceNodes: EntityInstanceSourceNode[] = entityInstances.map((entityInstance, instanceIndex) => ({
                     id: `${sourceIdPrefix}${instanceIndex}`,
                     type: 'source',
-                    position: { x: layout.node.sourceX, y: layout.node.yIncrement * entityInstance.id + layout.topPadding },
+                    position: calculateSourceNodePosition(layout, entityInstance.id),
                     data: { entity: sourceEntity, entityInstance: entityInstance, layout: layout },
                 }));
                 if (targetEntity) {
@@ -45,7 +45,7 @@ export function useEntityInstanceToEntityInstanceDiagram(sourceEntity: Entity | 
                 const targetNodes: EntityInstanceTargetNode[] = entityInstances.map((entityInstance, instanceIndex) => ({
                     id: `${targetIdPrefix}${instanceIndex}`,
                     type: 'target',
-                    position: { x: layout.node.targetX, y: layout.node.yIncrement * entityInstance.id + layout.topPadding },
+                    position: calculateTargetNodePosition(layout, entityInstance.id),
                     data: { entity: targetEntity, entityInstance: entityInstance, layout: layout },
                 }));
 

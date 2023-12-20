@@ -1,4 +1,4 @@
-import { MovePropertyInstances } from '../../instances/transform/transformations/move-property-instances/move-property-instances';
+import { MovePropertyInstances } from '../../instances/transform/transformations/move-property-instances';
 import { Schema } from '../../schema/schema';
 import { MoveProperty } from '../../schema/transform/transformations/move-property';
 import { identifier } from '../../schema/utils/identifier';

@@ -7,15 +7,17 @@ import { ManualActionShown } from './actions';
 import { MoveEntityProperty } from './transformation/move-entity-property';
 import { MoveLiteralProperty } from './transformation/move-literal-property';
 import { CreateEntity } from './transformation/create-entity';
-import { CreateProperty } from './transformation/create-property/create-property';
 import { EntityDetail } from './detail/entity-detail';
+import { CreateLiteralProperty } from './transformation/create-property/create-literal-property';
+import { CreateEntityProperty } from './transformation/create-property/create-entity-property';
 
 export type ManualActionsPane = {
     shownAction: ManualActionShown;
     onActionDone: () => void;
     showMoveProperty: (entity: Entity, property: Property) => void;
     showCreateEntity: () => void;
-    showCreateProperty: () => void;
+    showCreateLiteralProperty: () => void;
+    showCreateEntityProperty: () => void;
     showEntityDetail: (entity: Entity) => void;
     hide: () => void;
 };
@@ -57,8 +59,14 @@ export function useManualActionsPane(nodeSelection: NodeSelection, schema: Schem
             nodeSelection.disableSelectedStyle();
             nodeSelection.clearSelectedNode();
         },
-        showCreateProperty: () => {
-            setSideAction({ type: 'create-property-shown', component: <CreateProperty></CreateProperty> });
+        showCreateLiteralProperty: () => {
+            setSideAction({ type: 'create-literal-property-shown', component: <CreateLiteralProperty></CreateLiteralProperty> });
+            setSideActionLocked(true);
+            nodeSelection.disableSelectedStyle();
+            nodeSelection.clearSelectedNode();
+        },
+        showCreateEntityProperty: () => {
+            setSideAction({ type: 'create-entity-property-shown', component: <CreateEntityProperty></CreateEntityProperty> });
             setSideActionLocked(true);
             nodeSelection.disableSelectedStyle();
             nodeSelection.clearSelectedNode();

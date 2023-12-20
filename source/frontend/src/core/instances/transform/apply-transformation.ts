@@ -1,7 +1,7 @@
 import { RawInstances } from '../representation/raw-instances';
 import { createEntityInstances } from './transformations/create-entity-instances';
 import { createPropertyInstances } from './transformations/create-property-instances';
-import { movePropertyInstances } from './transformations/move-property-instances/move-property-instances';
+import { movePropertyInstances } from './transformations/move-property-instances';
 import { Transformation } from './transformations/transformation';
 
 export async function applyTransformation(instances: RawInstances, transformation: Transformation) {

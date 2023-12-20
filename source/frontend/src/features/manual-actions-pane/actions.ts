@@ -4,7 +4,8 @@ export type ManualActionShown = { component: ReactNode } & (
     | EntityDetailShown
     | BlankShown
     | CreateEntityShown
-    | CreatePropertyShown
+    | CreateEntityPropertyShown
+    | CreateLiteralPropertyShown
     | MoveEntityPropertyShown
     | MoveLiteralPropertyShown
 );
@@ -17,8 +18,12 @@ export interface CreateEntityShown {
     type: 'create-entity-shown';
 }
 
-export interface CreatePropertyShown {
-    type: 'create-property-shown';
+export interface CreateEntityPropertyShown {
+    type: 'create-entity-property-shown';
+}
+
+export interface CreateLiteralPropertyShown {
+    type: 'create-literal-property-shown';
 }
 
 export interface MoveEntityPropertyShown {

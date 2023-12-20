@@ -76,8 +76,11 @@ export function ManualActionsSelect() {
                     <button className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300' onClick={manualActions.showCreateEntity}>
                         entity
                     </button>
-                    <button className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300' onClick={manualActions.showCreateProperty}>
-                        property
+                    <button className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300' onClick={manualActions.showCreateEntityProperty}>
+                        entity property
+                    </button>
+                    <button className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300' onClick={manualActions.showCreateLiteralProperty}>
+                        literal property
                     </button>
                 </div>
             </div>

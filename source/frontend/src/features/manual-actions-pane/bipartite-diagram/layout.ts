@@ -1,3 +1,5 @@
+import { XYPosition } from 'reactflow';
+
 export interface LayoutOptions {
     width: number;
     widthTailwind: string;
@@ -35,3 +37,11 @@ export const defaultLayout: LayoutOptions = {
     topPadding: 10,
     bottomPadding: 200,
 };
+
+export function calculateSourceNodePosition(layout: LayoutOptions, index: number): XYPosition {
+    return { x: layout.node.sourceX, y: layout.node.yIncrement * index + layout.topPadding };
+}
+
+export function calculateTargetNodePosition(layout: LayoutOptions, index: number): XYPosition {
+    return { x: layout.node.targetX, y: layout.node.yIncrement * index + layout.topPadding };
+}

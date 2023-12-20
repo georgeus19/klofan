@@ -6,7 +6,7 @@ import { PropertyInstance } from '../../../../core/instances/representation/prop
 import { Literal } from '../../../../core/instances/representation/literal';
 import { SourceNode, TargetNode, sourceIdPrefix, sourceNodes, targetIdPrefix, targetNodes } from '../common';
 import { EntityInstance } from '../../../../core/instances/entity-instance';
-import { defaultLayout } from '../layout';
+import { calculateSourceNodePosition, calculateTargetNodePosition, defaultLayout } from '../layout';
 import { useEditorContext } from '../../../editor/editor-context';
 import { min, max } from 'lodash';
 
@@ -14,7 +14,7 @@ export type EntityInstanceSourceNode = SourceNode<{ entity: Entity; entityInstan
 export type LiteralInstanceTargetNode = TargetNode<{ literal: Literal; id: number }>;
 export type SourceTargetEdge = ReactFlowEdge<never>;
 
-export function useEntityInstanceToLiteralInstanceDiagram(sourceEntity: Entity | null, propertyId: identifier) {
+export function useEntityInstanceToLiteralInstanceDiagram(sourceEntity: Entity | null, propertyId: identifier | null) {
     const [nodes, setNodes] = useState<(EntityInstanceSourceNode | LiteralInstanceTargetNode)[]>([]);
     const [targetLiteralsSet, setTargetLiteralsSet] = useState<boolean>(false);
     const [edges, setEdges] = useState<ReactFlowEdge<never>[]>([]);
@@ -27,23 +27,28 @@ export function useEntityInstanceToLiteralInstanceDiagram(sourceEntity: Entity |
                 const sourceNodes: EntityInstanceSourceNode[] = entityInstances.map((entityInstance, instanceIndex) => ({
                     id: `${sourceIdPrefix}${instanceIndex}`,
                     type: 'source',
-                    position: { x: layout.node.sourceX, y: layout.node.yIncrement * entityInstance.id + layout.topPadding },
+                    position: calculateSourceNodePosition(layout, entityInstance.id),
                     data: { entity: sourceEntity, entityInstance: entityInstance, layout: layout },
                 }));
-                if (!targetLiteralsSet) {
+                if (!targetLiteralsSet && propertyId) {
+                    // Retrieve literals along with source instance which contains it.
                     const literals = entityInstances.flatMap((entityInstance) =>
                         entityInstance.properties[propertyId].literals.map((literal) => ({ literal: literal, entityInstanceId: entityInstance.id }))
                     );
+
+                    // Create a node for each literal.
                     const targetNodes: LiteralInstanceTargetNode[] = literals.map(({ literal }, index) => ({
                         id: `${targetIdPrefix}${index}`,
                         type: 'target',
-                        position: { x: layout.node.targetX, y: layout.node.yIncrement * index + layout.topPadding },
+                        position: calculateTargetNodePosition(layout, index),
                         data: {
                             literal: literal,
                             id: index,
                             layout: layout,
                         },
                     }));
+
+                    // Create an edge for each literal.
                     const edges: ReactFlowEdge<never>[] = literals.map(({ entityInstanceId }, index) => ({
                         id: `${entityInstanceId}${index}`,
                         source: `${sourceIdPrefix}${entityInstanceId}`,
@@ -105,6 +110,7 @@ export function useEntityInstanceToLiteralInstanceDiagram(sourceEntity: Entity |
         onConnect,
         getPropertyInstances,
         layout: { ...layout, maxDiagramHeight: maxDiagramHeight },
+        setNodes,
     };
 }
 

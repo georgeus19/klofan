@@ -1,9 +1,9 @@
-import { Entity } from '../../../../schema/representation/item/entity';
-import { Item } from '../../../../schema/representation/item/item';
-import { Property } from '../../../../schema/representation/relation/property';
-import { InMemoryInstances } from '../../../in-memory-instances';
-import { RawInstances, propertyInstanceKey } from '../../../representation/raw-instances';
-import { Mapping, getPropertyInstances } from '../../mapping/mapping';
+import { Entity } from '../../../schema/representation/item/entity';
+import { Item } from '../../../schema/representation/item/item';
+import { Property } from '../../../schema/representation/relation/property';
+import { InMemoryInstances } from '../../in-memory-instances';
+import { RawInstances, propertyInstanceKey } from '../../representation/raw-instances';
+import { Mapping, getPropertyInstances } from '../mapping/mapping';
 
 export interface MovePropertyInstances {
     type: 'move-property-instances';
