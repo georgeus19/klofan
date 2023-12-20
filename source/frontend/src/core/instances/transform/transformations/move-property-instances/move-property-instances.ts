@@ -1,8 +1,9 @@
-import { Entity } from '../../../schema/representation/item/entity';
-import { Item } from '../../../schema/representation/item/item';
-import { Property } from '../../../schema/representation/relation/property';
-import { PropertyInstance } from '../../representation/property-instance';
-import { RawInstances, propertyInstanceKey } from '../../representation/raw-instances';
+import { Entity } from '../../../../schema/representation/item/entity';
+import { Item } from '../../../../schema/representation/item/item';
+import { Property } from '../../../../schema/representation/relation/property';
+import { InMemoryInstances } from '../../../in-memory-instances';
+import { RawInstances, propertyInstanceKey } from '../../../representation/raw-instances';
+import { Mapping, getPropertyInstances } from '../../mapping/mapping';
 
 export interface MovePropertyInstances {
     type: 'move-property-instances';
@@ -11,14 +12,16 @@ export interface MovePropertyInstances {
         newSource: Entity;
         property: Property;
         newTarget: Item;
-        propertyInstances: PropertyInstance[];
+        propertyInstancesMapping: Mapping;
     };
 }
 
-export function movePropertyInstances(
+export async function movePropertyInstances(
     instances: RawInstances,
-    { data: { originalSource, newSource, property, newTarget, propertyInstances } }: MovePropertyInstances
-): void {
+    { data: { originalSource, newSource, property, newTarget, propertyInstancesMapping } }: MovePropertyInstances
+): Promise<void> {
+    const propertyInstances = await getPropertyInstances(new InMemoryInstances(instances), propertyInstancesMapping);
+
     if (instances.entityInstances[newSource.id].count !== propertyInstances.length) {
         throw new Error(
             `The number of source instances (${instances.entityInstances[newSource.id].count}) is different than the number propertyInstances(${

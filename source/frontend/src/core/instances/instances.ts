@@ -10,6 +10,7 @@ export interface Instances {
 
     // Query instances.
     entityInstances(entity: Entity): Promise<EntityInstance[]>;
+    entityInstanceCount(entity: Entity): Promise<number>;
     propertyInstances(entityId: identifier, propertyId: identifier): Promise<PropertyInstance[]>;
 
     // Transform instances by producing new instances with applied transformations.

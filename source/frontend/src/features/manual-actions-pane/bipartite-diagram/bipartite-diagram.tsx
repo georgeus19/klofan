@@ -20,7 +20,7 @@ export function BipartiteDiagram({ sourceNodes, targetNodes, edges, nodeTypes, e
     const minX = 0;
     const maxX = layout.width;
     const minY = 0;
-    const maxY = max([layout.height, ...targetNodes.map((node) => node.position.y + layout.node.height + layout.bottomPadding)]) ?? layout.height;
+    const maxY = max([...targetNodes.map((node) => node.position.y + layout.node.height + layout.bottomPadding)]) ?? layout.height;
     return (
         <ReactFlowProvider>
             <div className={twMerge('bg-slate-300')} style={{ height: layout.maxDiagramHeight }}>

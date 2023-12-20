@@ -1,7 +1,10 @@
+import { identifier } from '../../utils/identifier';
 import { Item } from './item';
 
-export interface Literal extends Item {
+export interface Literal {
     type: 'literal';
+    id: identifier;
+    name: string;
 }
 
 export function isLiteral(item: Item): item is Literal {

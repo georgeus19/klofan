@@ -3,6 +3,7 @@ export interface LayoutOptions {
     widthTailwind: string;
     height: number;
     maxDiagramHeight: number;
+    minDiagramHeight: number;
     node: {
         sourceX: number;
         targetX: number;
@@ -21,6 +22,7 @@ export const defaultLayout: LayoutOptions = {
     widthTailwind: 'w-96',
     height: 384,
     maxDiagramHeight: 384,
+    minDiagramHeight: 200,
     node: {
         sourceX: 10,
         targetX: 248,
@@ -31,5 +33,5 @@ export const defaultLayout: LayoutOptions = {
         heightTailwind: 'h-10',
     },
     topPadding: 10,
-    bottomPadding: 10,
+    bottomPadding: 200,
 };

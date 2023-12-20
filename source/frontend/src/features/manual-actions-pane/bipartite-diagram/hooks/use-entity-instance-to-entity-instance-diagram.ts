@@ -83,15 +83,16 @@ export function useEntityInstanceToEntityInstanceDiagram(sourceEntity: Entity | 
         return propertyInstances;
     };
 
-    const adaptedHeight =
-        min([max(nodes.map((node) => node.position.y + layout.node.height + layout.bottomPadding)), layout.height]) ?? layout.height;
+    const maxDiagramHeight =
+        min([max(nodes.map((node) => node.position.y + layout.node.height + layout.bottomPadding)), layout.maxDiagramHeight]) ??
+        layout.maxDiagramHeight;
     return {
         sourceNodes: sourceNodes(nodes),
         targetNodes: targetNodes(nodes),
         edges,
         onConnect,
         getPropertyInstances,
-        layout: { ...layout, maxDiagramHeight: adaptedHeight },
+        layout: { ...layout, maxDiagramHeight: maxDiagramHeight },
     };
 }
 

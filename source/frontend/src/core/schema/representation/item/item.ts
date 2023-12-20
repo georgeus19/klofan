@@ -1,9 +1,4 @@
-import { identifier } from '../../utils/identifier';
+import { Entity } from './entity';
+import { Literal } from './literal';
 
-export type itemType = 'entity' | 'literal';
-
-export interface Item {
-    id: identifier;
-    name: string;
-    type: itemType;
-}
+export type Item = Entity | Literal;

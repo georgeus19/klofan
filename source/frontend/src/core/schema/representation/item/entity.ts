@@ -3,8 +3,10 @@ import { identifier } from '../../utils/identifier';
 import { GraphProperty } from '../relation/graph-property';
 import { Item } from './item';
 
-export interface Entity extends Item {
+export interface Entity {
     type: 'entity';
+    id: identifier;
+    name: string;
     uri?: string;
     properties: identifier[];
 }
