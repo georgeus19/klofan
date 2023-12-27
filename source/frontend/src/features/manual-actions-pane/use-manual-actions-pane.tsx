@@ -8,8 +8,8 @@ import { MoveEntityProperty } from './transformation/move-entity-property';
 import { MoveLiteralProperty } from './transformation/move-literal-property';
 import { CreateEntity } from './transformation/create-entity';
 import { EntityDetail } from './detail/entity-detail';
-import { CreateLiteralProperty } from './transformation/create-property/create-literal-property';
-import { CreateEntityProperty } from './transformation/create-property/create-entity-property';
+import { CreateLiteralProperty } from './transformation/create-literal-property/create-literal-property';
+import { CreateEntityProperty } from './transformation/create-entity-property/create-entity-property';
 
 export type ManualActionsPane = {
     shownAction: ManualActionShown;

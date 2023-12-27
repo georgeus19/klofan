@@ -36,11 +36,11 @@ export class InMemoryInstances implements Instances {
         return Promise.resolve(safeGet(this.instances.propertyInstances, propertyInstanceKey(entityId, propertyId)));
     }
 
-    async transform(transformations: Transformation[]): Promise<Instances> {
+    transform(transformations: Transformation[]): Promise<Instances> {
         const newInstances = copyInstances(this.instances);
         for (const transformation of transformations) {
-            await applyTransformation(newInstances, transformation);
+            applyTransformation(newInstances, transformation);
         }
-        return new InMemoryInstances(newInstances);
+        return Promise.resolve(new InMemoryInstances(newInstances));
     }
 }

@@ -1,8 +1,10 @@
 import { Entity } from '../../../schema/representation/item/entity';
 import { Item } from '../../../schema/representation/item/item';
+import { Literal } from '../../../schema/representation/item/literal';
 import { Property } from '../../../schema/representation/relation/property';
-import { Instances } from '../../instances';
+import { EntityInstance } from '../../entity-instance';
 import { PropertyInstance } from '../../representation/property-instance';
+import { RawInstances, propertyInstanceKey } from '../../representation/raw-instances';
 
 export type PreserveMapping = {
     type: 'preserve-mapping';
@@ -13,29 +15,37 @@ export type PreserveMapping = {
     newTarget: Item;
 };
 
-export async function preserveOriginalAvailable(instances: Instances, mapping: PreserveMapping): Promise<boolean> {
-    const originalSourcePropertyInstances = await instances.entityInstanceCount(mapping.originalSource);
-    const newSourcePropertyInstances = await instances.entityInstanceCount(mapping.newSource);
+export type EntityWithInstances = { entity: Entity; instances: number };
+export type ItemWithInstances = { item: Entity; instances: number } | { item: Literal };
 
-    if (originalSourcePropertyInstances !== newSourcePropertyInstances) {
+export function isPreserveMappingEligible(
+    originalState: { source: EntityWithInstances; target: ItemWithInstances },
+    newState: { source: EntityWithInstances; target: ItemWithInstances }
+): boolean {
+    if (originalState.source.instances !== newState.source.instances) {
         return false;
     }
 
-    if (mapping.originalTarget.type === 'entity' && mapping.newTarget.type === 'entity') {
-        const originalTargetPropertyInstances = await instances.entityInstanceCount(mapping.originalTarget);
-        const newTargetPropertyInstances = await instances.entityInstanceCount(mapping.newTarget);
-        if (originalTargetPropertyInstances !== newTargetPropertyInstances) {
+    if (originalState.target.item.type === 'entity' && newState.target.item.type === 'entity') {
+        if (
+            (originalState.target as { item: Entity; instances: number }).instances ===
+            (newState.target as { item: Entity; instances: number }).instances
+        ) {
             return true;
         }
     }
 
-    if (mapping.originalTarget.type === 'literal' && mapping.newTarget.type === 'literal') {
+    if (originalState.target.item.type === 'literal' && newState.target.item.type === 'literal') {
         return true;
     }
 
     return false;
 }
 
-export async function getPreservedPropertyInstances(instances: Instances, mapping: PreserveMapping): Promise<PropertyInstance[]> {
-    return instances.propertyInstances(mapping.originalSource.id, mapping.property.id);
+export function getPreservedPropertyInstances(originalSourceInstances: EntityInstance[], property: Property): PropertyInstance[] {
+    return originalSourceInstances.map((instance): PropertyInstance => instance.properties[property.id]);
+}
+
+export function getPreserveMappingPropertyInstances(instances: RawInstances, mapping: PreserveMapping): PropertyInstance[] {
+    return instances.propertyInstances[propertyInstanceKey(mapping.originalSource.id, mapping.property.id)];
 }

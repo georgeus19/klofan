@@ -7,69 +7,75 @@ import { Literal } from '../../../../core/instances/representation/literal';
 import { SourceNode, TargetNode, sourceIdPrefix, sourceNodes, targetIdPrefix, targetNodes } from '../common';
 import { EntityInstance } from '../../../../core/instances/entity-instance';
 import { calculateSourceNodePosition, calculateTargetNodePosition, defaultLayout } from '../layout';
-import { useEditorContext } from '../../../editor/editor-context';
 import { min, max } from 'lodash';
 
 export type EntityInstanceSourceNode = SourceNode<{ entity: Entity; entityInstance: EntityInstance }>;
 export type LiteralInstanceTargetNode = TargetNode<{ literal: Literal; id: number }>;
 export type SourceTargetEdge = ReactFlowEdge<never>;
 
-export function useEntityInstanceToLiteralInstanceDiagram(sourceEntity: Entity | null, propertyId: identifier | null) {
+export function useEntityInstanceToLiteralInstanceDiagram(
+    source: { entity: Entity; instances: EntityInstance[] } | null,
+    propertyId: identifier | null
+) {
     const [nodes, setNodes] = useState<(EntityInstanceSourceNode | LiteralInstanceTargetNode)[]>([]);
     const [targetLiteralsSet, setTargetLiteralsSet] = useState<boolean>(false);
     const [edges, setEdges] = useState<ReactFlowEdge<never>[]>([]);
-    const { instances } = useEditorContext();
     const layout = defaultLayout;
 
+    const inferTargetNodes = (literals: { literal: Literal; entityInstanceId: number }[]): LiteralInstanceTargetNode[] => {
+        // Create a node for each literal.
+        return literals.map(({ literal }, index) => ({
+            id: `${targetIdPrefix}${index}`,
+            type: 'target',
+            position: calculateTargetNodePosition(layout, index),
+            data: {
+                literal: literal,
+                id: index,
+                layout: layout,
+            },
+        }));
+    };
+
+    const inferEdges = (literals: { literal: Literal; entityInstanceId: number }[]): SourceTargetEdge[] => {
+        // Create an edge for each literal.
+        return literals.map(({ entityInstanceId }, index) => ({
+            id: `${entityInstanceId}${index}`,
+            source: `${sourceIdPrefix}${entityInstanceId}`,
+            target: `${targetIdPrefix}${index}`,
+        }));
+    };
+
     useEffect(() => {
-        if (sourceEntity) {
-            instances.entityInstances(sourceEntity).then((entityInstances) => {
-                const sourceNodes: EntityInstanceSourceNode[] = entityInstances.map((entityInstance, instanceIndex) => ({
-                    id: `${sourceIdPrefix}${instanceIndex}`,
-                    type: 'source',
-                    position: calculateSourceNodePosition(layout, entityInstance.id),
-                    data: { entity: sourceEntity, entityInstance: entityInstance, layout: layout },
-                }));
-                if (!targetLiteralsSet && propertyId) {
-                    // Retrieve literals along with source instance which contains it.
-                    const literals = entityInstances.flatMap((entityInstance) =>
-                        entityInstance.properties[propertyId].literals.map((literal) => ({ literal: literal, entityInstanceId: entityInstance.id }))
-                    );
+        if (source) {
+            const sourceNodes: EntityInstanceSourceNode[] = source.instances.map((entityInstance, instanceIndex) => ({
+                id: `${sourceIdPrefix}${instanceIndex}`,
+                type: 'source',
+                position: calculateSourceNodePosition(layout, entityInstance.id),
+                data: { entity: source.entity, entityInstance: entityInstance, layout: layout },
+            }));
+            if (!targetLiteralsSet && propertyId) {
+                // Retrieve literals along with source instance which contains it.
+                const literals = source.instances.flatMap((entityInstance) =>
+                    entityInstance.properties[propertyId].literals.map((literal) => ({ literal: literal, entityInstanceId: entityInstance.id }))
+                );
 
-                    // Create a node for each literal.
-                    const targetNodes: LiteralInstanceTargetNode[] = literals.map(({ literal }, index) => ({
-                        id: `${targetIdPrefix}${index}`,
-                        type: 'target',
-                        position: calculateTargetNodePosition(layout, index),
-                        data: {
-                            literal: literal,
-                            id: index,
-                            layout: layout,
-                        },
-                    }));
+                const targetNodes = inferTargetNodes(literals);
+                const edges = inferEdges(literals);
 
-                    // Create an edge for each literal.
-                    const edges: ReactFlowEdge<never>[] = literals.map(({ entityInstanceId }, index) => ({
-                        id: `${entityInstanceId}${index}`,
-                        source: `${sourceIdPrefix}${entityInstanceId}`,
-                        target: `${targetIdPrefix}${index}`,
-                    }));
-
-                    setEdges(edges);
-                    setNodes(addZIndices([...sourceNodes, ...targetNodes]));
-                    setTargetLiteralsSet(true);
-                } else {
-                    setEdges([]);
-                    setNodes((nodes) =>
-                        addZIndices([
-                            ...sourceNodes,
-                            ...targetNodes<{ entity: Entity; entityInstance: EntityInstance }, { literal: Literal; id: number }>(nodes),
-                        ])
-                    );
-                }
-            });
+                setEdges(edges);
+                setNodes(addZIndices([...sourceNodes, ...targetNodes]));
+                setTargetLiteralsSet(true);
+            } else {
+                setEdges([]);
+                setNodes((nodes) =>
+                    addZIndices([
+                        ...sourceNodes,
+                        ...targetNodes<{ entity: Entity; entityInstance: EntityInstance }, { literal: Literal; id: number }>(nodes),
+                    ])
+                );
+            }
         }
-    }, [sourceEntity]);
+    }, [source?.instances]);
 
     const onConnect = useCallback(
         (connection: Connection) => setEdges((eds) => addEdge(connection, eds) as unknown as SourceTargetEdge[]),
@@ -111,6 +117,17 @@ export function useEntityInstanceToLiteralInstanceDiagram(sourceEntity: Entity |
         getPropertyInstances,
         layout: { ...layout, maxDiagramHeight: maxDiagramHeight },
         setNodes,
+        setEdges: (propertyInstances: PropertyInstance[]) => {
+            const literals = propertyInstances.flatMap((propertyInstance, index) =>
+                propertyInstance.literals.map((literal) => ({ literal: literal, entityInstanceId: index }))
+            );
+
+            // const targetNodes = inferTargetNodes(literals);
+            const edges = inferEdges(literals);
+
+            setEdges(edges);
+            // setNodes(addZIndices([...sourceNodes, ...targetNodes]));
+        },
     };
 }
 

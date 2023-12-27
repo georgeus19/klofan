@@ -4,7 +4,7 @@ import { createPropertyInstances } from './transformations/create-property-insta
 import { movePropertyInstances } from './transformations/move-property-instances';
 import { Transformation } from './transformations/transformation';
 
-export async function applyTransformation(instances: RawInstances, transformation: Transformation) {
+export function applyTransformation(instances: RawInstances, transformation: Transformation) {
     switch (transformation.type) {
         case 'create-entity-instances':
             createEntityInstances(instances, transformation);
@@ -13,7 +13,7 @@ export async function applyTransformation(instances: RawInstances, transformatio
             createPropertyInstances(instances, transformation);
             break;
         case 'move-property-instances':
-            await movePropertyInstances(instances, transformation);
+            movePropertyInstances(instances, transformation);
             break;
         default:
             throw new Error(`Transformation ${JSON.stringify(transformation)} is not supported.`);

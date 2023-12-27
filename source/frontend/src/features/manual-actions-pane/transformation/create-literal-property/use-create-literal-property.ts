@@ -7,13 +7,13 @@ import { Literal } from '../../../../core/instances/representation/literal';
 import UpdatableLiteralTargetNode from '../../bipartite-diagram/nodes/updatable-literal-target-node';
 import { LayoutOptions, calculateTargetNodePosition } from '../../bipartite-diagram/layout';
 import { useEditorContext } from '../../../editor/editor-context';
-
 import { targetNodes as getTargetNodes } from '../../bipartite-diagram/common';
 import {
     LiteralInstanceTargetNode,
     useEntityInstanceToLiteralInstanceDiagram,
 } from '../../bipartite-diagram/hooks/use-entity-instance-to-literal-instance-diagram';
 import { EntityInstance } from '../../../../core/instances/entity-instance';
+import { useEntityNodeSelector } from '../../utils/diagram-node-selection/entity-selector/use-entity-node-selector';
 
 export type LiteralNode = LiteralInstanceTargetNode & {
     data: { literal: Literal; onLiteralValueChange: (literalNodeId: string, value: string) => void; layout: LayoutOptions };
@@ -22,33 +22,31 @@ export type TargetLiteralEdge = ReactFlowEdge<never>;
 
 export function useCreateLiteralProperty() {
     const [propertyName, setPropertyName] = useState('');
-    const [nodeSelection, setNodeSelection] = useState<{ type: 'source' } | { type: 'target' } | null>(null);
-    const [sourceEntity, setSourceEntity] = useState<Entity | null>(null);
-
+    const [error, setError] = useState<string | null>(null);
     const {
         schema,
+        instances,
         updateSchemaAndInstances,
         help,
-        diagram: {
-            nodeSelection: { selectedNode, clearSelectedNode },
-        },
         manualActions: { onActionDone },
     } = useEditorContext();
+    const [sourceEntity, setSourceEntity] = useState<Entity | null>(null);
+    const sourceEntitySelector = useEntityNodeSelector(setSourceEntity);
 
-    const { sourceNodes, targetNodes, edges, onConnect, layout, getPropertyInstances, setNodes } = useEntityInstanceToLiteralInstanceDiagram(
-        sourceEntity,
-        ''
-    );
-
+    const [sourceInstances, setSourceInstances] = useState<EntityInstance[]>([]);
     useEffect(() => {
-        if (selectedNode && nodeSelection) {
-            setSourceEntity(selectedNode.data);
-            help.showEntityInstanceToLiteralInstanceDiagramHelp();
-            clearSelectedNode();
-            setNodeSelection(null);
+        if (sourceEntity) {
+            instances.entityInstances(sourceEntity).then((entityInstances) => setSourceInstances(entityInstances));
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selectedNode]);
+    }, [sourceEntity]);
+
+    const source = { entity: sourceEntity, instances: sourceInstances };
+
+    const { sourceNodes, targetNodes, edges, onConnect, layout, getPropertyInstances, setNodes } = useEntityInstanceToLiteralInstanceDiagram(
+        source.entity !== null ? (source as { entity: Entity; instances: EntityInstance[] }) : null,
+        ''
+    );
 
     const nodeTypes = useMemo(() => ({ source: EntityInstanceSourceNode, target: UpdatableLiteralTargetNode }), []);
     const edgeTypes = useMemo(() => ({}), []);
@@ -58,6 +56,10 @@ export function useCreateLiteralProperty() {
     };
 
     const createProperty = () => {
+        if (propertyName.trim().length === 0 || !sourceEntity) {
+            setError('Name and source must be set!');
+            return;
+        }
         const transformation = createCreatePropertyTransformation(schema, {
             property: {
                 name: propertyName,
@@ -116,16 +118,12 @@ export function useCreateLiteralProperty() {
             edgeTypes: edgeTypes,
             layout: layout,
         },
-        nodeSelection: {
-            onSourceNodeSelect: () => {
-                help.showNodeSelectionHelp();
-                setNodeSelection({ type: 'source' });
-            },
-        },
+        propertySourceSelector: sourceEntitySelector,
         propertyName,
         sourceEntity,
         setPropertyName,
         createProperty,
         cancel,
+        error,
     };
 }

@@ -14,52 +14,54 @@ export type EntityInstanceSourceNode = SourceNode<{ entity: Entity; entityInstan
 export type EntityInstanceTargetNode = TargetNode<{ entity: Entity; entityInstance: EntityInstance }>;
 export type SourceTargetEdge = ReactFlowEdge<never>;
 
-export function useEntityInstanceToEntityInstanceDiagram(sourceEntity: Entity | null, targetEntity: Entity | null, propertyId: identifier) {
+export function useEntityInstanceToEntityInstanceDiagram(
+    source: { entity: Entity; instances: EntityInstance[] } | null,
+    target: { entity: Entity; instances: EntityInstance[] } | null,
+    propertyId: identifier
+) {
     const [nodes, setNodes] = useState<(EntityInstanceSourceNode | EntityInstanceTargetNode)[]>([]);
     const [edges, setEdges] = useState<ReactFlowEdge<never>[]>([]);
-    const { schema, instances } = useEditorContext();
+    const { schema } = useEditorContext();
     const layout = defaultLayout;
 
     useEffect(() => {
-        if (sourceEntity) {
-            instances.entityInstances(sourceEntity).then((entityInstances) => {
-                const sourceNodes: EntityInstanceSourceNode[] = entityInstances.map((entityInstance, instanceIndex) => ({
-                    id: `${sourceIdPrefix}${instanceIndex}`,
-                    type: 'source',
-                    position: calculateSourceNodePosition(layout, entityInstance.id),
-                    data: { entity: sourceEntity, entityInstance: entityInstance, layout: layout },
-                }));
-                if (targetEntity) {
-                    setEdges(getEdgesBetweenEntities(schema, sourceEntity, sourceNodes, propertyId, targetEntity));
+        if (source) {
+            const sourceNodes: EntityInstanceSourceNode[] = source.instances.map((entityInstance, instanceIndex) => ({
+                id: `${sourceIdPrefix}${instanceIndex}`,
+                type: 'source',
+                position: calculateSourceNodePosition(layout, entityInstance.id),
+                data: { entity: source.entity, entityInstance: entityInstance, layout: layout },
+            }));
+            if (target) {
+                setEdges(getEdgesBetweenEntities(schema, source.entity, sourceNodes, propertyId, target.entity));
+            } else {
+                setEdges([]);
+            }
+            setNodes((prevNodes) => addZIndices([...sourceNodes, ...targetNodes(prevNodes)]));
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [source?.instances]);
+
+    useEffect(() => {
+        if (target) {
+            const targetNodes: EntityInstanceTargetNode[] = target.instances.map((entityInstance, instanceIndex) => ({
+                id: `${targetIdPrefix}${instanceIndex}`,
+                type: 'target',
+                position: calculateTargetNodePosition(layout, entityInstance.id),
+                data: { entity: target.entity, entityInstance: entityInstance, layout: layout },
+            }));
+
+            setNodes((prevNodes) => {
+                if (source) {
+                    setEdges(getEdgesBetweenEntities(schema, source.entity, sourceNodes(prevNodes), propertyId, target.entity));
                 } else {
                     setEdges([]);
                 }
-                setNodes((prevNodes) => addZIndices([...sourceNodes, ...targetNodes(prevNodes)]));
+                return addZIndices([...sourceNodes(prevNodes), ...targetNodes]);
             });
         }
-    }, [sourceEntity]);
-
-    useEffect(() => {
-        if (targetEntity) {
-            instances.entityInstances(targetEntity).then((entityInstances) => {
-                const targetNodes: EntityInstanceTargetNode[] = entityInstances.map((entityInstance, instanceIndex) => ({
-                    id: `${targetIdPrefix}${instanceIndex}`,
-                    type: 'target',
-                    position: calculateTargetNodePosition(layout, entityInstance.id),
-                    data: { entity: targetEntity, entityInstance: entityInstance, layout: layout },
-                }));
-
-                setNodes((prevNodes) => {
-                    if (sourceEntity) {
-                        setEdges(getEdgesBetweenEntities(schema, sourceEntity, sourceNodes(prevNodes), propertyId, targetEntity));
-                    } else {
-                        setEdges([]);
-                    }
-                    return addZIndices([...sourceNodes(prevNodes), ...targetNodes]);
-                });
-            });
-        }
-    }, [targetEntity]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [target?.instances]);
 
     const onConnect = useCallback(
         (connection: Connection) => setEdges((eds) => addEdge(connection, eds) as unknown as SourceTargetEdge[]),
@@ -91,6 +93,16 @@ export function useEntityInstanceToEntityInstanceDiagram(sourceEntity: Entity | 
         targetNodes: targetNodes(nodes),
         edges,
         onConnect,
+        setEdges: (propertyInstances: PropertyInstance[]) => {
+            const edges = propertyInstances.flatMap((propertyInstance, sourceIndex) => {
+                return propertyInstance.targetInstanceIndices.map((targetIndex) => ({
+                    id: `${source?.entity.id ?? ''}${sourceIndex}${propertyId}${target?.entity.id ?? ''}${targetIndex}`,
+                    source: `${sourceIdPrefix}${sourceIndex}`,
+                    target: `${targetIdPrefix}${targetIndex}`,
+                }));
+            });
+            setEdges(edges);
+        },
         getPropertyInstances,
         layout: { ...layout, maxDiagramHeight: maxDiagramHeight },
     };

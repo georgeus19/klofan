@@ -1,19 +1,20 @@
 import { Panel } from 'reactflow';
-import { NodeSelect } from '../../utils/node-select';
 import { BipartiteDiagram } from '../../bipartite-diagram/bipartite-diagram';
 import { ActionOkCancel } from '../../utils/action-ok-cancel';
 import { Header } from '../../utils/header';
 import { LabelInput } from '../../utils/label-input';
 import { useCreateLiteralProperty } from './use-create-literal-property';
+import { EntityNodeSelector } from '../../utils/diagram-node-selection/entity-selector/entity-node-selector';
 
 export function CreateLiteralProperty() {
-    const { diagram, nodeSelection, sourceEntity, propertyName, setPropertyName, createProperty, cancel } = useCreateLiteralProperty();
+    const { diagram, sourceEntity, propertySourceSelector, propertyName, setPropertyName, createProperty, cancel, error } =
+        useCreateLiteralProperty();
 
     return (
         <div>
             <Header label='Create Property'></Header>
             <LabelInput label='Name' value={propertyName} onChange={(value) => setPropertyName(value)}></LabelInput>
-            <NodeSelect label='Source' displayValue={sourceEntity?.name} onSelect={nodeSelection.onSourceNodeSelect}></NodeSelect>
+            <EntityNodeSelector label='Source' {...propertySourceSelector} entity={sourceEntity}></EntityNodeSelector>
             {sourceEntity && (
                 <BipartiteDiagram
                     sourceNodes={diagram.sourceNodes}
@@ -31,6 +32,7 @@ export function CreateLiteralProperty() {
                     </Panel>
                 </BipartiteDiagram>
             )}
+            {error && <div className='bg-rose-200 p-2 border rounded border-rose-700 text-rose-700'>{error}</div>}
             <ActionOkCancel onOk={createProperty} onCancel={cancel}></ActionOkCancel>
         </div>
     );

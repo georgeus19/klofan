@@ -1,27 +1,27 @@
-import { Instances } from '../../instances';
 import { PropertyInstance } from '../../representation/property-instance';
-import { AllToOneMapping, getAllToOnePropertyInstances } from './all-one-mapping';
-import { JoinMapping, getJoinedPropertyInstances } from './join-mapping';
+import { RawInstances } from '../../representation/raw-instances';
+import { AllToOneMapping, getAllToOneMappingPropertyInstances } from './all-to-one-mapping';
+import { JoinMapping, getJoinMappingPropertyInstances } from './join-mapping';
 import { ManualMapping } from './manual-mapping';
-import { OneToAllMapping, getOneToAllPropertyInstances } from './one-all-mapping';
-import { OneToOneMapping, getOneToOnePropertyInstances } from './one-one-mapping';
-import { PreserveMapping, getPreservedPropertyInstances } from './preserve-mapping';
+import { OneToAllMapping, getOneToAllMappingPropertyInstances } from './one-to-all-mapping';
+import { OneToOneMapping, getOneToOneMappingPropertyInstances } from './one-to-one-mapping';
+import { PreserveMapping, getPreserveMappingPropertyInstances } from './preserve-mapping';
 
 export type Mapping = PreserveMapping | JoinMapping | OneToOneMapping | OneToAllMapping | AllToOneMapping | ManualMapping;
 
-export function getPropertyInstances(instances: Instances, mapping: Mapping): Promise<PropertyInstance[]> {
+export function getPropertyInstances(instances: RawInstances, mapping: Mapping): PropertyInstance[] {
     switch (mapping.type) {
         case 'join-mapping':
-            return getJoinedPropertyInstances(instances, mapping);
+            return getJoinMappingPropertyInstances(instances, mapping);
         case 'preserve-mapping':
-            return getPreservedPropertyInstances(instances, mapping);
+            return getPreserveMappingPropertyInstances(instances, mapping);
         case 'one-one':
-            return getOneToOnePropertyInstances(instances, mapping);
+            return getOneToOneMappingPropertyInstances(instances, mapping);
         case 'one-all':
-            return getOneToAllPropertyInstances(instances, mapping);
+            return getOneToAllMappingPropertyInstances(instances, mapping);
         case 'all-one':
-            return getAllToOnePropertyInstances(instances, mapping);
+            return getAllToOneMappingPropertyInstances(instances, mapping);
         case 'manual-mapping':
-            return Promise.resolve(mapping.propertyInstances);
+            return mapping.propertyInstances;
     }
 }

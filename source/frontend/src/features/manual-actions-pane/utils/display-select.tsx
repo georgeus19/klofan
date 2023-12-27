@@ -1,10 +1,10 @@
-export interface NodeSelectProps {
+export interface DisplaySelectProps {
     label: string;
     displayValue?: string;
     onSelect: () => void;
 }
 
-export function NodeSelect({ label, displayValue, onSelect }: NodeSelectProps) {
+export function DisplaySelect({ label, displayValue, onSelect }: DisplaySelectProps) {
     return (
         <div className='grid grid-cols-12 px-3 py-1'>
             <label className='col-span-4'>{label}</label>

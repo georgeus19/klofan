@@ -1,7 +1,6 @@
 import { Entity } from '../../../schema/representation/item/entity';
 import { Item } from '../../../schema/representation/item/item';
 import { Property } from '../../../schema/representation/relation/property';
-import { InMemoryInstances } from '../../in-memory-instances';
 import { RawInstances, propertyInstanceKey } from '../../representation/raw-instances';
 import { Mapping, getPropertyInstances } from '../mapping/mapping';
 
@@ -16,11 +15,11 @@ export interface MovePropertyInstances {
     };
 }
 
-export async function movePropertyInstances(
+export function movePropertyInstances(
     instances: RawInstances,
     { data: { originalSource, newSource, property, newTarget, propertyInstancesMapping } }: MovePropertyInstances
-): Promise<void> {
-    const propertyInstances = await getPropertyInstances(new InMemoryInstances(instances), propertyInstancesMapping);
+) {
+    const propertyInstances = getPropertyInstances(instances, propertyInstancesMapping);
 
     if (instances.entityInstances[newSource.id].count !== propertyInstances.length) {
         throw new Error(

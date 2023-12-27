@@ -9,6 +9,7 @@ export function CreateEntity() {
     const [entityName, setEntityName] = useState('');
     const [instanceCount, setInstanceCount] = useState(1);
     const [nodeSelection, setNodeSelection] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>(null);
 
     const {
         instances,
@@ -34,6 +35,9 @@ export function CreateEntity() {
     }, [selectedNode]);
 
     const createEntity = () => {
+        if (entityName.trim().length === 0 || instanceCount === 0) {
+            setError('Name and instance count must be set!');
+        }
         const transformation = createCreateEntityTransformation({ schema: { name: entityName }, instances: { count: instanceCount } });
         updateSchemaAndInstances(transformation);
         onActionDone();
@@ -67,6 +71,7 @@ export function CreateEntity() {
                     Select
                 </button>
             </div>
+            {error && <div className='bg-rose-200 p-2 border rounded border-rose-700 text-rose-700'>{error}</div>}
             <ActionOkCancel onOk={createEntity} onCancel={cancel}></ActionOkCancel>
         </div>
     );

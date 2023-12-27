@@ -3,11 +3,11 @@ import { Schema } from '../../schema/schema';
 import { MoveProperty } from '../../schema/transform/transformations/move-property';
 import { identifier } from '../../schema/utils/identifier';
 import { Transformation } from '../transformation';
-import { PropertyInstance } from '../../instances/representation/property-instance';
+import { Mapping } from '../../instances/transform/mapping/mapping';
 
 export function createMovePropertyTransformation(
     schema: Schema,
-    data: { originalSource: identifier; property: identifier; newSource?: identifier; newTarget?: identifier; propertyInstances: PropertyInstance[] }
+    data: { originalSource: identifier; property: identifier; newSource?: identifier; newTarget?: identifier; instanceMapping: Mapping }
 ): Transformation {
     const originalSource = schema.entity(data.originalSource);
     const newSource = schema.entity(data.newSource ?? data.originalSource);
@@ -31,7 +31,7 @@ export function createMovePropertyTransformation(
             newSource: newSource,
             property: property,
             newTarget: newTarget,
-            propertyInstances: data.propertyInstances,
+            propertyInstancesMapping: data.instanceMapping,
         },
     };
 
