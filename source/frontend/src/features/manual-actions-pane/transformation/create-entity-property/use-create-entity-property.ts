@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import EntityInstanceSourceNode from '../../bipartite-diagram/nodes/entity-instance-source-node';
 import EntityInstanceTargetNode from '../../bipartite-diagram/nodes/entity-instance-target-node';
 import { createCreatePropertyTransformation } from '../../../../core/transform/factory/create-property-transformation';
@@ -9,6 +9,8 @@ import { EntityInstance } from '../../../../core/instances/entity-instance';
 import { Entity } from '../../../../core/schema/representation/item/entity';
 import { Mapping } from '../../../../core/instances/transform/mapping/mapping';
 import { JoinMappingDetailMapping } from '../../utils/mapping/join/join-mapping-detail';
+import { useEntityInstances } from '../../utils/use-entity-instances';
+import { Connection } from 'reactflow';
 
 export function useCreateEntityProperty() {
     const [propertyName, setPropertyName] = useState('');
@@ -38,7 +40,6 @@ export function useCreateEntityProperty() {
     );
     const {
         schema,
-        instances,
         updateSchemaAndInstances,
         help,
         manualActions: { onActionDone },
@@ -46,20 +47,8 @@ export function useCreateEntityProperty() {
 
     const [error, setError] = useState<string | null>(null);
 
-    const [sourceInstances, setSourceInstances] = useState<EntityInstance[]>([]);
-    const [targetInstances, setTargetInstances] = useState<EntityInstance[]>([]);
-    useEffect(() => {
-        if (sourceEntity) {
-            instances.entityInstances(sourceEntity).then((entityInstances) => setSourceInstances(entityInstances));
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [sourceEntity]);
-    useEffect(() => {
-        if (targetEntity) {
-            instances.entityInstances(targetEntity).then((entityInstances) => setTargetInstances(entityInstances));
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [targetEntity]);
+    const { entityInstances: sourceInstances, setEntityInstances: setSourceInstances } = useEntityInstances(sourceEntity);
+    const { entityInstances: targetInstances, setEntityInstances: setTargetInstances } = useEntityInstances(targetEntity);
 
     const source = { entity: sourceEntity, instances: sourceInstances };
     const target = { entity: targetEntity, instances: targetInstances };
@@ -75,8 +64,13 @@ export function useCreateEntityProperty() {
     } = useEntityInstanceToEntityInstanceDiagram(
         source.entity !== null ? (source as { entity: Entity; instances: EntityInstance[] }) : null,
         target.entity !== null ? (target as { entity: Entity; instances: EntityInstance[] }) : null,
-        ''
+        null
     );
+
+    const onConnect = (connection: Connection) => {
+        setUsedInstanceMapping({ type: 'manual-mapping', propertyInstances: [] });
+        onInstanceTargetConnect(connection);
+    };
 
     const cancel = () => {
         onActionDone();
@@ -109,7 +103,7 @@ export function useCreateEntityProperty() {
             sourceNodes: sourceNodes,
             targetNodes: entityTargetNodes,
             edges: entityTargetEdges,
-            onConnect: onInstanceTargetConnect,
+            onConnect: onConnect,
             layout: layout,
             nodeTypes,
             edgeTypes,

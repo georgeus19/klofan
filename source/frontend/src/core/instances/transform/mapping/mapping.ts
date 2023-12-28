@@ -15,11 +15,11 @@ export function getPropertyInstances(instances: RawInstances, mapping: Mapping):
             return getJoinMappingPropertyInstances(instances, mapping);
         case 'preserve-mapping':
             return getPreserveMappingPropertyInstances(instances, mapping);
-        case 'one-one':
+        case 'one-to-one-mapping':
             return getOneToOneMappingPropertyInstances(instances, mapping);
-        case 'one-all':
+        case 'one-to-all-mapping':
             return getOneToAllMappingPropertyInstances(instances, mapping);
-        case 'all-one':
+        case 'all-to-one-mapping':
             return getAllToOneMappingPropertyInstances(instances, mapping);
         case 'manual-mapping':
             return mapping.propertyInstances;

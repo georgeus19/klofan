@@ -6,10 +6,12 @@ import { getPreservedPropertyInstances, isPreserveMappingEligible } from '../../
 import { Entity } from '../../../../core/schema/representation/item/entity';
 import { Literal } from '../../../../core/schema/representation/item/literal';
 import { Property } from '../../../../core/schema/representation/relation/property';
+import { JoinMappingDetailMapping } from './join/join-mapping-detail';
 
 export type PreserveButtonProps = {
     setEdges: (propertyInstances: PropertyInstance[]) => void;
     setUsedInstanceMapping: (mapping: Mapping) => void;
+    usedInstanceMapping: Mapping | JoinMappingDetailMapping;
     source: { entity: Entity; instances: EntityInstance[] };
     target: { item: Entity; instances: EntityInstance[] } | { item: Literal };
     originalSource: { entity: Entity; instances: EntityInstance[] };
@@ -17,7 +19,16 @@ export type PreserveButtonProps = {
     property: Property;
 };
 
-export function PreserveButton({ setEdges, setUsedInstanceMapping, source, target, originalSource, originalTarget, property }: PreserveButtonProps) {
+export function PreserveButton({
+    setEdges,
+    setUsedInstanceMapping,
+    usedInstanceMapping,
+    source,
+    target,
+    originalSource,
+    originalTarget,
+    property,
+}: PreserveButtonProps) {
     const originalState = {
         source: { entity: originalSource.entity, instances: originalSource.instances.length },
         target:
@@ -40,6 +51,7 @@ export function PreserveButton({ setEdges, setUsedInstanceMapping, source, targe
                 : { item: target.item },
     };
     const disabled = !isPreserveMappingEligible(originalState, newState);
+    const used = usedInstanceMapping.type === 'preserve-mapping';
     return (
         <button
             disabled={disabled}
@@ -54,7 +66,11 @@ export function PreserveButton({ setEdges, setUsedInstanceMapping, source, targe
                     newTarget: target.item,
                 });
             }}
-            className={twMerge('p-1 rounded shadow bg-blue-200 hover:bg-blue-300', disabled ? 'bg-slate-300 hover:bg-slate-300' : '')}
+            className={twMerge(
+                'p-1 rounded shadow bg-blue-200 hover:bg-blue-300',
+                disabled ? 'bg-slate-300 hover:bg-slate-300' : '',
+                used ? 'bg-blue-600 hover:bg-blue-600 text-white' : ''
+            )}
         >
             Preserve
         </button>

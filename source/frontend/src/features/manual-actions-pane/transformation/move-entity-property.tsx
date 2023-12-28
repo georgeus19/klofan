@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Entity } from '../../../core/schema/representation/item/entity';
 import { Property } from '../../../core/schema/representation/relation/property';
 import { useEntityInstanceToEntityInstanceDiagram } from '../bipartite-diagram/hooks/use-entity-instance-to-entity-instance-diagram';
@@ -14,7 +14,6 @@ import { useEditorContext } from '../../editor/editor-context';
 import { Dropdown } from '../utils/dropdown';
 import { usePropertyEndsNodesSelector } from '../utils/diagram-node-selection/property-ends-selector/use-property-ends-nodes-selector';
 import { PropertyEndsNodesSelector } from '../utils/diagram-node-selection/property-ends-selector/property-ends-nodes-selector';
-import { EntityInstance } from '../../../core/instances/entity-instance';
 import { Mapping } from '../../../core/instances/transform/mapping/mapping';
 import { JoinMappingDetail, JoinMappingDetailMapping } from '../utils/mapping/join/join-mapping-detail';
 import { ButtonProps } from '../utils/mapping/button-props';
@@ -24,6 +23,8 @@ import { OneToOneButton } from '../utils/mapping/one-to-one-button';
 import { AllToOneButton } from '../utils/mapping/all-to-one-button';
 import { ManualButton } from '../utils/mapping/manual-button';
 import { PreserveButton } from '../utils/mapping/preserve-button';
+import { useEntityInstances } from '../utils/use-entity-instances';
+import { Connection } from 'reactflow';
 
 export interface MoveEntityPropertyProps {
     entity: Entity;
@@ -33,7 +34,6 @@ export interface MoveEntityPropertyProps {
 export function MoveEntityProperty({ entity: originalSourceEntity, property }: MoveEntityPropertyProps) {
     const {
         schema,
-        instances,
         updateSchemaAndInstances,
         help,
         manualActions: { onActionDone },
@@ -41,16 +41,8 @@ export function MoveEntityProperty({ entity: originalSourceEntity, property }: M
 
     const originalTargetEntity = schema.entity(property.value);
 
-    const [originalSourceInstances, setOriginalSourceInstances] = useState<EntityInstance[]>([]);
-    const [originalTargetInstances, setOriginalTargetInstances] = useState<EntityInstance[]>([]);
-    useEffect(() => {
-        instances.entityInstances(originalSourceEntity).then((entityInstances) => setOriginalSourceInstances(entityInstances));
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [originalSourceEntity]);
-    useEffect(() => {
-        instances.entityInstances(originalTargetEntity).then((entityInstances) => setOriginalTargetInstances(entityInstances));
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [originalTargetEntity]);
+    const { entityInstances: originalSourceInstances } = useEntityInstances(originalSourceEntity);
+    const { entityInstances: originalTargetInstances } = useEntityInstances(originalTargetEntity);
 
     const [sourceEntity, setSourceEntity] = useState<Entity>(originalSourceEntity);
     const [targetEntity, setTargetEntity] = useState<Entity>(originalTargetEntity);
@@ -71,16 +63,8 @@ export function MoveEntityProperty({ entity: originalSourceEntity, property }: M
             },
         }
     );
-    const [sourceInstances, setSourceInstances] = useState<EntityInstance[]>([]);
-    const [targetInstances, setTargetInstances] = useState<EntityInstance[]>([]);
-    useEffect(() => {
-        instances.entityInstances(sourceEntity).then((entityInstances) => setSourceInstances(entityInstances));
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [sourceEntity]);
-    useEffect(() => {
-        instances.entityInstances(targetEntity).then((entityInstances) => setTargetInstances(entityInstances));
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [targetEntity]);
+    const { entityInstances: sourceInstances, setEntityInstances: setSourceInstances } = useEntityInstances(sourceEntity);
+    const { entityInstances: targetInstances, setEntityInstances: setTargetInstances } = useEntityInstances(targetEntity);
 
     const source = { entity: sourceEntity, instances: sourceInstances };
     const target = { entity: targetEntity, instances: targetInstances };
@@ -132,7 +116,7 @@ export function MoveEntityProperty({ entity: originalSourceEntity, property }: M
     );
     const edgeTypes = useMemo(() => ({}), []);
 
-    const mappingButtonProps: ButtonProps = { setEdges, setUsedInstanceMapping, source, target };
+    const mappingButtonProps: ButtonProps = { setEdges, setUsedInstanceMapping, source, target, usedInstanceMapping };
 
     return (
         <div>
@@ -189,7 +173,10 @@ export function MoveEntityProperty({ entity: originalSourceEntity, property }: M
                     nodeTypes={nodeTypes}
                     edgeTypes={edgeTypes}
                     layout={layout}
-                    onConnect={onConnect}
+                    onConnect={(connection: Connection) => {
+                        setUsedInstanceMapping({ type: 'manual-mapping', propertyInstances: [] });
+                        onConnect(connection);
+                    }}
                 ></BipartiteDiagram>
             </Dropdown>
             <ActionOkCancel onOk={moveProperty} onCancel={cancel}></ActionOkCancel>

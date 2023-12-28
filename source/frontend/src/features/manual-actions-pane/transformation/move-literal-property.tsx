@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Entity } from '../../../core/schema/representation/item/entity';
 import { Property } from '../../../core/schema/representation/relation/property';
 import { useEntityInstanceToLiteralInstanceDiagram } from '../bipartite-diagram/hooks/use-entity-instance-to-literal-instance-diagram';
@@ -13,10 +13,11 @@ import { useEditorContext } from '../../editor/editor-context';
 import { Dropdown } from '../utils/dropdown';
 import { EntityNodeSelector } from '../utils/diagram-node-selection/entity-selector/entity-node-selector';
 import { useEntityNodeSelector } from '../utils/diagram-node-selection/entity-selector/use-entity-node-selector';
-import { EntityInstance } from '../../../core/instances/entity-instance';
 import { Mapping } from '../../../core/instances/transform/mapping/mapping';
 import { PreserveButton } from '../utils/mapping/preserve-button';
 import { ManualButton } from '../utils/mapping/manual-button';
+import { useEntityInstances } from '../utils/use-entity-instances';
+import { Connection } from 'reactflow';
 
 export interface MoveLiteralPropertyProps {
     entity: Entity;
@@ -26,7 +27,6 @@ export interface MoveLiteralPropertyProps {
 export function MoveLiteralProperty({ entity: originalSourceEntity, property }: MoveLiteralPropertyProps) {
     const {
         schema,
-        instances,
         updateSchemaAndInstances,
         help,
         manualActions: { onActionDone },
@@ -34,13 +34,7 @@ export function MoveLiteralProperty({ entity: originalSourceEntity, property }: 
 
     const [sourceEntity, setSourceEntity] = useState<Entity>(originalSourceEntity);
     const sourceEntitySelector = useEntityNodeSelector(setSourceEntity);
-
-    const [sourceInstances, setSourceInstances] = useState<EntityInstance[]>([]);
-    useEffect(() => {
-        instances.entityInstances(sourceEntity).then((entityInstances) => setSourceInstances(entityInstances));
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [sourceEntity]);
-
+    const { entityInstances: sourceInstances } = useEntityInstances(sourceEntity);
     const source = { entity: sourceEntity, instances: sourceInstances };
 
     const { sourceNodes, targetNodes, edges, setEdges, onConnect, getPropertyInstances, layout } = useEntityInstanceToLiteralInstanceDiagram(
@@ -48,12 +42,7 @@ export function MoveLiteralProperty({ entity: originalSourceEntity, property }: 
         property.id
     );
 
-    const [originalSourceInstances, setOriginalSourceInstances] = useState<EntityInstance[]>([]);
-    useEffect(() => {
-        instances.entityInstances(originalSourceEntity).then((entityInstances) => setOriginalSourceInstances(entityInstances));
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [originalSourceEntity]);
-
+    const { entityInstances: originalSourceInstances } = useEntityInstances(originalSourceEntity);
     const originalSource = { entity: originalSourceEntity, instances: originalSourceInstances };
 
     const [usedInstanceMapping, setUsedInstanceMapping] = useState<Mapping>({
@@ -110,6 +99,7 @@ export function MoveLiteralProperty({ entity: originalSourceEntity, property }: 
                 <div className='grid grid-cols-2'>
                     <PreserveButton
                         setEdges={setEdges}
+                        usedInstanceMapping={usedInstanceMapping}
                         setUsedInstanceMapping={setUsedInstanceMapping}
                         source={source}
                         target={{ item: schema.literal(property.value) }}
@@ -117,7 +107,11 @@ export function MoveLiteralProperty({ entity: originalSourceEntity, property }: 
                         originalTarget={{ item: schema.literal(property.value) }}
                         property={property}
                     ></PreserveButton>
-                    <ManualButton setEdges={setEdges} setUsedInstanceMapping={setUsedInstanceMapping}></ManualButton>
+                    <ManualButton
+                        setEdges={setEdges}
+                        setUsedInstanceMapping={setUsedInstanceMapping}
+                        usedInstanceMapping={usedInstanceMapping}
+                    ></ManualButton>
                 </div>
                 <BipartiteDiagram
                     sourceNodes={sourceNodes}
@@ -126,7 +120,10 @@ export function MoveLiteralProperty({ entity: originalSourceEntity, property }: 
                     nodeTypes={nodeTypes}
                     edgeTypes={edgeTypes}
                     layout={layout}
-                    onConnect={onConnect}
+                    onConnect={(connection: Connection) => {
+                        setUsedInstanceMapping({ type: 'manual-mapping', propertyInstances: [] });
+                        onConnect(connection);
+                    }}
                 ></BipartiteDiagram>
             </Dropdown>
             <ActionOkCancel onOk={moveProperty} onCancel={cancel}></ActionOkCancel>

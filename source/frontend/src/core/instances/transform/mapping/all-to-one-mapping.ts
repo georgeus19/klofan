@@ -3,7 +3,7 @@ import { PropertyInstance } from '../../representation/property-instance';
 import { RawInstances } from '../../representation/raw-instances';
 
 export type AllToOneMapping = {
-    type: 'all-one';
+    type: 'all-to-one-mapping';
     source: Entity;
     target: Entity;
 };

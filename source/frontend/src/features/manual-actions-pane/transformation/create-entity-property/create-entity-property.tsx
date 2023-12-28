@@ -32,6 +32,7 @@ export function CreateEntityProperty() {
     const mappingButtonProps: ButtonProps = {
         setEdges: diagram.setEdges,
         setUsedInstanceMapping,
+        usedInstanceMapping: usedInstanceMapping,
         source: source as { entity: Entity; instances: EntityInstance[] },
         target: target as { entity: Entity; instances: EntityInstance[] },
     };

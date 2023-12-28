@@ -14,10 +14,17 @@ export type EntityInstanceSourceNode = SourceNode<{ entity: Entity; entityInstan
 export type EntityInstanceTargetNode = TargetNode<{ entity: Entity; entityInstance: EntityInstance }>;
 export type SourceTargetEdge = ReactFlowEdge<never>;
 
+/**
+ * Hook for managing a bipartite graph (diagram) representing property instances of a property between two entities.
+ * If source/target and its instances is both known, pass them if not pass null. The main output are nodes (source and target instances)
+ * and edges (properties between instances) that are in React Flow compatible format.
+ *
+ * If the property does not exist yet in them schema, just pass null and it works as well - no edges are known.
+ */
 export function useEntityInstanceToEntityInstanceDiagram(
     source: { entity: Entity; instances: EntityInstance[] } | null,
     target: { entity: Entity; instances: EntityInstance[] } | null,
-    propertyId: identifier
+    propertyId: identifier | null
 ) {
     const [nodes, setNodes] = useState<(EntityInstanceSourceNode | EntityInstanceTargetNode)[]>([]);
     const [edges, setEdges] = useState<ReactFlowEdge<never>[]>([]);
@@ -112,9 +119,13 @@ function getEdgesBetweenEntities(
     schema: Schema,
     sourceEntity: Entity,
     sourceNodes: EntityInstanceSourceNode[],
-    propertyId: identifier,
+    propertyId: identifier | null,
     targetEntity: Entity
 ) {
+    if (propertyId === null) {
+        return [];
+    }
+
     const propCheck = schema.hasRelation(propertyId) && schema.property(propertyId).value !== targetEntity.id;
     if (propCheck || !sourceEntity.properties.find((property) => property === propertyId)) {
         return [];

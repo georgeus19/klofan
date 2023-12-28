@@ -19,6 +19,7 @@ export function JoinButton({ setEdges, setUsedInstanceMapping, source, target, u
         target.entity.properties.map((propertyId) => schema.property(propertyId)).filter((property) => isLiteral(schema.item(property.value)))
             .length > 0;
     const disabled = !sourceHasLiterals || !targetHasLiterals;
+    const used = usedInstanceMapping.type === 'join-mapping' || usedInstanceMapping.type === 'join-mapping-detail';
     return (
         <button
             disabled={disabled}
@@ -30,7 +31,11 @@ export function JoinButton({ setEdges, setUsedInstanceMapping, source, target, u
                     setUsedInstanceMapping({ type: 'join-mapping-detail', source: source.entity, target: target.entity });
                 }
             }}
-            className={twMerge('p-1 rounded shadow bg-blue-200 hover:bg-blue-300', disabled ? 'bg-slate-300 hover:bg-slate-300' : '')}
+            className={twMerge(
+                'p-1 rounded shadow bg-blue-200 hover:bg-blue-300',
+                disabled ? 'bg-slate-300 hover:bg-slate-300' : '',
+                used ? 'bg-blue-600 hover:bg-blue-600 text-white' : ''
+            )}
         >
             Join
         </button>

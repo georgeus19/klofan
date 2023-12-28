@@ -13,6 +13,12 @@ export type EntityInstanceSourceNode = SourceNode<{ entity: Entity; entityInstan
 export type LiteralInstanceTargetNode = TargetNode<{ literal: Literal; id: number }>;
 export type SourceTargetEdge = ReactFlowEdge<never>;
 
+/**
+ * Hook for managing a bipartite graph (diagram) of property instances of property between source entity and target literal.
+ * If both source entity and its instances are knwon, pass them, if not both then null.
+ *
+ * Passing null proeprty id means that it does not exist in the schema - resulting edges are empty array.
+ */
 export function useEntityInstanceToLiteralInstanceDiagram(
     source: { entity: Entity; instances: EntityInstance[] } | null,
     propertyId: identifier | null
