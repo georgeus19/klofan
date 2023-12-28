@@ -29,7 +29,6 @@ export function getJoinedPropertyInstances(
             }))
             .filter(({ join }) => join.length > 0)
             .map(({ targetInstanceIndex }) => targetInstanceIndex);
-        console.log(joinedTargetInstances);
         return {
             literals: [],
             targetInstanceIndices: joinedTargetInstances,
