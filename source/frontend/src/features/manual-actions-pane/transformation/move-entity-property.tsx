@@ -9,7 +9,7 @@ import UpdatableLiteralTargetNode from '../bipartite-diagram/nodes/updatable-lit
 import { createMovePropertyTransformation } from '../../../core/transform/factory/move-property-transformation';
 import { ActionOkCancel } from '../utils/action-ok-cancel';
 import { Header } from '../utils/header';
-import { LabelReadonlyInput } from '../utils/label-readonly-input';
+import { LabelReadonlyInput } from '../utils/general-label-input/label-readonly-input';
 import { useEditorContext } from '../../editor/editor-context';
 import { Dropdown } from '../utils/dropdown';
 import { usePropertyEndsNodesSelector } from '../utils/diagram-node-selection/property-ends-selector/use-property-ends-nodes-selector';

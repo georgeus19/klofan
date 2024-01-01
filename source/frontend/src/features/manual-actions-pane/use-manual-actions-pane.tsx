@@ -10,6 +10,7 @@ import { CreateEntity } from './transformation/create-entity';
 import { EntityDetail } from './detail/entity-detail';
 import { CreateLiteralProperty } from './transformation/create-literal-property/create-literal-property';
 import { CreateEntityProperty } from './transformation/create-entity-property/create-entity-property';
+import { Prefixes } from './detail/prefixes/prefixes';
 
 export type ManualActionsPane = {
     shownAction: ManualActionShown;
@@ -19,6 +20,7 @@ export type ManualActionsPane = {
     showCreateLiteralProperty: () => void;
     showCreateEntityProperty: () => void;
     showEntityDetail: (entity: Entity) => void;
+    showPrefixes: () => void;
     hide: () => void;
 };
 
@@ -73,8 +75,12 @@ export function useManualActionsPane(nodeSelection: NodeSelection, schema: Schem
         },
         showEntityDetail: (entity: Entity) => {
             if (!sideActionLocked) {
-                setSideAction({ type: 'entity-detail-shown', component: <EntityDetail entity={entity}></EntityDetail> });
+                setSideAction({ type: 'entity-detail-shown', component: <EntityDetail entityId={entity.id}></EntityDetail> });
             }
+        },
+        showPrefixes: () => {
+            nodeSelection.clearSelectedNode();
+            setSideAction({ type: 'prefixes-shown', component: <Prefixes></Prefixes> });
         },
         hide: () => {
             setSideAction({ type: 'blank-shown', component: <div></div> });

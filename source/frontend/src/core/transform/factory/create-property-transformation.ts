@@ -15,12 +15,13 @@ import { PropertyInstance } from '../../instances/representation/property-instan
 export function createCreatePropertyTransformation(
     schema: Schema,
     {
-        property: { name, value },
+        property: { name, uri, value },
         sourceEntityId,
         propertyInstances,
     }: {
         property: {
             name: string;
+            uri?: string;
             value: { type: 'entity'; entityId: identifier } | { type: 'literal' };
         };
         sourceEntityId: identifier;
@@ -28,7 +29,7 @@ export function createCreatePropertyTransformation(
     }
 ): Transformation {
     const sourceEntity = schema.entity(sourceEntityId);
-    const { property, schemaTransformations } = createSchemaTransformations(name, value, sourceEntity);
+    const { property, schemaTransformations } = createSchemaTransformations(name, value, sourceEntity, uri);
     const createInstancePropertyTransformation: CreatePropertyInstances = {
         type: 'create-property-instances',
         data: {
@@ -46,7 +47,8 @@ export function createCreatePropertyTransformation(
 function createSchemaTransformations(
     propertyName: string,
     propertyValue: { type: 'entity'; entityId: identifier } | { type: 'literal' },
-    sourceEntity: Entity
+    sourceEntity: Entity,
+    propertyUri?: string
 ): { property: Property; schemaTransformations: SchemaTransformation[] } {
     let valueId;
     let targetSchemaTransformations: SchemaTransformation[];
@@ -70,6 +72,7 @@ function createSchemaTransformations(
     const property: Property = {
         id: getNewId(),
         type: 'property',
+        uri: propertyUri,
         name: propertyName,
         value: valueId,
     };

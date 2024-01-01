@@ -2,18 +2,19 @@ import { Panel } from 'reactflow';
 import { BipartiteDiagram } from '../../bipartite-diagram/bipartite-diagram';
 import { ActionOkCancel } from '../../utils/action-ok-cancel';
 import { Header } from '../../utils/header';
-import { LabelInput } from '../../utils/label-input';
+import { LabelInput } from '../../utils/general-label-input/label-input';
 import { useCreateLiteralProperty } from './use-create-literal-property';
 import { EntityNodeSelector } from '../../utils/diagram-node-selection/entity-selector/entity-node-selector';
+import { UriLabelInput } from '../../utils/uri/uri-label-input';
 
 export function CreateLiteralProperty() {
-    const { diagram, sourceEntity, propertySourceSelector, propertyName, setPropertyName, createProperty, cancel, error } =
-        useCreateLiteralProperty();
+    const { diagram, sourceEntity, propertySourceSelector, property, createProperty, cancel, error } = useCreateLiteralProperty();
 
     return (
         <div>
             <Header label='Create Property'></Header>
-            <LabelInput label='Name' value={propertyName} onChange={(value) => setPropertyName(value)}></LabelInput>
+            <LabelInput label='Name' value={property.name} updateValue={property.setName} id='name'></LabelInput>
+            <UriLabelInput label='Uri' {...property.uri} onChangeDone={() => {}} usePrefix id='uri'></UriLabelInput>
             <EntityNodeSelector label='Source' {...propertySourceSelector} entity={sourceEntity}></EntityNodeSelector>
             {sourceEntity && (
                 <BipartiteDiagram

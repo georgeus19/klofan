@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { createCreateEntityTransformation } from '../../../core/transform/factory/create-entity-transformation';
 import { ActionOkCancel } from '../utils/action-ok-cancel';
-import { LabelInput } from '../utils/label-input';
+import { LabelInput } from '../utils/general-label-input/label-input';
 import { Header } from '../utils/header';
 import { useEditorContext } from '../../editor/editor-context';
 

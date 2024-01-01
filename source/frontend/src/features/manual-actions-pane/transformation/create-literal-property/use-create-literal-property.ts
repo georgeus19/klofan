@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Entity } from '../../../../core/schema/representation/item/entity';
 import { Edge as ReactFlowEdge } from 'reactflow';
 import EntityInstanceSourceNode from '../../bipartite-diagram/nodes/entity-instance-source-node';
@@ -14,6 +14,8 @@ import {
 } from '../../bipartite-diagram/hooks/use-entity-instance-to-literal-instance-diagram';
 import { EntityInstance } from '../../../../core/instances/entity-instance';
 import { useEntityNodeSelector } from '../../utils/diagram-node-selection/entity-selector/use-entity-node-selector';
+import { useUriInput } from '../../utils/uri/use-uri-input';
+import { useEntityInstances } from '../../utils/use-entity-instances';
 
 export type LiteralNode = LiteralInstanceTargetNode & {
     data: { literal: Literal; onLiteralValueChange: (literalNodeId: string, value: string) => void; layout: LayoutOptions };
@@ -22,10 +24,11 @@ export type TargetLiteralEdge = ReactFlowEdge<never>;
 
 export function useCreateLiteralProperty() {
     const [propertyName, setPropertyName] = useState('');
+    const uri = useUriInput('');
+
     const [error, setError] = useState<string | null>(null);
     const {
         schema,
-        instances,
         updateSchemaAndInstances,
         help,
         manualActions: { onActionDone },
@@ -33,13 +36,7 @@ export function useCreateLiteralProperty() {
     const [sourceEntity, setSourceEntity] = useState<Entity | null>(null);
     const sourceEntitySelector = useEntityNodeSelector(setSourceEntity);
 
-    const [sourceInstances, setSourceInstances] = useState<EntityInstance[]>([]);
-    useEffect(() => {
-        if (sourceEntity) {
-            instances.entityInstances(sourceEntity).then((entityInstances) => setSourceInstances(entityInstances));
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [sourceEntity]);
+    const { entityInstances: sourceInstances } = useEntityInstances(sourceEntity);
 
     const source = { entity: sourceEntity, instances: sourceInstances };
 
@@ -63,6 +60,7 @@ export function useCreateLiteralProperty() {
         const transformation = createCreatePropertyTransformation(schema, {
             property: {
                 name: propertyName,
+                uri: uri.uriWithoutPrefix,
                 value: { type: 'literal' },
             },
             sourceEntityId: sourceEntity.id,
@@ -87,7 +85,6 @@ export function useCreateLiteralProperty() {
     };
 
     const addLiteralNode = () => {
-        console.log(targetNodes);
         setNodes((prev) => {
             const id = getTargetNodes<{ entity: Entity; entityInstance: EntityInstance }, { literal: Literal; id: number }>(prev).length;
             return [
@@ -119,9 +116,12 @@ export function useCreateLiteralProperty() {
             layout: layout,
         },
         propertySourceSelector: sourceEntitySelector,
-        propertyName,
+        property: {
+            name: propertyName,
+            setName: setPropertyName,
+            uri: uri,
+        },
         sourceEntity,
-        setPropertyName,
         createProperty,
         cancel,
         error,

@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { PrefixesShown } from './detail/prefixes/prefixes';
 
 export type ManualActionShown = { component: ReactNode } & (
     | EntityDetailShown
@@ -8,6 +9,7 @@ export type ManualActionShown = { component: ReactNode } & (
     | CreateLiteralPropertyShown
     | MoveEntityPropertyShown
     | MoveLiteralPropertyShown
+    | PrefixesShown
 );
 
 export interface EntityDetailShown {

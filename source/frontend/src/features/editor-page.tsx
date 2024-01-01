@@ -1,11 +1,14 @@
 import { ReactFlowProvider } from 'reactflow';
 import Editor from './editor/editor';
 import Header from './header/header';
+import { usePrefixes } from './prefixes/use-prefixes';
+import { PrefixesContextProvider } from './prefixes/prefixes-context';
 
 /**
  * Header and editor component
  */
 function EditorPage() {
+    const prefixes = usePrefixes();
     return (
         <>
             <div className='flex flex-col items-stretch min-h-screen '>
@@ -14,7 +17,9 @@ function EditorPage() {
                 </div>
 
                 <ReactFlowProvider>
-                    <Editor></Editor>
+                    <PrefixesContextProvider prefixes={prefixes}>
+                        <Editor></Editor>
+                    </PrefixesContextProvider>
                 </ReactFlowProvider>
                 <div>
                     Icons used from{' '}

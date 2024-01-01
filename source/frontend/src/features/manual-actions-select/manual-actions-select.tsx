@@ -7,6 +7,7 @@ import { FileSaver } from '../file/file-saver';
 import { saveAsDataSchema } from '../../core/schema/save/data-schema/save';
 import { IdentityEntityInstanceUriBuilder } from '../../core/instances/save/uri-builders/identity-instance-uri-builder';
 import { save } from '../../core/instances/save/save';
+import { resetId } from '../../core/utils/identifier-generator';
 
 export function ManualActionsSelect() {
     const {
@@ -20,6 +21,7 @@ export function ManualActionsSelect() {
 
     const onImport = (file: { content: string; type: string }) => {
         const { schema, instances } = file.type === 'application/json' ? parseJson(file.content) : parseCsv(file.content);
+        resetId();
         addSchemaAndInstances({ schema: schema, instances: instances });
     };
 
@@ -90,6 +92,10 @@ export function ManualActionsSelect() {
 
             <button className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300' onClick={history.redo}>
                 Redo
+            </button>
+
+            <button className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300' onClick={manualActions.showPrefixes}>
+                Prefixes
             </button>
 
             <FileLoader className='p-2 rounded shadow bg-blue-200' onFileLoad={onImport}>

@@ -9,7 +9,7 @@ export function getNewId(): identifier {
     return (++counter).toString();
 }
 /**
- * Reset global id - only for tests.
+ * Reset global id.
  */
 export function resetId() {
     counter = 0;

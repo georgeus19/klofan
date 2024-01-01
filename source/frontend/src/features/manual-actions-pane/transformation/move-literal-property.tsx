@@ -8,7 +8,7 @@ import { createMovePropertyTransformation } from '../../../core/transform/factor
 import LiteralTargetNode from '../bipartite-diagram/nodes/literal-target-node';
 import { ActionOkCancel } from '../utils/action-ok-cancel';
 import { Header } from '../utils/header';
-import { LabelReadonlyInput } from '../utils/label-readonly-input';
+import { LabelReadonlyInput } from '../utils/general-label-input/label-readonly-input';
 import { useEditorContext } from '../../editor/editor-context';
 import { Dropdown } from '../utils/dropdown';
 import { EntityNodeSelector } from '../utils/diagram-node-selection/entity-selector/entity-node-selector';

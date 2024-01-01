@@ -4,7 +4,6 @@ import { identifier } from '../../schema/utils/identifier';
 import { Transformation } from '../transformation';
 
 export function createUpdateItemNameTransformation(schema: Schema, itemId: identifier, name: string): Transformation {
-    console.log('name', name);
     const updateItemTransformation: UpdateItem = { type: 'update-item', data: { item: { ...schema.item(itemId), name: name } } };
     return {
         schemaTransformations: [updateItemTransformation],

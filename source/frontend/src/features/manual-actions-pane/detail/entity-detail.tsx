@@ -1,91 +1,103 @@
 import { useEffect, useState } from 'react';
-import { Entity, getProperties } from '../../../core/schema/representation/item/entity';
+import { getProperties } from '../../../core/schema/representation/item/entity';
 import { createUpdateItemNameTransformation } from '../../../core/transform/factory/update-item-name-transformation';
-import { DetailLabelValueItem } from '../utils/detail-label-value-item';
+import { UncontrollableLabelInput } from '../utils/general-label-input/uncontrollable-label-input';
 import { Dropdown } from '../utils/dropdown';
 import { createUpdateRelationNameTransformation } from '../../../core/transform/factory/update-relation-name-transformation';
 import { createUpdatePropertyUriTransformation } from '../../../core/transform/factory/update-property-uri-transformation';
 import { isLiteral } from '../../../core/schema/representation/item/literal';
 import { GraphProperty, toProperty } from '../../../core/schema/representation/relation/graph-property';
-import { EntityInstance } from '../../../core/instances/entity-instance';
-import { identifier } from '../../../core/schema/utils/identifier';
 import { createUpdateEntityUriTransformation } from '../../../core/transform/factory/update-entity-uri-transformation';
 import { useEditorContext } from '../../editor/editor-context';
+import { useEntityInstances } from '../utils/use-entity-instances';
+import { identifier } from '../../../core/schema/utils/identifier';
+import { UncontrollableUriLabelInput } from '../utils/uri/uncontrollable-uri-label-input';
 
 export interface EntityDetailProps {
-    entity: Entity;
+    entityId: identifier;
 }
 
-export function EntityDetail({ entity }: EntityDetailProps) {
-    const [entityInstances, setEntityInstances] = useState<EntityInstance[]>([]);
-    const [entityInstanceForEntity, setEntityInstanceForEntity] = useState<identifier>(entity.id);
-
-    const { schema, instances, updateSchemaAndInstances, manualActions } = useEditorContext();
-    const properties = getProperties(schema, entity.id);
-
+export function EntityDetail({ entityId }: EntityDetailProps) {
+    const { schema, updateSchemaAndInstances, manualActions } = useEditorContext();
+    const entity = schema.entity(entityId);
+    const { entityInstances, setEntityInstances } = useEntityInstances(entity);
+    const [usedEntityId, setUsedEntityId] = useState<identifier>(entity.id);
     useEffect(() => {
-        instances.entityInstances(entity).then((entityInstances) => {
-            setEntityInstances(entityInstances);
-            setEntityInstanceForEntity(entity.id);
-        });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        setEntityInstances([]);
+        setUsedEntityId(entity.id);
     }, [entity]);
 
+    const properties = getProperties(schema, entity.id);
+
     const handleEntityNameChange = (name: string) => {
-        const transformation = createUpdateItemNameTransformation(schema, entity.id, name);
-        updateSchemaAndInstances(transformation);
+        if (name !== entity.name) {
+            const transformation = createUpdateItemNameTransformation(schema, entity.id, name);
+            updateSchemaAndInstances(transformation);
+        }
     };
 
     const handleEntityUriChange = (uri: string) => {
-        const transformation = createUpdateEntityUriTransformation(schema, entity.id, uri);
-        updateSchemaAndInstances(transformation);
+        const uriNotUpdated = (entity.uri === undefined && uri === '') || entity.uri === uri;
+        if (!uriNotUpdated) {
+            const transformation = createUpdateEntityUriTransformation(schema, entity.id, uri);
+            updateSchemaAndInstances(transformation);
+        }
     };
 
     const generatePropertyDetail = (property: GraphProperty) => (
-        <li className='border border-slate-300 rounded shadow decoration-double my-1 text-lg' key={property.id}>
-            <div className='bg-slate-600 text-white p-1'>{property.name}</div>
-            <DetailLabelValueItem
+        <li className='border border-slate-300 rounded shadow decoration-double my-1' key={property.id}>
+            <div className='bg-slate-500 rounded flex'>
+                <div className='grow text-white p-1'>{property.name}</div>
+                <button
+                    className=' self-end p-1 rounded shadow bg-blue-200 hover:bg-blue-300'
+                    onClick={() => manualActions.showMoveProperty(entity, toProperty(property))}
+                >
+                    Move
+                </button>
+            </div>
+            <UncontrollableLabelInput
                 id={`${property.id}name`}
                 label='Name'
                 initialValue={property.name}
                 onChangeDone={(name: string) => {
-                    const transformation = createUpdateRelationNameTransformation(schema, property.id, name);
-                    updateSchemaAndInstances(transformation);
+                    if (name !== property.name) {
+                        const transformation = createUpdateRelationNameTransformation(schema, property.id, name);
+                        updateSchemaAndInstances(transformation);
+                    }
                 }}
-            ></DetailLabelValueItem>
-            <DetailLabelValueItem
+            ></UncontrollableLabelInput>
+            <UncontrollableUriLabelInput
                 id={`${property.id}uri`}
                 label='Uri'
-                initialValue={property.uri ?? ''}
+                usePrefix
+                initialUri={property.uri ?? ''}
                 onChangeDone={(uri: string) => {
-                    const transformation = createUpdatePropertyUriTransformation(schema, property.id, uri);
-                    updateSchemaAndInstances(transformation);
+                    const uriNotUpdated = (property.uri === undefined && uri === '') || property.uri === uri;
+                    if (!uriNotUpdated) {
+                        const transformation = createUpdatePropertyUriTransformation(schema, property.id, uri);
+                        updateSchemaAndInstances(transformation);
+                    }
                 }}
-            ></DetailLabelValueItem>
-            <button
-                className='col-span-2 p-1 rounded shadow bg-blue-200 hover:bg-blue-300'
-                onClick={() => manualActions.showMoveProperty(entity, toProperty(property))}
-            >
-                Move
-            </button>
+            ></UncontrollableUriLabelInput>
         </li>
     );
 
     return (
         <div>
             <Dropdown headerLabel='General' showInitially={true}>
-                <DetailLabelValueItem
+                <UncontrollableLabelInput
                     id='entityName'
                     initialValue={entity.name}
                     onChangeDone={handleEntityNameChange}
                     label='Name'
-                ></DetailLabelValueItem>
-                <DetailLabelValueItem
+                ></UncontrollableLabelInput>
+                <UncontrollableUriLabelInput
                     id='entityUri'
-                    initialValue={entity.uri ?? ''}
+                    initialUri={entity.uri ?? ''}
                     onChangeDone={handleEntityUriChange}
                     label='Uri'
-                ></DetailLabelValueItem>
+                    usePrefix
+                ></UncontrollableUriLabelInput>
             </Dropdown>
 
             <Dropdown headerLabel='Properties' showInitially={true}>
@@ -94,20 +106,20 @@ export function EntityDetail({ entity }: EntityDetailProps) {
                         {properties.filter((property) => isLiteral(property.value)).map((property) => generatePropertyDetail(property))}
                     </ul>
                 </Dropdown>
-                <Dropdown className='mx-2' headerLabel='Other' showInitially={true}>
+                <Dropdown className='mx-2' headerLabel='Entity' showInitially={true}>
                     <ul className='mx-4'>
                         {properties.filter((property) => !isLiteral(property.value)).map((property) => generatePropertyDetail(property))}
                     </ul>
                 </Dropdown>
             </Dropdown>
 
-            {entityInstanceForEntity === entity.id && (
+            {entity.id === usedEntityId && (
                 <Dropdown headerLabel='Instance' showInitially={true}>
                     <div className='flex flex-col'>
                         {entityInstances.map((entityInstance, instanceIndex) => {
                             return (
                                 <Dropdown
-                                    className='mx-2'
+                                    className='mt-0 mx-2'
                                     headerLabel={`${entity.name}.${instanceIndex}`}
                                     showInitially={false}
                                     key={`${entity.id}${entityInstance.id}`}

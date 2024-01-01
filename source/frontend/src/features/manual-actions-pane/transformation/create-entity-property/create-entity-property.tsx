@@ -1,7 +1,7 @@
 import { BipartiteDiagram } from '../../bipartite-diagram/bipartite-diagram';
 import { ActionOkCancel } from '../../utils/action-ok-cancel';
 import { Header } from '../../utils/header';
-import { LabelInput } from '../../utils/label-input';
+import { LabelInput } from '../../utils/general-label-input/label-input';
 import { useCreateEntityProperty } from './use-create-entity-property';
 import { PropertyEndsNodesSelector } from '../../utils/diagram-node-selection/property-ends-selector/property-ends-nodes-selector';
 import { JoinButton } from '../../utils/mapping/join/join-button';
@@ -13,21 +13,11 @@ import { ButtonProps } from '../../utils/mapping/button-props';
 import { EntityInstance } from '../../../../core/instances/entity-instance';
 import { Entity } from '../../../../core/schema/representation/item/entity';
 import { JoinMappingDetail } from '../../utils/mapping/join/join-mapping-detail';
+import { UriLabelInput } from '../../utils/uri/uri-label-input';
 
 export function CreateEntityProperty() {
-    const {
-        diagram,
-        source,
-        target,
-        usedInstanceMapping,
-        setUsedInstanceMapping,
-        propertyEndsSelection,
-        propertyName,
-        setPropertyName,
-        createProperty,
-        cancel,
-        error,
-    } = useCreateEntityProperty();
+    const { diagram, source, target, usedInstanceMapping, setUsedInstanceMapping, propertyEndsSelection, property, createProperty, cancel, error } =
+        useCreateEntityProperty();
 
     const mappingButtonProps: ButtonProps = {
         setEdges: diagram.setEdges,
@@ -40,7 +30,8 @@ export function CreateEntityProperty() {
     return (
         <div>
             <Header label='Create Entity Property'></Header>
-            <LabelInput label='Name' value={propertyName} onChange={(value) => setPropertyName(value)}></LabelInput>
+            <LabelInput label='Name' value={property.name} updateValue={property.setName} id='name' onChangeDone={() => {}}></LabelInput>
+            <UriLabelInput label='Uri' {...property.uri} onChangeDone={() => {}} usePrefix id='uri'></UriLabelInput>
             <div>
                 <PropertyEndsNodesSelector
                     {...propertyEndsSelection}

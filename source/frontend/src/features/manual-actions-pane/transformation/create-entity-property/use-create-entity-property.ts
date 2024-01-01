@@ -11,9 +11,12 @@ import { Mapping } from '../../../../core/instances/transform/mapping/mapping';
 import { JoinMappingDetailMapping } from '../../utils/mapping/join/join-mapping-detail';
 import { useEntityInstances } from '../../utils/use-entity-instances';
 import { Connection } from 'reactflow';
+import { useUriInput } from '../../utils/uri/use-uri-input';
 
 export function useCreateEntityProperty() {
     const [propertyName, setPropertyName] = useState('');
+    const uri = useUriInput('');
+
     const [sourceEntity, setSourceEntity] = useState<Entity | null>(null);
     const [targetEntity, setTargetEntity] = useState<Entity | null>(null);
 
@@ -85,6 +88,7 @@ export function useCreateEntityProperty() {
         const transformation = createCreatePropertyTransformation(schema, {
             property: {
                 name: propertyName,
+                uri: uri.asIri(),
                 value: { type: 'entity', entityId: targetEntity.id },
             },
             sourceEntityId: sourceEntity.id,
@@ -114,8 +118,11 @@ export function useCreateEntityProperty() {
         usedInstanceMapping,
         setUsedInstanceMapping,
         propertyEndsSelection: propertyEndsSelector,
-        propertyName,
-        setPropertyName,
+        property: {
+            name: propertyName,
+            setName: setPropertyName,
+            uri,
+        },
         createProperty,
         cancel,
         error,
