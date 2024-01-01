@@ -27,10 +27,27 @@ export const edgeTypes = { property: PropertyEdge };
 
 export function usePositioning(history: EditorHistory): Positioning {
     const { fitView } = useReactFlow();
+    const [lastHistoryUpdateDiagram, setLastHistoryUpdateDiagram] = useState<{
+        nodes: SchemaNode[];
+        edges: SchemaEdge[];
+    } | null>(null);
 
     const onNodeDragStop = (event: ReactMouseEvent, node: SchemaNode, allDraggedNodes: SchemaNode[]) => {
-        history.update((currentState) => ({
-            diagram: {
+        // It seems that even clicking on node triggers NodeDragStop.
+        // But if the position did not change, `dragging` seems to be false.
+        if (allDraggedNodes.filter((n) => n.dragging).length === 0) {
+            return;
+        }
+        if (lastHistoryUpdateDiagram) {
+            history.updateCurrentState(() => {
+                return {
+                    diagram: lastHistoryUpdateDiagram,
+                };
+            });
+            setLastHistoryUpdateDiagram(null);
+        }
+        history.update((currentState) => {
+            const newDiagram = {
                 ...currentState.diagram,
                 nodes: currentState.diagram.nodes.map((node) => {
                     const draggedNode = allDraggedNodes.find((draggedNode) => draggedNode.id === node.id);
@@ -40,17 +57,29 @@ export function usePositioning(history: EditorHistory): Positioning {
 
                     return { ...node, position: draggedNode.position };
                 }),
-            },
-        }));
+            };
+            return {
+                diagram: newDiagram,
+            };
+        });
     };
 
     const onNodesChange = (changes: NodeChange[]) => {
-        history.updateCurrentState((currentState) => ({
-            diagram: {
-                ...currentState.diagram,
-                nodes: applyNodeChanges(changes, currentState.diagram.nodes),
-            },
-        }));
+        history.updateCurrentState((currentState) => {
+            if (changes.filter((ch) => ch.type === 'position').length > 0) {
+                if (!lastHistoryUpdateDiagram) {
+                    setLastHistoryUpdateDiagram({
+                        ...currentState.diagram,
+                    });
+                }
+            }
+            return {
+                diagram: {
+                    ...currentState.diagram,
+                    nodes: applyNodeChanges(changes, currentState.diagram.nodes),
+                },
+            };
+        });
     };
 
     const [fitViewToggle, setFitViewToggle] = useState<boolean>(false);
@@ -58,9 +87,11 @@ export function usePositioning(history: EditorHistory): Positioning {
     const updateNodes = (nodes: Promise<{ nodes: SchemaNode[]; positionsUpdated: boolean }>) => {
         nodes.then(({ nodes, positionsUpdated }) => {
             if (positionsUpdated) {
-                history.update((currentState) => ({
-                    diagram: { ...currentState.diagram, nodes: nodes },
-                }));
+                history.update((currentState) => {
+                    return {
+                        diagram: { ...currentState.diagram, nodes: nodes },
+                    };
+                });
                 setFitViewToggle(!fitViewToggle);
             }
         });
