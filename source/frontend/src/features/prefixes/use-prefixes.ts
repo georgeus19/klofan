@@ -37,7 +37,7 @@ export function usePrefixes(): Prefixes {
         const [prefix, ...rest] = uri.split(':');
         const p = getPrefix(prefix);
 
-        if (p) {
+        if (p && p.value !== uri) {
             return { prefix: p, rest: rest.join('') };
         }
 

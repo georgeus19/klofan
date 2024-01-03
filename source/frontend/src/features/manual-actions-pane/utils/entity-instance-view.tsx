@@ -3,8 +3,8 @@ import { Entity, getProperties, isEntity } from '../../../core/schema/representa
 import { isLiteral } from '../../../core/schema/representation/item/literal';
 import { useEditorContext } from '../../editor/editor-context';
 import { Dropdown } from './dropdown';
-import { LabelReadonlyInput } from './general-label-input/label-readonly-input';
 import { ReadonlyInput } from './general-label-input/readonly-input';
+import { LabelReadonlyUriInput } from './uri/label-readonly-uri-input';
 
 export type EntityInstanceViewProps = {
     entity: Entity;
@@ -45,7 +45,7 @@ export function EntityInstanceView({ entity, entityInstance, showEntityPropertie
     return (
         <div className={className}>
             <Dropdown headerLabel={`${entity.name}.${entityInstance.id}`} showInitially>
-                <LabelReadonlyInput label='Uri' value={entityInstance.uri ?? ''} className='col-span-2'></LabelReadonlyInput>
+                <LabelReadonlyUriInput label='Uri' uri={entityInstance.uri ?? ''} className='col-span-2'></LabelReadonlyUriInput>
                 {instance}
             </Dropdown>
         </div>

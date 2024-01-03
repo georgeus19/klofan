@@ -2,13 +2,6 @@ import { ChangeInput } from '../change-input';
 import { usePrefixesContext } from '../../../prefixes/prefixes-context';
 import { Uri } from './use-uri-input';
 
-// export interface UriInputProps {
-//     initialUri: string;
-//     className: string;
-//     usePrefix?: boolean;
-//     onChangeDone: (value: string) => void;
-// }
-
 export type UriInputProps = Uri & {
     id: string;
     className: string;
@@ -16,7 +9,7 @@ export type UriInputProps = Uri & {
     onChangeDone: (value: string) => void;
 };
 
-export function UriInput({ uri, asIri, uriWithPrefix, uriWithoutPrefix, updateUri, className, onChangeDone, usePrefix, id }: UriInputProps) {
+export function UriInput({ asIri, uriWithPrefix, uriWithoutPrefix, updateUri, className, onChangeDone, usePrefix, id }: UriInputProps) {
     const { availablePrefixes } = usePrefixesContext();
 
     const prefixes = availablePrefixes(uriWithPrefix).map((prefix) => (
@@ -24,7 +17,7 @@ export function UriInput({ uri, asIri, uriWithPrefix, uriWithoutPrefix, updateUr
             key={prefix.value}
             className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300 overflow-auto whitespace-nowrap'
             onClick={() => {
-                updateUri('', prefix);
+                updateUri(`${prefix.value}:`);
                 onChangeDone(prefix.fullUri);
             }}
         >
@@ -39,12 +32,13 @@ export function UriInput({ uri, asIri, uriWithPrefix, uriWithoutPrefix, updateUr
                 className={className}
                 onChangeDone={() => {
                     const iri = asIri();
-                    if (uri.prefix) {
-                        const [, ...rest] = iri.split(uri.prefix.value);
-                        updateUri(rest.join(''), uri.prefix);
-                    } else {
-                        updateUri(iri);
-                    }
+                    // if (uri.prefix) {
+                    //     const [, ...rest] = iri.split(uri.prefix.value);
+                    //     updateUri(rest.join(''), uri.prefix);
+                    // } else {
+                    //     updateUri(iri);
+                    // }
+                    updateUri(iri);
                     // If a prefix is selected, then it results in double update.
                     // This makes that double update not happen but it also means
                     // that when having the prefixes visible, the update is not saved!

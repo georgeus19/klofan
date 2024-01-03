@@ -68,7 +68,7 @@ export function usePositioning(history: EditorHistory): Positioning {
         history.updateCurrentState((currentState) => {
             // Save diagram state only when the user is dragging the node somewhere.
             // Clicking on a node also triggers position update but with dragging false.
-            if (changes.filter((ch) => ch.type === 'position' && ch.dragging).length > 0) {
+            if (changes.filter((change) => change.type === 'position' && change.dragging).length > 0) {
                 if (!lastHistoryUpdateDiagram) {
                     setLastHistoryUpdateDiagram({
                         ...currentState.diagram,

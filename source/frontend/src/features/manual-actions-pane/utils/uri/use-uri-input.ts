@@ -10,7 +10,7 @@ export type Uri = {
     };
     uriWithPrefix: string;
     uriWithoutPrefix: string;
-    updateUri: (newUri: string, prefix?: Prefix) => void;
+    updateUri: (newUri: string) => void;
     asIri: () => string;
     valid: boolean;
 };
@@ -21,14 +21,15 @@ export function useUriInput(initialUri: string): Uri {
 
     useEffect(() => {
         setUri(matchPrefix(initialUri));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [initialUri]);
 
-    const updateUri = (newUri: string, prefix?: Prefix) => {
-        setUri({ prefix: prefix, rest: newUri });
+    const updateUri = (newUri: string) => {
+        setUri(matchPrefix(newUri));
     };
 
-    const uriWithPrefix = uri.prefix ? `${uri.prefix.value}:${uri.rest}` : uri.rest;
-    const uriWithoutPrefix = uri.prefix ? `${uri.prefix.fullUri}${uri.rest}` : uri.rest;
+    const uriWithPrefix = toUri(uri, true);
+    const uriWithoutPrefix = toUri(uri, false);
     return {
         uri,
         uriWithPrefix,
@@ -39,9 +40,22 @@ export function useUriInput(initialUri: string): Uri {
     };
 }
 
+export function toUri({ prefix, rest }: { prefix?: Prefix; rest: string }, withPrefix: boolean) {
+    if (!prefix) {
+        return rest;
+    }
+
+    if (withPrefix) {
+        return `${prefix.value}:${rest}`;
+    }
+
+    return `${prefix.fullUri}${rest}`;
+}
+
 export function toIri(uri: string): string {
     return serialize(parse(uri), { iri: true });
 }
+
 export function validUri(uri: string) {
     try {
         new URL(uri);
