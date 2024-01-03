@@ -6,6 +6,7 @@ import { LabelInput } from '../../utils/general-label-input/label-input';
 import { useCreateLiteralProperty } from './use-create-literal-property';
 import { EntityNodeSelector } from '../../utils/diagram-node-selection/entity-selector/entity-node-selector';
 import { UriLabelInput } from '../../utils/uri/uri-label-input';
+import { ErrorMessage } from '../../utils/error-message';
 
 export function CreateLiteralProperty() {
     const { diagram, sourceEntity, propertySourceSelector, property, createProperty, cancel, error } = useCreateLiteralProperty();
@@ -33,7 +34,7 @@ export function CreateLiteralProperty() {
                     </Panel>
                 </BipartiteDiagram>
             )}
-            {error && <div className='bg-rose-200 p-2 border rounded border-rose-700 text-rose-700'>{error}</div>}
+            <ErrorMessage error={error}></ErrorMessage>
             <ActionOkCancel onOk={createProperty} onCancel={cancel}></ActionOkCancel>
         </div>
     );

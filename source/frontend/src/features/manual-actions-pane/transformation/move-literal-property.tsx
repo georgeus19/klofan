@@ -18,6 +18,7 @@ import { PreserveButton } from '../utils/mapping/preserve-button';
 import { ManualButton } from '../utils/mapping/manual-button';
 import { useEntityInstances } from '../utils/use-entity-instances';
 import { Connection } from 'reactflow';
+import { showEntityInstanceToLiteralInstanceDiagramHelp } from '../../help/content/show-entity-instance-to-literal-instance-diagram-help';
 
 export interface MoveLiteralPropertyProps {
     entity: Entity;
@@ -35,7 +36,7 @@ export function MoveLiteralProperty({ entity: originalSourceEntity, property }: 
     const [sourceEntity, setSourceEntity] = useState<Entity>(originalSourceEntity);
     const sourceEntitySelector = useEntityNodeSelector((entity: Entity) => {
         setSourceEntity(entity);
-        help.showEntityInstanceToLiteralInstanceDiagramHelp();
+        showEntityInstanceToLiteralInstanceDiagramHelp(help);
     });
     const { entityInstances: sourceInstances } = useEntityInstances(sourceEntity);
     const source = { entity: sourceEntity, instances: sourceInstances };

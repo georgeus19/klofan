@@ -12,6 +12,7 @@ import { useEntityInstances } from '../utils/use-entity-instances';
 import { identifier } from '../../../core/schema/utils/identifier';
 import { UncontrollableUriLabelInput } from '../utils/uri/uncontrollable-uri-label-input';
 import { EntityInstanceView } from '../utils/entity-instance-view';
+import { Header } from '../utils/header';
 
 export interface EntityDetailProps {
     entityId: identifier;
@@ -79,6 +80,7 @@ export function EntityDetail({ entityId }: EntityDetailProps) {
 
     return (
         <div>
+            <Header label='Entity'></Header>
             <Dropdown headerLabel='General' showInitially={true}>
                 <UncontrollableLabelInput
                     id='entityName'

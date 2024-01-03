@@ -1,24 +1,22 @@
-import { useState } from 'react';
-import { HelpContent } from './help';
+import { ReactNode, useState } from 'react';
+
+export type ShownHelp = { content: ReactNode } | null;
 
 export type Help = {
-    help: { show: true; content: HelpContent } | { show: false };
-    showNodeSelectionHelp: () => void;
-    showEntityInstanceToEntityInstanceDiagramHelp: () => void;
-    showEntityInstanceToLiteralInstanceDiagramHelp: () => void;
+    shownHelp: ShownHelp;
+    showHelp: (content: ReactNode) => void;
     hideHelp: () => void;
 };
 
 export function useHelp(): Help {
-    const [help, setHelp] = useState<{ show: true; content: HelpContent } | { show: false }>({ show: false });
+    const [shownHelp, setShownHelp] = useState<ShownHelp>(null);
+
+    const showHelp = (content: ReactNode) => setShownHelp({ content: content });
+    const hideHelp = () => setShownHelp(null);
 
     return {
-        help,
-        showNodeSelectionHelp: () => setHelp({ show: true, content: { type: 'node-selection-help-content' } }),
-        showEntityInstanceToEntityInstanceDiagramHelp: () =>
-            setHelp({ show: true, content: { type: 'entity-instance-to-entity-instance-diagram-content' } }),
-        showEntityInstanceToLiteralInstanceDiagramHelp: () =>
-            setHelp({ show: true, content: { type: 'entity-instance-to-literal-instance-diagram-content' } }),
-        hideHelp: () => setHelp({ show: false }),
+        shownHelp,
+        showHelp,
+        hideHelp,
     };
 }

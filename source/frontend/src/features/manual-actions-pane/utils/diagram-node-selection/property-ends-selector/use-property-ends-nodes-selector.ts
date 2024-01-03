@@ -2,6 +2,8 @@ import { useEffect } from 'react';
 import { usePropertyEndsSelector } from './use-property-ends-selector';
 import { Entity } from '../../../../../core/schema/representation/item/entity';
 import { useEditorContext } from '../../../../editor/editor-context';
+import { showNodeSelectionHelp } from '../../../../help/content/show-node-selection-help';
+import { showEntityInstanceToEntityInstanceDiagramHelp } from '../../../../help/content/show-entity-instance-to-entity-instance-help';
 
 /**
  * Hook for enabling selection of property source and target from the main diagram.
@@ -30,7 +32,7 @@ export function usePropertyEndsNodesSelector(
             }
 
             if ((source.entity && propertyEnds.targetSelected) || (target.entity && propertyEnds.sourceSelected)) {
-                help.showEntityInstanceToEntityInstanceDiagramHelp();
+                showEntityInstanceToEntityInstanceDiagramHelp(help);
             }
 
             clearSelectedNode();
@@ -41,11 +43,11 @@ export function usePropertyEndsNodesSelector(
 
     return {
         onSourceSelectStart: () => {
-            help.showNodeSelectionHelp();
+            showNodeSelectionHelp(help);
             propertyEnds.selectSource();
         },
         onTargetSelectStart: () => {
-            help.showNodeSelectionHelp();
+            showNodeSelectionHelp(help);
             propertyEnds.selectTarget();
         },
     };

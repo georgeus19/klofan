@@ -14,6 +14,7 @@ import { EntityInstance } from '../../../../core/instances/entity-instance';
 import { Entity } from '../../../../core/schema/representation/item/entity';
 import { JoinMappingDetail } from '../../utils/mapping/join/join-mapping-detail';
 import { UriLabelInput } from '../../utils/uri/uri-label-input';
+import { ErrorMessage } from '../../utils/error-message';
 
 export function CreateEntityProperty() {
     const { diagram, source, target, usedInstanceMapping, setUsedInstanceMapping, propertyEndsSelection, property, createProperty, cancel, error } =
@@ -71,7 +72,7 @@ export function CreateEntityProperty() {
                     </>
                 )}
             </div>
-            {error && <div className='bg-rose-200 p-2 border rounded border-rose-700 text-rose-700'>{error}</div>}
+            <ErrorMessage error={error}></ErrorMessage>
             <ActionOkCancel onOk={createProperty} onCancel={cancel}></ActionOkCancel>
         </div>
     );

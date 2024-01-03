@@ -16,6 +16,7 @@ import { EntityInstance } from '../../../../core/instances/entity-instance';
 import { useEntityNodeSelector } from '../../utils/diagram-node-selection/entity-selector/use-entity-node-selector';
 import { useUriInput } from '../../utils/uri/use-uri-input';
 import { useEntityInstances } from '../../utils/use-entity-instances';
+import { showEntityInstanceToLiteralInstanceDiagramHelp } from '../../../help/content/show-entity-instance-to-literal-instance-diagram-help';
 
 export type LiteralNode = LiteralInstanceTargetNode & {
     data: { literal: Literal; onLiteralValueChange: (literalNodeId: string, value: string) => void; layout: LayoutOptions };
@@ -36,7 +37,7 @@ export function useCreateLiteralProperty() {
     const [sourceEntity, setSourceEntity] = useState<Entity | null>(null);
     const sourceEntitySelector = useEntityNodeSelector((entity: Entity) => {
         setSourceEntity(entity);
-        help.showEntityInstanceToLiteralInstanceDiagramHelp();
+        showEntityInstanceToLiteralInstanceDiagramHelp(help);
     });
 
     const { entityInstances: sourceInstances } = useEntityInstances(sourceEntity);

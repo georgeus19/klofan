@@ -12,19 +12,24 @@ import { Dropdown } from '../../utils/dropdown';
 import { EntityInstanceView } from '../../utils/entity-instance-view';
 import { EntityInstanceUriMapping } from '../../../../core/instances/transform/transformations/update-entity-instances-uris';
 import { createUpdateEntityInstancesUris } from '../../../../core/transform/factory/create-update-entity-instances-uris';
+import { showUpdateEntityInstancesUrisHelp } from '../../../help/content/show-update-entity-instances-uris-help';
+import { ErrorMessage } from '../../utils/error-message';
 
 export interface UpdateEntityInstancesUrisShown {
     type: 'update-entity-instances-uris-shown';
 }
 
 export function UpdateEntityInstancesUris() {
+    const { manualActions, schema, updateSchemaAndInstances, help } = useEditorContext();
     const [entity, setEntity] = useState<Entity | null>(null);
+    const [error, setError] = useState<string | null>(null);
 
-    const entityNodeSelector = useEntityNodeSelector(setEntity);
+    const entityNodeSelector = useEntityNodeSelector((entity: Entity) => {
+        setEntity(entity);
+        showUpdateEntityInstancesUrisHelp(help);
+    });
     const { entityInstances } = useEntityInstances(entity);
     const [uriMappings, setUriMappings] = useState<EntityInstanceUriMapping[]>([]);
-
-    const { manualActions, schema, updateSchemaAndInstances } = useEditorContext();
 
     const unmappedEntityInstances = entityInstances.filter(
         (entityInstance) =>
@@ -35,11 +40,13 @@ export function UpdateEntityInstancesUris() {
     );
 
     const updateEntityInstanceUris = () => {
-        if (entity) {
-            const transformation = createUpdateEntityInstancesUris(schema, { entity: entity.id, uris: uriMappings });
-            updateSchemaAndInstances(transformation);
-            manualActions.onActionDone();
+        if (!entity || uriMappings.length === 0) {
+            setError('Entity must be selected. Positive number of mappings1 is necessary.');
+            return;
         }
+        const transformation = createUpdateEntityInstancesUris(schema, { entity: entity.id, uris: uriMappings });
+        updateSchemaAndInstances(transformation);
+        manualActions.onActionDone();
     };
 
     const cancel = () => {
@@ -58,21 +65,23 @@ export function UpdateEntityInstancesUris() {
 
             {entity && <AddUriMapping entity={entity} addUriMapping={addUriMapping}></AddUriMapping>}
 
-            <Dropdown headerLabel='Created Uri Mappings' showInitially>
-                {uriMappings.map((mapping, index) => (
-                    <div key={`${mapping.literalProperty.id}${mapping.literal}${mapping.uri}`} className='bg-slate-100 rounded m-1'>
-                        <button
-                            onClick={() => setUriMappings(uriMappings.filter((m, i) => index !== i))}
-                            className='p-1 rounded shadow bg-blue-200 hover:bg-blue-300'
-                        >
-                            Delete
-                        </button>
-                        <LabelReadonlyInput label='Property' value={mapping.literalProperty.name}></LabelReadonlyInput>
-                        <LabelReadonlyInput label='Literal' value={mapping.literal}></LabelReadonlyInput>
-                        <LabelReadonlyInput label='Uri' value={mapping.uri}></LabelReadonlyInput>
-                    </div>
-                ))}
-            </Dropdown>
+            {entity && (
+                <Dropdown headerLabel='Created Uri Mappings' showInitially>
+                    {uriMappings.map((mapping, index) => (
+                        <div key={`${mapping.literalProperty.id}${mapping.literal}${mapping.uri}`} className='bg-slate-100 rounded m-1'>
+                            <button
+                                onClick={() => setUriMappings(uriMappings.filter((m, i) => index !== i))}
+                                className='p-1 rounded shadow bg-blue-200 hover:bg-blue-300'
+                            >
+                                Delete
+                            </button>
+                            <LabelReadonlyInput label='Property' value={mapping.literalProperty.name}></LabelReadonlyInput>
+                            <LabelReadonlyInput label='Literal' value={mapping.literal}></LabelReadonlyInput>
+                            <LabelReadonlyInput label='Uri' value={mapping.uri}></LabelReadonlyInput>
+                        </div>
+                    ))}
+                </Dropdown>
+            )}
             {entity && (
                 <Dropdown headerLabel='Entity Instances Without Uri Or Not Matched' showInitially>
                     {unmappedEntityInstances.map((entityInstance) => (
@@ -86,7 +95,7 @@ export function UpdateEntityInstancesUris() {
                     ))}
                 </Dropdown>
             )}
-
+            <ErrorMessage error={error}></ErrorMessage>
             <ActionOkCancel onOk={updateEntityInstanceUris} onCancel={cancel}></ActionOkCancel>
         </div>
     );
