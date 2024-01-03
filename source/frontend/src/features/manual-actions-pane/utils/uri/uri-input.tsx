@@ -32,12 +32,6 @@ export function UriInput({ asIri, uriWithPrefix, uriWithoutPrefix, updateUri, cl
                 className={className}
                 onChangeDone={() => {
                     const iri = asIri();
-                    // if (uri.prefix) {
-                    //     const [, ...rest] = iri.split(uri.prefix.value);
-                    //     updateUri(rest.join(''), uri.prefix);
-                    // } else {
-                    //     updateUri(iri);
-                    // }
                     updateUri(iri);
                     // If a prefix is selected, then it results in double update.
                     // This makes that double update not happen but it also means
