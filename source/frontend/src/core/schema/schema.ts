@@ -92,7 +92,6 @@ export class Schema {
         for (const transformation of transformations) {
             applyTransformation(newSchema, transformation);
         }
-        console.log('OLD', this.schema, 'NEW', newSchema);
         return new Schema(newSchema);
     }
 }
