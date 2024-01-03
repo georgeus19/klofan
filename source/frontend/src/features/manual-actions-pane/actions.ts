@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import { PrefixesShown } from './detail/prefixes/prefixes';
+import { UpdateEntityInstancesUrisShown } from './transformation/update-entity-instance-uri/update-entity-instances-uris';
 
 export type ManualActionShown = { component: ReactNode } & (
     | EntityDetailShown
@@ -10,6 +11,7 @@ export type ManualActionShown = { component: ReactNode } & (
     | MoveEntityPropertyShown
     | MoveLiteralPropertyShown
     | PrefixesShown
+    | UpdateEntityInstancesUrisShown
 );
 
 export interface EntityDetailShown {

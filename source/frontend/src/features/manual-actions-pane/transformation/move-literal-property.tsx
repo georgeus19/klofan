@@ -33,7 +33,10 @@ export function MoveLiteralProperty({ entity: originalSourceEntity, property }: 
     } = useEditorContext();
 
     const [sourceEntity, setSourceEntity] = useState<Entity>(originalSourceEntity);
-    const sourceEntitySelector = useEntityNodeSelector(setSourceEntity);
+    const sourceEntitySelector = useEntityNodeSelector((entity: Entity) => {
+        setSourceEntity(entity);
+        help.showEntityInstanceToLiteralInstanceDiagramHelp();
+    });
     const { entityInstances: sourceInstances } = useEntityInstances(sourceEntity);
     const source = { entity: sourceEntity, instances: sourceInstances };
 

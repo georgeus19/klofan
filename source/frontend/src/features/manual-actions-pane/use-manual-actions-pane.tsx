@@ -11,6 +11,8 @@ import { EntityDetail } from './detail/entity-detail';
 import { CreateLiteralProperty } from './transformation/create-literal-property/create-literal-property';
 import { CreateEntityProperty } from './transformation/create-entity-property/create-entity-property';
 import { Prefixes } from './detail/prefixes/prefixes';
+import { UpdateEntityInstancesUris } from './transformation/update-entity-instance-uri/update-entity-instances-uris';
+import { Help } from '../help/use-help';
 
 export type ManualActionsPane = {
     shownAction: ManualActionShown;
@@ -21,69 +23,76 @@ export type ManualActionsPane = {
     showCreateEntityProperty: () => void;
     showEntityDetail: (entity: Entity) => void;
     showPrefixes: () => void;
+    showUpdateEntityInstancesUris: () => void;
     hide: () => void;
 };
 
-export function useManualActionsPane(nodeSelection: NodeSelection, schema: Schema): ManualActionsPane {
-    const [sideAction, setSideAction] = useState<ManualActionShown>({ type: 'blank-shown', component: <div></div> });
+export function useManualActionsPane(nodeSelection: NodeSelection, schema: Schema, help: Help): ManualActionsPane {
+    const [shownAction, setShownAction] = useState<ManualActionShown>({ type: 'blank-shown', component: <div></div> });
     // Add locking mechanism - so that when creating a property, it cannot e.g. change to entity detail!
-    const [sideActionLocked, setSideActionLocked] = useState(false);
+    const [shownActionLocked, setShownActionLocked] = useState(false);
 
     return {
-        shownAction: sideAction,
+        shownAction: shownAction,
         onActionDone: () => {
-            setSideAction({ type: 'blank-shown', component: <div></div> });
+            setShownAction({ type: 'blank-shown', component: <div></div> });
             nodeSelection.enableSelectedStyle();
-            setSideActionLocked(false);
+            setShownActionLocked(false);
+            help.hideHelp();
         },
         showMoveProperty: (entity: Entity, property: Property) => {
             if (schema.hasEntity(property.value)) {
-                setSideAction({
+                setShownAction({
                     type: 'move-entity-property-shown',
                     component: <MoveEntityProperty entity={entity} property={property}></MoveEntityProperty>,
                 });
-                setSideActionLocked(true);
+                setShownActionLocked(true);
                 nodeSelection.disableSelectedStyle();
                 nodeSelection.clearSelectedNode();
             } else {
-                setSideAction({
+                setShownAction({
                     type: 'move-literal-property-shown',
                     component: <MoveLiteralProperty entity={entity} property={property}></MoveLiteralProperty>,
                 });
-                setSideActionLocked(true);
+                setShownActionLocked(true);
                 nodeSelection.disableSelectedStyle();
                 nodeSelection.clearSelectedNode();
             }
         },
         showCreateEntity: () => {
-            setSideAction({ type: 'create-entity-shown', component: <CreateEntity></CreateEntity> });
-            setSideActionLocked(true);
+            setShownAction({ type: 'create-entity-shown', component: <CreateEntity></CreateEntity> });
+            setShownActionLocked(true);
             nodeSelection.disableSelectedStyle();
             nodeSelection.clearSelectedNode();
         },
         showCreateLiteralProperty: () => {
-            setSideAction({ type: 'create-literal-property-shown', component: <CreateLiteralProperty></CreateLiteralProperty> });
-            setSideActionLocked(true);
+            setShownAction({ type: 'create-literal-property-shown', component: <CreateLiteralProperty></CreateLiteralProperty> });
+            setShownActionLocked(true);
             nodeSelection.disableSelectedStyle();
             nodeSelection.clearSelectedNode();
         },
         showCreateEntityProperty: () => {
-            setSideAction({ type: 'create-entity-property-shown', component: <CreateEntityProperty></CreateEntityProperty> });
-            setSideActionLocked(true);
+            setShownAction({ type: 'create-entity-property-shown', component: <CreateEntityProperty></CreateEntityProperty> });
+            setShownActionLocked(true);
             nodeSelection.disableSelectedStyle();
             nodeSelection.clearSelectedNode();
         },
         showEntityDetail: (entity: Entity) => {
-            if (!sideActionLocked) {
-                setSideAction({ type: 'entity-detail-shown', component: <EntityDetail entityId={entity.id}></EntityDetail> });
+            if (!shownActionLocked) {
+                setShownAction({ type: 'entity-detail-shown', component: <EntityDetail entityId={entity.id}></EntityDetail> });
             }
         },
         showPrefixes: () => {
+            setShownAction({ type: 'prefixes-shown', component: <Prefixes></Prefixes> });
             nodeSelection.clearSelectedNode();
-            setSideAction({ type: 'prefixes-shown', component: <Prefixes></Prefixes> });
+        },
+        showUpdateEntityInstancesUris: () => {
+            setShownAction({ type: 'update-entity-instances-uris-shown', component: <UpdateEntityInstancesUris></UpdateEntityInstancesUris> });
+            setShownActionLocked(true);
+            nodeSelection.clearSelectedNode();
         },
         hide: () => {
-            setSideAction({ type: 'blank-shown', component: <div></div> });
+            setShownAction({ type: 'blank-shown', component: <div></div> });
             nodeSelection.clearSelectedNode();
             nodeSelection.enableSelectedStyle();
         },

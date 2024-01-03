@@ -1,6 +1,6 @@
 import { describe, expect, test } from '@jest/globals';
 import { PropertyInstance } from '../../representation/property-instance';
-import { RawInstances } from '../../representation/raw-instances';
+import { RawInstances, initEntityInstances } from '../../representation/raw-instances';
 import { JoinMapping, getJoinMappingPropertyInstances, getJoinedPropertyInstances } from './join-mapping';
 import { EntityInstance } from '../../entity-instance';
 import { Property } from '../../../schema/representation/relation/property';
@@ -96,7 +96,7 @@ describe('Transform Instances', () => {
                     targetJoinProperty: targetJoinProperty,
                 };
                 const instances: RawInstances = {
-                    entityInstances: { '0': { count: 3 }, '1': { count: 3 } },
+                    entityInstances: { '0': { count: 3, instances: initEntityInstances(3) }, '1': { count: 3, instances: initEntityInstances(3) } },
                     propertyInstances: {
                         '0.IDREF': [
                             { literals: [{ value: 'AAA' }, { value: 'BBB' }], targetInstanceIndices: [] },

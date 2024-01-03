@@ -3,7 +3,7 @@ import { PropertyInstance } from '../../representation/property-instance';
 import { EntityInstance } from '../../entity-instance';
 import { Property } from '../../../schema/representation/relation/property';
 import { PreserveMapping, getPreserveMappingPropertyInstances, getPreservedPropertyInstances } from './preserve-mapping';
-import { RawInstances } from '../../representation/raw-instances';
+import { RawInstances, initEntityInstances } from '../../representation/raw-instances';
 
 describe('Transform Instances', () => {
     describe('Instance Mappings', () => {
@@ -69,7 +69,12 @@ describe('Transform Instances', () => {
                     property: property,
                 };
                 const instances: RawInstances = {
-                    entityInstances: { '0': { count: 3 }, '1': { count: 2 }, '2': { count: 3 }, '3': { count: 2 } },
+                    entityInstances: {
+                        '0': { count: 3, instances: initEntityInstances(3) },
+                        '1': { count: 2, instances: initEntityInstances(2) },
+                        '2': { count: 3, instances: initEntityInstances(3) },
+                        '3': { count: 2, instances: initEntityInstances(2) },
+                    },
                     propertyInstances: {
                         '0.IDREF': [
                             { literals: [{ value: 'AAA' }, { value: 'BBB' }], targetInstanceIndices: [0, 1] },

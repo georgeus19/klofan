@@ -21,7 +21,7 @@ export function useEntityNodeSelector(setEntity: (entity: Entity) => void) {
         if (selectedNode && propertyEnds.selected) {
             setEntity(selectedNode.data);
 
-            help.showEntityInstanceToLiteralInstanceDiagramHelp();
+            // help.showEntityInstanceToLiteralInstanceDiagramHelp();
 
             clearSelectedNode();
             propertyEnds.unselect();

@@ -6,10 +6,10 @@ import { Transformation } from '../transformation';
 
 export function createCreateEntityTransformation({
     schema: { name },
-    instances: { count },
+    instances: { count, instances },
 }: {
     schema: { name: string };
-    instances: { count: number };
+    instances: { count: number; instances: { uri?: string }[] };
 }): Transformation {
     const entity: Entity = {
         id: getNewId(),
@@ -24,6 +24,7 @@ export function createCreateEntityTransformation({
         data: {
             entity: entity,
             count: count,
+            instances: instances,
         },
     };
 

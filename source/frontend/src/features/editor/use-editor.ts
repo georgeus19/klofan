@@ -55,7 +55,7 @@ export function useEditor(): Editor {
 
     const schema = new Schema(rawSchema);
     const instances = new InMemoryInstances(rawInstances);
-    const manualActions = useManualActionsPane(nodeSelection, schema);
+    const manualActions = useManualActionsPane(nodeSelection, schema, help);
     const nodeEvents = useNodeEvents({ diagram: rawDiagram, nodeSelection, manualActions, schema });
     const diagram: SchemaDiagram = { ...rawDiagram, nodePositioning: nodePositioning, nodeEvents: nodeEvents, nodeSelection: nodeSelection };
 

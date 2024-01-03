@@ -19,7 +19,7 @@ export function Dropdown({ className, headerLabel, children, showInitially }: De
 
     return (
         <>
-            <div className={twMerge('flex bg-slate-300 border rounded p-1 border-slate-950 my-1', className)} onClick={handleClick}>
+            <div className={twMerge('flex bg-slate-500 text-white border-2 rounded p-1  border-slate-600 my-1', className)} onClick={handleClick}>
                 {show ? <img src={triangleDown} alt='triangle'></img> : <img src={triangleRight} alt='triangle'></img>}
                 {headerLabel}
             </div>

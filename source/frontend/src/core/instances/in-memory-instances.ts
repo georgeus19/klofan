@@ -15,7 +15,8 @@ export class InMemoryInstances implements Instances {
     }
 
     entityInstances(entity: Entity): Promise<EntityInstance[]> {
-        const entityInstances: EntityInstance[] = [...Array(safeGet(this.instances.entityInstances, entity.id).count).keys()].map((index) => ({
+        const entityInstances: EntityInstance[] = safeGet(this.instances.entityInstances, entity.id).instances.map((entityInstance, index) => ({
+            ...entityInstance,
             properties: {},
             id: index,
         }));

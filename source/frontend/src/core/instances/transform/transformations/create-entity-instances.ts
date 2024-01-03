@@ -6,9 +6,13 @@ export interface CreateEntityInstances {
     data: {
         entity: Entity;
         count: number;
+        instances: { uri?: string }[];
     };
 }
 
 export function createEntityInstances(instances: RawInstances, transformation: CreateEntityInstances): void {
-    instances.entityInstances[transformation.data.entity.id] = { count: transformation.data.count };
+    instances.entityInstances[transformation.data.entity.id] = {
+        count: transformation.data.count,
+        instances: transformation.data.instances,
+    };
 }

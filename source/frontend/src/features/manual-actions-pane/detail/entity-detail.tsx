@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { getProperties } from '../../../core/schema/representation/item/entity';
 import { createUpdateItemNameTransformation } from '../../../core/transform/factory/update-item-name-transformation';
 import { UncontrollableLabelInput } from '../utils/general-label-input/uncontrollable-label-input';
@@ -12,6 +11,7 @@ import { useEditorContext } from '../../editor/editor-context';
 import { useEntityInstances } from '../utils/use-entity-instances';
 import { identifier } from '../../../core/schema/utils/identifier';
 import { UncontrollableUriLabelInput } from '../utils/uri/uncontrollable-uri-label-input';
+import { EntityInstanceView } from '../utils/entity-instance-view';
 
 export interface EntityDetailProps {
     entityId: identifier;
@@ -20,12 +20,7 @@ export interface EntityDetailProps {
 export function EntityDetail({ entityId }: EntityDetailProps) {
     const { schema, updateSchemaAndInstances, manualActions } = useEditorContext();
     const entity = schema.entity(entityId);
-    const { entityInstances, setEntityInstances } = useEntityInstances(entity);
-    const [usedEntityId, setUsedEntityId] = useState<identifier>(entity.id);
-    useEffect(() => {
-        setEntityInstances([]);
-        setUsedEntityId(entity.id);
-    }, [entity]);
+    const { entityInstances } = useEntityInstances(entity);
 
     const properties = getProperties(schema, entity.id);
 
@@ -49,7 +44,7 @@ export function EntityDetail({ entityId }: EntityDetailProps) {
             <div className='bg-slate-500 rounded flex'>
                 <div className='grow text-white p-1'>{property.name}</div>
                 <button
-                    className=' self-end p-1 rounded shadow bg-blue-200 hover:bg-blue-300'
+                    className='self-end p-1 rounded shadow bg-blue-200 hover:bg-blue-300'
                     onClick={() => manualActions.showMoveProperty(entity, toProperty(property))}
                 >
                     Move
@@ -113,59 +108,20 @@ export function EntityDetail({ entityId }: EntityDetailProps) {
                 </Dropdown>
             </Dropdown>
 
-            {entity.id === usedEntityId && (
-                <Dropdown headerLabel='Instance' showInitially={true}>
-                    <div className='flex flex-col'>
-                        {entityInstances.map((entityInstance, instanceIndex) => {
-                            return (
-                                <Dropdown
-                                    className='mt-0 mx-2'
-                                    headerLabel={`${entity.name}.${instanceIndex}`}
-                                    showInitially={false}
-                                    key={`${entity.id}${entityInstance.id}`}
-                                >
-                                    <div className='mx-4 grid grid-cols-3 items-center gap-1'>
-                                        <div className='bg-slate-300 overflow-auto p-2 text-center'>
-                                            {entity.name}.{instanceIndex}
-                                        </div>
-                                        {properties
-                                            .filter(
-                                                (property) =>
-                                                    entityInstance.properties[property.id].literals.length > 0 ||
-                                                    entityInstance.properties[property.id].targetInstanceIndices.length > 0
-                                            )
-                                            .map((property) => {
-                                                return (
-                                                    <div key={property.id} className='contents'>
-                                                        <div className='col-start-2 overflow-auto p-2 bg-slate-300 text-center'>{property.name}</div>
-                                                        {entityInstance.properties[property.id].literals.map((literal, index) => (
-                                                            <div
-                                                                className='col-start-3 overflow-auto p-2 bg-blue-300 text-center'
-                                                                key={`L${literal.value}${index}`}
-                                                            >
-                                                                "{literal.value}"
-                                                            </div>
-                                                        ))}
-                                                        {entityInstance.properties[property.id].targetInstanceIndices.map(
-                                                            (targetInstanceIndex, index) => (
-                                                                <div
-                                                                    className='col-start-3 overflow-auto p-2 bg-purple-200 text-center'
-                                                                    key={`E${index}`}
-                                                                >
-                                                                    {property.value.name}.{targetInstanceIndex}
-                                                                </div>
-                                                            )
-                                                        )}
-                                                    </div>
-                                                );
-                                            })}
-                                    </div>
-                                </Dropdown>
-                            );
-                        })}
-                    </div>
-                </Dropdown>
-            )}
+            <Dropdown headerLabel='Instance' showInitially={true}>
+                {entityInstances.map((entityInstance) => {
+                    return (
+                        <EntityInstanceView
+                            key={`${entity.id}.${entityInstance.id}`}
+                            entity={entity}
+                            entityInstance={entityInstance}
+                            showEntityProperties
+                            showLiteralProperties
+                            className='mt-0 mx-2'
+                        ></EntityInstanceView>
+                    );
+                })}
+            </Dropdown>
         </div>
     );
 }

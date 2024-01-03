@@ -20,8 +20,9 @@ export function ManualActionsSelect() {
     } = useEditorContext();
 
     const onImport = (file: { content: string; type: string }) => {
-        const { schema, instances } = file.type === 'application/json' ? parseJson(file.content) : parseCsv(file.content);
+        manualActions.onActionDone();
         resetId();
+        const { schema, instances } = file.type === 'application/json' ? parseJson(file.content) : parseCsv(file.content);
         addSchemaAndInstances({ schema: schema, instances: instances });
     };
 
@@ -96,6 +97,10 @@ export function ManualActionsSelect() {
 
             <button className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300' onClick={manualActions.showPrefixes}>
                 Prefixes
+            </button>
+
+            <button className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300' onClick={manualActions.showUpdateEntityInstancesUris}>
+                Uris
             </button>
 
             <FileLoader className='p-2 rounded shadow bg-blue-200' onFileLoad={onImport}>

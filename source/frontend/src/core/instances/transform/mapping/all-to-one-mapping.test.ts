@@ -1,7 +1,7 @@
 import { describe, expect, test } from '@jest/globals';
 import { AllToOneMapping, getAllToOneMappingPropertyInstances, getAllToOnePropertyInstances } from './all-to-one-mapping';
 import { PropertyInstance } from '../../representation/property-instance';
-import { RawInstances } from '../../representation/raw-instances';
+import { RawInstances, initEntityInstances } from '../../representation/raw-instances';
 
 describe('Transform Instances', () => {
     describe('Instance Mappings', () => {
@@ -105,7 +105,10 @@ describe('Transform Instances', () => {
                     target: { id: '1', name: '1', properties: [], type: 'entity' },
                 };
                 const instances: RawInstances = {
-                    entityInstances: { '0': { count: sourceInstances }, '1': { count: 1 } },
+                    entityInstances: {
+                        '0': { count: sourceInstances, instances: initEntityInstances(sourceInstances) },
+                        '1': { count: 1, instances: initEntityInstances(1) },
+                    },
                     propertyInstances: {},
                 };
 

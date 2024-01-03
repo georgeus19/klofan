@@ -34,7 +34,10 @@ export function useCreateLiteralProperty() {
         manualActions: { onActionDone },
     } = useEditorContext();
     const [sourceEntity, setSourceEntity] = useState<Entity | null>(null);
-    const sourceEntitySelector = useEntityNodeSelector(setSourceEntity);
+    const sourceEntitySelector = useEntityNodeSelector((entity: Entity) => {
+        setSourceEntity(entity);
+        help.showEntityInstanceToLiteralInstanceDiagramHelp();
+    });
 
     const { entityInstances: sourceInstances } = useEntityInstances(sourceEntity);
 

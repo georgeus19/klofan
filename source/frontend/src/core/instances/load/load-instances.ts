@@ -1,6 +1,6 @@
 import { Instances } from '../instances';
 import { PropertyInstance } from '../representation/property-instance';
-import { propertyInstanceKey } from '../representation/raw-instances';
+import { initEntityInstances, propertyInstanceKey } from '../representation/raw-instances';
 import { identifier } from '../../schema/utils/identifier';
 import { InMemoryInstances } from '../in-memory-instances';
 import { EntityTreeNode } from '../../parse/tree/entity-tree/entity-tree';
@@ -44,10 +44,10 @@ function fillInstanceProperties(
 }
 
 function fillInstanceEntities(
-    entities: { [key: identifier]: { count: number } },
+    entities: { [key: identifier]: { count: number; instances: { uri?: string }[] } },
     entityTree: EntityTreeNode
-): { [key: identifier]: { count: number } } {
-    entities[entityTree.id] = { count: entityTree.instanceCount };
+): { [key: identifier]: { count: number; instances: { uri?: string }[] } } {
+    entities[entityTree.id] = { count: entityTree.instanceCount, instances: initEntityInstances(entityTree.instanceCount) };
     Object.values(entityTree.properties).forEach((propertyInfo) => {
         fillInstanceEntities(entities, propertyInfo.targetEntity);
     });
