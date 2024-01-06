@@ -8,28 +8,34 @@ import { isLiteral } from '../../schema/representation/item/literal';
 const { namedNode, literal } = DataFactory;
 
 export async function save(instances: Instances, schema: Schema, saveConfiguration: SaveConfiguration, outputWriter: Writer) {
-    for (const entity of schema.entities()) {
-        const properties = getProperties(schema, entity.id);
-        const subjectUriBuilder = safeGet(saveConfiguration.entityInstanceUriBuilders, entity.id);
-        for (const property of properties) {
-            const objectItem = schema.item(property.value.id);
-            const propertyUri = property.uri ? property.uri : `${saveConfiguration.defaultPropertyUri}/${property.id.replaceAll(/\s/g, '_')}`;
+    for (const subjectEntity of schema.entities()) {
+        const properties = getProperties(schema, subjectEntity.id);
+        const subjectRepresentationBuilder = safeGet(saveConfiguration.entityInstanceUriBuilders, subjectEntity.id);
+        for (const subjectInstance of await instances.entityInstances(subjectEntity)) {
+            const subjectRepresentation = subjectInstance.uri
+                ? namedNode(subjectInstance.uri)
+                : subjectRepresentationBuilder.getRepresentation(subjectInstance.id);
+            for (const property of properties) {
+                const objectItem = schema.item(property.value.id);
+                const propertyUri = property.uri ? property.uri : `${saveConfiguration.defaultPropertyUri}/${property.id.replaceAll(/\s/g, '_')}`;
 
-            for (const [index, instanceProperty] of (await instances.propertyInstances(entity.id, property.id)).entries()) {
-                const subjectInstanceUri = subjectUriBuilder.createUri(index);
                 if (isLiteral(objectItem)) {
-                    instanceProperty.literals.forEach((l) => {
-                        outputWriter.addQuad(namedNode(subjectInstanceUri), namedNode(propertyUri), literal(l.value));
+                    safeGet(subjectInstance.properties, property.id).literals.forEach((l) => {
+                        outputWriter.addQuad(subjectRepresentation, namedNode(propertyUri), literal(l.value));
                     });
                 }
 
                 if (isEntity(objectItem)) {
-                    const objectUriBuilder = safeGet(saveConfiguration.entityInstanceUriBuilders, property.value.id);
-                    instanceProperty.targetInstanceIndices
-                        .map((instanceIndex) => objectUriBuilder.createUri(instanceIndex))
-                        .forEach((objectUri) => {
-                            outputWriter.addQuad(namedNode(subjectInstanceUri), namedNode(propertyUri), namedNode(objectUri));
-                        });
+                    const objectInstances = await instances.entityInstances(objectItem);
+                    const objectRepresentationBuilder = safeGet(saveConfiguration.entityInstanceUriBuilders, property.value.id);
+
+                    for (const objectIndex of safeGet(subjectInstance.properties, property.id).targetInstanceIndices) {
+                        const objectExpliticUri = objectInstances[objectIndex].uri;
+                        const objectRepresentation = objectExpliticUri
+                            ? namedNode(objectExpliticUri)
+                            : objectRepresentationBuilder.getRepresentation(objectIndex);
+                        outputWriter.addQuad(subjectRepresentation, namedNode(propertyUri), objectRepresentation);
+                    }
                 }
             }
         }

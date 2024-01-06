@@ -5,8 +5,6 @@ import { useEditorContext } from '../editor/editor-context';
 import { FileLoader } from '../file/file-loader';
 import { FileSaver } from '../file/file-saver';
 import { saveAsDataSchema } from '../../core/schema/save/data-schema/save';
-import { IdentityEntityInstanceUriBuilder } from '../../core/instances/save/uri-builders/identity-instance-uri-builder';
-import { save } from '../../core/instances/save/save';
 import { resetId } from '../../core/utils/identifier-generator';
 
 export function ManualActionsSelect() {
@@ -15,7 +13,6 @@ export function ManualActionsSelect() {
         manualActions,
         schema,
         history,
-        instances,
         addSchemaAndInstances,
     } = useEditorContext();
 
@@ -31,25 +28,6 @@ export function ManualActionsSelect() {
         saveAsDataSchema(schema, { defaultEntityUri: 'http://example.com/entity', defaultPropertyUri: 'http://example.com/property' }, writer);
         writer.end((error, result: string) => {
             download(new File([result], 'schema.ttl', { type: 'text/turtle' }));
-        });
-    };
-
-    const onInstancesExport = (download: (file: File) => void) => {
-        const writer = new Writer();
-        const entityInstanceUriBuilders = Object.fromEntries(
-            schema
-                .entities()
-                .map((entity) => [entity.id, new IdentityEntityInstanceUriBuilder(entity.uri ?? `http://example.com/entity/${entity.name}`)])
-        );
-        save(
-            instances,
-            schema,
-            { defaultPropertyUri: 'http://example.com/property', entityInstanceUriBuilders: entityInstanceUriBuilders },
-            writer
-        ).then(() => {
-            writer.end((error, result: string) => {
-                download(new File([result], 'instances.ttl', { type: 'text/turtle' }));
-            });
         });
     };
 
@@ -102,7 +80,6 @@ export function ManualActionsSelect() {
             <button className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300' onClick={manualActions.showUpdateEntityInstancesUris}>
                 Uris
             </button>
-
             <FileLoader className='p-2 rounded shadow bg-blue-200' onFileLoad={onImport}>
                 Import
             </FileLoader>
@@ -112,9 +89,9 @@ export function ManualActionsSelect() {
                     <FileSaver className='block p-2 rounded shadow bg-blue-200 hover:bg-blue-300' onFileSave={onSchemaExport}>
                         Schema
                     </FileSaver>
-                    <FileSaver className='block p-2 rounded shadow bg-blue-200 hover:bg-blue-300' onFileSave={onInstancesExport}>
+                    <button className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300' onClick={manualActions.showExportInstances}>
                         Instances
-                    </FileSaver>
+                    </button>
                 </div>
             </div>
         </div>
