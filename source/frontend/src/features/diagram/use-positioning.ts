@@ -5,8 +5,8 @@ import { Relation as SchemaRelation } from '../../core/schema/representation/rel
 import { Entity } from '../../core/schema/representation/item/entity';
 import EntityNode from './entity-node';
 import PropertyEdge from './property-edge';
-import { EditorHistory } from '../editor/use-history';
 import { layoutNodes } from './layout';
+import { EditorHistory } from '../editor/use-history';
 
 export type SchemaNode = ReactFlowNode<Entity, identifier>;
 export type EntityNode = ReactFlowNode<Entity, identifier>;
@@ -32,24 +32,23 @@ export function usePositioning(history: EditorHistory): Positioning {
         edges: SchemaEdge[];
     } | null>(null);
 
-    const onNodeDragStop = (event: ReactMouseEvent, node: SchemaNode, allDraggedNodes: SchemaNode[]) => {
+    const onNodeDragStop = (_event: ReactMouseEvent, _node: SchemaNode, allDraggedNodes: SchemaNode[]) => {
         // It seems that even clicking on node triggers NodeDragStop.
         // But if the position did not change, `dragging` seems to be false.
         if (allDraggedNodes.filter((n) => n.dragging).length === 0) {
             return;
         }
         if (lastHistoryUpdateDiagram) {
-            history.updateCurrentState(() => {
-                return {
-                    diagram: lastHistoryUpdateDiagram,
-                };
-            });
+            history.updateCurrentState((currentEditor) => ({
+                ...currentEditor,
+                diagram: lastHistoryUpdateDiagram,
+            }));
             setLastHistoryUpdateDiagram(null);
         }
-        history.update((currentState) => {
+        history.update((currentEditor) => {
             const newDiagram = {
-                ...currentState.diagram,
-                nodes: currentState.diagram.nodes.map((node) => {
+                ...currentEditor.diagram,
+                nodes: currentEditor.diagram.nodes.map((node) => {
                     const draggedNode = allDraggedNodes.find((draggedNode) => draggedNode.id === node.id);
                     if (!draggedNode) {
                         return node;
@@ -59,26 +58,31 @@ export function usePositioning(history: EditorHistory): Positioning {
                 }),
             };
             return {
-                diagram: newDiagram,
+                type: 'diagram-operation',
+                updatedEditor: {
+                    ...currentEditor,
+                    diagram: newDiagram,
+                },
             };
         });
     };
 
     const onNodesChange = (changes: NodeChange[]) => {
-        history.updateCurrentState((currentState) => {
+        history.updateCurrentState((currentEditor) => {
             // Save diagram state only when the user is dragging the node somewhere.
             // Clicking on a node also triggers position update but with dragging false.
             if (changes.filter((change) => change.type === 'position' && change.dragging).length > 0) {
                 if (!lastHistoryUpdateDiagram) {
                     setLastHistoryUpdateDiagram({
-                        ...currentState.diagram,
+                        ...currentEditor.diagram,
                     });
                 }
             }
             return {
+                ...currentEditor,
                 diagram: {
-                    ...currentState.diagram,
-                    nodes: applyNodeChanges(changes, currentState.diagram.nodes),
+                    ...currentEditor.diagram,
+                    nodes: applyNodeChanges(changes, currentEditor.diagram.nodes),
                 },
             };
         });
@@ -89,11 +93,13 @@ export function usePositioning(history: EditorHistory): Positioning {
     const updateNodes = (nodes: Promise<{ nodes: SchemaNode[]; positionsUpdated: boolean }>) => {
         nodes.then(({ nodes, positionsUpdated }) => {
             if (positionsUpdated) {
-                history.update((currentState) => {
-                    return {
-                        diagram: { ...currentState.diagram, nodes: nodes },
-                    };
-                });
+                history.update((currentEditor) => ({
+                    type: 'diagram-operation',
+                    updatedEditor: {
+                        ...currentEditor,
+                        diagram: { ...currentEditor.diagram, nodes: nodes },
+                    },
+                }));
                 setFitViewToggle(!fitViewToggle);
             }
         });
