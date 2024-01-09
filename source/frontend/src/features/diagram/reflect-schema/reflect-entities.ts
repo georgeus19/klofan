@@ -1,8 +1,8 @@
-import { isEntity } from '../../core/schema/representation/item/entity';
-import { Schema } from '../../core/schema/schema';
-import { EntityNode, SchemaNode } from './use-positioning';
+import { isEntity } from '../../../core/schema/representation/item/entity';
+import { Schema } from '../../../core/schema/schema';
+import { EntityNode, SchemaNode } from '../raw-diagram';
 
-export function updateEntityNodes(schemaNodes: SchemaNode[], schema: Schema): SchemaNode[] {
+export function reflectEntities(schemaNodes: SchemaNode[], schema: Schema): SchemaNode[] {
     const nodeIds = new Set(schemaNodes.map((node) => node.data.id));
 
     const notEntityNodes = schemaNodes.filter((node) => !isEntity(node.data));

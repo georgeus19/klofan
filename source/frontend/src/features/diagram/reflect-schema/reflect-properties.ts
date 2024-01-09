@@ -1,11 +1,11 @@
-import { getProperties } from '../../core/schema/representation/item/entity';
-import { isLiteral } from '../../core/schema/representation/item/literal';
-import { toProperty } from '../../core/schema/representation/relation/graph-property';
-import { isProperty } from '../../core/schema/representation/relation/property';
-import { Schema } from '../../core/schema/schema';
-import { SchemaEdge } from './use-positioning';
+import { getProperties } from '../../../core/schema/representation/item/entity';
+import { isLiteral } from '../../../core/schema/representation/item/literal';
+import { toProperty } from '../../../core/schema/representation/relation/graph-property';
+import { isProperty } from '../../../core/schema/representation/relation/property';
+import { Schema } from '../../../core/schema/schema';
+import { SchemaEdge } from '../raw-diagram';
 
-export function updatePropertyEdges(schemaEdges: SchemaEdge[], schema: Schema): SchemaEdge[] {
+export function reflectProperties(schemaEdges: SchemaEdge[], schema: Schema): SchemaEdge[] {
     const oldEdges = Object.fromEntries(schemaEdges.map((edge) => [edge.data.id, edge]));
 
     const notPropertyEdges = schemaEdges.filter((edge) => !isProperty(edge.data));

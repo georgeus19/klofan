@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { BaseEdge, EdgeLabelRenderer, EdgeProps, getBezierPath, useStore } from 'reactflow';
-import { getEdgeParams } from './utils';
+import { getEdgeParams } from '../utils';
 
 export default function PropertyEdge({ data, source, target, style = {}, markerEnd }: EdgeProps) {
     const sourceNode = useStore(useCallback((store) => store.nodeInternals.get(source), [source]));

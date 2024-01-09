@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { EntityNode, SchemaNode } from './use-positioning';
+import { EntityNode, SchemaNode } from './raw-diagram';
 
 export interface NodeSelection {
     selectedNode: EntityNode | null;

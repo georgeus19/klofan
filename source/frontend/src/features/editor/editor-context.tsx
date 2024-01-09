@@ -1,9 +1,10 @@
 import { ReactNode, createContext, useContext } from 'react';
-import { Editor } from './use-editor';
+import { Editor, useEditor } from './use-editor';
 
 const EditorContext = createContext<Editor | null>(null);
 
-export function EditorContextProvider({ editor, children }: { editor: Editor; children: ReactNode }) {
+export function EditorContextProvider({ children }: { children: ReactNode }) {
+    const editor = useEditor();
     return <EditorContext.Provider value={editor}>{children}</EditorContext.Provider>;
 }
 

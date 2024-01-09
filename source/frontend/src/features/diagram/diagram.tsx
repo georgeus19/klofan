@@ -1,5 +1,5 @@
 import ReactFlow, { Background, BackgroundVariant, Controls, MiniMap, Panel } from 'reactflow';
-import { edgeTypes, nodeTypes } from './use-positioning';
+import { edgeTypes, nodeTypes } from './layout/use-positioning';
 import { useEditorContext } from '../editor/editor-context';
 import { ManualActionsSelect } from '../manual-actions-select/manual-actions-select';
 

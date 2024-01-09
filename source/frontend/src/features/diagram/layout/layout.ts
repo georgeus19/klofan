@@ -1,5 +1,7 @@
 import ELK, { ElkExtendedEdge, ElkNode, LayoutOptions } from 'elkjs/lib/elk.bundled.js';
-import { SchemaEdge, SchemaNode } from './use-positioning';
+import { XYPosition } from 'reactflow';
+import { identifier } from '../../../core/schema/utils/identifier';
+import { RawDiagram, SchemaNode } from '../raw-diagram';
 
 const elk = new ELK();
 
@@ -14,17 +16,24 @@ const defaultLayoutOptions = {
     'elk.spacing.nodeNode': '80',
 };
 
-export function layoutNodes(
-    nodes: SchemaNode[],
-    edges: SchemaEdge[],
-    options: LayoutOptions = {}
-): Promise<{ nodes: SchemaNode[]; positionsUpdated: boolean }> {
+export function updateNodePositions(nodes: SchemaNode[], updates: { position: XYPosition; nodeId: identifier }[]): SchemaNode[] {
+    return nodes.map((node) => {
+        const nodeUpdate = updates.find((update) => update.nodeId === node.id);
+        if (!nodeUpdate) {
+            return node;
+        }
+
+        return { ...node, position: nodeUpdate.position };
+    });
+}
+
+export function layoutNodes(diagram: RawDiagram, options: LayoutOptions = {}): Promise<{ nodes: SchemaNode[]; positionsUpdated: boolean }> {
     const layoutOptions = { ...defaultLayoutOptions, ...options };
     const graph: ElkNode = {
         id: 'root',
         layoutOptions: layoutOptions,
-        children: nodes.map<ElkNode>((node) => ({ id: node.id, width: node.width ?? undefined, height: node.height ?? undefined })),
-        edges: edges.map<ElkExtendedEdge>((edge) => ({ id: edge.id, sources: [edge.source], targets: [edge.target] })),
+        children: diagram.nodes.map<ElkNode>((node) => ({ id: node.id, width: node.width ?? 0, height: node.height ?? 0 })),
+        edges: diagram.edges.map<ElkExtendedEdge>((edge) => ({ id: edge.id, sources: [edge.source], targets: [edge.target] })),
     };
     return elk.layout(graph).then((layoutedGraph: ElkNode) => {
         if (layoutedGraph.children) {
@@ -35,7 +44,7 @@ export function layoutNodes(
                 ])
             );
             let positionsUpdated = false;
-            const updatedNodes = nodes.map((node) => {
+            const updatedNodes = diagram.nodes.map((node) => {
                 if (node.position.x !== positions[node.id]?.x || node.position.y !== positions[node.id]?.y) {
                     positionsUpdated = true;
                 }

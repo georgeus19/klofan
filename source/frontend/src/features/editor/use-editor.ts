@@ -1,37 +1,29 @@
-import { MarkerType } from 'reactflow';
 import { Schema } from '../../core/schema/schema';
-import { EntityNodeEventHandler } from '../diagram/node-events/entity-node-event-handler';
 import { RawInstances } from '../../core/instances/representation/raw-instances';
 import { InMemoryInstances } from '../../core/instances/in-memory-instances';
-import { NodeSelection, useNodeSelection } from '../diagram/use-node-selection';
+import { useNodeSelection } from '../diagram/use-node-selection';
 import { Help, useHelp } from '../help/use-help';
 import { Transformation } from '../../core/transform/transformation';
 import { ManualActionsPane, useManualActionsPane } from '../manual-actions-pane/use-manual-actions-pane';
-import { Positioning, SchemaEdge, SchemaNode, usePositioning } from '../diagram/use-positioning';
-import { useNodeEvents } from '../diagram/use-node-events';
-import { updateEntityNodes } from '../diagram/update-entity-nodes';
-import { updatePropertyEdges } from '../diagram/update-property-edges';
+import { usePositioning } from '../diagram/layout/use-positioning';
+import { useNodeEvents } from '../diagram/node-events/use-node-events';
 import { Instances } from '../../core/instances/instances';
-import { useHistory } from './use-history';
-
-export type SchemaDiagram = {
-    nodes: SchemaNode[];
-    edges: SchemaEdge[];
-    nodePositioning: Positioning;
-    nodeEvents: {
-        entityNodeHandler: EntityNodeEventHandler;
-    };
-    nodeSelection: NodeSelection;
-};
+import { useHistory } from './history/use-history';
+import { UpdateOperation } from './history/update-operation';
+import { RawEditor } from './history/history';
+import { reflectSchema } from '../diagram/reflect-schema/reflect-schema';
+import { SchemaDiagram } from '../diagram/schema-diagram';
 
 export type Editor = {
     history: {
+        operations: UpdateOperation[];
         undo: () => void;
         redo: () => void;
     };
     schema: Schema;
     instances: InMemoryInstances;
-    updateSchemaAndInstances: (transformation: Transformation) => void;
+    runOperations: (operations: UpdateOperation[]) => Promise<void>;
+    updateSchemaAndInstances: (transformation: Transformation) => Promise<void>;
     addSchemaAndInstances: (data: { schema: Schema; instances: Instances }) => void;
     diagram: SchemaDiagram;
     manualActions: ManualActionsPane;
@@ -59,26 +51,16 @@ export function useEditor(): Editor {
     const nodeEvents = useNodeEvents({ diagram: rawDiagram, nodeSelection, manualActions, schema });
     const diagram: SchemaDiagram = { ...rawDiagram, nodePositioning: nodePositioning, nodeEvents: nodeEvents, nodeSelection: nodeSelection };
 
-    const updateSchemaAndInstances = (transformation: Transformation) => {
-        const newSchema = schema.transform(transformation.schemaTransformations);
-        instances.transform(transformation.instanceTransformations).then((newInstances) => {
+    const updateSchemaAndInstances = (transformation: Transformation): Promise<void> => {
+        return instances.transform(transformation.instanceTransformations).then((newInstances) => {
+            const newSchema = schema.transform(transformation.schemaTransformations);
             updateHistory((currentEditor) => ({
-                type: 'schema-and-instances-operation',
+                type: 'transform-schema-and-instances',
                 transformation: transformation,
                 updatedEditor: {
                     schema: newSchema.raw(),
                     instances: newInstances.raw() as RawInstances,
-                    diagram: {
-                        nodes: updateEntityNodes(currentEditor.diagram.nodes, newSchema),
-                        edges: updatePropertyEdges(currentEditor.diagram.edges, newSchema).map((edge) => {
-                            edge.markerEnd = { type: MarkerType.ArrowClosed, color: '#718de4' };
-                            edge.style = {
-                                strokeWidth: 3,
-                                stroke: '#718de4',
-                            };
-                            return edge;
-                        }),
-                    },
+                    diagram: reflectSchema(currentEditor.diagram, newSchema),
                 },
             }));
         });
@@ -86,27 +68,52 @@ export function useEditor(): Editor {
 
     const addSchemaAndInstances = ({ schema, instances }: { schema: Schema; instances: Instances }) => {
         updateHistory((currentEditor) => ({
-            type: 'import-schema-and-instances-operation',
+            type: 'import-schema-and-instances',
+            schema: schema.raw(),
+            instances: instances.raw() as RawInstances,
             updatedEditor: {
                 schema: schema.raw(),
                 instances: instances.raw() as RawInstances,
-                diagram: {
-                    nodes: updateEntityNodes(currentEditor.diagram.nodes, schema),
-                    edges: updatePropertyEdges(currentEditor.diagram.edges, schema).map((edge) => {
-                        edge.markerEnd = { type: MarkerType.ArrowClosed, color: '#718de4' };
-                        edge.style = {
-                            strokeWidth: 3,
-                            stroke: '#718de4',
-                        };
-                        return edge;
-                    }),
-                },
+                diagram: reflectSchema(currentEditor.diagram, schema),
             },
         }));
     };
 
+    const runOperations = async (operations: UpdateOperation[]) => {
+        let editor: RawEditor = { ...history.current };
+        const operationsWithEditor: UpdateOperation[] = [];
+        for (const operation of operations) {
+            switch (operation.type) {
+                case 'import-schema-and-instances':
+                    editor = {
+                        schema: operation.schema,
+                        instances: operation.instances,
+                        diagram: reflectSchema(editor.diagram, new Schema(operation.schema)),
+                    };
+                    break;
+                case 'transform-schema-and-instances':
+                    await new InMemoryInstances(editor.instances).transform(operation.transformation.instanceTransformations).then((newInstances) => {
+                        const newSchema = new Schema(editor.schema).transform(operation.transformation.schemaTransformations);
+                        editor = {
+                            schema: newSchema.raw(),
+                            instances: newInstances.raw() as RawInstances,
+                            diagram: reflectSchema(editor.diagram, newSchema),
+                        };
+                    });
+                    break;
+                case 'auto-layout-diagram':
+                case 'update-node-positions':
+                    editor = { ...editor, diagram: await nodePositioning.updateDiagram(editor.diagram, operation) };
+                    break;
+            }
+            operationsWithEditor.push({ ...operation, updatedEditor: editor });
+        }
+        history.batchUpdate(() => operationsWithEditor);
+    };
+
     return {
         history: {
+            operations: history.operations,
             undo: () => {
                 manualActions.hide();
                 undo();
@@ -118,6 +125,7 @@ export function useEditor(): Editor {
         },
         schema: schema,
         instances: instances,
+        runOperations,
         updateSchemaAndInstances: updateSchemaAndInstances,
         addSchemaAndInstances: addSchemaAndInstances,
         diagram: diagram,

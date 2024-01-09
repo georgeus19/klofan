@@ -1,8 +1,8 @@
 import { Handle, NodeProps, Position } from 'reactflow';
-import { Entity, getProperties } from '../../core/schema/representation/item/entity';
-import { isLiteral } from '../../core/schema/representation/item/literal';
+import { Entity, getProperties } from '../../../core/schema/representation/item/entity';
+import { isLiteral } from '../../../core/schema/representation/item/literal';
 import { twMerge } from 'tailwind-merge';
-import { useEditorContext } from '../editor/editor-context';
+import { useEditorContext } from '../../editor/editor-context';
 
 export default function EntityNode({
     id,

@@ -1,14 +1,14 @@
 import { ReactNode, createContext, useContext } from 'react';
-import { Prefixes } from './use-prefixes';
+import { Prefixes, usePrefixes } from './use-prefixes';
 
 const PrefixesContext = createContext<Prefixes | null>(null);
 
 export type PrefixesContextProviderProps = {
-    prefixes: Prefixes;
     children?: ReactNode;
 };
 
-export function PrefixesContextProvider({ prefixes, children }: PrefixesContextProviderProps) {
+export function PrefixesContextProvider({ children }: PrefixesContextProviderProps) {
+    const prefixes = usePrefixes();
     return <PrefixesContext.Provider value={prefixes}>{children}</PrefixesContext.Provider>;
 }
 

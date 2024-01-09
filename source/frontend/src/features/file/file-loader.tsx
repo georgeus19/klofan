@@ -2,9 +2,10 @@ import { HTMLProps, useRef } from 'react';
 
 export interface FileLoaderProps extends HTMLProps<HTMLLabelElement> {
     onFileLoad: (file: { content: string; type: string }) => void;
+    name: string;
 }
 
-export function FileLoader({ className, onFileLoad, children }: FileLoaderProps) {
+export function FileLoader({ className, onFileLoad, name }: FileLoaderProps) {
     const fileInput = useRef<HTMLInputElement | null>(null);
 
     const onFileInputChange = () => {
@@ -21,9 +22,9 @@ export function FileLoader({ className, onFileLoad, children }: FileLoaderProps)
     };
     return (
         <>
-            <input type='file' ref={fileInput} id='import-input' hidden onChange={onFileInputChange}></input>
-            <label htmlFor='import-input' className={className}>
-                {children}
+            <label htmlFor={name} className={className}>
+                <input type='file' ref={fileInput} id={name} hidden onChange={onFileInputChange}></input>
+                {name}
             </label>
         </>
     );

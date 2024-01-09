@@ -1,9 +1,10 @@
-import { Entity } from '../../core/schema/representation/item/entity';
-import { Schema } from '../../core/schema/schema';
-import { ManualActionsPane } from '../manual-actions-pane/use-manual-actions-pane';
-import { EntityNodeEventHandler } from './node-events/entity-node-event-handler';
-import { NodeSelection } from './use-node-selection';
-import { SchemaEdge, SchemaNode } from './use-positioning';
+import { Entity } from '../../../core/schema/representation/item/entity';
+import { Schema } from '../../../core/schema/schema';
+import { ManualActionsPane } from '../../manual-actions-pane/use-manual-actions-pane';
+import { EntityNodeEventHandler } from './entity-node-event-handler';
+import { NodeSelection } from '../use-node-selection';
+import { SchemaEdge, SchemaNode } from '../raw-diagram';
+import { Property } from '../../../core/schema/representation/relation/property';
 
 export function useNodeEvents({
     diagram,
@@ -24,7 +25,8 @@ export function useNodeEvents({
                 manualActions.showEntityDetail(schema.entity(selectedNode.id));
             }
         },
-        onPropertyClick: (property: Property) => {},
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        onPropertyClick: (_property: Property) => {},
     };
 
     return {

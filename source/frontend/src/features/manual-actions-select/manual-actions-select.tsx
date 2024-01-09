@@ -6,6 +6,9 @@ import { FileLoader } from '../file/file-loader';
 import { FileSaver } from '../file/file-saver';
 import { saveAsDataSchema } from '../../core/schema/save/data-schema/save';
 import { resetId } from '../../core/utils/identifier-generator';
+import { Prefix } from '../prefixes/use-prefixes';
+import { usePrefixesContext } from '../prefixes/prefixes-context';
+import { UpdateOperation } from '../editor/history/update-operation';
 
 export function ManualActionsSelect() {
     const {
@@ -14,7 +17,10 @@ export function ManualActionsSelect() {
         schema,
         history,
         addSchemaAndInstances,
+        runOperations,
     } = useEditorContext();
+
+    const { addPrefix } = usePrefixesContext();
 
     const onImport = (file: { content: string; type: string }) => {
         manualActions.onActionDone();
@@ -29,6 +35,22 @@ export function ManualActionsSelect() {
         writer.end((error, result: string) => {
             download(new File([result], 'schema.ttl', { type: 'text/turtle' }));
         });
+    };
+
+    const onImportOperations = (file: { content: string; type: string }) => {
+        try {
+            manualActions.onActionDone();
+            const content: { operations: UpdateOperation[]; prefixes: Prefix[] } = JSON.parse(file.content);
+            if (content.operations.find((operation) => operation.type === 'import-schema-and-instances')) {
+                resetId();
+            }
+            for (const prefix of content.prefixes) {
+                addPrefix(prefix);
+            }
+            runOperations(content.operations);
+        } catch (e) {
+            console.log(e);
+        }
     };
 
     return (
@@ -80,9 +102,18 @@ export function ManualActionsSelect() {
             <button className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300' onClick={manualActions.showUpdateEntityInstancesUris}>
                 Uris
             </button>
-            <FileLoader className='p-2 rounded shadow bg-blue-200' onFileLoad={onImport}>
-                Import
-            </FileLoader>
+            <div className='relative group'>
+                <div className='p-2 rounded shadow bg-blue-200'>Import</div>
+                <div className='absolute hidden group-hover:flex z-10 flex-col bg-slate-300 min-w-[10rem] shadow rounded'>
+                    <FileLoader name='Data' className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300' onFileLoad={onImport}></FileLoader>
+                    <FileLoader
+                        name='Operations'
+                        className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300'
+                        onFileLoad={onImportOperations}
+                    ></FileLoader>
+                </div>
+            </div>
+
             <div className='relative group'>
                 <div className='p-2 rounded shadow bg-blue-200'>Export</div>
                 <div className='absolute hidden group-hover:flex z-10 flex-col bg-slate-300 min-w-[10rem] shadow rounded'>
@@ -91,6 +122,9 @@ export function ManualActionsSelect() {
                     </FileSaver>
                     <button className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300' onClick={manualActions.showExportInstances}>
                         Instances
+                    </button>
+                    <button className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300' onClick={manualActions.showExportOperations}>
+                        Transformations
                     </button>
                 </div>
             </div>

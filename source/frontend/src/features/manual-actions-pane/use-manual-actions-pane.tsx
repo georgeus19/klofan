@@ -15,6 +15,8 @@ import { UpdateEntityInstancesUris } from './transformation/update-entity-instan
 import { Help } from '../help/use-help';
 import { ExportInstances } from './export/export-instances/export-intances';
 import { showExportInstancesHelp } from '../help/content/show-export-intances-help';
+import { ExportOperations } from './export/export-operations';
+import { showExportOperationsHelp } from '../help/content/show-export-operations-help';
 
 export type ManualActionsPane = {
     shownAction: ManualActionShown;
@@ -27,6 +29,7 @@ export type ManualActionsPane = {
     showPrefixes: () => void;
     showUpdateEntityInstancesUris: () => void;
     showExportInstances: () => void;
+    showExportOperations: () => void;
     hide: () => void;
 };
 
@@ -106,6 +109,11 @@ export function useManualActionsPane(nodeSelection: NodeSelection, schema: Schem
             setShownAction({ type: 'export-instances-shown', component: <ExportInstances></ExportInstances> });
             nodeSelection.clearSelectedNode();
             showExportInstancesHelp(help);
+        },
+        showExportOperations: () => {
+            showExportOperationsHelp(help);
+            setShownAction({ type: 'export-operations-shown', component: <ExportOperations></ExportOperations> });
+            nodeSelection.clearSelectedNode();
         },
         hide: () => {
             help.hideHelp();

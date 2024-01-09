@@ -22,7 +22,7 @@ const prefixEqual = (a: Prefix, b: Prefix) => a.value === b.value;
 export function usePrefixes(): Prefixes {
     const [prefixes, setPrefixes] = useState<Prefix[]>([]);
 
-    const addPrefix = (prefix: Prefix) => setPrefixes(uniqWith([prefix, ...prefixes], prefixEqual));
+    const addPrefix = (prefix: Prefix) => setPrefixes((prefixes) => uniqWith([prefix, ...prefixes], prefixEqual));
     const removePrefix = (prefix: string) => setPrefixes(prefixes.filter((p) => p.value !== prefix));
     const updatePrefix = (prefix: Prefix) => setPrefixes(uniqWith([prefix, ...prefixes], prefixEqual));
     const longestPrefixByUri = (uri: string) =>

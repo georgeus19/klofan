@@ -1,21 +1,17 @@
 import { MouseEvent as ReactMouseEvent, useState, useEffect } from 'react';
-import { Node as ReactFlowNode, Edge as ReactFlowEdge, NodeChange, applyNodeChanges, useReactFlow } from 'reactflow';
-import { identifier } from '../../core/schema/utils/identifier';
-import { Relation as SchemaRelation } from '../../core/schema/representation/relation/relation';
-import { Entity } from '../../core/schema/representation/item/entity';
-import EntityNode from './entity-node';
-import PropertyEdge from './property-edge';
-import { layoutNodes } from './layout';
-import { EditorHistory } from '../editor/use-history';
-
-export type SchemaNode = ReactFlowNode<Entity, identifier>;
-export type EntityNode = ReactFlowNode<Entity, identifier>;
-
-export type SchemaEdge = ReactFlowEdge<SchemaRelation> & { data: SchemaRelation };
+import { NodeChange, applyNodeChanges, useReactFlow } from 'reactflow';
+import EntityNode from '../nodes/entity-node';
+import PropertyEdge from '../edges/property-edge';
+import { layoutNodes, updateNodePositions } from './layout';
+import { LayoutOptions } from 'elkjs';
+import { UpdateDiagram } from '../update-operations/update-diagram';
+import { RawDiagram, SchemaEdge, SchemaNode } from '../raw-diagram';
+import { EditorHistory } from '../../editor/history/history';
 
 export type Positioning = {
     onNodesChange: (changes: NodeChange[]) => void;
     onNodeDragStop: (event: ReactMouseEvent, node: SchemaNode, allDraggedNodes: SchemaNode[]) => void;
+    updateDiagram: (diagram: RawDiagram, operation: UpdateDiagram) => Promise<RawDiagram>;
     layoutNodesUsingForce: () => void;
     layoutNodesRadially: () => void;
     layoutNodesHorizontally: () => void;
@@ -45,20 +41,17 @@ export function usePositioning(history: EditorHistory): Positioning {
             }));
             setLastHistoryUpdateDiagram(null);
         }
+
+        const nodeUpdates = allDraggedNodes.map((n) => ({ position: n.position, nodeId: n.id }));
+
         history.update((currentEditor) => {
             const newDiagram = {
                 ...currentEditor.diagram,
-                nodes: currentEditor.diagram.nodes.map((node) => {
-                    const draggedNode = allDraggedNodes.find((draggedNode) => draggedNode.id === node.id);
-                    if (!draggedNode) {
-                        return node;
-                    }
-
-                    return { ...node, position: draggedNode.position };
-                }),
+                nodes: updateNodePositions(currentEditor.diagram.nodes, nodeUpdates),
             };
             return {
-                type: 'diagram-operation',
+                type: 'update-node-positions',
+                nodeUpdates: nodeUpdates,
                 updatedEditor: {
                     ...currentEditor,
                     diagram: newDiagram,
@@ -90,11 +83,14 @@ export function usePositioning(history: EditorHistory): Positioning {
 
     const [fitViewToggle, setFitViewToggle] = useState<boolean>(false);
 
-    const updateNodes = (nodes: Promise<{ nodes: SchemaNode[]; positionsUpdated: boolean }>) => {
-        nodes.then(({ nodes, positionsUpdated }) => {
+    const updateNodes = (diagram: RawDiagram, layout: LayoutOptions): Promise<RawDiagram> => {
+        return layoutNodes(diagram, layout).then(({ nodes, positionsUpdated }) => {
             if (positionsUpdated) {
+                const nodeSizes = Object.fromEntries(nodes.map((node) => [node.id, { width: node.width, height: node.height }]));
                 history.update((currentEditor) => ({
-                    type: 'diagram-operation',
+                    type: 'auto-layout-diagram',
+                    nodeSizes: nodeSizes,
+                    layout: layout,
                     updatedEditor: {
                         ...currentEditor,
                         diagram: { ...currentEditor.diagram, nodes: nodes },
@@ -102,43 +98,54 @@ export function usePositioning(history: EditorHistory): Positioning {
                 }));
                 setFitViewToggle(!fitViewToggle);
             }
+            return { ...diagram, nodes: nodes };
         });
     };
 
-    const currentNodes = history.current.diagram.nodes;
-    const currentEdges = history.current.diagram.edges;
-
     const layoutNodesUsingForce = (): void => {
-        updateNodes(
-            layoutNodes(currentNodes, currentEdges, {
-                'elk.algorithm': 'org.eclipse.elk.force',
-            })
-        );
+        updateNodes(history.current.diagram, {
+            'elk.algorithm': 'org.eclipse.elk.force',
+        });
     };
 
     const layoutNodesRadially = (): void => {
-        updateNodes(
-            layoutNodes(currentNodes, currentEdges, {
-                'elk.algorithm': 'org.eclipse.elk.radial',
-            })
-        );
+        updateNodes(history.current.diagram, {
+            'elk.algorithm': 'org.eclipse.elk.radial',
+        });
     };
 
     const layoutNodesHorizontally = (): void => {
-        updateNodes(layoutNodes(currentNodes, currentEdges, { 'elk.algorithm': 'layered', 'elk.direction': 'RIGHT' }));
+        updateNodes(history.current.diagram, { 'elk.algorithm': 'layered', 'elk.direction': 'RIGHT' });
     };
 
     const layoutNodesVertically = (): void => {
-        updateNodes(layoutNodes(currentNodes, currentEdges, { 'elk.algorithm': 'layered', 'elk.direction': 'DOWN' }));
+        updateNodes(history.current.diagram, { 'elk.algorithm': 'layered', 'elk.direction': 'DOWN' });
     };
 
     useEffect(() => {
         fitView();
     }, [fitViewToggle, fitView]);
 
+    const updateDiagram = (diagram: RawDiagram, operation: UpdateDiagram): Promise<RawDiagram> => {
+        switch (operation.type) {
+            case 'auto-layout-diagram':
+                // eslint-disable-next-line no-case-declarations
+                const updatedNodes = diagram.nodes.map((node) => ({
+                    ...node,
+                    width: operation.nodeSizes[node.id].width,
+                    height: operation.nodeSizes[node.id].height,
+                }));
+                return layoutNodes({ ...diagram, nodes: updatedNodes }, operation.layout).then(({ nodes }) => ({ ...diagram, nodes: nodes }));
+            // return updateNodes({ ...diagram, nodes: updatedNodes }, operation.layout);
+            case 'update-node-positions':
+                return Promise.resolve({ nodes: updateNodePositions(diagram.nodes, operation.nodeUpdates), edges: diagram.edges });
+        }
+    };
+
     return {
         onNodesChange,
         onNodeDragStop,
+        updateDiagram,
         layoutNodesUsingForce,
         layoutNodesRadially,
         layoutNodesHorizontally,

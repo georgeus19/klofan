@@ -10,6 +10,7 @@ import { useUriInput } from '../../utils/uri/use-uri-input';
 import { NamedNodeInstanceBuilder } from '../../../../core/instances/save/uri-builders/named-node-instance-builder';
 import { BlankNodeInstanceBuilder } from '../../../../core/instances/save/uri-builders/blank-node-instance-builder';
 import { Entity } from '../../../../core/schema/representation/item/entity';
+import { download } from '../download';
 
 export type ExportInstancesShown = {
     type: 'export-instances-shown';
@@ -57,17 +58,4 @@ export function ExportInstances() {
             <ActionOkCancel onOk={exportInstances} onCancel={cancel}></ActionOkCancel>
         </div>
     );
-}
-
-function download(file: File) {
-    const link = document.createElement('a');
-    const url = URL.createObjectURL(file);
-
-    link.href = url;
-    link.download = file.name;
-    document.body.appendChild(link);
-    link.click();
-
-    document.body.removeChild(link);
-    window.URL.revokeObjectURL(url);
 }
