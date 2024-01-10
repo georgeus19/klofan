@@ -30,6 +30,7 @@ export function JoinMappingDetail({ usedInstanceMapping, setUsedInstanceMapping,
         .filter((property) => isLiteral(schema.item(property.value)))
         .map((property) => (
             <button
+                key={property.id}
                 className='p-1 rounded shadow bg-blue-200 hover:bg-blue-300'
                 onClick={() => {
                     setSelectSourceJoinProperty(false);
@@ -54,6 +55,7 @@ export function JoinMappingDetail({ usedInstanceMapping, setUsedInstanceMapping,
         .filter((property) => isLiteral(schema.item(property.value)))
         .map((property) => (
             <button
+                key={property.id}
                 className='p-1 rounded shadow bg-blue-200 hover:bg-blue-300'
                 onClick={() => {
                     setSelectTargetJoinProperty(false);

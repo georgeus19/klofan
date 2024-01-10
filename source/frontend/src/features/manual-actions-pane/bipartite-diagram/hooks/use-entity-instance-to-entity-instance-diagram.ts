@@ -9,6 +9,7 @@ import { calculateSourceNodePosition, calculateTargetNodePosition, defaultLayout
 import { Schema } from '../../../../core/schema/schema';
 import { useEditorContext } from '../../../editor/editor-context';
 import { max, min } from 'lodash';
+import { styleEdges } from '../../../diagram/edges/style-edges';
 
 export type EntityInstanceSourceNode = SourceNode<{ entity: Entity; entityInstance: EntityInstance }>;
 export type EntityInstanceTargetNode = TargetNode<{ entity: Entity; entityInstance: EntityInstance }>;
@@ -71,7 +72,7 @@ export function useEntityInstanceToEntityInstanceDiagram(
     }, [target?.instances]);
 
     const onConnect = useCallback(
-        (connection: Connection) => setEdges((eds) => addEdge(connection, eds) as unknown as SourceTargetEdge[]),
+        (connection: Connection) => setEdges((eds) => styleEdges(addEdge(connection, eds) as unknown as SourceTargetEdge[], 2)),
         [setEdges]
     );
 
@@ -108,7 +109,7 @@ export function useEntityInstanceToEntityInstanceDiagram(
                     target: `${targetIdPrefix}${targetIndex}`,
                 }));
             });
-            setEdges(edges);
+            setEdges(styleEdges(edges, 2));
         },
         getPropertyInstances,
         layout: { ...layout, maxDiagramHeight: maxDiagramHeight },
@@ -131,11 +132,14 @@ function getEdgesBetweenEntities(
         return [];
     }
     return sourceNodes.flatMap((sourceNode) =>
-        sourceNode.data.entityInstance.properties[propertyId].targetInstanceIndices.map((targetInstanceIndex) => ({
-            id: `${sourceEntity.id}${sourceNode.data.entityInstance.id}${propertyId}${targetEntity.id}${targetInstanceIndex}`,
-            source: `${sourceIdPrefix}${sourceNode.data.entityInstance.id}`,
-            target: `${targetIdPrefix}${targetInstanceIndex}`,
-        }))
+        styleEdges(
+            sourceNode.data.entityInstance.properties[propertyId].targetInstanceIndices.map((targetInstanceIndex) => ({
+                id: `${sourceEntity.id}${sourceNode.data.entityInstance.id}${propertyId}${targetEntity.id}${targetInstanceIndex}`,
+                source: `${sourceIdPrefix}${sourceNode.data.entityInstance.id}`,
+                target: `${targetIdPrefix}${targetInstanceIndex}`,
+            })),
+            2
+        )
     );
 }
 

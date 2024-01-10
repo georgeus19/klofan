@@ -8,6 +8,7 @@ import { SourceNode, TargetNode, sourceIdPrefix, sourceNodes, targetIdPrefix, ta
 import { EntityInstance } from '../../../../core/instances/entity-instance';
 import { calculateSourceNodePosition, calculateTargetNodePosition, defaultLayout } from '../layout';
 import { min, max } from 'lodash';
+import { styleEdges } from '../../../diagram/edges/style-edges';
 
 export type EntityInstanceSourceNode = SourceNode<{ entity: Entity; entityInstance: EntityInstance }>;
 export type LiteralInstanceTargetNode = TargetNode<{ literal: Literal; id: number }>;
@@ -44,11 +45,14 @@ export function useEntityInstanceToLiteralInstanceDiagram(
 
     const inferEdges = (literals: { literal: Literal; entityInstanceId: number }[]): SourceTargetEdge[] => {
         // Create an edge for each literal.
-        return literals.map(({ entityInstanceId }, index) => ({
-            id: `${entityInstanceId}${index}`,
-            source: `${sourceIdPrefix}${entityInstanceId}`,
-            target: `${targetIdPrefix}${index}`,
-        }));
+        return styleEdges(
+            literals.map(({ entityInstanceId }, index) => ({
+                id: `${entityInstanceId}${index}`,
+                source: `${sourceIdPrefix}${entityInstanceId}`,
+                target: `${targetIdPrefix}${index}`,
+            })),
+            2
+        );
     };
 
     useEffect(() => {
@@ -84,7 +88,7 @@ export function useEntityInstanceToLiteralInstanceDiagram(
     }, [source?.instances]);
 
     const onConnect = useCallback(
-        (connection: Connection) => setEdges((eds) => addEdge(connection, eds) as unknown as SourceTargetEdge[]),
+        (connection: Connection) => setEdges((eds) => styleEdges(addEdge(connection, eds) as unknown as SourceTargetEdge[], 2)),
         [setEdges]
     );
 
@@ -127,12 +131,9 @@ export function useEntityInstanceToLiteralInstanceDiagram(
             const literals = propertyInstances.flatMap((propertyInstance, index) =>
                 propertyInstance.literals.map((literal) => ({ literal: literal, entityInstanceId: index }))
             );
-
-            // const targetNodes = inferTargetNodes(literals);
             const edges = inferEdges(literals);
 
             setEdges(edges);
-            // setNodes(addZIndices([...sourceNodes, ...targetNodes]));
         },
     };
 }

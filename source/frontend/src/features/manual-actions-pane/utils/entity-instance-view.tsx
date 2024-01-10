@@ -34,7 +34,7 @@ export function EntityInstanceView({ entity, entityInstance, showEntityPropertie
                         </div>
                     ))}
                     {entityInstance.properties[property.id].targetInstanceIndices.map((targetInstanceIndex, index) => (
-                        <div className='col-start-2 overflow-auto p-2 bg-purple-100 text-center' key={`E${index}`}>
+                        <div className='col-start-2 overflow-auto p-2 bg-purple-100 text-center shadow' key={`E${index}`}>
                             <ReadonlyInput value={`${property.value.name}.${targetInstanceIndex}`} className='w-full'></ReadonlyInput>
                         </div>
                     ))}
