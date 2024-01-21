@@ -1,0 +1,8 @@
+{
+  "extends": "@klofan/typescript-config/internal-lib.json",
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist"
+  },
+  "include": ["src/**/*"],
+}

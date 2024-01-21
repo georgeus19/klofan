@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+      "esModuleInterop": true,
+      "forceConsistentCasingInFileNames": true,
+      "module": "NodeNext",
+      "target": "es2022",
+      "moduleResolution": "NodeNext",
+      "preserveWatchOutput": true,
+      "skipLibCheck": true,
+      // "noEmit": true,
+    //   "isolatedModules": true,
+    //   "verbatimModuleSyntax": true,
+      "declaration": true,
+      "sourceMap": true,
+      "declarationMap": true,
+      "strict": true,
+      "outDir": "./dist",
+      "rootDir": "./src"
+    },
+    "include": ["src/**/*"]
+  }

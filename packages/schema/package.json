@@ -1,0 +1,55 @@
+{
+    "name": "@klofan/schema",
+    "scripts": {
+      "build": "tsc"
+    },
+    "files": [
+      "dist/**"
+    ],
+    "exports": {
+      ".": {
+        "types": "./src/api/schema-api.ts",
+        "require": "./dist/api/schema-api.js",
+        "import": "./src/api/schema-api.ts"
+      },
+      "./load": {
+        "types": "./src/api/load-api.ts",
+        "require": "./dist/api/load-api.js",
+        "import": "./src/api/load-api.ts"
+      },
+      "./representation": {
+        "types": "./src/api/representation-api.ts",
+        "require": "./dist/api/representation-api.js",
+        "import": "./src/api/representation-api.ts"
+      },
+      "./save": {
+        "types": "./src/api/save-api.ts",
+        "require": "./dist/api/save-api.js",
+        "import": "./src/api/save-api.ts"
+      },
+      "./transform": {
+        "types": "./src/api/transform-api.ts",
+        "require": "./dist/api/transform-api.js",
+        "import": "./src/api/transform-api.ts"
+      }
+    },
+    "dependencies": {
+      "@klofan/utils": "*",
+      "@klofan/parse": "*",
+      "lodash": "^4.17.21",
+      "n3": "^1.17.1"
+    },
+    "devDependencies": {
+      "@jest/globals": "^29.7.0",
+      "@types/lodash": "^4.14.200",
+      "@types/n3": "^1.16.3",
+      "@typescript-eslint/eslint-plugin": "^6.0.0",
+      "@typescript-eslint/parser": "^6.0.0",
+      "@vitejs/plugin-react": "^4.0.3",
+      "eslint": "^8.45.0",
+      "jest": "^29.7.0",
+      "jest-environment-jsdom": "^29.7.0",
+      "ts-jest": "^29.1.1",
+      "typescript": "^5.0.2"
+    }
+  }

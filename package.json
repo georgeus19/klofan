@@ -1,0 +1,15 @@
+{
+  "name": "klofan",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "devDependencies": {
+    "turbo": "^1.11.3"
+  }
+}
