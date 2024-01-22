@@ -11,7 +11,7 @@
     "isolatedModules": true,
     "declaration": true,
     "declarationMap": true,
-    "module": "ESNext",
+    "module": "NodeNext",
     "moduleResolution": "NodeNext",
      
     "strict": true,
