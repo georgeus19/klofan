@@ -1,18 +1,18 @@
 {
-  "$schema": "https://json.schemastore.org/tsconfig",
-  "extends": "./base.json",
-  "Display": "Vite",
-  "compilerOptions": {
-    "allowJs": false,
-    "esModuleInterop": false,
-    "jsx": "react-jsx",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "noEmit": true,
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "resolveJsonModule": true,
-    "allowImportingTsExtensions": true,
-    "target": "ESNext",
-    "types": ["vite/client"]
-  }
+    "$schema": "https://json.schemastore.org/tsconfig",
+    "extends": "./base.json",
+    "Display": "Vite",
+    "compilerOptions": {
+        "allowJs": false,
+        "esModuleInterop": false,
+        "jsx": "react-jsx",
+        "lib": ["dom", "dom.iterable", "esnext"],
+        "noEmit": true,
+        "module": "ESNext",
+        "moduleResolution": "Bundler",
+        "resolveJsonModule": true,
+        "allowImportingTsExtensions": true,
+        "target": "ESNext",
+        "types": ["vite/client"]
+    }
 }

@@ -33,8 +33,7 @@ module.exports = {
     ignorePatterns: [
         // Ignore dotfiles
         '.*.js',
-        '*.config.js',
-        '*.config.ts',
+        'vite.config.ts',
         'node_modules/',
         'dist/',
     ],
