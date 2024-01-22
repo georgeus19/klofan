@@ -7,7 +7,13 @@ import { Mapping } from '@klofan/instances/transform';
 
 export function createMovePropertyTransformation(
     schema: Schema,
-    data: { originalSource: identifier; property: identifier; newSource?: identifier; newTarget?: identifier; instanceMapping: Mapping }
+    data: {
+        originalSource: identifier;
+        property: identifier;
+        newSource?: identifier;
+        newTarget?: identifier;
+        instanceMapping: Mapping;
+    }
 ): Transformation {
     const originalSource = schema.entity(data.originalSource);
     const newSource = schema.entity(data.newSource ?? data.originalSource);

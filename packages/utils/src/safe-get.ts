@@ -1,4 +1,4 @@
-import { identifier } from "./identifier";
+import { identifier } from './identifier';
 
 export function safeGet<V>(obj: { [key: identifier]: V }, key: identifier): V {
     if (Object.hasOwn(obj, key)) {

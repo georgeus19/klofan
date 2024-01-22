@@ -1,5 +1,6 @@
 # Food Data Use Case
-In this use case, a user wants to convert their food data from Open Food Facts to rdf using existing vocabularies if any are suitable. The use case shows how the process could go if our tool was used instead of looking up vocabularies and transforming data manually. The use case serves for introducing features that could be usable for the tool. The use cases should be a motivation for creation of the tool and a preview of the main functional requirements. 
+
+In this use case, a user wants to convert their food data from Open Food Facts to rdf using existing vocabularies if any are suitable. The use case shows how the process could go if our tool was used instead of looking up vocabularies and transforming data manually. The use case serves for introducing features that could be usable for the tool. The use cases should be a motivation for creation of the tool and a preview of the main functional requirements.
 
 The data for each product are around thousand lines long json with a lot of information that provide little meaning to a non-author person. Look in `food.json` for an example. An example of the data for noodles and its most important fields are shown below. The user wants to convert these to rdf and ignore the rest.
 
@@ -9,15 +10,17 @@ The data for each product are around thousand lines long json with a lot of info
         "_id": "0737628064502",
         "product_name": "Thai peanut noodle kit includes stir-fry rice noodles & thai peanut seasoning",
         "countries": "United States",
-        "ingredients": [{
-            "has_sub_ingredients": "yes",
-            "id": "en:noodle",
-            "percent_estimate": 53.8461538461538,
-            "percent_max": 100,
-            "percent_min": 7.69230769230769,
-            "rank": 1,
-            "text": "Noodle"
-        }],
+        "ingredients": [
+            {
+                "has_sub_ingredients": "yes",
+                "id": "en:noodle",
+                "percent_estimate": 53.8461538461538,
+                "percent_max": 100,
+                "percent_min": 7.69230769230769,
+                "rank": 1,
+                "text": "Noodle"
+            }
+        ],
         "nutriments": {
             "calcium": 0.038,
             "calcium_100g": 0.038,
@@ -34,11 +37,11 @@ The use case uses food product data. There are a few vocabularies capable of rep
 
 The use case has two sub use cases which share the input data but differ in the output. In the former one, the user uses any vocabulary terms that the tool can find to represent various entities and properties. In the latter, the user decides to not reuse vocabularies much and insteads wants to generate new vocabulary terms based on the data (create a new vocabulary (vocabularies) and represent parts of the data using them). The reason might be that the aforementioned vocabularies have little properties, have different focus - e.g. agricultural - or are too complex to understand.
 
-## Common Part 
+## Common Part
 
 ### Loading Data
 
-The user loads a json with product data into the tool. Since there may be a lot of entities which are not important and do not need to be shown initially so that the data view is not cluttered, the users selects what is shown. The user also selects which parts of data are not to be converted to rdf. A visualization is shown of the picture below where the user picks what to load from the input data. 
+The user loads a json with product data into the tool. Since there may be a lot of entities which are not important and do not need to be shown initially so that the data view is not cluttered, the users selects what is shown. The user also selects which parts of data are not to be converted to rdf. A visualization is shown of the picture below where the user picks what to load from the input data.
 
 ![Selecting What To Show](./img/food-loading.png)
 
@@ -89,7 +92,7 @@ The next picture shows the updated schema.
 
 ![Schema After Adding AGROVOC Food Composition Entity](./img/after-nutriments.png)
 
-The user still wants to convert the nutrients properties to known vocabulary properties but there are no recommendations. If no vocabulary terms can be found, there is an option of creating a new vocabulary and assigning its terms in the schema. But before doint that the user does not want to have so many properties of one component (e.g. "calcium", "calciumPer100g", "calciumUnit") for all food components hanged on one entity. Instead each such component could have its own entity.  This can be done manually and the end result is shown in the picture below.
+The user still wants to convert the nutrients properties to known vocabulary properties but there are no recommendations. If no vocabulary terms can be found, there is an option of creating a new vocabulary and assigning its terms in the schema. But before doint that the user does not want to have so many properties of one component (e.g. "calcium", "calciumPer100g", "calciumUnit") for all food components hanged on one entity. Instead each such component could have its own entity. This can be done manually and the end result is shown in the picture below.
 
 ![Manual Schema Update For Food Components](./img/food-comp-manual.png)
 
@@ -150,7 +153,7 @@ The following picture shows the starting schema for this sub use case. The user 
 
 ![Start Schema For Sub Use Case With Vocabularies](./img/after-countries-ingredients.png)
 
-A recommendation windows appears and the user can see that the recommendation is about the "ingredients" property and that it matched term "containsIngredient" from Food Ontology vocabulary. The picture representing this is below. The user previews the term which is simply illustrated with the rectangle with turtle rdf. 
+A recommendation windows appears and the user can see that the recommendation is about the "ingredients" property and that it matched term "containsIngredient" from Food Ontology vocabulary. The picture representing this is below. The user previews the term which is simply illustrated with the rectangle with turtle rdf.
 
 ![Ingredient Recommendation Introduction](./img/ingredients-recommend-intro.png)
 
@@ -165,4 +168,3 @@ The next picture shows the updated schema.
 The user continues with the food recommendations and gets to the state portrayed below. They could find "schema:NutritionInformation" and map the food component properties themselves or it could be mostly done with a recommendation if the tool offered it. The user could also continue with the properties of the ingredient or food to map them to known vocabulary terms and generate output rdf or just generate the rdf as is similarly how it is done in the previous sub use case.
 
 ![Final Use Case Schema](./img/food-with-vocabs.png)
-

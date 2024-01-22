@@ -1,11 +1,11 @@
-import{EntityTreeNode } from '@klofan/parse'
+import { EntityTreeNode } from '@klofan/parse';
 import { Entity } from '../representation/item/entity';
 import { Item } from '../representation/item/item';
 import { Literal } from '../representation/item/literal';
 import { RawSchema } from '../representation/raw-schema';
 import { Property } from '../representation/relation/property';
 import { Schema } from '../schema';
-import {identifier} from '@klofan/utils'
+import { identifier } from '@klofan/utils';
 
 export function loadSchema(entityTree: EntityTreeNode): Schema {
     const schema: RawSchema = { items: {}, relations: {} };
@@ -26,11 +26,20 @@ function fillSchema(schema: RawSchema, entityTree: EntityTreeNode): Item {
             return property.id;
         });
 
-        const entity: Entity = { id: entityTree.id, type: 'entity', name: entityTree.name, properties: propertyIds };
+        const entity: Entity = {
+            id: entityTree.id,
+            type: 'entity',
+            name: entityTree.name,
+            properties: propertyIds,
+        };
         schema.items[entity.id] = entity;
         return entity;
     } else {
-        const literal: Literal = { id: entityTree.id, name: entityTree.name, type: 'literal' };
+        const literal: Literal = {
+            id: entityTree.id,
+            name: entityTree.name,
+            type: 'literal',
+        };
         schema.items[literal.id] = literal;
         return literal;
     }

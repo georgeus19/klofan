@@ -2,7 +2,9 @@ import { identifier } from '@klofan/utils';
 import { PropertyInstance } from './property-instance';
 
 export interface RawInstances {
-    entityInstances: { [key: identifier]: { count: number; instances: { uri?: string }[] } };
+    entityInstances: {
+        [key: identifier]: { count: number; instances: { uri?: string }[] };
+    };
     /**
      * Column representation of which entity instances have which properties and their values.
      * All values (arrays) have the same length - the number of instances of the corresponding schema entity (which is the source entity of the property).
@@ -14,7 +16,10 @@ export interface RawInstances {
 }
 
 export function copyInstances(instances: RawInstances): RawInstances {
-    return { entityInstances: { ...instances.entityInstances }, propertyInstances: { ...instances.propertyInstances } };
+    return {
+        entityInstances: { ...instances.entityInstances },
+        propertyInstances: { ...instances.propertyInstances },
+    };
 }
 
 export function createEmptyInstanceState(): RawInstances {

@@ -77,7 +77,10 @@ function createSchemaTransformations(
     const updateSourceEntityTransformation: UpdateEntity = {
         type: 'update-entity',
         data: {
-            entity: { ...sourceEntity, properties: sourceEntity.properties.concat(property.id) },
+            entity: {
+                ...sourceEntity,
+                properties: sourceEntity.properties.concat(property.id),
+            },
         },
     };
 

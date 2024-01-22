@@ -75,7 +75,10 @@ function fillInstancestoEntityTree(instanceTree: Tree, entityTree: EntityTreeNod
                     fillInstancestoEntityTree(instanceTree[property as keyof typeof instanceTree], propertyInfo.targetEntity)
                 );
 
-                propertyInfo.instances.push({ literals: literals, instances: instances });
+                propertyInfo.instances.push({
+                    literals: literals,
+                    instances: instances,
+                });
                 propertyInfo.targetEntity.instanceCount += instances;
             } else {
                 propertyInfo.instances.push({ literals: [], instances: 0 });
@@ -86,7 +89,10 @@ function fillInstancestoEntityTree(instanceTree: Tree, entityTree: EntityTreeNod
     }
 }
 
-function parseInstances(x: (object | primitiveType)[]): { literals: primitiveType[]; instances: number } {
+function parseInstances(x: (object | primitiveType)[]): {
+    literals: primitiveType[];
+    instances: number;
+} {
     const literals = x.filter((i): i is primitiveType => isPrimitiveType(i));
     const instances = x.length - literals.length;
     return { literals: literals, instances: instances };

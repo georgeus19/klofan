@@ -1,7 +1,11 @@
 import { Entity, Property } from '@klofan/schema/representation';
 import { RawInstances, propertyInstanceKey } from '../../representation/raw-instances';
 
-export type EntityInstanceUriMapping = { literalProperty: Property; literal: string; uri: string };
+export type EntityInstanceUriMapping = {
+    literalProperty: Property;
+    literal: string;
+    uri: string;
+};
 
 export interface UpdateEntityInstancesUris {
     type: 'update-entity-instances-uris';

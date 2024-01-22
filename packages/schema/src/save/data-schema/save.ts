@@ -1,5 +1,5 @@
 import * as dataSchema from './term-definitions';
-import {rdfType} from '@klofan/utils'
+import { rdfType } from '@klofan/utils';
 import { DataFactory, Writer } from 'n3';
 import { Schema } from '../../schema';
 import { getProperties, isEntity } from '../../representation/item/entity';

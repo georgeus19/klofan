@@ -14,14 +14,20 @@ export interface MoveProperty {
 }
 
 export function moveProperty(schema: RawSchema, { data: { originalSource, newSource, property, newTarget } }: MoveProperty) {
-    const updatedSource: Entity = { ...originalSource, properties: originalSource.properties.filter((propertyId) => propertyId !== property.id) };
+    const updatedSource: Entity = {
+        ...originalSource,
+        properties: originalSource.properties.filter((propertyId) => propertyId !== property.id),
+    };
     schema.items[originalSource.id] = updatedSource;
 
     if (updatedSource.id === newSource.id) {
         newSource = updatedSource;
     }
 
-    const updatedNewSource: Entity = { ...newSource, properties: newSource.properties.concat(property.id) };
+    const updatedNewSource: Entity = {
+        ...newSource,
+        properties: newSource.properties.concat(property.id),
+    };
     schema.items[newSource.id] = updatedNewSource;
 
     const updatedProperty: Property = { ...property, value: newTarget.id };

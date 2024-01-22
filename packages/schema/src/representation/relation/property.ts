@@ -1,5 +1,5 @@
 import { Relation } from './relation';
-import {identifier} from '@klofan/utils'
+import { identifier } from '@klofan/utils';
 
 export interface Property extends Relation {
     type: 'property';

@@ -1,4 +1,4 @@
-import {identifier} from '@klofan/utils'
+import { identifier } from '@klofan/utils';
 import { Item } from './item';
 
 export interface Literal {

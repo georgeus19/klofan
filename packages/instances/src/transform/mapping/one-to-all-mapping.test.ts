@@ -34,7 +34,10 @@ describe('Transform Instances', () => {
                 const instances: RawInstances = {
                     entityInstances: {
                         '0': { count: 1, instances: initEntityInstances(1) },
-                        '1': { count: targetInstances, instances: initEntityInstances(targetInstances) },
+                        '1': {
+                            count: targetInstances,
+                            instances: initEntityInstances(targetInstances),
+                        },
                     },
                     propertyInstances: {},
                 };

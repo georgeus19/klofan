@@ -1,4 +1,5 @@
 # Statistical Data Use Case
+
 In this use case, a user wants to convert their statistical csv data about czech regions to rdf so that entities and properties are represented correctly using known vocabularies.
 
 This is a follow up to the food use case so there will be a lot of steps skipped and the focus will be on a vocabulary specific recommendation rather than on general purpose recommendation which was showcased in the food use case.
@@ -6,6 +7,7 @@ This is a follow up to the food use case so there will be a lot of steps skipped
 Vocabulary specific recommendation means that it recommends to change the schema and represent part of the schema using specific vocabulary certain way that would not be possible with using any general purpose matching method (e.g. comparing by string).
 
 The look the following way:
+
 ```csv
 Kód území,Region soudržnosti,Pocet celkem,Pocet muži,Pocet ženy,Prumerny vek celkem,Prumerny vek muži,Prumerny vek ženy,typ
 CZ0,Česko,10494836,5170902,5323934,42.7,41.3,44.2,zeme
@@ -15,7 +17,8 @@ CZ031,Jihočeský kraj,636422,314988,321434,43.1,41.8,44.3,kraj
 CZ032,Plzeňský kraj,576358,285530,290828,43.1,41.8,44.3,kraj
 ```
 
-## Use Case 
+## Use Case
+
 The initial schema of the data is shown in the picture below. It is just one entity representing a csv row with columns as properties. The tool provides two recommendations: `Region Entity`, `Data Cube`.
 
 ![Initial Schema Of Loaded Data](./img/stat-initial-schema.png)

@@ -7,38 +7,42 @@ Ukolem je rucne simulovat praci dp programu na malych datech dole. Jde o to navr
 Jedna se o data o produktech prodavanych v supermarketu.
 
 ```json
-[{
-    "product": {
-        "product_name": "Thai peanut noodle kit includes stir-fry rice noodles & thai peanut seasoning",
-        "countries": "United States",
-        "ingredients": [ {
-            "id": "en:noodle",
-            "has_sub_ingredients": "yes",
-            "percent_estimate": 53.8461538461538,
-            "text": "Noodle"
-        },
-        {
-            "id": "en:water",
-            "percent_estimate": 23.0769230769231,
-            "text": "water",
-            "vegan": "yes",
-            "vegetarian": "yes"
-        }],
-        "nutriments": {
-            "calcium_100g": 0.038,
-            "calcium_unit": "mg",
-            "carbohydrates_100g": 71.15,
-            "carbohydrates_unit": "g",
-            "energy-kcal_100g": 385,
-            "energy-kcal_unit": "kcal",
+[
+    {
+        "product": {
+            "product_name": "Thai peanut noodle kit includes stir-fry rice noodles & thai peanut seasoning",
+            "countries": "United States",
+            "ingredients": [
+                {
+                    "id": "en:noodle",
+                    "has_sub_ingredients": "yes",
+                    "percent_estimate": 53.8461538461538,
+                    "text": "Noodle"
+                },
+                {
+                    "id": "en:water",
+                    "percent_estimate": 23.0769230769231,
+                    "text": "water",
+                    "vegan": "yes",
+                    "vegetarian": "yes"
+                }
+            ],
+            "nutriments": {
+                "calcium_100g": 0.038,
+                "calcium_unit": "mg",
+                "carbohydrates_100g": 71.15,
+                "carbohydrates_unit": "g",
+                "energy-kcal_100g": 385,
+                "energy-kcal_unit": "kcal"
+            }
         }
     }
-}]
+]
 ```
 
 # Reseni
 
-Schema dat je  tvoreno jednak popisem struktury (Entity, Property, Literal), tak daty takovymi (*Instance). Struktura je popsana co nejjednodusse. Modifikace nad modelem se musi provadet pres preddefinovane operace, ktere zachazi s modelem tak, aby slo prochazet stavy modelu do minulosti a zpet. Tyhle operace tedy pouziva uzivatel a i doporuceni. Doporuceni jsou rozdeleny na Recommender, ktery na zaklade modelu generuje doporuceni - Recommendation, ktere uz obsahuje operace k modifikaci schema. 
+Schema dat je tvoreno jednak popisem struktury (Entity, Property, Literal), tak daty takovymi (\*Instance). Struktura je popsana co nejjednodusse. Modifikace nad modelem se musi provadet pres preddefinovane operace, ktere zachazi s modelem tak, aby slo prochazet stavy modelu do minulosti a zpet. Tyhle operace tedy pouziva uzivatel a i doporuceni. Doporuceni jsou rozdeleny na Recommender, ktery na zaklade modelu generuje doporuceni - Recommendation, ktere uz obsahuje operace k modifikaci schema.
 
 ```ts
 interface Entity {
@@ -46,7 +50,7 @@ interface Entity {
     properties: Property[];
 
     getInstances(): EntityInstance[];
-} 
+}
 interface Property {
     id: string;
     name: string;
@@ -82,7 +86,7 @@ interface BaseModel {
     entities: Entity[];
     properties: Property[];
 
-    // Send info to all analyzers when base model changes about what changed. 
+    // Send info to all analyzers when base model changes about what changed.
     analyzers: Analyzer[];
 }
 
@@ -138,7 +142,6 @@ interface Recommendation {
 }
 ```
 
-
 ```ts
 // Initial schema example;
 productEntity1 = {
@@ -160,7 +163,7 @@ countriesLiteral1 = {} as Literal;
 calcium100gLiteral1 = {} as Literal;
 calciumUnitLiteral1 = {} as Literal;
 
-// Map country literal to publications europa country uri. 
+// Map country literal to publications europa country uri.
 // Add entity, relink property operations.
 
 productEntity2 = {
@@ -172,7 +175,7 @@ countriesEntity1 = {
     getInstances() { return [ { id: "CE1" as EntityInstance, uri: "http://publications.europa.eu/resource/authority/country/USA" } as EntityInstance ]}
 } as Entity;
 
-countriesProperty2 = { 
+countriesProperty2 = {
     value: countriesEntity1,
     name: "countries",
     getInstances() { return [({ id: "TN2" } as EntityInstance, { id: "CE1", uri: "http://publications.europa.eu/resource/authority/country/USA" } as EntityInstance)]}
@@ -189,7 +192,7 @@ agrovocEntity1 = {
     getInstances() { return [{ id: "A1", uri: "http://aims.fao.org/aos/agrovoc/c_10961"}]}
 } as Entity;
 
-agrovocTypeProperty1 = { 
+agrovocTypeProperty1 = {
     value: agrovocEntity1,
     getInstances() { return [({ id: "N1" }, { id: "A1", uri: "http://aims.fao.org/aos/agrovoc/c_10961"})]}
 }

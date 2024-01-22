@@ -17,7 +17,10 @@ export function createCreateEntityTransformation({
         type: 'entity',
         properties: [],
     };
-    const createEntityTransformation: CreateEntity = { type: 'create-entity', data: { entity: entity } };
+    const createEntityTransformation: CreateEntity = {
+        type: 'create-entity',
+        data: { entity: entity },
+    };
 
     const createEntityInstancesTransformation: CreateEntityInstances = {
         type: 'create-entity-instances',

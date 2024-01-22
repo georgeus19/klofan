@@ -1,1 +1,1 @@
-export {loadInstances} from '../load/load-instances'
+export { loadInstances } from '../load/load-instances';

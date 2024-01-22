@@ -5,7 +5,10 @@ import { identifier } from '@klofan/utils';
 import { Transformation } from '../transformation';
 
 export function createUpdatePropertyUriTransformation(schema: Schema, relationId: identifier, uri: string): Transformation {
-    const newProperty: Property = { ...schema.property(relationId), uri: uri === '' ? undefined : uri };
+    const newProperty: Property = {
+        ...schema.property(relationId),
+        uri: uri === '' ? undefined : uri,
+    };
     const updateRelationTransformation: UpdateRelation = {
         type: 'update-relation',
         data: { relation: newProperty },

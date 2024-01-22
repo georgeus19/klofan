@@ -45,10 +45,15 @@ function fillInstanceProperties(
 }
 
 function fillInstanceEntities(
-    entities: { [key: identifier]: { count: number; instances: { uri?: string }[] } },
+    entities: {
+        [key: identifier]: { count: number; instances: { uri?: string }[] };
+    },
     entityTree: EntityTreeNode
 ): { [key: identifier]: { count: number; instances: { uri?: string }[] } } {
-    entities[entityTree.id] = { count: entityTree.instanceCount, instances: initEntityInstances(entityTree.instanceCount) };
+    entities[entityTree.id] = {
+        count: entityTree.instanceCount,
+        instances: initEntityInstances(entityTree.instanceCount),
+    };
     Object.values(entityTree.properties).forEach((propertyInfo) => {
         fillInstanceEntities(entities, propertyInfo.targetEntity);
     });

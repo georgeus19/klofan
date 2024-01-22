@@ -1,4 +1,4 @@
-import {identifier, safeGet} from '@klofan/utils'
+import { identifier, safeGet } from '@klofan/utils';
 import { Item } from './representation/item/item';
 import { Property, isProperty } from './representation/relation/property';
 import { Relation } from './representation/relation/relation';

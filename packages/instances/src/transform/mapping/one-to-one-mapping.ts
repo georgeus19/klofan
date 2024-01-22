@@ -13,7 +13,12 @@ export function isOneToOneMappingEligible(sourceInstances: number, targetInstanc
 }
 
 export function getOneToOnePropertyInstances(sourceInstances: number): PropertyInstance[] {
-    return [...Array(sourceInstances).keys()].map((index): PropertyInstance => ({ literals: [], targetInstanceIndices: [index] }));
+    return [...Array(sourceInstances).keys()].map(
+        (index): PropertyInstance => ({
+            literals: [],
+            targetInstanceIndices: [index],
+        })
+    );
 }
 
 export function getOneToOneMappingPropertyInstances(instances: RawInstances, mapping: OneToOneMapping): PropertyInstance[] {

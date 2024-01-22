@@ -1,5 +1,5 @@
 import { Schema } from '../../schema';
-import {identifier} from '@klofan/utils'
+import { identifier } from '@klofan/utils';
 import { GraphProperty } from '../relation/graph-property';
 import { Item } from './item';
 
@@ -21,6 +21,12 @@ export function isEntity(item: Item): item is Entity {
 export function getProperties(schema: Schema, entityId: identifier): GraphProperty[] {
     return schema.entity(entityId).properties.map((propertyId) => {
         const property = schema.property(propertyId);
-        return { id: property.id, name: property.name, type: 'graph-property', uri: property.uri, value: schema.item(property.value) };
+        return {
+            id: property.id,
+            name: property.name,
+            type: 'graph-property',
+            uri: property.uri,
+            value: schema.item(property.value),
+        };
     });
 }

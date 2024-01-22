@@ -57,8 +57,16 @@ describe('Parse Tests', () => {
                 name: 'root',
                 instanceCount: 1,
                 properties: {
-                    name: { id: '4-name', targetEntity: createLiteral('2', 'name'), instances: [{ instances: 0, literals: ['Salad'] }] },
-                    weight: { id: '5-weight', targetEntity: createLiteral('3', 'weight'), instances: [{ instances: 0, literals: [20] }] },
+                    name: {
+                        id: '4-name',
+                        targetEntity: createLiteral('2', 'name'),
+                        instances: [{ instances: 0, literals: ['Salad'] }],
+                    },
+                    weight: {
+                        id: '5-weight',
+                        targetEntity: createLiteral('3', 'weight'),
+                        instances: [{ instances: 0, literals: [20] }],
+                    },
                 },
             };
 
@@ -90,9 +98,21 @@ describe('Parse Tests', () => {
                 name: 'origin',
                 instanceCount: 1,
                 properties: {
-                    country: { id: '8-country', targetEntity: createLiteral('5', 'country'), instances: [{ instances: 0, literals: ['Germany'] }] },
-                    city: { id: '9-city', targetEntity: createLiteral('6', 'city'), instances: [{ instances: 0, literals: ['Berlin'] }] },
-                    zip: { id: '10-zip', targetEntity: createLiteral('7', 'zip'), instances: [{ instances: 0, literals: [false] }] },
+                    country: {
+                        id: '8-country',
+                        targetEntity: createLiteral('5', 'country'),
+                        instances: [{ instances: 0, literals: ['Germany'] }],
+                    },
+                    city: {
+                        id: '9-city',
+                        targetEntity: createLiteral('6', 'city'),
+                        instances: [{ instances: 0, literals: ['Berlin'] }],
+                    },
+                    zip: {
+                        id: '10-zip',
+                        targetEntity: createLiteral('7', 'zip'),
+                        instances: [{ instances: 0, literals: [false] }],
+                    },
                 },
             };
             const expectedEntityTree: EntityTreeNode = {
@@ -101,9 +121,21 @@ describe('Parse Tests', () => {
                 name: 'root',
                 instanceCount: 1,
                 properties: {
-                    name: { id: '11-name', targetEntity: createLiteral('2', 'name'), instances: [{ instances: 0, literals: ['Salad'] }] },
-                    weight: { id: '12-weight', targetEntity: createLiteral('3', 'weight'), instances: [{ instances: 0, literals: [null] }] },
-                    origin: { id: '13-origin', targetEntity: originEntityTree, instances: [{ instances: 1, literals: [] }] },
+                    name: {
+                        id: '11-name',
+                        targetEntity: createLiteral('2', 'name'),
+                        instances: [{ instances: 0, literals: ['Salad'] }],
+                    },
+                    weight: {
+                        id: '12-weight',
+                        targetEntity: createLiteral('3', 'weight'),
+                        instances: [{ instances: 0, literals: [null] }],
+                    },
+                    origin: {
+                        id: '13-origin',
+                        targetEntity: originEntityTree,
+                        instances: [{ instances: 1, literals: [] }],
+                    },
                 },
             };
             expect(createEntityTree(treeInput, schemaTree)).toEqual(expectedEntityTree);
@@ -397,15 +429,28 @@ describe('Parse Tests', () => {
                     product_name: {
                         id: '31-product_name',
                         targetEntity: createLiteral('3', 'product_name'),
-                        instances: [{ instances: 0, literals: ['Thai peanut noodle kit includes stir-fry rice noodles & thai peanut seasoning'] }],
+                        instances: [
+                            {
+                                instances: 0,
+                                literals: ['Thai peanut noodle kit includes stir-fry rice noodles & thai peanut seasoning'],
+                            },
+                        ],
                     },
                     countries: {
                         id: '32-countries',
                         targetEntity: createLiteral('4', 'countries'),
                         instances: [{ instances: 0, literals: ['United States'] }],
                     },
-                    ingredients: { id: '33-ingredients', targetEntity: ingredientsEntityTree, instances: [{ instances: 5, literals: [] }] },
-                    nutriments: { id: '34-nutriments', targetEntity: nutrimentsEntityTree, instances: [{ instances: 1, literals: [] }] },
+                    ingredients: {
+                        id: '33-ingredients',
+                        targetEntity: ingredientsEntityTree,
+                        instances: [{ instances: 5, literals: [] }],
+                    },
+                    nutriments: {
+                        id: '34-nutriments',
+                        targetEntity: nutrimentsEntityTree,
+                        instances: [{ instances: 1, literals: [] }],
+                    },
                 },
             };
             const expectedEntityTree: EntityTreeNode = {
@@ -414,7 +459,11 @@ describe('Parse Tests', () => {
                 name: 'root',
                 instanceCount: 1,
                 properties: {
-                    product: { id: '35-product', targetEntity: productEntityTree, instances: [{ instances: 1, literals: [] }] },
+                    product: {
+                        id: '35-product',
+                        targetEntity: productEntityTree,
+                        instances: [{ instances: 1, literals: [] }],
+                    },
                 },
             };
             expect(createEntityTree(treeInput, schemaTree)).toEqual(expectedEntityTree);

@@ -10,7 +10,10 @@ const { namedNode, literal } = DataFactory;
 export async function save(instances: Instances, schema: Schema, saveConfiguration: SaveConfiguration, outputWriter: Writer) {
     for (const subjectEntity of schema.entities()) {
         const properties = getProperties(schema, subjectEntity.id);
-        const subjectRepresentationBuilder: EntityInstanceRepresentationBuilder = safeGet(saveConfiguration.entityInstanceUriBuilders, subjectEntity.id);
+        const subjectRepresentationBuilder: EntityInstanceRepresentationBuilder = safeGet(
+            saveConfiguration.entityInstanceUriBuilders,
+            subjectEntity.id
+        );
         for (const subjectInstance of await instances.entityInstances(subjectEntity)) {
             const subjectRepresentation = subjectInstance.uri
                 ? namedNode(subjectInstance.uri)

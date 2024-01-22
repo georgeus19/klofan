@@ -1,4 +1,4 @@
-import type {identifier} from '@klofan/utils'
+import type { identifier } from '@klofan/utils';
 
 export type relationType = 'property' | 'graph-property';
 

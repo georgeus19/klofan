@@ -1,1 +1,1 @@
-export {loadSchema} from '../load/load-schema'
+export { loadSchema } from '../load/load-schema';

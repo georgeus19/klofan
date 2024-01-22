@@ -27,19 +27,39 @@ describe('Transform Instances', () => {
                 const originalSourceEntityInstances: EntityInstance[] = [
                     {
                         id: 0,
-                        properties: { IDREF: { literals: [{ value: 'AAA' }, { value: 'BBB' }], targetInstanceIndices: [0, 1] } },
+                        properties: {
+                            IDREF: {
+                                literals: [{ value: 'AAA' }, { value: 'BBB' }],
+                                targetInstanceIndices: [0, 1],
+                            },
+                        },
                     },
                     {
                         id: 1,
-                        properties: { IDREF: { literals: [{ value: 'BBB' }], targetInstanceIndices: [1] } },
+                        properties: {
+                            IDREF: {
+                                literals: [{ value: 'BBB' }],
+                                targetInstanceIndices: [1],
+                            },
+                        },
                     },
                     {
                         id: 2,
-                        properties: { IDREF: { literals: [{ value: 'BBB' }], targetInstanceIndices: [] } },
+                        properties: {
+                            IDREF: {
+                                literals: [{ value: 'BBB' }],
+                                targetInstanceIndices: [],
+                            },
+                        },
                     },
                 ];
 
-                const property: Property = { id: 'IDREF', name: 'idref', type: 'property', value: '2' };
+                const property: Property = {
+                    id: 'IDREF',
+                    name: 'idref',
+                    type: 'property',
+                    value: '2',
+                };
 
                 const propertyInstances = getPreservedPropertyInstances(originalSourceEntityInstances, property);
                 expect(propertyInstances).toEqual(expectedPropertyInstances);
@@ -59,11 +79,26 @@ describe('Transform Instances', () => {
                         targetInstanceIndices: [],
                     },
                 ];
-                const property: Property = { id: 'IDREF', name: 'idref', type: 'property', value: '2' };
+                const property: Property = {
+                    id: 'IDREF',
+                    name: 'idref',
+                    type: 'property',
+                    value: '2',
+                };
                 const mapping: PreserveMapping = {
                     type: 'preserve-mapping',
-                    originalSource: { id: '0', name: '0', properties: ['IDREF'], type: 'entity' },
-                    originalTarget: { id: '1', name: '1', properties: [], type: 'entity' },
+                    originalSource: {
+                        id: '0',
+                        name: '0',
+                        properties: ['IDREF'],
+                        type: 'entity',
+                    },
+                    originalTarget: {
+                        id: '1',
+                        name: '1',
+                        properties: [],
+                        type: 'entity',
+                    },
                     newSource: { id: '2', name: '2', properties: [], type: 'entity' },
                     newTarget: { id: '3', name: '3', properties: [], type: 'entity' },
                     property: property,
@@ -77,7 +112,10 @@ describe('Transform Instances', () => {
                     },
                     propertyInstances: {
                         '0.IDREF': [
-                            { literals: [{ value: 'AAA' }, { value: 'BBB' }], targetInstanceIndices: [0, 1] },
+                            {
+                                literals: [{ value: 'AAA' }, { value: 'BBB' }],
+                                targetInstanceIndices: [0, 1],
+                            },
                             { literals: [{ value: 'BBB' }], targetInstanceIndices: [1] },
                             { literals: [{ value: 'BBB' }], targetInstanceIndices: [] },
                         ],
