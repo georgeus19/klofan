@@ -1,0 +1,3 @@
+{
+    "extends": "@klofan/typescript-config/base.json",
+}
