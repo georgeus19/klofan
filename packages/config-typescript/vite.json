@@ -7,10 +7,10 @@
     "esModuleInterop": false,
     "jsx": "react-jsx",
     "lib": ["dom", "dom.iterable", "esnext"],
-    "module": "ESNext",
     "noEmit": true,
+    "moduleResolution": "Bundler",
     "resolveJsonModule": true,
-    "skipLibCheck": false,
+    "allowImportingTsExtensions": true,
     "target": "ESNext",
     "types": ["vite/client"]
   }

@@ -2,24 +2,26 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "display": "Default",
   "compilerOptions": {
-    "composite": false,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "target": "ES2022",
+    "useDefineForClassFields": true,
+    
+    "composite": true,
+    "isolatedModules": true,
     "declaration": true,
     "declarationMap": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "allowImportingTsExtensions": true,
-    "inlineSources": false,
-    "isolatedModules": true,
-    "useDefineForClassFields": true,
     "module": "ESNext",
-    "moduleResolution": "Bundler",
+    "moduleResolution": "NodeNext",
+     
+    "strict": true,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
+    "strictNullChecks": true,
+    "forceConsistentCasingInFileNames": true,
+    
     "preserveWatchOutput": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "noEmit": true,
-    "strictNullChecks": true
+    "lib": ["ES2022"]
   },
   "exclude": ["node_modules"]
 }
