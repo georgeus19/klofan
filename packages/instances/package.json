@@ -1,56 +1,58 @@
 {
     "name": "@klofan/instances",
     "scripts": {
-      "build": "tsc",
-      "lint": "eslint . --max-warnings 0"
+        "build": "tsc",
+        "lint": "eslint . --max-warnings 0"
     },
     "files": [
-      "dist/**"
+        "dist/**"
     ],
     "exports": {
-      ".": {
-        "types": "./src/api/instances-api.ts",
-        "require": "./dist/api/instances-api.js",
-        "import": "./src/api/instances-api.ts"
-      },
-      "./load": {
-        "types": "./src/api/load-api.ts",
-        "require": "./dist/api/load-api.js",
-        "import": "./src/api/load-api.ts"
-      },
-      "./representation": {
-        "types": "./src/api/representation-api.ts",
-        "require": "./dist/api/representation-api.js",
-        "import": "./src/api/representation-api.ts"
-      },
-      "./save": {
-        "types": "./src/api/save-api.ts",
-        "require": "./dist/api/save-api.js",
-        "import": "./src/api/save-api.ts"
-      },
-      "./transform": {
-        "types": "./src/api/transform-api.ts",
-        "require": "./dist/api/transform-api.js",
-        "import": "./src/api/transform-api.ts"
-      }
+        ".": {
+            "types": "./src/api/instances-api.ts",
+            "require": "./dist/api/instances-api.js",
+            "import": "./src/api/instances-api.ts"
+        },
+        "./load": {
+            "types": "./src/api/load-api.ts",
+            "require": "./dist/api/load-api.js",
+            "import": "./src/api/load-api.ts"
+        },
+        "./representation": {
+            "types": "./src/api/representation-api.ts",
+            "require": "./dist/api/representation-api.js",
+            "import": "./src/api/representation-api.ts"
+        },
+        "./save": {
+            "types": "./src/api/save-api.ts",
+            "require": "./dist/api/save-api.js",
+            "import": "./src/api/save-api.ts"
+        },
+        "./transform": {
+            "types": "./src/api/transform-api.ts",
+            "require": "./dist/api/transform-api.js",
+            "import": "./src/api/transform-api.ts"
+        }
     },
     "dependencies": {
-      "@klofan/schema": "*",
-      "@klofan/utils": "*",
-      "@klofan/parse": "*",
-      "lodash": "^4.17.21",
-      "n3": "^1.17.1"
+        "@klofan/parse": "*",
+        "@klofan/schema": "*",
+        "@klofan/utils": "*",
+        "lodash": "^4.17.21",
+        "n3": "^1.17.1"
     },
     "devDependencies": {
-      "@jest/globals": "^29.7.0",
-      "@types/lodash": "^4.14.200",
-      "@types/n3": "^1.16.3",
-      "eslint": "^8.45.0",
-      "jest": "^29.7.0",
-      "jest-environment-jsdom": "^29.7.0",
-      "ts-jest": "^29.1.1",
-      "@klofan/typescript-config": "*",
-      "@klofan/eslint-config": "*",
-      "typescript": "^5.0.2"
+        "@jest/globals": "^29.7.0",
+        "@klofan/eslint-config": "*",
+        "@klofan/typescript-config": "*",
+        "@types/lodash": "^4.14.200",
+        "@types/n3": "^1.16.3",
+        "@typescript-eslint/eslint-plugin": "^6.19.1",
+        "@typescript-eslint/parser": "^6.19.1",
+        "eslint": "^8.45.0",
+        "jest": "^29.7.0",
+        "jest-environment-jsdom": "^29.7.0",
+        "ts-jest": "^29.1.1",
+        "typescript": "^5.0.2"
     }
-  }
+}

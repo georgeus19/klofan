@@ -1,23 +1,25 @@
 {
     "name": "@klofan/utils",
     "scripts": {
-      "build": "tsc",
-      "lint": "eslint . --max-warnings 0"
+        "build": "tsc",
+        "lint": "eslint . --max-warnings 0"
     },
     "files": [
-      "dist/**"
+        "dist/**"
     ],
     "exports": {
         ".": {
-          "types": "./src/utils-api.ts",
-          "require": "./dist/utils-api.js",
-          "import": "./src/utils-api.ts"
+            "types": "./src/utils-api.ts",
+            "require": "./dist/utils-api.js",
+            "import": "./src/utils-api.ts"
         }
     },
     "devDependencies": {
-      "eslint": "^8.45.0",
-      "@klofan/typescript-config": "*",
-      "@klofan/eslint-config": "*",
-      "typescript": "^5.0.2"
+        "@klofan/eslint-config": "*",
+        "@klofan/typescript-config": "*",
+        "@typescript-eslint/eslint-plugin": "^6.19.1",
+        "@typescript-eslint/parser": "^6.19.1",
+        "eslint": "^8.45.0",
+        "typescript": "^5.0.2"
     }
-  }
+}
