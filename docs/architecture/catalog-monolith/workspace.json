@@ -1,0 +1,268 @@
+{
+  "id" : 1,
+  "name" : "Name",
+  "description" : "Description",
+  "lastModifiedDate" : "2024-02-04T18:41:47Z",
+  "lastModifiedAgent" : "structurizr-javascript",
+  "properties" : {
+    "structurizr.dsl" : "d29ya3NwYWNlIHsKCiAgICBtb2RlbCB7CiAgICAgICAgc29mdHdhcmVTeXN0ZW0gPSBzb2Z0d2FyZVN5c3RlbSAiU29mdHdhcmUgU3lzdGVtIiAiTXkgc29mdHdhcmUgc3lzdGVtLiIgewoKCiAgICAgICAgICAgIGNhdGFsb2dVSUNvbnRhaW5lciA9IGNvbnRhaW5lciAiQ2F0YWxvZyBVSSIgIkFwcGxpY2F0aW9uIGZvciBzdG9yaW5nIGRhdGEgdG8gY2F0YWxvZyBhbmQgdmlld2luZyB0aGVtLiIKCiAgICAgICAgICAgIGNhdGFsb2dDb250YWluZXIgPSBjb250YWluZXIgIkNhdGFsb2ciICJTZXJ2ZXIgZm9yIHN0b3JpbmcgUkRGIGRhdGEgYW5kIHByb3ZpZGluZyByZWNvbW1lbmRhdGlvbnMuIiB7CiAgICAgICAgICAgICAgICBjYXRhbG9nQ29tcG9uZW50ID0gY29tcG9uZW50ICJEYXRhIFVwbG9hZGVyIiAiVXBsb2FkcyBSREYgZGF0YSB0byBkYXRhYmFzZSBhbG9uZyB3aXRoIGFueSBhbmFseXplZCBtZXRhZGF0YS4iCiAgICAgICAgICAgICAgICByZWNvbW1lbmRlcnNDb21wb25lbnQgPSBjb21wb25lbnQgIlJlY29tbWVuZGVycyIgIlByb3ZpZGVzIHJlY29tbWVuZGF0aW9ucyBmb3IgdXNlcnMgZGF0YSBpbiBlZGl0b3IuIgogICAgICAgICAgICAgICAgYW5hbHl6ZXJzQ29tcG9uZW50ID0gY29tcG9uZW50ICJBbmFseXplcnMiICJBbmFseXplcyBSREYgZGF0YSB1cGxvYWRlZCBhbmQgc3RvcmVzIG1ldGFkYXRhL2luZGV4IGFib3V0IHRoZW0uIgogICAgICAgICAgICB9CgogICAgICAgICAgICByZGZTdG9yZUNvbnRhaW5lciA9IGNvbnRhaW5lciAiVXBsb2FkZWQgUkRGICYgTWV0YWRhdGEgVHJpcGxlc3RvcmUiICJTdG9yZSBvcmlnaW5hbCB1cGxvYWRlZCByZGYgZGF0YSBhbmQgYW55IG1ldGFkYXRhIGZyb20gYW5hbHl6ZXJzLiIgIlZpcnR1b3NvIgoKICAgICAgICAgICAgZWRpdG9yQ29udGFpbmVyID0gY29udGFpbmVyICJFZGl0b3IiICJFZGl0b3IgYXBwbGljYXRpb24gd2hpY2ggaGVscHMgdXNlIHRyYW5zZm9ybSB0aGVpciBkYXRhIHRvIFJERiB3aXRoIHN1aXRhYmxlIHZvY2FidWxhcmllcy4iCgogICAgICAgIH0KCiAgICAgICAgY2F0YWxvZ1VJQ29udGFpbmVyIC0+IGNhdGFsb2dDb21wb25lbnQgIlVwbG9hZCBSREYgYW5kIHZpZXcgdXBsb2FkcyIKCiAgICAgICAgY2F0YWxvZ0NvbXBvbmVudCAtPiBhbmFseXplcnNDb21wb25lbnQgIkFuYWx5emUgdXBsb2FkZWQgZGF0YSIKICAgICAgICByZWNvbW1lbmRlcnNDb21wb25lbnQgLT4gYW5hbHl6ZXJzQ29tcG9uZW50ICJHZXQgbWV0YWRhdGEgcXVlcmllcyIKCiAgICAgICAgY2F0YWxvZ0NvbXBvbmVudCAtPiByZGZTdG9yZUNvbnRhaW5lciAiVXBsb2FkIGFuZCBmZXRjaCBSREYgZGF0YSBhbmQgaXRzIG1ldGFkYXRhIgogICAgICAgIGFuYWx5emVyc0NvbXBvbmVudCAtPiByZGZTdG9yZUNvbnRhaW5lciAiQWNjZXNzIHVwbG9hZGVkIGRhdGEgZm9yIGFuYWx5c2lzIgogICAgICAgIHJlY29tbWVuZGVyc0NvbXBvbmVudCAtPiByZGZTdG9yZUNvbnRhaW5lciAiQWNjZXNzIHVwbG9hZGVkIGRhdGEgZm9yIHJlY29tbWVuZGF0aW9ucyIKCiAgICAgICAgZWRpdG9yQ29udGFpbmVyIC0+IHJlY29tbWVuZGVyc0NvbXBvbmVudCAiR2V0IHJlY29tbWVuZGF0aW9ucyIKCiAgICB9CgogICAgdmlld3MgewoKICAgICAgICBjb250YWluZXIgc29mdHdhcmVTeXN0ZW0gIlN5c3RlbUNvbnRhaW5lclZpZXciIHsKICAgICAgICAgICAgaW5jbHVkZSAqCiAgICAgICAgfQoKICAgICAgICBjb21wb25lbnQgY2F0YWxvZ0NvbnRhaW5lciAiQ2F0YWxvZ0NvbXBvbmVudFZpZXciIHsKICAgICAgICAgICAgaW5jbHVkZSAqCiAgICAgICAgfQoKICAgICAgICAKCiAgICAgc3R5bGVzIHsKICAgICAgICBlbGVtZW50ICJFbGVtZW50IiB7CiAgICAgICAgICAgIGZvbnRTaXplIDMyCiAgICAgICAgfQoKICAgICAgICByZWxhdGlvbnNoaXAgIlJlbGF0aW9uc2hpcCIgewogICAgICAgICAgICBmb250U2l6ZSAzMAogICAgICAgIH0KCiAgICAgICAgZWxlbWVudCAiR3JvdXAiIHsKICAgICAgICAgICAgZm9udFNpemUgMzAKICAgICAgICB9CgogICAgICAgICAgIGVsZW1lbnQgIkV4aXN0aW5nIFN5c3RlbSIgewogICAgICAgICAgICAgICAgYmFja2dyb3VuZCAjOTk5OTk5CiAgICAgICAgICAgIH0KCiAgICB9CgogICAgICAgIAoKICAgIHRoZW1lIGRlZmF1bHQKCiAgICB9CiAgICAKfQo="
+  },
+  "configuration" : { },
+  "model" : {
+    "softwareSystems" : [ {
+      "id" : "1",
+      "tags" : "Element,Software System",
+      "properties" : {
+        "structurizr.dsl.identifier" : "softwaresystem"
+      },
+      "name" : "Software System",
+      "description" : "My software system.",
+      "location" : "Unspecified",
+      "containers" : [ {
+        "id" : "7",
+        "tags" : "Element,Container",
+        "properties" : {
+          "structurizr.dsl.identifier" : "rdfstorecontainer"
+        },
+        "name" : "Uploaded RDF & Metadata Triplestore",
+        "description" : "Store original uploaded rdf data and any metadata from analyzers.",
+        "technology" : "Virtuoso",
+        "documentation" : { }
+      }, {
+        "id" : "2",
+        "tags" : "Element,Container",
+        "properties" : {
+          "structurizr.dsl.identifier" : "cataloguicontainer"
+        },
+        "name" : "Catalog UI",
+        "description" : "Application for storing data to catalog and viewing them.",
+        "relationships" : [ {
+          "id" : "10",
+          "sourceId" : "2",
+          "destinationId" : "3",
+          "description" : "Upload RDF and view uploads",
+          "linkedRelationshipId" : "9"
+        }, {
+          "id" : "9",
+          "tags" : "Relationship",
+          "sourceId" : "2",
+          "destinationId" : "4",
+          "description" : "Upload RDF and view uploads"
+        } ],
+        "documentation" : { }
+      }, {
+        "id" : "3",
+        "tags" : "Element,Container",
+        "properties" : {
+          "structurizr.dsl.identifier" : "catalogcontainer"
+        },
+        "name" : "Catalog",
+        "description" : "Server for storing RDF data and providing recommendations.",
+        "relationships" : [ {
+          "id" : "14",
+          "sourceId" : "3",
+          "destinationId" : "7",
+          "description" : "Upload and fetch RDF data and its metadata",
+          "linkedRelationshipId" : "13"
+        } ],
+        "components" : [ {
+          "id" : "5",
+          "tags" : "Element,Component",
+          "properties" : {
+            "structurizr.dsl.identifier" : "recommenderscomponent"
+          },
+          "name" : "Recommenders",
+          "description" : "Provides recommendations for users data in editor.",
+          "relationships" : [ {
+            "id" : "12",
+            "tags" : "Relationship",
+            "sourceId" : "5",
+            "destinationId" : "6",
+            "description" : "Get metadata queries"
+          }, {
+            "id" : "16",
+            "tags" : "Relationship",
+            "sourceId" : "5",
+            "destinationId" : "7",
+            "description" : "Access uploaded data for recommendations"
+          } ],
+          "documentation" : { }
+        }, {
+          "id" : "6",
+          "tags" : "Element,Component",
+          "properties" : {
+            "structurizr.dsl.identifier" : "analyzerscomponent"
+          },
+          "name" : "Analyzers",
+          "description" : "Analyzes RDF data uploaded and stores metadata/index about them.",
+          "relationships" : [ {
+            "id" : "15",
+            "tags" : "Relationship",
+            "sourceId" : "6",
+            "destinationId" : "7",
+            "description" : "Access uploaded data for analysis"
+          } ],
+          "documentation" : { }
+        }, {
+          "id" : "4",
+          "tags" : "Element,Component",
+          "properties" : {
+            "structurizr.dsl.identifier" : "catalogcomponent"
+          },
+          "name" : "Data Uploader",
+          "description" : "Uploads RDF data to database along with any analyzed metadata.",
+          "relationships" : [ {
+            "id" : "11",
+            "tags" : "Relationship",
+            "sourceId" : "4",
+            "destinationId" : "6",
+            "description" : "Analyze uploaded data"
+          }, {
+            "id" : "13",
+            "tags" : "Relationship",
+            "sourceId" : "4",
+            "destinationId" : "7",
+            "description" : "Upload and fetch RDF data and its metadata"
+          } ],
+          "documentation" : { }
+        } ],
+        "documentation" : { }
+      }, {
+        "id" : "8",
+        "tags" : "Element,Container",
+        "properties" : {
+          "structurizr.dsl.identifier" : "editorcontainer"
+        },
+        "name" : "Editor",
+        "description" : "Editor application which helps use transform their data to RDF with suitable vocabularies.",
+        "relationships" : [ {
+          "id" : "17",
+          "tags" : "Relationship",
+          "sourceId" : "8",
+          "destinationId" : "5",
+          "description" : "Get recommendations"
+        }, {
+          "id" : "18",
+          "sourceId" : "8",
+          "destinationId" : "3",
+          "description" : "Get recommendations",
+          "linkedRelationshipId" : "17"
+        } ],
+        "documentation" : { }
+      } ],
+      "documentation" : { }
+    } ]
+  },
+  "documentation" : { },
+  "views" : {
+    "containerViews" : [ {
+      "key" : "SystemContainerView",
+      "order" : 1,
+      "softwareSystemId" : "1",
+      "paperSize" : "A5_Landscape",
+      "dimensions" : {
+        "width" : 2480,
+        "height" : 1748
+      },
+      "externalSoftwareSystemBoundariesVisible" : true,
+      "elements" : [ {
+        "id" : "2",
+        "x" : 230,
+        "y" : 515
+      }, {
+        "id" : "3",
+        "x" : 1020,
+        "y" : 770
+      }, {
+        "id" : "7",
+        "x" : 1810,
+        "y" : 755
+      }, {
+        "id" : "8",
+        "x" : 225,
+        "y" : 905
+      } ],
+      "relationships" : [ {
+        "id" : "18"
+      }, {
+        "id" : "14"
+      }, {
+        "id" : "10"
+      } ]
+    } ],
+    "componentViews" : [ {
+      "key" : "CatalogComponentView",
+      "order" : 2,
+      "paperSize" : "A5_Landscape",
+      "dimensions" : {
+        "width" : 2480,
+        "height" : 1748
+      },
+      "containerId" : "3",
+      "externalContainerBoundariesVisible" : true,
+      "elements" : [ {
+        "id" : "2",
+        "x" : 115,
+        "y" : 435
+      }, {
+        "id" : "4",
+        "x" : 820,
+        "y" : 335
+      }, {
+        "id" : "5",
+        "x" : 820,
+        "y" : 1240
+      }, {
+        "id" : "6",
+        "x" : 820,
+        "y" : 795
+      }, {
+        "id" : "7",
+        "x" : 1735,
+        "y" : 750
+      }, {
+        "id" : "8",
+        "x" : 105,
+        "y" : 840
+      } ],
+      "relationships" : [ {
+        "id" : "17"
+      }, {
+        "id" : "16"
+      }, {
+        "id" : "15"
+      }, {
+        "id" : "13"
+      }, {
+        "id" : "12"
+      }, {
+        "id" : "11"
+      }, {
+        "id" : "9"
+      } ]
+    } ],
+    "configuration" : {
+      "branding" : { },
+      "styles" : {
+        "elements" : [ {
+          "tag" : "Element",
+          "fontSize" : 32
+        }, {
+          "tag" : "Group",
+          "fontSize" : 30
+        }, {
+          "tag" : "Existing System",
+          "background" : "#999999"
+        } ],
+        "relationships" : [ {
+          "tag" : "Relationship",
+          "fontSize" : 30
+        } ]
+      },
+      "themes" : [ "https://static.structurizr.com/themes/default/theme.json" ],
+      "terminology" : { },
+      "metadataSymbols" : "SquareBrackets",
+      "lastSavedView" : "CatalogComponentView"
+    }
+  }
+}

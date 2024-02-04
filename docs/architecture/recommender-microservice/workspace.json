@@ -1,0 +1,296 @@
+{
+  "id" : 1,
+  "name" : "Name",
+  "description" : "Description",
+  "lastModifiedDate" : "2024-02-04T18:35:49Z",
+  "lastModifiedAgent" : "structurizr-javascript",
+  "properties" : {
+    "structurizr.dsl" : "d29ya3NwYWNlIHsKCiAgICBtb2RlbCB7CiAgICAgICAgc29mdHdhcmVTeXN0ZW0gPSBzb2Z0d2FyZVN5c3RlbSAiU29mdHdhcmUgU3lzdGVtIiAiTXkgc29mdHdhcmUgc3lzdGVtLiIgewoKCiAgICAgICAgICAgIGNhdGFsb2dVSUNvbnRhaW5lciA9IGNvbnRhaW5lciAiQ2F0YWxvZyBVSSIgIkFwcGxpY2F0aW9uIGZvciBzdG9yaW5nIGRhdGEgdG8gY2F0YWxvZyBhbmQgdmlld2luZyB0aGVtLiIKCiAgICAgICAgICAgIGNhdGFsb2dDb250YWluZXIgPSBjb250YWluZXIgIkNhdGFsb2ciICJTZXJ2ZXIgZm9yIHN0b3JpbmcgUkRGIGRhdGEuIgogICAgICAgICAgICBmc1N0b3JlQ29udGFpbmVyID0gY29udGFpbmVyICJSREYgRlMgU3RvcmUiICJTdG9yZXMgdXBsb2FkZWQgcmRmIGZpbGVzLiIgIkZpbGVTeXN0ZW0iCiAgICAgICAgICAgIHVwbG9hZFJlY29yZHNTdG9yZSA9IGNvbnRhaW5lciAiVXBsb2FkIFJlY29yZHMgU3RvcmUiICJTdG9yZXMgcmVjb3JkcyBhYm91dCB0aGUgdXBsb2FkZWQgcmRmIGZpbGVzLiIgIk1vbmdvREIiCgogICAgICAgICAgICByZWNvbW1lbmRlcnNDb250YWluZXIgPSBjb250YWluZXIgIlJlY29tbWVuZGVycyIgIlByb3ZpZGVzIHJlY29tbWVuZGF0aW9ucyBmb3IgdXNlcnMgZGF0YSBpbiBlZGl0b3IuIiB7CiAgICAgICAgICAgICAgICBhbmFseXplcnNDb21wb25lbnQgPSBjb21wb25lbnQgIkFuYWx5emVycyIgIkFuYWx5emVzIFJERiBkYXRhIHVwbG9hZGVkIGFuZCBzdG9yZXMgbWV0YWRhdGEvaW5kZXggYWJvdXQgdGhlbS4iCiAgICAgICAgICAgICAgICByZWNvbW1lbmRlcnNDb21wb25lbnQgPSBjb21wb25lbnQgIlJlY29tbWVuZGVycyIgIlByb3ZpZGVzIHJlY29tbWVuZGF0aW9ucyBmb3IgdXNlcnMgZGF0YSBpbiBlZGl0b3IuIgogICAgICAgICAgICB9CgogICAgICAgICAgICByZWNvbW1lbmRhdGlvbnNJbmRleFN0b3JlQ29udGFpbmVyID0gY29udGFpbmVyICJSZWNvbW1lbmRhdGlvbnMgSW5kZXggU3RvcmUiICJTdG9yZSBhbnkgZGF0YSBmb3IgZG9pbmcgcmVjb21tZW5kYXRpb25zIiAiTW9uZ29EQiIKCiAgICAgICAgICAgIGVkaXRvckNvbnRhaW5lciA9IGNvbnRhaW5lciAiRWRpdG9yIiAiRWRpdG9yIGFwcGxpY2F0aW9uIHdoaWNoIGhlbHBzIHVzZSB0cmFuc2Zvcm0gdGhlaXIgZGF0YSB0byBSREYgd2l0aCBzdWl0YWJsZSB2b2NhYnVsYXJpZXMuIgoKICAgICAgICB9CgogICAgICAgIGNhdGFsb2dVSUNvbnRhaW5lciAtPiBjYXRhbG9nQ29udGFpbmVyICJVcGxvYWQgUkRGIGFuZCB2aWV3IHVwbG9hZHMiCgogICAgICAgIGNhdGFsb2dDb250YWluZXIgLT4gZnNTdG9yZUNvbnRhaW5lciAiU3RvcmUgdXBsb2FkZWQgZmlsZXMiCiAgICAgICAgY2F0YWxvZ0NvbnRhaW5lciAtPiB1cGxvYWRSZWNvcmRzU3RvcmUgIlN0b3JlIHVwbG9hZCByZWNvcmRzIgogICAgICAgIGNhdGFsb2dDb250YWluZXIgLT4gYW5hbHl6ZXJzQ29tcG9uZW50ICJGb3J3YXJkIHVwbG9hZGVkIHJkZiBmaWxlcyIKCiAgICAgICAgYW5hbHl6ZXJzQ29tcG9uZW50IC0+IHJlY29tbWVuZGF0aW9uc0luZGV4U3RvcmVDb250YWluZXIgIlN0b3JlIGFuYWx5emVkIHJlY29tbWVuZGF0aW9uIGluZGV4IgoKICAgICAgICByZWNvbW1lbmRlcnNDb21wb25lbnQgLT4gcmVjb21tZW5kYXRpb25zSW5kZXhTdG9yZUNvbnRhaW5lciAiQWNjZXNzIGluZGV4IgoKICAgICAgICBlZGl0b3JDb250YWluZXIgLT4gcmVjb21tZW5kZXJzQ29tcG9uZW50ICJHZXQgcmVjb21tZW5kYXRpb25zIgogICAgfQoKICAgIHZpZXdzIHsKCiAgICAgICAgY29udGFpbmVyIHNvZnR3YXJlU3lzdGVtICJTeXN0ZW1Db250YWluZXJWaWV3IiB7CiAgICAgICAgICAgIGluY2x1ZGUgKgogICAgICAgIH0KCiAgICAgICAgY29tcG9uZW50IHJlY29tbWVuZGVyc0NvbnRhaW5lciAiUmVjb21tZW5kZXJzQ29tcG9uZW50VmlldyIgewogICAgICAgICAgICBpbmNsdWRlICoKICAgICAgICB9CgogICAgICAgIAoKICAgICBzdHlsZXMgewogICAgICAgIGVsZW1lbnQgIkVsZW1lbnQiIHsKICAgICAgICAgICAgZm9udFNpemUgMzIKICAgICAgICB9CgogICAgICAgIHJlbGF0aW9uc2hpcCAiUmVsYXRpb25zaGlwIiB7CiAgICAgICAgICAgIGZvbnRTaXplIDMwCiAgICAgICAgfQoKICAgICAgICBlbGVtZW50ICJHcm91cCIgewogICAgICAgICAgICBmb250U2l6ZSAzMAogICAgICAgIH0KCiAgICAgICAgICAgZWxlbWVudCAiRXhpc3RpbmcgU3lzdGVtIiB7CiAgICAgICAgICAgICAgICBiYWNrZ3JvdW5kICM5OTk5OTkKICAgICAgICAgICAgfQoKICAgIH0KCiAgICAgICAgCgogICAgdGhlbWUgZGVmYXVsdAoKICAgIH0KICAgIAp9Cg=="
+  },
+  "configuration" : { },
+  "model" : {
+    "softwareSystems" : [ {
+      "id" : "1",
+      "tags" : "Element,Software System",
+      "properties" : {
+        "structurizr.dsl.identifier" : "softwaresystem"
+      },
+      "name" : "Software System",
+      "description" : "My software system.",
+      "location" : "Unspecified",
+      "containers" : [ {
+        "id" : "9",
+        "tags" : "Element,Container",
+        "properties" : {
+          "structurizr.dsl.identifier" : "recommendationsindexstorecontainer"
+        },
+        "name" : "Recommendations Index Store",
+        "description" : "Store any data for doing recommendations",
+        "technology" : "MongoDB",
+        "documentation" : { }
+      }, {
+        "id" : "2",
+        "tags" : "Element,Container",
+        "properties" : {
+          "structurizr.dsl.identifier" : "cataloguicontainer"
+        },
+        "name" : "Catalog UI",
+        "description" : "Application for storing data to catalog and viewing them.",
+        "relationships" : [ {
+          "id" : "11",
+          "tags" : "Relationship",
+          "sourceId" : "2",
+          "destinationId" : "3",
+          "description" : "Upload RDF and view uploads"
+        } ],
+        "documentation" : { }
+      }, {
+        "id" : "10",
+        "tags" : "Element,Container",
+        "properties" : {
+          "structurizr.dsl.identifier" : "editorcontainer"
+        },
+        "name" : "Editor",
+        "description" : "Editor application which helps use transform their data to RDF with suitable vocabularies.",
+        "relationships" : [ {
+          "id" : "19",
+          "tags" : "Relationship",
+          "sourceId" : "10",
+          "destinationId" : "8",
+          "description" : "Get recommendations"
+        }, {
+          "id" : "20",
+          "sourceId" : "10",
+          "destinationId" : "6",
+          "description" : "Get recommendations",
+          "linkedRelationshipId" : "19"
+        } ],
+        "documentation" : { }
+      }, {
+        "id" : "4",
+        "tags" : "Element,Container",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fsstorecontainer"
+        },
+        "name" : "RDF FS Store",
+        "description" : "Stores uploaded rdf files.",
+        "technology" : "FileSystem",
+        "documentation" : { }
+      }, {
+        "id" : "3",
+        "tags" : "Element,Container",
+        "properties" : {
+          "structurizr.dsl.identifier" : "catalogcontainer"
+        },
+        "name" : "Catalog",
+        "description" : "Server for storing RDF data.",
+        "relationships" : [ {
+          "id" : "12",
+          "tags" : "Relationship",
+          "sourceId" : "3",
+          "destinationId" : "4",
+          "description" : "Store uploaded files"
+        }, {
+          "id" : "13",
+          "tags" : "Relationship",
+          "sourceId" : "3",
+          "destinationId" : "5",
+          "description" : "Store upload records"
+        }, {
+          "id" : "14",
+          "tags" : "Relationship",
+          "sourceId" : "3",
+          "destinationId" : "7",
+          "description" : "Forward uploaded rdf files"
+        }, {
+          "id" : "15",
+          "sourceId" : "3",
+          "destinationId" : "6",
+          "description" : "Forward uploaded rdf files",
+          "linkedRelationshipId" : "14"
+        } ],
+        "documentation" : { }
+      }, {
+        "id" : "5",
+        "tags" : "Element,Container",
+        "properties" : {
+          "structurizr.dsl.identifier" : "uploadrecordsstore"
+        },
+        "name" : "Upload Records Store",
+        "description" : "Stores records about the uploaded rdf files.",
+        "technology" : "MongoDB",
+        "documentation" : { }
+      }, {
+        "id" : "6",
+        "tags" : "Element,Container",
+        "properties" : {
+          "structurizr.dsl.identifier" : "recommenderscontainer"
+        },
+        "name" : "Recommenders",
+        "description" : "Provides recommendations for users data in editor.",
+        "relationships" : [ {
+          "id" : "17",
+          "sourceId" : "6",
+          "destinationId" : "9",
+          "description" : "Store analyzed recommendation index",
+          "linkedRelationshipId" : "16"
+        } ],
+        "components" : [ {
+          "id" : "8",
+          "tags" : "Element,Component",
+          "properties" : {
+            "structurizr.dsl.identifier" : "recommenderscomponent"
+          },
+          "name" : "Recommenders",
+          "description" : "Provides recommendations for users data in editor.",
+          "relationships" : [ {
+            "id" : "18",
+            "tags" : "Relationship",
+            "sourceId" : "8",
+            "destinationId" : "9",
+            "description" : "Access index"
+          } ],
+          "documentation" : { }
+        }, {
+          "id" : "7",
+          "tags" : "Element,Component",
+          "properties" : {
+            "structurizr.dsl.identifier" : "analyzerscomponent"
+          },
+          "name" : "Analyzers",
+          "description" : "Analyzes RDF data uploaded and stores metadata/index about them.",
+          "relationships" : [ {
+            "id" : "16",
+            "tags" : "Relationship",
+            "sourceId" : "7",
+            "destinationId" : "9",
+            "description" : "Store analyzed recommendation index"
+          } ],
+          "documentation" : { }
+        } ],
+        "documentation" : { }
+      } ],
+      "documentation" : { }
+    } ]
+  },
+  "documentation" : { },
+  "views" : {
+    "containerViews" : [ {
+      "key" : "SystemContainerView",
+      "order" : 1,
+      "softwareSystemId" : "1",
+      "paperSize" : "A5_Landscape",
+      "dimensions" : {
+        "width" : 2480,
+        "height" : 1748
+      },
+      "externalSoftwareSystemBoundariesVisible" : true,
+      "elements" : [ {
+        "id" : "2",
+        "x" : 125,
+        "y" : 400
+      }, {
+        "id" : "3",
+        "x" : 845,
+        "y" : 370
+      }, {
+        "id" : "4",
+        "x" : 1685,
+        "y" : 555
+      }, {
+        "id" : "5",
+        "x" : 1680,
+        "y" : 220
+      }, {
+        "id" : "6",
+        "x" : 850,
+        "y" : 870
+      }, {
+        "id" : "9",
+        "x" : 1685,
+        "y" : 915
+      }, {
+        "id" : "10",
+        "x" : 115,
+        "y" : 795
+      } ],
+      "relationships" : [ {
+        "id" : "17"
+      }, {
+        "id" : "15"
+      }, {
+        "id" : "13"
+      }, {
+        "id" : "12"
+      }, {
+        "id" : "11"
+      }, {
+        "id" : "20"
+      } ]
+    } ],
+    "componentViews" : [ {
+      "key" : "RecommendersComponentView",
+      "order" : 2,
+      "paperSize" : "A5_Landscape",
+      "dimensions" : {
+        "width" : 2480,
+        "height" : 1748
+      },
+      "containerId" : "6",
+      "externalContainerBoundariesVisible" : true,
+      "elements" : [ {
+        "id" : "3",
+        "x" : 105,
+        "y" : 400
+      }, {
+        "id" : "7",
+        "x" : 900,
+        "y" : 395
+      }, {
+        "id" : "8",
+        "x" : 900,
+        "y" : 740
+      }, {
+        "id" : "9",
+        "x" : 1680,
+        "y" : 575
+      }, {
+        "id" : "10",
+        "x" : 105,
+        "y" : 735
+      } ],
+      "relationships" : [ {
+        "id" : "18"
+      }, {
+        "id" : "16"
+      }, {
+        "id" : "14"
+      }, {
+        "id" : "19"
+      } ]
+    } ],
+    "configuration" : {
+      "branding" : { },
+      "styles" : {
+        "elements" : [ {
+          "tag" : "Element",
+          "fontSize" : 32
+        }, {
+          "tag" : "Group",
+          "fontSize" : 30
+        }, {
+          "tag" : "Existing System",
+          "background" : "#999999"
+        } ],
+        "relationships" : [ {
+          "tag" : "Relationship",
+          "fontSize" : 30
+        } ]
+      },
+      "themes" : [ "https://static.structurizr.com/themes/default/theme.json" ],
+      "terminology" : { },
+      "metadataSymbols" : "SquareBrackets",
+      "lastSavedView" : "SystemContainerView"
+    }
+  }
+}

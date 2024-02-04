@@ -57,6 +57,10 @@ Katalog runtime obsahuje analyzery, ktere data ukladaji do spolecneho RDF ulozis
 
 Katalog jen posila recommenderum data co nacetl a recommenderi si je analyzuji a uchovaji si metadata. Katalog jen uklada FS soubory a zakladni zaznamy o vlozeni dat. Otazka je, jak (a jestli) ukazovat, co se z dat analyzovalo, uzivateli. Zda si katalog bude sosat info od recommenderu a poskytovat ho uzivateli?
 
+Recommendary se zaregistruji u katalogu a ten dle toho posila nova uploadovana data.
+
 ## Analyzer hub
 
 Katalog preposila data analyzer hubu, ktery data pomoci analyzeru zprocesuje a ulozi si metadata do db. Katalog se pak analyzeru pta, co v datech nasel, aby to mohl ukazat uzivateli. Recommendery se analyzeru dotazuji na metadata - maji pristup k jeho public API nebo je soucasti toho API databaze, do ktere to uklada, aby si recommendery mohli dotazovat zcela flexibilne a neomezene na to, co potrebuji?
+
+Rozdil oproti predchozimu je rozdeleni zodpovednosti recommnder containeru - poskytovat metadata a doporucovat.
