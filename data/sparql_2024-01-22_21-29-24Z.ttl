@@ -1,0 +1,408 @@
+@prefix res: <http://www.w3.org/2005/sparql-results#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+_:_ a res:ResultSet .
+_:_ res:resultVariable "s" , "p" , "o" .
+@prefix dbo:	<http://dbpedia.org/ontology/> .
+@prefix rdf:	<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix owl:	<http://www.w3.org/2002/07/owl#> .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbo:deathDate ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value owl:FunctionalProperty ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbo:birthDate ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value owl:FunctionalProperty ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbo:co2Emission ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value owl:FunctionalProperty ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbo:fuelCapacity ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value owl:FunctionalProperty ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbo:fuelConsumption ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value owl:FunctionalProperty ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbo:marketCapitalisation ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value owl:FunctionalProperty ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbo:redline ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value owl:FunctionalProperty ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbo:restingDate ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value owl:FunctionalProperty ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbo:retirementDate ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value owl:FunctionalProperty ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbo:zipCode ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value owl:FunctionalProperty ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value <http://dbpedia.org/ontology/\u0627\u0648\u0633\u0637_\u0633\u0627\u0644\u0627\u0646\u06C1_\u067E\u06CC\u062F\u0627\u0648\u0627\u0631> ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value owl:FunctionalProperty ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbo:acceleration ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value owl:FunctionalProperty ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbo:birthYear ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value owl:FunctionalProperty ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbo:deathYear ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value owl:FunctionalProperty ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbo:diameter ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value owl:FunctionalProperty ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbo:displacement ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value owl:FunctionalProperty ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbo:height ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value owl:FunctionalProperty ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbo:latestReleaseDate ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value owl:FunctionalProperty ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbo:length ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value owl:FunctionalProperty ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbo:netIncome ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value owl:FunctionalProperty ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbo:operatingIncome ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value owl:FunctionalProperty ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbo:populationTotal ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value owl:FunctionalProperty ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbo:powerOutput ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value owl:FunctionalProperty ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbo:topSpeed ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value owl:FunctionalProperty ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbo:weight ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value owl:FunctionalProperty ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbo:wheelbase ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value owl:FunctionalProperty ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbo:width ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value owl:FunctionalProperty ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbo:averageAnnualGeneration ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value owl:FunctionalProperty ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbo:foalDate ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value owl:FunctionalProperty ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbo:installedCapacity ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value owl:FunctionalProperty ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbo:torqueOutput ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value owl:FunctionalProperty ] ] .
+@prefix dbp:	<http://dbpedia.org/property/> .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:name ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:secCik ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbo:location ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbo:place ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbo:birthPlace ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbo:deathPlace ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:deathPlace ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbo:deathDate ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:death ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:birthPlace ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbo:birthDate ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:birth ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbo:wikiPageID ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbo:wikiPageRevisionID ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbo:wikiPageWikiLink ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:wikilink ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbo:wikiPageExternalLink ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:reference ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbo:wikiPageRedirects ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:redirect ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbo:wikiPageDisambiguates ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:selectionYear ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:selector ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:selenium ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:seleniumIu ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:seleniumMg ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:seleniumUg ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value <http://dbpedia.org/property/selenium\u039Cg> ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:selfDual ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:selfPropelled ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:selfTitled ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:selfieCamera ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:selfref ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:selke ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:seller ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:selsovietType ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:sem ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:semi ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:semi1Team ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:semi1Winner ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:semi2Team ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:semi2Winner ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:semiAmp ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:semiFinalAlt ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:semiFinalGameScore ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:semiFinalLoser ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:semiFinalWinner ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:semiFinalists ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:semiOfficial ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:semiarena ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:semicha ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:semicity ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:semifinalOrder ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:semifinalPlaylist ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:semifinalScore ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:semifinalVideo ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:semifinalist ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:semifinals ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:semiofficial ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:semis ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:semitones ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:semivenue ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:sen ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:senate ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:senatePresidentProTempore ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:senateSeats ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:senateVoted ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:senateimage ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .
+_:_ res:solution [
+      res:binding [ res:variable "s" ; res:value dbp:senateseats ] ;
+      res:binding [ res:variable "p" ; res:value rdf:type ] ;
+      res:binding [ res:variable "o" ; res:value rdf:Property ] ] .

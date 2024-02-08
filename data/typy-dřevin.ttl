@@ -1,0 +1,69 @@
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+<https://data.mvcr.gov.cz/zdroj/číselníky/typy-dřevin> a skos:ConceptScheme;
+  skos:prefLabel "Typy dřevin"@cs .
+
+<https://data.mvcr.gov.cz/zdroj/číselníky/typy-dřevin/položky/jehličnatý-les> a skos:Concept;
+  skos:inScheme <https://data.mvcr.gov.cz/zdroj/číselníky/typy-dřevin>;
+  skos:prefLabel "Jehličnatý les"@cs;
+  skos:notation "jehličnatý-les" .
+
+<https://data.mvcr.gov.cz/zdroj/číselníky/typy-dřevin/položky/jehličnatý-strom> a
+    skos:Concept;
+  skos:inScheme <https://data.mvcr.gov.cz/zdroj/číselníky/typy-dřevin>;
+  skos:prefLabel "Jehličnatý strom"@cs;
+  skos:notation "jehličnatý-strom" .
+
+<https://data.mvcr.gov.cz/zdroj/číselníky/typy-dřevin/položky/keř> a skos:Concept;
+  skos:inScheme <https://data.mvcr.gov.cz/zdroj/číselníky/typy-dřevin>;
+  skos:prefLabel "Keř"@cs;
+  skos:prefLabel "Bush"@en;
+  skos:notation "keř" .
+
+<https://data.mvcr.gov.cz/zdroj/číselníky/typy-dřevin/položky/listnatý-les> a skos:Concept;
+  skos:inScheme <https://data.mvcr.gov.cz/zdroj/číselníky/typy-dřevin>;
+  rdfs:label "Listnatý les"@cs;
+  skos:notation "listnatý-les" .
+
+<https://data.mvcr.gov.cz/zdroj/číselníky/typy-dřevin/položky/listnatý-strom> a skos:Concept;
+  skos:inScheme <https://data.mvcr.gov.cz/zdroj/číselníky/typy-dřevin>;
+  skos:prefLabel "Listantý strom"@cs;
+  skos:notation "listnatý-strom" .
+
+<https://data.mvcr.gov.cz/zdroj/číselníky/typy-dřevin/položky/oblast-dřevin> a skos:Concept;
+  skos:inScheme <https://data.mvcr.gov.cz/zdroj/číselníky/typy-dřevin>;
+  skos:prefLabel "Oblast dřevin"@cs;
+  skos:notation "oblast-dřevin" .
+
+<https://data.mvcr.gov.cz/zdroj/číselníky/typy-dřevin/položky/park> a skos:Concept;
+  skos:inScheme <https://data.mvcr.gov.cz/zdroj/číselníky/typy-dřevin>;
+  skos:prefLabel "Park"@cs;
+  skos:notation "park" .
+
+<https://data.mvcr.gov.cz/zdroj/číselníky/typy-dřevin/položky/skupina-jehličnatých-stromů>
+  a skos:Concept;
+  skos:inScheme <https://data.mvcr.gov.cz/zdroj/číselníky/typy-dřevin>;
+  skos:prefLabel "Skupina jehličnatých stromů"@cs;
+  skos:notation "skupina-jehličnatých-stromů" .
+
+<https://data.mvcr.gov.cz/zdroj/číselníky/typy-dřevin/položky/skupina-listnatých-stromů>
+  a skos:Concept;
+  skos:inScheme <https://data.mvcr.gov.cz/zdroj/číselníky/typy-dřevin>;
+  skos:prefLabel "Skupina listnatých stromů"@cs;
+  skos:notation "skupina-listnatých-stromů" .
+
+<https://data.mvcr.gov.cz/zdroj/číselníky/typy-dřevin/položky/skupina-stromů> a skos:Concept;
+  skos:inScheme <https://data.mvcr.gov.cz/zdroj/číselníky/typy-dřevin>;
+  skos:prefLabel "Skupina stromů"@cs;
+  skos:notation "skupina-stromů" .
+
+<https://data.mvcr.gov.cz/zdroj/číselníky/typy-dřevin/položky/smíšený-les> a skos:Concept;
+  skos:inScheme <https://data.mvcr.gov.cz/zdroj/číselníky/typy-dřevin>;
+  skos:prefLabel "Smíšený les"@cs;
+  skos:notation "smíšený-les" .
+
+<https://data.mvcr.gov.cz/zdroj/číselníky/typy-dřevin/položky/strom> a skos:Concept;
+  skos:inScheme <https://data.mvcr.gov.cz/zdroj/číselníky/typy-dřevin>;
+  skos:prefLabel "Strom"@cs;
+  skos:notation "strom" .
