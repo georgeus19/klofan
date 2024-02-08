@@ -1,0 +1,25 @@
+{
+    "name": "@klofan/old-catalog-types",
+    "scripts": {
+        "build": "tsc",
+        "lint": "eslint . --max-warnings 0"
+    },
+    "files": [
+        "dist/**"
+    ],
+    "exports": {
+        ".": {
+            "types": "./src/catalog-types.ts",
+            "require": "./dist/catalog-types.js",
+            "import": "./src/catalog-types.ts"
+        }
+    },
+    "devDependencies": {
+        "@klofan/eslint-config": "*",
+        "@klofan/typescript-config": "*",
+        "@typescript-eslint/eslint-plugin": "^6.19.1",
+        "@typescript-eslint/parser": "^6.19.1",
+        "eslint": "^8.45.0",
+        "typescript": "^5.0.2"
+    }
+}
