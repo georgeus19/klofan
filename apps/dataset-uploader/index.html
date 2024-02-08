@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Dataset Uploader</title>
+        <link rel="stylesheet" href="index.css" />
+    </head>
+    <body>
+        <div id="root">
+            <label for="url">URL:</label>
+            <input type="text" id="url" value="http://localhost:3000/api/v1/dataset/dcat" />
+            <form method="post" enctype="multipart/form-data">
+                <label for="files">Files</label>
+                <input type="file" name="files" id="files" multiple />
+                <button class="button" id="clear" type="button">Clear</button>
+                <button class="button" type="submit">Upload</button>
+            </form>
+        </div>
+        <script>
+            function handleSubmit(event) {
+                const url = document.getElementById('url');
+                const form = event.currentTarget;
+                fetch(url.value, {
+                    method: 'post',
+                    body: new FormData(form),
+                });
+
+                event.preventDefault();
+            }
+            const form = document.querySelector('form');
+            form.addEventListener('submit', handleSubmit);
+
+            function clearForm() {
+                document.querySelector('form').reset();
+            }
+            document.getElementById('clear').addEventListener('click', clearForm);
+        </script>
+    </body>
+</html>
