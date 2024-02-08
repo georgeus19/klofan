@@ -19,6 +19,8 @@ export type { MovePropertyInstances } from '../transform/transformations/move-pr
 export { movePropertyInstances } from '../transform/transformations/move-property-instances';
 export type { Transformation } from '../transform/transformations/transformation';
 export type { EntityInstanceUriMapping, UpdateEntityInstancesUris } from '../transform/transformations/update-entity-instances-uris';
+export type { UpdatePropertyLiterals } from '../transform/transformations/update-property-literals';
+export { updatePropertyLiterals } from '../transform/transformations/update-property-literals';
 export { updateEntityInstancesUris } from '../transform/transformations/update-entity-instances-uris';
 
 export { applyTransformation } from '../transform/apply-transformation';

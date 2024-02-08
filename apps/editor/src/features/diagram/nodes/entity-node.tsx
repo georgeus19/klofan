@@ -1,7 +1,8 @@
 import { Handle, NodeProps, Position } from 'reactflow';
-import { Entity, getProperties, isLiteral } from '@klofan/schema/representation';
+import { Entity, GraphProperty, getProperties, isLiteral } from '@klofan/schema/representation';
 import { twMerge } from 'tailwind-merge';
 import { useEditorContext } from '../../editor/editor-context';
+import { usePrefixesContext } from '../../prefixes/prefixes-context';
 
 export default function EntityNode({
     id,
@@ -18,15 +19,26 @@ export default function EntityNode({
         },
     } = useEditorContext();
 
+    const { matchPrefix } = usePrefixesContext();
+
     if (!schema.hasEntity(entity.id)) {
         return <></>;
     }
+
+    const pLabel = (property: GraphProperty) => {
+        if (property.uri && matchPrefix(property.uri).prefix) {
+            const p = matchPrefix(property.uri);
+            return `${p.prefix?.value}:${p.rest}`;
+        }
+
+        return property.name;
+    };
 
     const literalProperties = getProperties(schema, entity.id)
         .filter((property) => isLiteral(property.value))
         .map((property) => (
             <div key={property.name} className='bg-slate-300 rounded p-1'>
-                {property.name}
+                {pLabel(property)}
             </div>
         ));
 

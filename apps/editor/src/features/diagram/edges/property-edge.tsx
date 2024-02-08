@@ -1,10 +1,13 @@
 import { useCallback } from 'react';
 import { BaseEdge, EdgeLabelRenderer, EdgeProps, getBezierPath, useStore } from 'reactflow';
 import { getEdgeParams } from '../utils';
+import { usePrefixesContext } from '../../prefixes/prefixes-context';
+import { Property } from '@klofan/schema/representation';
 
 export default function PropertyEdge({ data, source, target, style = {}, markerEnd }: EdgeProps) {
     const sourceNode = useStore(useCallback((store) => store.nodeInternals.get(source), [source]));
     const targetNode = useStore(useCallback((store) => store.nodeInternals.get(target), [target]));
+    const { matchPrefix } = usePrefixesContext();
 
     if (!sourceNode || !targetNode) {
         return null;
@@ -21,6 +24,15 @@ export default function PropertyEdge({ data, source, target, style = {}, markerE
         targetY: ty,
     });
 
+    const pLabel = (property: Property) => {
+        if (property.uri && matchPrefix(property.uri).prefix) {
+            const p = matchPrefix(property.uri);
+            return `${p.prefix?.value}:${p.rest}`;
+        }
+
+        return property.name;
+    };
+
     return (
         <>
             <EdgeLabelRenderer>
@@ -35,7 +47,7 @@ export default function PropertyEdge({ data, source, target, style = {}, markerE
                     }}
                     className='nodrag nopan'
                 >
-                    <div className={'bg-slate-300 rounded p-1'}>{data.name}</div>
+                    <div className={'bg-slate-300 rounded p-1'}>{pLabel(data)}</div>
                 </div>
             </EdgeLabelRenderer>
             <BaseEdge path={edgePath} markerEnd={markerEnd} style={style} />

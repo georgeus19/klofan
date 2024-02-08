@@ -6,5 +6,6 @@ export { createUpdateEntityUriTransformation } from './factory/update-entity-uri
 export { createUpdateItemNameTransformation } from './factory/update-item-name-transformation';
 export { createUpdatePropertyUriTransformation } from './factory/update-property-uri-transformation';
 export { createUpdateRelationNameTransformation } from './factory/update-relation-name-transformation';
+export { createUpdatePropertyLiteralsTransformation } from './factory/create-update-property-literals-transformation';
 
 export type { Transformation } from './transformation';

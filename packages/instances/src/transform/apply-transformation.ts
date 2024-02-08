@@ -4,6 +4,7 @@ import { createPropertyInstances } from './transformations/create-property-insta
 import { movePropertyInstances } from './transformations/move-property-instances';
 import { Transformation } from './transformations/transformation';
 import { updateEntityInstancesUris } from './transformations/update-entity-instances-uris';
+import { updatePropertyLiterals } from './transformations/update-property-literals';
 
 export function applyTransformation(instances: RawInstances, transformation: Transformation) {
     switch (transformation.type) {
@@ -18,6 +19,9 @@ export function applyTransformation(instances: RawInstances, transformation: Tra
             break;
         case 'update-entity-instances-uris':
             updateEntityInstancesUris(instances, transformation);
+            break;
+        case 'update-property-literals':
+            updatePropertyLiterals(instances, transformation);
             break;
         default:
             throw new Error(`Transformation ${JSON.stringify(transformation)} is not supported.`);
