@@ -16,6 +16,7 @@
                 <button class="button" id="clear" type="button">Clear</button>
                 <button class="button" type="submit">Upload</button>
             </form>
+            <div id="response"></div>
         </div>
         <script>
             function handleSubmit(event) {
@@ -24,7 +25,12 @@
                 fetch(url.value, {
                     method: 'post',
                     body: new FormData(form),
-                });
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        document.getElementById('response').textContent = JSON.stringify(data, null, 3);
+                        console.log(JSON.stringify(data, null, 3));
+                    });
 
                 event.preventDefault();
             }

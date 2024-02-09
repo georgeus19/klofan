@@ -1,0 +1,33 @@
+{
+    "name": "@klofan/analyzer",
+    "scripts": {
+        "build": "tsc",
+        "lint": "eslint . --max-warnings 0"
+    },
+    "files": [
+        "dist/**"
+    ],
+    "exports": {
+        "./dataset": {
+            "types": "./src/api/dataset.ts",
+            "require": "./dist/api/dataset.js",
+            "import": "./src/api/dataset.ts"
+        }
+    },
+    "dependencies": {
+        "@comunica/query-sparql-file": "^2.10.2",
+        "express": "^4.18.2",
+        "formidable": "^3.5.1",
+        "zod": "^3.22.4"
+    },
+    "devDependencies": {
+        "@klofan/eslint-config": "*",
+        "@klofan/typescript-config": "*",
+        "@types/express": "^4.17.21",
+        "@types/formidable": "^3.4.5",
+        "@typescript-eslint/eslint-plugin": "^6.19.1",
+        "@typescript-eslint/parser": "^6.19.1",
+        "eslint": "^8.45.0",
+        "typescript": "^5.0.2"
+    }
+}
