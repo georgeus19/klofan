@@ -4,8 +4,9 @@ import { RawInstances, copyInstances, propertyInstanceKey } from './representati
 import { EntityInstance } from './entity-instance';
 import { applyTransformation } from './transform/apply-transformation';
 import { Transformation } from './transform/transformations/transformation';
-import { Entity } from '@klofan/schema/representation';
+import { Entity, ExternalEntity } from '@klofan/schema/representation';
 import { safeGet } from '@klofan/utils';
+import { ExternalEntityInstance } from './external-entity-instance';
 
 export class InMemoryInstances implements Instances {
     constructor(private instances: RawInstances) {}
@@ -29,7 +30,18 @@ export class InMemoryInstances implements Instances {
         return Promise.resolve(entityInstances);
     }
 
-    entityInstanceCount(entity: Entity): Promise<number> {
+    externalEntityInstances(externalEntity: ExternalEntity): Promise<ExternalEntityInstance[]> {
+        const entityInstances: ExternalEntityInstance[] = safeGet(this.instances.entityInstances, externalEntity.id).instances.map(
+            (entityInstance, index) => ({
+                ...entityInstance,
+                uri: safeGet(entityInstance, 'uri'),
+                id: index,
+            })
+        );
+        return Promise.resolve(entityInstances);
+    }
+
+    entityInstanceCount(entity: Entity | ExternalEntity): Promise<number> {
         return Promise.resolve(this.instances.entityInstances[entity.id].count);
     }
 

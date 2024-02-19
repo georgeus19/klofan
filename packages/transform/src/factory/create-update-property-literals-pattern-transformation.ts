@@ -1,21 +1,18 @@
-import { EntityInstanceUriMapping, UpdateEntityInstancesUris, UpdatePropertyLiterals } from '@klofan/instances/transform';
-import { Schema } from '@klofan/schema';
-import { identifier } from '@klofan/utils';
+import { UpdatePropertyLiterals } from '@klofan/instances/transform';
 import { Transformation } from '../transformation';
 import { Entity, Property } from '@klofan/schema/representation';
-import { Literal } from '@klofan/instances/representation';
 
-export function createUpdatePropertyLiteralsTransformation(data: {
+export function createUpdatePropertyLiteralsPatternTransformation(data: {
     entity: Entity;
     property: Property;
     literals: {
-        from: Literal;
-        to: Literal;
+        matchPattern: string;
+        replacementPattern: string;
     };
 }): Transformation {
     const updateEntityInstanceUrisTransformation: UpdatePropertyLiterals = {
         type: 'update-property-literals',
-        data: data,
+        data: { ...data, literals: { ...data.literals, type: 'pattern' } },
     };
 
     return {

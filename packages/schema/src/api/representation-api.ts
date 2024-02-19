@@ -2,6 +2,8 @@ export type { Item } from './../representation/item/item';
 
 export type { Entity } from './../representation/item/entity';
 export { isEntity, getProperties } from './../representation/item/entity';
+export type { ExternalEntity } from './../representation/item/external-entity';
+export { isExternalEntity } from './../representation/item/external-entity';
 export type { Literal } from './../representation/item/literal';
 export { isLiteral } from './../representation/item/literal';
 

@@ -7,20 +7,34 @@ export interface UpdatePropertyLiterals {
     data: {
         entity: Entity;
         property: Property;
-        literals: {
-            from: Literal;
-            to: Literal;
-        };
+        literals:
+            | {
+                  type: 'value';
+                  from: Literal;
+                  to: Literal;
+              }
+            | {
+                  type: 'pattern';
+                  matchPattern: string;
+                  replacementPattern: string;
+              };
     };
 }
 
 export function updatePropertyLiterals(instances: RawInstances, transformation: UpdatePropertyLiterals): void {
     const propertyKey = propertyInstanceKey(transformation.data.entity.id, transformation.data.property.id);
+    const transformationLiterals = transformation.data.literals;
     instances.propertyInstances[propertyKey] = instances.propertyInstances[propertyKey].map((propertyInstance) => {
-        const newInstance = { ...propertyInstance };
-        const updatedLiterals = propertyInstance.literals.map((literal) =>
-            literal.value === transformation.data.literals.from.value ? { ...transformation.data.literals.to } : literal
-        );
+        const updatedLiterals = propertyInstance.literals.map((literal) => {
+            if (transformationLiterals.type === 'value') {
+                return literal.value === transformationLiterals.from.value ? { ...transformationLiterals.to } : literal;
+            } else {
+                return {
+                    ...literal,
+                    value: literal.value.replaceAll(new RegExp(transformationLiterals.matchPattern), transformationLiterals.replacementPattern),
+                };
+            }
+        });
         return {
             ...propertyInstance,
             literals: updatedLiterals,

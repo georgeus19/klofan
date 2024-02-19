@@ -1,10 +1,11 @@
+import { ExternalEntity } from '../../api/representation-api';
 import { Entity } from '../../representation/item/entity';
 import { RawSchema } from '../../representation/raw-schema';
 
 export interface CreateEntity {
     type: 'create-entity';
     data: {
-        entity: Entity;
+        entity: Entity | ExternalEntity;
     };
 }
 

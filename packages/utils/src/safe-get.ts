@@ -5,5 +5,6 @@ export function safeGet<V>(obj: { [key: identifier]: V }, key: identifier): V {
         return obj[key];
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-base-to-string, @typescript-eslint/restrict-template-expressions
     throw new Error(`Key ${key} is not in ${obj}.`);
 }

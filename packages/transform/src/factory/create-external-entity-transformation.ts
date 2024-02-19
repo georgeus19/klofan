@@ -1,5 +1,5 @@
 import { CreateEntityInstances } from '@klofan/instances/transform';
-import { Entity } from '@klofan/schema/representation';
+import { ExternalEntity } from '@klofan/schema/representation';
 import { CreateEntity } from '@klofan/schema/transform';
 import { getNewId } from '@klofan/utils';
 import { Transformation } from '../transformation';
@@ -9,13 +9,12 @@ export function createCreateEntityTransformation({
     instances: { instances },
 }: {
     schema: { name: string };
-    instances: { count: number; instances: { uri?: string }[] };
+    instances: { instances: { uri: string }[] };
 }): Transformation {
-    const entity: Entity = {
+    const entity: ExternalEntity = {
         id: getNewId(),
         name: name,
-        type: 'entity',
-        properties: [],
+        type: 'external-entity',
     };
     const createEntityTransformation: CreateEntity = {
         type: 'create-entity',

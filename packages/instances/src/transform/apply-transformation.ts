@@ -23,7 +23,5 @@ export function applyTransformation(instances: RawInstances, transformation: Tra
         case 'update-property-literals':
             updatePropertyLiterals(instances, transformation);
             break;
-        default:
-            throw new Error(`Transformation ${JSON.stringify(transformation)} is not supported.`);
     }
 }

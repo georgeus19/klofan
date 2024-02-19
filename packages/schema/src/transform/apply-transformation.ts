@@ -31,7 +31,5 @@ export function applyTransformation(schema: RawSchema, transformation: Transform
         case 'move-property':
             moveProperty(schema, transformation);
             break;
-        default:
-            throw new Error(`Transformation ${JSON.stringify(transformation)} is not supported.`);
     }
 }
