@@ -1,15 +1,7 @@
-import express, { Express } from 'express';
-import { analyzeDcatDataset } from './controllers/analyze-dcat-dataset';
-import bodyParser from 'body-parser';
-import cors from 'cors';
+import { runAnalyzerServer } from '@klofan/analyzer/server';
+import { findSkosCodelists } from './find-skos-codelists';
+import { SERVER_ENV } from '@klofan/config/env/server';
 
-const port = 10001;
-const app: Express = express();
-app.use(cors());
-app.use(bodyParser.json());
-
-app.post('/api/v1/dataset/dcat', analyzeDcatDataset);
-
-app.listen(port, () => {
-    console.log(`Analyzer Manager started on port ${port}`);
-});
+if (SERVER_ENV.ANALYZERS_SKOS_CODELIST_ANALYZER_PORT) {
+    runAnalyzerServer(findSkosCodelists, { port: SERVER_ENV.ANALYZERS_SKOS_CODELIST_ANALYZER_PORT });
+}

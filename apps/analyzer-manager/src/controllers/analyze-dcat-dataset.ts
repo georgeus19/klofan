@@ -1,7 +1,7 @@
 import { endpointErrorHandler, parseInput, parseMultipartRequest } from '@klofan/server-utils';
 import { Request, Response, NextFunction } from 'express';
 import { z } from 'zod';
-import { containsDcatDatasetWithDistribution } from '@klofan/analyzer/dataset';
+import { containsDcatDatasetWithDistribution, getDcatDatasets, DcatDataset } from '@klofan/analyzer/dataset';
 import { datasetMetadataQueue } from '../main';
 
 const dcatDatasetFileSchema = z.object({
@@ -20,18 +20,20 @@ export const analyzeDcatDataset = endpointErrorHandler(async (request: Request, 
     const body = await parseMultipartRequest(request);
     const { files } = await parseInput(dcatDatasetFileSchema, body);
     console.log(files);
-    const dcatFiles = await getFilesWithDcat(files);
-    await datasetMetadataQueue.push(dcatFiles);
-    response.status(200).send({ filesSubmittedForAnalysis: dcatFiles.map((file) => file.originalFilename) });
+    const [datasets, filesSubmittedForAnalysis] = await getFilesWithDcat(files);
+    await datasetMetadataQueue.push(datasets);
+    response.status(200).send({ filesSubmittedForAnalysis: filesSubmittedForAnalysis });
 });
 
-async function getFilesWithDcat(files: { filepath: string; originalFilename: string }[]) {
-    const dcatFiles = [];
+async function getFilesWithDcat(files: { filepath: string; originalFilename: string }[]): Promise<[DcatDataset[], string[]]> {
+    const datasets = [];
+    const filesSubmittedForAnalysis = [];
     for (const file of files) {
-        const r = await containsDcatDatasetWithDistribution({ type: 'file', value: file.filepath });
-        if (r) {
-            dcatFiles.push(file);
+        const datasetsInFile = await getDcatDatasets({ type: 'file', value: file.filepath });
+        datasets.push(...datasetsInFile);
+        if (datasetsInFile.length > 0) {
+            filesSubmittedForAnalysis.push(file.originalFilename);
         }
     }
-    return dcatFiles;
+    return [datasets, filesSubmittedForAnalysis];
 }

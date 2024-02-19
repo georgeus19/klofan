@@ -6,28 +6,30 @@ import { Redis } from 'ioredis';
 import dotenv from 'dotenv';
 import workerpool from 'workerpool';
 import { WorkerInput } from './worker';
-import { DatasetMetadataBlockingQueue, RedisDatasetMetadataBlockingQueue } from './dataset-metadata-queue';
+import { DatasetBlockingQueue, RedisDatasetBlockingQueue } from './dataset-metadata-queue';
+import { SERVER_ENV } from '@klofan/config/env/server';
+import { createLogger } from '@klofan/config/logger';
 
-dotenv.config();
+// dotenv.config();
 
-const redisOptions = { port: Number(process.env.REDIS_PORT), host: process.env.REDIS_HOST };
+const redisOptions = { port: SERVER_ENV.REDIS_PORT, host: SERVER_ENV.REDIS_HOST };
 
 export const redis = new Redis(redisOptions);
-
-export const datasetMetadataQueue: DatasetMetadataBlockingQueue = new RedisDatasetMetadataBlockingQueue(redisOptions);
-
-export const pool = workerpool.pool(`${__dirname}/worker.js`);
+export const datasetMetadataQueue: DatasetBlockingQueue = new RedisDatasetBlockingQueue(redisOptions);
+export const logger = createLogger();
+export const pool = workerpool.pool(`${__dirname}/worker.js`, { workerType: 'thread' });
 const workerInput: WorkerInput = {
     redisOptions: redisOptions,
 };
-pool.exec('sendDatasetsFromQueueToAnalyzers', [workerInput]).then((x) => console.log(x));
 
+void pool.exec('sendDatasetsFromQueueToAnalyzers', [workerInput]).then((x) => console.log(x));
 const app: Express = express();
 app.use(cors());
 app.use(bodyParser.json());
 
 app.post('/api/v1/dataset/dcat', analyzeDcatDataset);
 
-app.listen(process.env.PORT, () => {
-    console.log(`Analyzer Manager started on port ${process.env.PORT}`);
+app.listen(SERVER_ENV.ANALYZER_MANAGER_PORT, () => {
+    logger.info(`Analyzer Manager started on port ${SERVER_ENV.ANALYZER_MANAGER_PORT}`);
+    // console.log(`Analyzer Manager started on port ${SERVER_ENV.ANALYZER_MANAGER_PORT}`);
 });
