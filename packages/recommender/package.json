@@ -1,5 +1,5 @@
 {
-    "name": "@klofan/analyzer",
+    "name": "@klofan/recommender",
     "scripts": {
         "build": "tsc",
         "test": "jest",
@@ -9,15 +9,10 @@
         "dist/**"
     ],
     "exports": {
-        "./dataset": {
-            "types": "./src/api/dataset.ts",
-            "require": "./dist/api/dataset.js",
-            "import": "./src/api/dataset.ts"
-        },
-        "./analysis": {
-            "types": "./src/api/analysis.ts",
-            "require": "./dist/api/analysis.js",
-            "import": "./src/api/analysis.ts"
+        "./recommendation": {
+            "types": "./src/api/recommendation.ts",
+            "require": "./dist/api/recommendation.js",
+            "import": "./src/api/recommendation.ts"
         },
         "./server": {
             "types": "./src/api/server.ts",
@@ -28,11 +23,11 @@
     "dependencies": {
         "@klofan/utils": "*",
         "@klofan/server-utils": "*",
-        "@comunica/query-sparql-file": "^2.10.2",
+        "@klofan/schema": "*",
+        "@klofan/instances": "*",
+        "@klofan/transform": "*",
         "express": "^4.18.2",
-        "formidable": "^3.5.1",
         "lodash": "^4.17.21",
-        "n3": "^1.17.2",
         "axios": "^1.6.7",
         "body-parser": "^1.20.2",
         "cors": "^2.8.5",
@@ -50,7 +45,6 @@
         "@types/uuid": "^9.0.8",
         "@jest/globals": "^29.7.0",
         "@types/express": "^4.17.21",
-        "@types/formidable": "^3.4.5",
         "@types/n3": "^1.16.4",
         "@typescript-eslint/eslint-plugin": "^6.19.1",
         "@typescript-eslint/parser": "^6.19.1",

@@ -22,10 +22,10 @@
     "devDependencies": {
         "@klofan/eslint-config": "*",
         "@klofan/typescript-config": "*",
-        "@typescript-eslint/eslint-plugin": "^6.19.1",
-        "@typescript-eslint/parser": "^6.19.1",
         "@types/express": "^4.17.21",
         "@types/formidable": "^3.4.5",
+        "@typescript-eslint/eslint-plugin": "^6.19.1",
+        "@typescript-eslint/parser": "^6.19.1",
         "eslint": "^8.45.0",
         "typescript": "^5.0.2"
     }

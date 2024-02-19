@@ -1,15 +1,23 @@
 import { QueryEngine } from '@comunica/query-sparql-file';
+import * as RDF from '@rdfjs/types';
+import { DCAT } from '@klofan/utils';
 
-export function containsDcatDatasetWithDistribution(source: string | { type: 'file'; value: string }): Promise<boolean> {
+export function containsDcatDatasetWithDistribution(source: string | { type: 'file'; value: string } | RDF.Source): Promise<boolean> {
     const engine = new QueryEngine();
+    const datasetVar = 'dataset';
+    const distributionVar = 'distribution';
     return engine.queryBoolean(
         `
-        PREFIX dcat: <http://www.w3.org/ns/dcat#>
+        PREFIX dcat: <${DCAT.PREFIX}>
         ASK {
-            ?dataset 
+            ?${datasetVar} 
                 a dcat:Dataset ;
-                dcat:distribution ?distribution .
-            ?distribution a dcat:Distribution . 
+                dcat:distribution ?${distributionVar} .
+                
+            ?${distributionVar} a dcat:Distribution . 
+
+            FILTER(isIRI(?${datasetVar}))
+            FILTER(isIRI(?${distributionVar}))
         }
         `,
         { sources: [source] }
