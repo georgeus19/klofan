@@ -1,0 +1,30 @@
+{
+    "name": "@klofan/czech-date-recommender",
+    "main": "src/main.ts",
+    "scripts": {
+        "dev": "tsc  && node dist/main.js",
+        "build": "tsc",
+        "lint": "eslint . --max-warnings 0",
+        "test": "jest"
+    },
+    "dependencies": {
+        "@klofan/analyzer": "*",
+        "@klofan/config": "*",
+        "@klofan/instances": "*",
+        "@klofan/transform": "*",
+        "@klofan/recommender": "*",
+        "@klofan/schema": "*",
+        "@klofan/server-utils": "*",
+        "axios": "^1.6.7",
+        "dayjs": "^1.11.10",
+        "dotenv": "^16.4.0",
+        "lodash": "^4.17.21"
+    },
+    "devDependencies": {
+        "@klofan/eslint-config": "*",
+        "@klofan/typescript-config": "*",
+        "@rdfjs/types": "^1.1.0",
+        "@types/lodash": "^4.14.202",
+        "typescript": "^5.0.2"
+    }
+}

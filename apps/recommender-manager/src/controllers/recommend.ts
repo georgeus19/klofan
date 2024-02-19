@@ -1,0 +1,37 @@
+import { endpointErrorHandler, parseRequest } from '@klofan/server-utils';
+import { Request, Response, NextFunction } from 'express';
+import { z } from 'zod';
+import axios from 'axios';
+import { SERVER_ENV } from '@klofan/config/env/server';
+import { Recommendation } from '@klofan/recommender/recommendation';
+import { logger } from '../main';
+
+const requestSchema = z.object({
+    body: z.object({
+        schema: z.object({}).passthrough(),
+        instances: z.object({}).passthrough(),
+    }),
+});
+
+export const recommend = endpointErrorHandler(async (request: Request, response: Response, next: NextFunction) => {
+    const { body } = await parseRequest(requestSchema, request);
+
+    let noError = false;
+    const recommendations: Recommendation = await Promise.allSettled(
+        SERVER_ENV.analyzerUrls.map((url) => axios.post(`${url}/api/v1/recommend`, body))
+    ).then((results) =>
+        results.flatMap((result) => {
+            if (result.status === 'fulfilled') {
+                noError = true;
+                return result.value.data;
+            }
+            logger.error('Recommender failed', result.reason);
+            return [];
+        })
+    );
+    if (noError) {
+        response.status(200).send(recommendations);
+    } else {
+        response.status(400).send(recommendations);
+    }
+});
