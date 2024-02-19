@@ -1,0 +1,40 @@
+{
+    "name": "@klofan/config",
+    "scripts": {
+        "build": "tsc",
+        "lint": "eslint . --max-warnings 0"
+    },
+    "files": [
+        "dist/**"
+    ],
+    "exports": {
+        "./env/client": {
+            "types": "./src/env/client.ts",
+            "require": "./dist/env/client.js",
+            "import": "./src/env/client.ts"
+        },
+        "./env/server": {
+            "types": "./src/env/server.ts",
+            "require": "./dist/env/server.js",
+            "import": "./src/env/server.ts"
+        },
+        "./logger": {
+            "types": "./src/logger/logger.ts",
+            "require": "./dist/logger/logger.js",
+            "import": "./src/logger/logger.ts"
+        }
+    },
+    "dependencies": {
+        "winston": "^3.11.0",
+        "winston-mongodb": "^5.1.1",
+        "zod": "^3.22.4"
+    },
+    "devDependencies": {
+        "@klofan/eslint-config": "*",
+        "@klofan/typescript-config": "*",
+        "@typescript-eslint/eslint-plugin": "^6.19.1",
+        "@typescript-eslint/parser": "^6.19.1",
+        "eslint": "^8.45.0",
+        "typescript": "^5.0.2"
+    }
+}
