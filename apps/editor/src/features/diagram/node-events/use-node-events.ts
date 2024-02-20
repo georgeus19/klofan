@@ -4,16 +4,20 @@ import { ManualActionsPane } from '../../manual-actions-pane/use-manual-actions-
 import { EntityNodeEventHandler } from './entity-node-event-handler';
 import { NodeSelection } from '../use-node-selection';
 import { SchemaEdge, SchemaNode } from '../raw-diagram';
+import { PropertySelection } from '../use-property-selection';
 
 export function useNodeEvents({
     diagram,
     schema,
     nodeSelection,
+    edgeSelection,
     manualActions,
 }: {
     diagram: { nodes: SchemaNode[]; edges: SchemaEdge[] };
     schema: Schema;
     nodeSelection: NodeSelection;
+
+    edgeSelection: PropertySelection;
     manualActions: ManualActionsPane;
 }) {
     const entityNodeEventHandler: EntityNodeEventHandler = {

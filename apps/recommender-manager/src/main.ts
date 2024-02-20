@@ -11,7 +11,7 @@ export const ANALYSIS_COLLECTION = 'analysis-collection';
 const app: Express = express();
 export const logger = createLogger();
 app.use(cors());
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: SERVER_ENV.RECOMMENDER_REQUEST_LIMIT }));
 
 app.post('/api/v1/recommend', recommend);
 

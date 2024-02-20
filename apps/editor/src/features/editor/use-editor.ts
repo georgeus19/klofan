@@ -13,6 +13,7 @@ import { RawEditor } from './history/history';
 import { reflectSchema } from '../diagram/reflect-schema/reflect-schema';
 import { SchemaDiagram } from '../diagram/schema-diagram';
 import { Schema } from '@klofan/schema';
+import { usePropertySelection } from '../diagram/use-property-selection';
 
 export type Editor = {
     history: {
@@ -40,6 +41,7 @@ export function useEditor(): Editor {
     } = history;
 
     const nodeSelection = useNodeSelection();
+    const edgeSelection = usePropertySelection();
 
     const nodePositioning = usePositioning(history);
 
@@ -48,7 +50,7 @@ export function useEditor(): Editor {
     const schema = new Schema(rawSchema);
     const instances = new InMemoryInstances(rawInstances);
     const manualActions = useManualActionsPane(nodeSelection, schema, help);
-    const nodeEvents = useNodeEvents({ diagram: rawDiagram, nodeSelection, manualActions, schema });
+    const nodeEvents = useNodeEvents({ diagram: rawDiagram, nodeSelection, edgeSelection, manualActions, schema });
     const diagram: SchemaDiagram = { ...rawDiagram, nodePositioning: nodePositioning, nodeEvents: nodeEvents, nodeSelection: nodeSelection };
 
     const updateSchemaAndInstances = (transformation: Transformation): Promise<void> => {
@@ -84,6 +86,8 @@ export function useEditor(): Editor {
         const operationsWithEditor: UpdateOperation[] = [];
         for (const operation of operations) {
             switch (operation.type) {
+                case 'initial-operation':
+                    break;
                 case 'import-schema-and-instances':
                     editor = {
                         schema: operation.schema,

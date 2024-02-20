@@ -31,7 +31,7 @@ export function updatePropertyLiterals(instances: RawInstances, transformation: 
             } else {
                 return {
                     ...literal,
-                    value: literal.value.replaceAll(new RegExp(transformationLiterals.matchPattern), transformationLiterals.replacementPattern),
+                    value: literal.value.replace(new RegExp(transformationLiterals.matchPattern), transformationLiterals.replacementPattern),
                 };
             }
         });

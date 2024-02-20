@@ -13,6 +13,7 @@ const envSchema = z
         MONGO_URL: url(),
         RECOMMENDER_MANAGER_PORT: port(),
         RECOMMENDER_MANAGER_URL: url(),
+        RECOMMENDER_REQUEST_LIMIT: z.string(),
     })
     .and(
         z
@@ -40,6 +41,6 @@ const analyzerUrls: string[] = Object.entries(result.data)
     .map(([_envName, envValue]): string => envValue);
 
 const recommenderUrls: string[] = Object.entries(result.data)
-    .filter(([envName, _envValue]) => envName.startsWith('RECOMMENDER_') && envName.endsWith('_URL'))
+    .filter(([envName, _envValue]) => envName.startsWith('RECOMMENDERS_') && envName.endsWith('_URL'))
     .map(([_envName, envValue]): string => envValue);
 export const SERVER_ENV = { ...result.data, analyzerUrls: analyzerUrls, recommenderUrls: recommenderUrls };

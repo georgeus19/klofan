@@ -12,11 +12,6 @@ import { createUpdatePropertyLiteralsPatternTransformation } from '@klofan/trans
 dayjs.extend(customParseFormat);
 
 export async function recommendDate({ schema, instances }: { schema: Schema; instances: Instances }): Promise<Recommendation[]> {
-    // const { data } = await axios.get(`${SERVER_ENV.ADAPTER_URL}/api/v1/analyses?types=${getCodeListAnalysisType()}`);
-    // const analyses: CodeListAnalysis[] = data;
-
-    // Go through all literals
-
     const literalPropertyInstances = await Promise.all(
         schema.entities().flatMap((entity) =>
             getProperties(schema, entity.id)
@@ -33,7 +28,10 @@ export async function recommendDate({ schema, instances }: { schema: Schema; ins
         )
     );
     const czechDateRegExp = new RegExp(/^(\d\d)\.(\d\d)\.(\d\d\d\d)$/);
+    const replacementPattern = '$3-$2-$1';
 
+    const description = `Proposing to change czech date format DD.MM.YYYY to standard xsd:dateTime YYYY-MM-DD.`;
+    const category = 'Date';
     const recommendations: Recommendation[] = literalPropertyInstances
         .filter(
             ({ propertyInstances }) =>
@@ -48,11 +46,13 @@ export async function recommendDate({ schema, instances }: { schema: Schema; ins
                     property: toProperty(property),
                     literals: {
                         matchPattern: czechDateRegExp.source,
-                        replacementPattern: '$3-$2-$1',
+                        replacementPattern: replacementPattern,
                     },
                 }),
+                category,
+                description,
+                recommenderType: 'expert',
             };
-            // }
         });
 
     return recommendations;

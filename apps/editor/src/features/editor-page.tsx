@@ -10,9 +10,9 @@ function EditorPage() {
     return (
         <>
             <div className='flex flex-col items-stretch min-h-screen '>
-                <div>
+                {/* <div>
                     <Header className='max-w-7xl m-auto'></Header>
-                </div>
+                </div> */}
 
                 <ReactFlowProvider>
                     <PrefixesContextProvider>

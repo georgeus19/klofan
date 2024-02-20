@@ -10,5 +10,5 @@ export async function recommendCodes({ schema, instances }: { schema: Schema; in
     const { data } = await axios.get(`${SERVER_ENV.ADAPTER_URL}/api/v1/analyses?types=${getCodeListAnalysisType()}`);
     const analyses: CodeListAnalysis[] = data;
     console.log(analyses);
-    return analyses;
+    return [];
 }

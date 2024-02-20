@@ -16,19 +16,29 @@ const requestSchema = z.object({
 export const recommend = endpointErrorHandler(async (request: Request, response: Response, next: NextFunction) => {
     const { body } = await parseRequest(requestSchema, request);
 
+    console.log('XX');
     let noError = false;
-    const recommendations: Recommendation = await Promise.allSettled(
-        SERVER_ENV.analyzerUrls.map((url) => axios.post(`${url}/api/v1/recommend`, body))
+    const recommendations: Recommendation[] = await Promise.allSettled(
+        SERVER_ENV.recommenderUrls.map((url) => axios.post(`${url}/api/v1/recommend`, body))
     ).then((results) =>
         results.flatMap((result) => {
+            // console.log(result);
+            // logger.error('OK');
             if (result.status === 'fulfilled') {
                 noError = true;
                 return result.value.data;
             }
-            logger.error('Recommender failed', result.reason);
+            // console.log(result.reason);
+            // logger.error('Recommender failed', {
+            //     data: result.reason.config.data,
+            //     headers: result.reason.config.headers,
+            //     status: result.reason.response.status,
+            //     aborted: result.reason.request.aborted,
+            // });
             return [];
         })
     );
+    console.log(recommendations);
     if (noError) {
         response.status(200).send(recommendations);
     } else {

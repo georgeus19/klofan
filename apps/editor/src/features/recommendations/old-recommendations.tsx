@@ -3,13 +3,13 @@ import { useEditorContext } from '../editor/editor-context';
 import { twMerge } from 'tailwind-merge';
 import { RawInstances } from '@klofan/instances/representation';
 import { Dropdown } from '../manual-actions-pane/utils/dropdown';
-import { createUpdatePropertyLiteralsTransformation } from '@klofan/transform';
+import { createUpdatePropertyLiteralsValueTransformation } from '@klofan/transform';
 
 export type RecommendationsProps = {
     className?: string;
 };
 
-export function Recommendations({ className }: RecommendationsProps) {
+export function OldRecommendations({ className }: RecommendationsProps) {
     const [changeInstances, setChangedInstances] = useState<RawInstances>({ entityInstances: {}, propertyInstances: {} });
     const [recommended, setRecommended] = useState<boolean>(false);
     const [hide, setHide] = useState<boolean>(false);
@@ -44,7 +44,7 @@ export function Recommendations({ className }: RecommendationsProps) {
         const productEntity = schema.entities().find((entity) => entity.name === 'product');
         const countriesProperty = schema.properties().find((property) => property.name === 'countries');
         if (productEntity && countriesProperty) {
-            const transformation = createUpdatePropertyLiteralsTransformation({
+            const transformation = createUpdatePropertyLiteralsValueTransformation({
                 entity: productEntity,
                 property: countriesProperty,
                 literals: {

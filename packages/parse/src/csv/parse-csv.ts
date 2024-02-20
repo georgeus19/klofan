@@ -6,5 +6,5 @@ import { EntityTreeNode } from '../tree/entity-tree/entity-tree';
  */
 // eslint-disable-next-line no-unused-vars
 export function parseCsv(csv: string, csvParse: (input: string | Buffer, options?: any) => any): EntityTreeNode {
-    return parseTree(csvParse(csv, { columns: true, skip_empty_lines: true }));
+    return parseTree(csvParse(csv, { columns: true, skip_empty_lines: true, delimiter: [';', ',', '\t'] }));
 }
