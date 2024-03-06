@@ -4,10 +4,10 @@ import * as _ from 'lodash';
 import * as RDF from '@rdfjs/types';
 
 import { DcatDataset } from '@klofan/analyzer/dataset';
-import { AnalysisWithoutId, CodeListAnalysisWithoutId } from '@klofan/analyzer/analysis';
+import { InternalAnalysis, InternalCodeListAnalysis } from '@klofan/analyzer/analysis';
 import { QueryEngine } from '@comunica/query-sparql';
 
-export async function findSkosCodelists(dataset: DcatDataset): Promise<AnalysisWithoutId[]> {
+export async function findSkosCodelists(dataset: DcatDataset): Promise<InternalAnalysis[]> {
     const turtleDistribution = dataset.distributions.find((d) => d.mimeType === 'text/turtle');
     if (!turtleDistribution) {
         throw new Error('No turtle distribution');
@@ -52,24 +52,35 @@ export async function findSkosCodelists(dataset: DcatDataset): Promise<AnalysisW
     const bindingsStream = await engine.queryBindings(query, { sources: [store] });
     const bindingsArray = await bindingsStream.toArray();
 
-    const analysisInternal = Object.values(_.groupBy(bindingsArray, (bindings: RDF.Bindings) => bindings.get(codeListVar)?.value)).map(
-        (codeListBindings: RDF.Bindings[]) => {
-            const codes = Object.values(_.groupBy(codeListBindings, (bindings: RDF.Bindings) => bindings.get(codedEntityVar)?.value)).map(
-                (codeBindings: RDF.Bindings[]) => {
-                    return {
-                        iri: (codeBindings[0].get(codedEntityVar) as RDF.NamedNode).value,
-                        label: (codeBindings[0].get(labelVar) as RDF.Literal).value,
-                        code: (codeBindings[0].get(codeVar) as RDF.NamedNode).value,
-                        values: codeBindings.flatMap((row) => [(row.get(labelVar) as RDF.Literal).value, (row.get(codeVar) as RDF.NamedNode).value]),
-                    };
-                }
-            );
+    const analysisInternal = Object.values(
+        _.groupBy(bindingsArray, (bindings: RDF.Bindings) => bindings.get(codeListVar)?.value)
+    ).map((codeListBindings: RDF.Bindings[]) => {
+        const codes = Object.values(
+            _.groupBy(
+                codeListBindings,
+                (bindings: RDF.Bindings) => bindings.get(codedEntityVar)?.value
+            )
+        ).map((codeBindings: RDF.Bindings[]) => {
             return {
-                codeListIri: (codeListBindings[0].get(codeListVar) as RDF.NamedNode).value,
-                codes: codes,
+                iri: (codeBindings[0].get(codedEntityVar) as RDF.NamedNode).value,
+                label: (codeBindings[0].get(labelVar) as RDF.Literal).value,
+                code: (codeBindings[0].get(codeVar) as RDF.NamedNode).value,
+                values: codeBindings.flatMap((row) => [
+                    (row.get(labelVar) as RDF.Literal).value,
+                    (row.get(codeVar) as RDF.NamedNode).value,
+                ]),
             };
-        }
-    );
+        });
+        return {
+            codeListIri: (codeListBindings[0].get(codeListVar) as RDF.NamedNode).value,
+            codes: codes,
+        };
+    });
 
-    return analysisInternal.map((a): CodeListAnalysisWithoutId => ({ type: 'code-list-analysis', dataset: {}, internal: a }));
+    return analysisInternal.map(
+        (a): InternalCodeListAnalysis => ({
+            type: 'code-list-analysis',
+            internal: a,
+        })
+    );
 }

@@ -6,6 +6,7 @@ import FormData from 'form-data';
 import type http from 'http';
 import { logger, VIRTUOSO_GRAPH_STORE_PATH } from './main';
 import { logAxiosError } from '@klofan/server-utils';
+import { AnalysisDoneProvoNotification } from '@klofan/analyzer/communication';
 
 /**
  * Function for sending uploaded graph to analyzer manager. It must be called in proxy response event.
@@ -60,6 +61,12 @@ async function onProxyResponse(
     }
     const formData = new FormData();
     formData.append('files', graphResponse.graph, { filename: 'graph.jsonld' });
+
+    const provenanceNotification: AnalysisDoneProvoNotification = {
+        type: 'analysis-done-provo-notification',
+        url: `${SERVER_ENV.CATALOG_URL}/rdf-graph-store?default`,
+    };
+    formData.append('notifications', JSON.stringify([provenanceNotification]));
     const headers = formData.getHeaders();
 
     await axios

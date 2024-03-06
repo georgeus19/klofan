@@ -2,6 +2,7 @@ import { QueryEngine } from '@comunica/query-sparql-file';
 import * as RDF from '@rdfjs/types';
 import * as _ from 'lodash';
 import { DCAT } from '@klofan/utils';
+import { z } from 'zod';
 
 export type DcatDataset = {
     iri: string;
@@ -15,10 +16,14 @@ export type DcatDistribution = {
     mediaType: string;
 };
 
+
 /**
  * Retrieve from source dcat datasets with rdf distributions with direct downloadURL.
  */
-export async function getDcatDatasets(source: string | { type: 'file'; value: string } | RDF.Source): Promise<DcatDataset[]> {
+export async function getDcatDatasets(source: string | {
+    type: 'file';
+    value: string
+} | RDF.Source): Promise<DcatDataset[]> {
     const engine = new QueryEngine();
 
     const datasetVar = 'dataset';
@@ -52,7 +57,7 @@ export async function getDcatDatasets(source: string | { type: 'file'; value: st
             FILTER(isIRI(?${downloadUrlVar}))
         }
         `,
-        { sources: [source] }
+        { sources: [source] },
     );
     const bindingsArray: RDF.Bindings[] = await bindingsStream.toArray();
     const datasets: DcatDataset[] = Object.values(_.groupBy(bindingsArray, (bindings: RDF.Bindings) => bindings.get(datasetVar)?.value)).map(
@@ -68,7 +73,7 @@ export async function getDcatDatasets(source: string | { type: 'file'; value: st
                 iri: datasetIri,
                 distributions: distributions,
             };
-        }
+        },
     );
     return datasets;
 }

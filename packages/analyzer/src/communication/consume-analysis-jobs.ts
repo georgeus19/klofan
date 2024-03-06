@@ -1,17 +1,35 @@
 import { RedisOptions } from 'ioredis';
 import { Logger } from 'winston';
 import { DcatDataset } from '../dataset/dcat';
-import { Analysis, AnalysisWithoutId } from '../analysis/analysis';
+import { Analysis, InternalAnalysis } from '../analysis/analysis';
 import { DatasetAnalysisJob, RedisBlockingQueue } from './blocking-queue';
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
 import { SERVER_ENV } from '@klofan/config/env/server';
+import { logAxiosError, ObservabilityTools } from '@klofan/server-utils';
+import {
+    AnalysisDoneProvoNotification,
+    isAnalysisDoneProvoNotification,
+    sendAnalysisNotification,
+} from './notification';
+import { AnalysisProvenance, baseAnalysisProvenance } from '../analysis/provenance';
 
-export async function consumeAnalysisJobs({ jobQueue, redisOptions, logger, analyze }: {
-    jobQueue: string,
-    redisOptions: RedisOptions,
-    logger: Logger,
-    analyze: (dataset: DcatDataset) => Promise<AnalysisWithoutId[]>
+/**
+ * Retrieve jobs from `jobQueue` and `analyze` them.
+ * All analysis are sent to Adapter and any notifications to be sent are sent
+ */
+export async function consumeAnalysisJobs({
+    jobQueue,
+    redisOptions,
+    logger,
+    analyze,
+    analyzerIri,
+}: {
+    jobQueue: string;
+    redisOptions: RedisOptions;
+    logger: Logger;
+    analyze: (dataset: DcatDataset) => Promise<InternalAnalysis[]>;
+    analyzerIri: string;
 }) {
     const datasetMetadataQueue = new RedisBlockingQueue<DatasetAnalysisJob>(redisOptions, jobQueue);
     while (true) {
@@ -20,49 +38,97 @@ export async function consumeAnalysisJobs({ jobQueue, redisOptions, logger, anal
             const analysisJob: DatasetAnalysisJob = await datasetMetadataQueue.pop();
             logger.info(`Analyzing dataset ${analysisJob.dataset.iri}`);
 
-            const analyses: Analysis[] = (await analyze(analysisJob.dataset)).map((analysis) => ({
-                ...analysis,
-                id: uuidv4(),
-            }));
-            await postAnalysesToAdapter({ dataset: analysisJob.dataset, analyses: analyses, logger: logger });
+            const analyses: Analysis[] = (await analyze(analysisJob.dataset)).map((analysis) => {
+                const analysisId = uuidv4();
+                logger.info(
+                    `Created analysis ${analysisId} for dataset ${analysisJob.dataset.iri}`
+                );
+                return {
+                    ...analysis,
+                    provenance: baseAnalysisProvenance({
+                        analyzerIri,
+                        baseIri: SERVER_ENV.BASE_IRI,
+                        analysisIri: `${SERVER_ENV.ADAPTER_URL}/api/v1/analyses/${analysisId}`,
+                        datasetIri: analysisJob.dataset.iri,
+                        analysis,
+                    }),
+                    id: analysisId,
+                };
+            });
+            // console.log(analyses);
+            console.log(JSON.stringify(analyses, null, 4));
+            const result = await postAnalysesToAdapter({
+                dataset: analysisJob.dataset,
+                analyses: analyses,
+                observability: { logger },
+            });
+            if (result) {
+                const insertedIds = Object.fromEntries(result.insertedIds.map((id) => [id, id]));
+                analyses
+                    .filter((analysis) => Object.hasOwn(insertedIds, analysis.id))
+                    .map((analysis) => {
+                        void analysisJob.notifications
+                            .filter((notification) => isAnalysisDoneProvoNotification(notification))
+                            .map((notification: AnalysisDoneProvoNotification) =>
+                                sendAnalysisNotification(
+                                    notification,
+                                    analysis.provenance.analysis,
+                                    {
+                                        logger,
+                                    }
+                                )
+                            );
+                    });
+            }
         } catch (e) {
             logger.error('Unknown error occurred in analyzer manager worker', e);
         }
     }
 }
 
-async function postAnalysesToAdapter({ dataset, analyses, logger }: {
-    dataset: DcatDataset,
-    analyses: Analysis[],
-    logger: Logger
-}) {
-    return await axios
+async function postAnalysesToAdapter({
+    dataset,
+    analyses,
+    observability,
+}: {
+    dataset: DcatDataset;
+    analyses: Analysis[];
+    observability: ObservabilityTools;
+}): Promise<{ insertedIds: string[] } | null> {
+    return axios
         .post(`${SERVER_ENV.ADAPTER_URL}/api/v1/analyses`, analyses)
         .then(({ data }) => {
-            if (!data.inserted) {
-                logger.error('Adapter does not return number of inserted analyses');
+            const result: { insertedCount?: number; insertedIds: string[] } = data;
+            if (!result.insertedCount) {
+                observability.logger.error('Adapter does not return number of inserted analyses');
+                return null;
             }
-            if (analyses.length !== data.inserted) {
-                logger.warn(`Not all analyses were inserted for dataset ${dataset.iri}`, {
-                    allAnalyses: analyses.length,
-                    inserted: data.inserted,
-                    dataset: dataset.iri,
-                });
+            if (analyses.length !== result.insertedCount) {
+                observability.logger.warn(
+                    `Not all analyses were inserted for dataset ${dataset.iri}`,
+                    {
+                        allAnalyses: analyses.length,
+                        inserted: result.insertedCount,
+                        dataset: dataset.iri,
+                    }
+                );
             } else {
-                logger.info(`Inserted all ${analyses.length} analyses for dataset ${dataset.iri}`);
+                observability.logger.info(
+                    `Inserted all ${analyses.length} analyses for dataset ${dataset.iri}`
+                );
             }
+            observability.logger.info(
+                `Inserted analyses: ${result.insertedIds.join(',')}`,
+                result.insertedIds
+            );
+            return { insertedIds: result.insertedIds };
         })
         .catch((error) => {
-            if (error.response) {
-                logger.error(`Response error received when posting analyses to adapter. No analyses for dataset ${dataset.iri}`, {
-                    data: error.response.data,
-                    status: error.response.status,
-                    headers: error.response.headers,
-                });
-            } else if (error.request) {
-                logger.error(`Request error when posting to adapter. No analyses for dataset ${dataset.iri}`, error.request);
-            } else {
-                logger.error(`Error when posting to adapter. No analyses for dataset ${dataset.iri}`, error.message);
-            }
+            logAxiosError(
+                observability.logger,
+                error,
+                `Response error received when posting analyses to adapter. No analyses for dataset ${dataset.iri}`
+            );
+            return null;
         });
 }

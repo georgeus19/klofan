@@ -12,7 +12,7 @@
             <input type="text" id="url" value="http://localhost:3000/api/v1/dataset/dcat" />
             <form method="post" enctype="multipart/form-data">
                 <label for="files">Files</label>
-                <input type="file" name="files" id="files" multiple />
+                <input type="file" name="res-file" id="files" multiple />
                 <button class="button" id="clear" type="button">Clear</button>
                 <button class="button" type="submit">Upload</button>
             </form>
@@ -26,11 +26,11 @@
                     method: 'post',
                     body: new FormData(form),
                 })
-                    .then((response) => response.json())
-                    .then((data) => {
-                        document.getElementById('response').textContent = JSON.stringify(data, null, 3);
-                        console.log(JSON.stringify(data, null, 3));
-                    });
+                    .then((response) => console.log(response) )
+                    // .then((data) => {
+                    //     document.getElementById('response').textContent = JSON.stringify(data, null, 3);
+                    //     console.log(JSON.stringify(data, null, 3));
+                    // });
 
                 event.preventDefault();
             }

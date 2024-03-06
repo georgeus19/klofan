@@ -1,21 +1,24 @@
-import { Analysis } from './analysis';
+import { Analysis, InternalAnalysis } from './analysis';
 
-export interface CodeListAnalysis extends Analysis {
+interface InternalCodeListAnalysisData {
+    codeListIri: string;
+    codes: { iri: string; label: string; code: string; values: string[] }[];
+}
+
+export interface InternalCodeListAnalysis extends InternalAnalysis {
     type: 'code-list-analysis';
-    internal: {
-        codeListIri: string;
-        codes: { iri: string; label: string; code: string; values: string[] }[];
-    };
+    internal: InternalCodeListAnalysisData;
+}
+
+export interface CodeListAnalysis extends Analysis, InternalCodeListAnalysisData {
+    type: 'code-list-analysis';
+    internal: InternalCodeListAnalysisData;
 }
 
 export function isCodeListAnalysis(analysis: Analysis): analysis is CodeListAnalysis {
     return analysis.type === 'code-list-analysis';
 }
 
-export type CodeListAnalysisType = Pick<CodeListAnalysis, 'type'>;
-
 export function getCodeListAnalysisType(): string {
     return 'code-list-analysis';
 }
-
-export type CodeListAnalysisWithoutId = Omit<CodeListAnalysis, 'id'>;
