@@ -1,21 +1,21 @@
 import { EntityInstance } from '../../entity-instance';
-import { PropertyInstance } from '../../representation/property-instance';
+import { Property } from '../../representation/property';
 import { intersectionWith } from 'lodash';
-import { RawInstances, propertyInstanceKey } from '../../representation/raw-instances';
-import { Entity, Property } from '@klofan/schema/representation';
+import { RawInstances, propertyKey } from '../../representation/raw-instances';
+import { EntitySet, PropertySet } from '@klofan/schema/representation';
 
 export type JoinMapping = {
     type: 'join-mapping';
-    source: Entity;
-    sourceJoinProperty: Property;
-    target: Entity;
-    targetJoinProperty: Property;
+    source: EntitySet;
+    sourceJoinProperty: PropertySet;
+    target: EntitySet;
+    targetJoinProperty: PropertySet;
 };
 
 export function getJoinedPropertyInstances(
-    source: { instances: EntityInstance[]; joinProperty: Property },
-    target: { instances: EntityInstance[]; joinProperty: Property }
-): PropertyInstance[] {
+    source: { instances: EntityInstance[]; joinProperty: PropertySet },
+    target: { instances: EntityInstance[]; joinProperty: PropertySet }
+): Property[] {
     return source.instances.map((sourceInstance) => {
         const joinedTargetInstances: number[] = target.instances
             .map((targetInstance, instanceIndex) => ({
@@ -30,23 +30,34 @@ export function getJoinedPropertyInstances(
             .map(({ targetInstanceIndex }) => targetInstanceIndex);
         return {
             literals: [],
-            targetInstanceIndices: joinedTargetInstances,
+            targetEntities: joinedTargetInstances,
         };
     });
 }
 
-export function getJoinMappingPropertyInstances(instances: RawInstances, mapping: JoinMapping): PropertyInstance[] {
-    return instances.propertyInstances[propertyInstanceKey(mapping.source.id, mapping.sourceJoinProperty.id)].map((sourcePropertyInstance) => {
-        const joinedTargetInstances: number[] = instances.propertyInstances[propertyInstanceKey(mapping.target.id, mapping.targetJoinProperty.id)]
-            .map((targetPropertyInstance, targetInstanceIndex) => ({
-                targetInstanceIndex: targetInstanceIndex,
-                join: intersectionWith(sourcePropertyInstance.literals, targetPropertyInstance.literals, (a, b) => a.value === b.value),
-            }))
-            .filter(({ join }) => join.length > 0)
-            .map(({ targetInstanceIndex }) => targetInstanceIndex);
-        return {
-            literals: [],
-            targetInstanceIndices: joinedTargetInstances,
-        };
-    });
+export function getJoinMappingPropertyInstances(
+    instances: RawInstances,
+    mapping: JoinMapping
+): Property[] {
+    return instances.properties[propertyKey(mapping.source.id, mapping.sourceJoinProperty.id)].map(
+        (sourcePropertyInstance) => {
+            const joinedTargetInstances: number[] = instances.properties[
+                propertyKey(mapping.target.id, mapping.targetJoinProperty.id)
+            ]
+                .map((targetPropertyInstance, targetInstanceIndex) => ({
+                    targetInstanceIndex: targetInstanceIndex,
+                    join: intersectionWith(
+                        sourcePropertyInstance.literals,
+                        targetPropertyInstance.literals,
+                        (a, b) => a.value === b.value
+                    ),
+                }))
+                .filter(({ join }) => join.length > 0)
+                .map(({ targetInstanceIndex }) => targetInstanceIndex);
+            return {
+                literals: [],
+                targetEntities: joinedTargetInstances,
+            };
+        }
+    );
 }

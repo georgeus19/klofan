@@ -1,26 +1,30 @@
 import { describe, expect, test } from '@jest/globals';
-import { PropertyInstance } from '../../representation/property-instance';
+import { Property } from '../../representation/property';
 import { EntityInstance } from '../../entity-instance';
-import { PreserveMapping, getPreserveMappingPropertyInstances, getPreservedPropertyInstances } from './preserve-mapping';
+import {
+    PreserveMapping,
+    getPreserveMappingPropertyInstances,
+    getPreservedPropertyInstances,
+} from './preserve-mapping';
 import { RawInstances, initEntityInstances } from '../../representation/raw-instances';
-import { Property } from '@klofan/schema/representation';
+import { PropertySet } from '@klofan/schema/representation';
 
 describe('Transform Instances', () => {
     describe('Instance Mappings', () => {
         describe('Join', () => {
             test('getPreservedPropertyInstances', () => {
-                const expectedPropertyInstances: PropertyInstance[] = [
+                const expectedPropertyInstances: Property[] = [
                     {
                         literals: [{ value: 'AAA' }, { value: 'BBB' }],
-                        targetInstanceIndices: [0, 1],
+                        targetEntities: [0, 1],
                     },
                     {
                         literals: [{ value: 'BBB' }],
-                        targetInstanceIndices: [1],
+                        targetEntities: [1],
                     },
                     {
                         literals: [{ value: 'BBB' }],
-                        targetInstanceIndices: [],
+                        targetEntities: [],
                     },
                 ];
 
@@ -30,7 +34,7 @@ describe('Transform Instances', () => {
                         properties: {
                             IDREF: {
                                 literals: [{ value: 'AAA' }, { value: 'BBB' }],
-                                targetInstanceIndices: [0, 1],
+                                targetEntities: [0, 1],
                             },
                         },
                     },
@@ -39,7 +43,7 @@ describe('Transform Instances', () => {
                         properties: {
                             IDREF: {
                                 literals: [{ value: 'BBB' }],
-                                targetInstanceIndices: [1],
+                                targetEntities: [1],
                             },
                         },
                     },
@@ -48,41 +52,44 @@ describe('Transform Instances', () => {
                         properties: {
                             IDREF: {
                                 literals: [{ value: 'BBB' }],
-                                targetInstanceIndices: [],
+                                targetEntities: [],
                             },
                         },
                     },
                 ];
 
-                const property: Property = {
+                const property: PropertySet = {
                     id: 'IDREF',
                     name: 'idref',
-                    type: 'property',
+                    type: 'property-set',
                     value: '2',
                 };
 
-                const propertyInstances = getPreservedPropertyInstances(originalSourceEntityInstances, property);
+                const propertyInstances = getPreservedPropertyInstances(
+                    originalSourceEntityInstances,
+                    property
+                );
                 expect(propertyInstances).toEqual(expectedPropertyInstances);
             });
             test('getPreserveMappingPropertyInstances', () => {
-                const expectedPropertyInstances: PropertyInstance[] = [
+                const expectedPropertyInstances: Property[] = [
                     {
                         literals: [{ value: 'AAA' }, { value: 'BBB' }],
-                        targetInstanceIndices: [0, 1],
+                        targetEntities: [0, 1],
                     },
                     {
                         literals: [{ value: 'BBB' }],
-                        targetInstanceIndices: [1],
+                        targetEntities: [1],
                     },
                     {
                         literals: [{ value: 'BBB' }],
-                        targetInstanceIndices: [],
+                        targetEntities: [],
                     },
                 ];
-                const property: Property = {
+                const property: PropertySet = {
                     id: 'IDREF',
                     name: 'idref',
-                    type: 'property',
+                    type: 'property-set',
                     value: '2',
                 };
                 const mapping: PreserveMapping = {
@@ -91,33 +98,33 @@ describe('Transform Instances', () => {
                         id: '0',
                         name: '0',
                         properties: ['IDREF'],
-                        type: 'entity',
+                        type: 'entity-set',
                     },
                     originalTarget: {
                         id: '1',
                         name: '1',
                         properties: [],
-                        type: 'entity',
+                        type: 'entity-set',
                     },
-                    newSource: { id: '2', name: '2', properties: [], type: 'entity' },
-                    newTarget: { id: '3', name: '3', properties: [], type: 'entity' },
+                    newSource: { id: '2', name: '2', properties: [], type: 'entity-set' },
+                    newTarget: { id: '3', name: '3', properties: [], type: 'entity-set' },
                     property: property,
                 };
                 const instances: RawInstances = {
-                    entityInstances: {
+                    entities: {
                         '0': { count: 3, instances: initEntityInstances(3) },
                         '1': { count: 2, instances: initEntityInstances(2) },
                         '2': { count: 3, instances: initEntityInstances(3) },
                         '3': { count: 2, instances: initEntityInstances(2) },
                     },
-                    propertyInstances: {
+                    properties: {
                         '0.IDREF': [
                             {
                                 literals: [{ value: 'AAA' }, { value: 'BBB' }],
-                                targetInstanceIndices: [0, 1],
+                                targetEntities: [0, 1],
                             },
-                            { literals: [{ value: 'BBB' }], targetInstanceIndices: [1] },
-                            { literals: [{ value: 'BBB' }], targetInstanceIndices: [] },
+                            { literals: [{ value: 'BBB' }], targetEntities: [1] },
+                            { literals: [{ value: 'BBB' }], targetEntities: [] },
                         ],
                     },
                 };

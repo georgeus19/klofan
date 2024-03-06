@@ -1,9 +1,9 @@
 import { EntityTreeNode } from '@klofan/parse';
-import { Entity } from '../representation/item/entity';
+import { EntitySet } from '../representation/item/entity-set';
 import { Item } from '../representation/item/item';
-import { Literal } from '../representation/item/literal';
+import { LiteralSet } from '../representation/item/literal-set';
 import { RawSchema } from '../representation/raw-schema';
-import { Property } from '../representation/relation/property';
+import { PropertySet } from '../representation/relation/property-set';
 import { Schema } from '../schema';
 import { identifier } from '@klofan/utils';
 
@@ -15,32 +15,34 @@ export function loadSchema(entityTree: EntityTreeNode): Schema {
 
 function fillSchema(schema: RawSchema, entityTree: EntityTreeNode): Item {
     if (!entityTree.literal) {
-        const propertyIds: identifier[] = Object.entries(entityTree.properties).map(([propertyName, propertyInfo]) => {
-            const property: Property = {
-                id: propertyInfo.id,
-                name: propertyName,
-                type: 'property',
-                value: fillSchema(schema, propertyInfo.targetEntity).id,
-            };
-            schema.relations[property.id] = property;
-            return property.id;
-        });
+        const propertySetIds: identifier[] = Object.entries(entityTree.properties).map(
+            ([propertySetName, propertyInfo]) => {
+                const propertySet: PropertySet = {
+                    id: propertyInfo.id,
+                    name: propertySetName,
+                    type: 'property-set',
+                    value: fillSchema(schema, propertyInfo.targetEntity).id,
+                };
+                schema.relations[propertySet.id] = propertySet;
+                return propertySet.id;
+            }
+        );
 
-        const entity: Entity = {
+        const entitySet: EntitySet = {
             id: entityTree.id,
-            type: 'entity',
+            type: 'entity-set',
             name: entityTree.name,
-            properties: propertyIds,
+            properties: propertySetIds,
         };
-        schema.items[entity.id] = entity;
-        return entity;
+        schema.items[entitySet.id] = entitySet;
+        return entitySet;
     } else {
-        const literal: Literal = {
+        const literalSet: LiteralSet = {
             id: entityTree.id,
             name: entityTree.name,
-            type: 'literal',
+            type: 'literal-set',
         };
-        schema.items[literal.id] = literal;
-        return literal;
+        schema.items[literalSet.id] = literalSet;
+        return literalSet;
     }
 }

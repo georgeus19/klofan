@@ -1,6 +1,6 @@
-import { PropertyInstance } from '../../representation/property-instance';
+import { Property } from '../../representation/property';
 
 export type ManualMapping = {
     type: 'manual-mapping';
-    propertyInstances: PropertyInstance[];
+    propertyInstances: Property[];
 };

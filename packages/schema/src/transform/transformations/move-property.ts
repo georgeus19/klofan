@@ -1,21 +1,24 @@
-import { Entity } from '../../representation/item/entity';
+import { EntitySet } from '../../representation/item/entity-set';
 import { Item } from '../../representation/item/item';
 import { RawSchema } from '../../representation/raw-schema';
-import { Property } from '../../representation/relation/property';
+import { PropertySet } from '../../representation/relation/property-set';
 import { TransformationChanges } from '../transformation-changes';
 
 export interface MoveProperty {
     type: 'move-property';
     data: {
-        originalSource: Entity;
-        newSource: Entity;
-        property: Property;
+        originalSource: EntitySet;
+        newSource: EntitySet;
+        property: PropertySet;
         newTarget: Item;
     };
 }
 
-export function moveProperty(schema: RawSchema, { data: { originalSource, newSource, property, newTarget } }: MoveProperty) {
-    const updatedSource: Entity = {
+export function moveProperty(
+    schema: RawSchema,
+    { data: { originalSource, newSource, property, newTarget } }: MoveProperty
+) {
+    const updatedSource: EntitySet = {
         ...originalSource,
         properties: originalSource.properties.filter((propertyId) => propertyId !== property.id),
     };
@@ -25,13 +28,13 @@ export function moveProperty(schema: RawSchema, { data: { originalSource, newSou
         newSource = updatedSource;
     }
 
-    const updatedNewSource: Entity = {
+    const updatedNewSource: EntitySet = {
         ...newSource,
         properties: newSource.properties.concat(property.id),
     };
     schema.items[newSource.id] = updatedNewSource;
 
-    const updatedProperty: Property = { ...property, value: newTarget.id };
+    const updatedProperty: PropertySet = { ...property, value: newTarget.id };
     schema.relations[property.id] = updatedProperty;
 }
 

@@ -1,11 +1,15 @@
-import { Entity } from '@klofan/schema/representation';
+import { EntitySet } from '@klofan/schema/representation';
 import { Schema } from '@klofan/schema';
 import { UpdateItem } from '@klofan/schema/transform';
 import { identifier } from '@klofan/utils';
 import { Transformation } from '../transformation';
 
-export function createUpdateEntityUriTransformation(schema: Schema, entityId: identifier, uri: string): Transformation {
-    const newEntity: Entity = {
+export function createUpdateEntityUriTransformation(
+    schema: Schema,
+    entityId: identifier,
+    uri: string
+): Transformation {
+    const newEntity: EntitySet = {
         ...schema.entity(entityId),
         uri: uri === '' ? undefined : uri,
     };

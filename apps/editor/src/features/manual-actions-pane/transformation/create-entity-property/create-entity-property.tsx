@@ -11,28 +11,50 @@ import { AllToOneButton } from '../../utils/mapping/all-to-one-button';
 import { ManualButton } from '../../utils/mapping/manual-button';
 import { ButtonProps } from '../../utils/mapping/button-props';
 import { EntityInstance } from '@klofan/instances';
-import { Entity } from '@klofan/schema/representation';
+import { EntitySet } from '@klofan/schema/representation';
 import { JoinMappingDetail } from '../../utils/mapping/join/join-mapping-detail';
 import { UriLabelInput } from '../../utils/uri/uri-label-input';
 import { ErrorMessage } from '../../utils/error-message';
 
 export function CreateEntityProperty() {
-    const { diagram, source, target, usedInstanceMapping, setUsedInstanceMapping, propertyEndsSelection, property, createProperty, cancel, error } =
-        useCreateEntityProperty();
+    const {
+        diagram,
+        source,
+        target,
+        usedInstanceMapping,
+        setUsedInstanceMapping,
+        propertyEndsSelection,
+        property,
+        createProperty,
+        cancel,
+        error,
+    } = useCreateEntityProperty();
 
     const mappingButtonProps: ButtonProps = {
         setEdges: diagram.setEdges,
         setUsedInstanceMapping,
         usedInstanceMapping: usedInstanceMapping,
-        source: source as { entity: Entity; instances: EntityInstance[] },
-        target: target as { entity: Entity; instances: EntityInstance[] },
+        source: source as { entity: EntitySet; instances: EntityInstance[] },
+        target: target as { entity: EntitySet; instances: EntityInstance[] },
     };
 
     return (
         <div>
-            <Header label='Create Entity Property'></Header>
-            <LabelInput label='Name' value={property.name} updateValue={property.setName} id='name' onChangeDone={() => {}}></LabelInput>
-            <UriLabelInput label='Uri' {...property.uri} onChangeDone={() => {}} usePrefix id='uri'></UriLabelInput>
+            <Header label='Create EntitySet PropertySet'></Header>
+            <LabelInput
+                label='Name'
+                value={property.name}
+                updateValue={property.setName}
+                id='name'
+                onChangeDone={() => {}}
+            ></LabelInput>
+            <UriLabelInput
+                label='Uri'
+                {...property.uri}
+                onChangeDone={() => {}}
+                usePrefix
+                id='uri'
+            ></UriLabelInput>
             <div>
                 <PropertyEndsNodesSelector
                     {...propertyEndsSelection}
@@ -41,7 +63,9 @@ export function CreateEntityProperty() {
                 ></PropertyEndsNodesSelector>
                 {source.entity && target.entity && (
                     <>
-                        <div className='text-center p-1 rounded border-2 border-slate-400'>Instance Mapping</div>
+                        <div className='text-center p-1 rounded border-2 border-slate-400'>
+                            Instance Mapping
+                        </div>
                         <div className='grid grid-cols-5'>
                             <JoinButton
                                 {...mappingButtonProps}
@@ -53,7 +77,8 @@ export function CreateEntityProperty() {
                             <AllToOneButton {...mappingButtonProps}></AllToOneButton>
                             <ManualButton {...mappingButtonProps}></ManualButton>
                         </div>
-                        {(usedInstanceMapping.type === 'join-mapping-detail' || usedInstanceMapping.type === 'join-mapping') && (
+                        {(usedInstanceMapping.type === 'join-mapping-detail' ||
+                            usedInstanceMapping.type === 'join-mapping') && (
                             <JoinMappingDetail
                                 {...mappingButtonProps}
                                 setUsedInstanceMapping={setUsedInstanceMapping}

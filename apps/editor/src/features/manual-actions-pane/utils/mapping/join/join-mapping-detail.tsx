@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { DisplaySelect } from '../../display-select';
 import { useEditorContext } from '../../../../editor/editor-context';
-import { Property, Entity, isLiteral } from '@klofan/schema/representation';
+import { PropertySet, EntitySet, isLiteralSet } from '@klofan/schema/representation';
 import { JoinMapping, getJoinedPropertyInstances } from '@klofan/instances/transform';
 import { ButtonProps } from '../button-props';
 
@@ -12,20 +12,26 @@ export type JoinMappingDetailProps = ButtonProps & {
 
 export type JoinMappingDetailMapping = {
     type: 'join-mapping-detail';
-    source: Entity;
-    sourceJoinProperty?: Property;
-    target: Entity;
-    targetJoinProperty?: Property;
+    source: EntitySet;
+    sourceJoinProperty?: PropertySet;
+    target: EntitySet;
+    targetJoinProperty?: PropertySet;
 };
 
-export function JoinMappingDetail({ usedInstanceMapping, setUsedInstanceMapping, setEdges, source, target }: JoinMappingDetailProps) {
+export function JoinMappingDetail({
+    usedInstanceMapping,
+    setUsedInstanceMapping,
+    setEdges,
+    source,
+    target,
+}: JoinMappingDetailProps) {
     const [selectSourceJoinProperty, setSelectSourceJoinProperty] = useState<boolean>(false);
     const [selectTargetJoinProperty, setSelectTargetJoinProperty] = useState<boolean>(false);
     const { schema } = useEditorContext();
 
     const sourceProperties = usedInstanceMapping.source.properties
         .map((propertyId) => schema.property(propertyId))
-        .filter((property) => isLiteral(schema.item(property.value)))
+        .filter((property) => isLiteralSet(schema.item(property.value)))
         .map((property) => (
             <button
                 key={property.id}
@@ -35,7 +41,10 @@ export function JoinMappingDetail({ usedInstanceMapping, setUsedInstanceMapping,
                     const newMapping = { ...usedInstanceMapping, sourceJoinProperty: property };
                     setUsedInstanceMapping(newMapping);
                     if (newMapping.targetJoinProperty) {
-                        setUsedInstanceMapping({ ...newMapping, type: 'join-mapping' } as JoinMapping);
+                        setUsedInstanceMapping({
+                            ...newMapping,
+                            type: 'join-mapping',
+                        } as JoinMapping);
                         setEdges(
                             getJoinedPropertyInstances(
                                 { ...source, joinProperty: property },
@@ -50,7 +59,7 @@ export function JoinMappingDetail({ usedInstanceMapping, setUsedInstanceMapping,
         ));
     const targetProperties = usedInstanceMapping.target.properties
         .map((propertyId) => schema.property(propertyId))
-        .filter((property) => isLiteral(schema.item(property.value)))
+        .filter((property) => isLiteralSet(schema.item(property.value)))
         .map((property) => (
             <button
                 key={property.id}
@@ -60,7 +69,10 @@ export function JoinMappingDetail({ usedInstanceMapping, setUsedInstanceMapping,
                     const newMapping = { ...usedInstanceMapping, targetJoinProperty: property };
                     setUsedInstanceMapping(newMapping);
                     if (newMapping.sourceJoinProperty) {
-                        setUsedInstanceMapping({ ...newMapping, type: 'join-mapping' } as JoinMapping);
+                        setUsedInstanceMapping({
+                            ...newMapping,
+                            type: 'join-mapping',
+                        } as JoinMapping);
                         setEdges(
                             getJoinedPropertyInstances(
                                 { ...source, joinProperty: newMapping.sourceJoinProperty },

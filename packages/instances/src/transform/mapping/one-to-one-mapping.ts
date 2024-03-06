@@ -1,27 +1,30 @@
-import { Entity } from '@klofan/schema/representation';
-import { PropertyInstance } from '../../representation/property-instance';
+import { EntitySet } from '@klofan/schema/representation';
+import { Property } from '../../representation/property';
 import { RawInstances } from '../../representation/raw-instances';
 
 export type OneToOneMapping = {
     type: 'one-to-one-mapping';
-    source: Entity;
-    target: Entity;
+    source: EntitySet;
+    target: EntitySet;
 };
 
 export function isOneToOneMappingEligible(sourceInstances: number, targetInstances: number) {
     return sourceInstances === targetInstances;
 }
 
-export function getOneToOnePropertyInstances(sourceInstances: number): PropertyInstance[] {
+export function getOneToOnePropertyInstances(sourceInstances: number): Property[] {
     return [...Array(sourceInstances).keys()].map(
-        (index): PropertyInstance => ({
+        (index): Property => ({
             literals: [],
-            targetInstanceIndices: [index],
+            targetEntities: [index],
         })
     );
 }
 
-export function getOneToOneMappingPropertyInstances(instances: RawInstances, mapping: OneToOneMapping): PropertyInstance[] {
-    const sourceInstances = instances.entityInstances[mapping.source.id];
+export function getOneToOneMappingPropertyInstances(
+    instances: RawInstances,
+    mapping: OneToOneMapping
+): Property[] {
+    const sourceInstances = instances.entities[mapping.source.id];
     return getOneToOnePropertyInstances(sourceInstances.count);
 }

@@ -8,7 +8,7 @@ import { save } from '@klofan/instances/save';
 import { useEditorContext } from '../../../editor/editor-context';
 import { useUriInput } from '../../utils/uri/use-uri-input';
 import { BlankNodeInstanceBuilder, NamedNodeInstanceBuilder } from '@klofan/instances/save';
-import { Entity } from '@klofan/schema/representation';
+import { EntitySet } from '@klofan/schema/representation';
 import { download } from '../download';
 
 export type ExportInstancesShown = {
@@ -26,13 +26,18 @@ export function ExportInstances() {
                 .entities()
                 .map((entity) => [
                     entity.id,
-                    entity.uri ? new NamedNodeInstanceBuilder(entity as Entity & { uri: string }) : new BlankNodeInstanceBuilder(entity),
+                    entity.uri
+                        ? new NamedNodeInstanceBuilder(entity as EntitySet & { uri: string })
+                        : new BlankNodeInstanceBuilder(entity),
                 ])
         );
         save(
             instances,
             schema,
-            { defaultPropertyUri: defaultPropertyUri.asIri(), entityInstanceUriBuilders: entityInstanceUriBuilders },
+            {
+                defaultPropertyUri: defaultPropertyUri.asIri(),
+                entityInstanceUriBuilders: entityInstanceUriBuilders,
+            },
             writer
         ).then(() => {
             writer.end((error, result: string) => {
@@ -48,11 +53,14 @@ export function ExportInstances() {
     return (
         <div>
             <Header label='Export Instances'></Header>
-            <Dropdown headerLabel='Entity Uris' showInitially>
+            <Dropdown headerLabel='EntitySet Uris' showInitially>
                 <EntityInstanceUris className='mx-2'></EntityInstanceUris>
             </Dropdown>
-            <Dropdown headerLabel='Property Uris' showInitially>
-                <PropertyUris className='mx-2' defaultPropertyUri={defaultPropertyUri}></PropertyUris>
+            <Dropdown headerLabel='PropertySet Uris' showInitially>
+                <PropertyUris
+                    className='mx-2'
+                    defaultPropertyUri={defaultPropertyUri}
+                ></PropertyUris>
             </Dropdown>
             <ActionOkCancel onOk={exportInstances} onCancel={cancel}></ActionOkCancel>
         </div>

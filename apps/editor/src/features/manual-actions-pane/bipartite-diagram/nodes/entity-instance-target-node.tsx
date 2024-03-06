@@ -1,18 +1,24 @@
 import { Handle, NodeProps, Position } from 'reactflow';
 import { EntityInstance } from '@klofan/instances';
-import { Entity, getProperties } from '@klofan/schema/representation';
+import { EntitySet, getProperties } from '@klofan/schema/representation';
 import { EntityInstanceDetail } from '../../detail/entity-instance-detail';
 import { twMerge } from 'tailwind-merge';
 import { LayoutOptions } from '../layout';
 import { useEditorContext } from '../../../editor/editor-context';
 
-export default function EntityInstanceTargetNode({ data }: NodeProps<{ entity: Entity; entityInstance: EntityInstance; layout: LayoutOptions }>) {
+export default function EntityInstanceTargetNode({
+    data,
+}: NodeProps<{ entity: EntitySet; entityInstance: EntityInstance; layout: LayoutOptions }>) {
     const { schema } = useEditorContext();
     const properties = getProperties(schema, data.entity.id);
     return (
         <>
             <div
-                className={twMerge('bg-slate-200 p-2 rounded relative shadow group', data.layout.node.widthTailwind, data.layout.node.heightTailwind)}
+                className={twMerge(
+                    'bg-slate-200 p-2 rounded relative shadow group',
+                    data.layout.node.widthTailwind,
+                    data.layout.node.heightTailwind
+                )}
             >
                 <div className='overflow-clip'>
                     {data.entity.name}.{data.entityInstance.id}

@@ -1,6 +1,6 @@
-import { Entity, Property } from '@klofan/schema/representation';
+import { EntitySet, PropertySet } from '@klofan/schema/representation';
 
 export interface EntityNodeEventHandler {
-    onNodeClick: (entity: Entity) => void;
-    onPropertyClick: (property: Property) => void;
+    onNodeClick: (entity: EntitySet) => void;
+    onPropertyClick: (property: PropertySet) => void;
 }

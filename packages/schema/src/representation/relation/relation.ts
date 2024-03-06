@@ -1,9 +1,4 @@
-import type { identifier } from '@klofan/utils';
+import { PropertySet } from './property-set';
+import { GraphPropertySet } from './graph-property-set';
 
-export type relationType = 'property' | 'graph-property';
-
-export interface Relation {
-    id: identifier;
-    name: string;
-    type: relationType;
-}
+export type Relation = PropertySet | GraphPropertySet;

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { usePropertyEndsSelector } from './use-property-ends-selector';
-import { Entity } from '@klofan/schema/representation';
+import { EntitySet } from '@klofan/schema/representation';
 import { useEditorContext } from '../../../../editor/editor-context';
 import { showNodeSelectionHelp } from '../../../../help/content/show-node-selection-help';
 import { showEntityInstanceToEntityInstanceDiagramHelp } from '../../../../help/content/show-entity-instance-to-entity-instance-help';
@@ -12,8 +12,8 @@ import { showEntityInstanceToEntityInstanceDiagramHelp } from '../../../../help/
  * @returns
  */
 export function usePropertyEndsNodesSelector(
-    source: { entity: Entity | null; set: (entity: Entity) => void },
-    target: { entity: Entity | null; set: (entity: Entity) => void }
+    source: { entity: EntitySet | null; set: (entity: EntitySet) => void },
+    target: { entity: EntitySet | null; set: (entity: EntitySet) => void }
 ) {
     const propertyEnds = usePropertyEndsSelector();
     const {
@@ -31,7 +31,10 @@ export function usePropertyEndsNodesSelector(
                 target.set(selectedNode.data);
             }
 
-            if ((source.entity && propertyEnds.targetSelected) || (target.entity && propertyEnds.sourceSelected)) {
+            if (
+                (source.entity && propertyEnds.targetSelected) ||
+                (target.entity && propertyEnds.sourceSelected)
+            ) {
                 showEntityInstanceToEntityInstanceDiagramHelp(help);
             }
 

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { NodeSelection } from '../diagram/use-node-selection';
-import { Property, Entity } from '@klofan/schema/representation';
+import { PropertySet, EntitySet } from '@klofan/schema/representation';
 import { Schema } from '@klofan/schema';
 import { ManualActionShown } from './actions';
 import { MoveEntityProperty } from './transformation/move-entity-property';
@@ -20,11 +20,11 @@ import { showExportOperationsHelp } from '../help/content/show-export-operations
 export type ManualActionsPane = {
     shownAction: ManualActionShown;
     onActionDone: () => void;
-    showMoveProperty: (entity: Entity, property: Property) => void;
+    showMoveProperty: (entity: EntitySet, property: PropertySet) => void;
     showCreateEntity: () => void;
     showCreateLiteralProperty: () => void;
     showCreateEntityProperty: () => void;
-    showEntityDetail: (entity: Entity) => void;
+    showEntityDetail: (entity: EntitySet) => void;
     showPrefixes: () => void;
     showUpdateEntityInstancesUris: () => void;
     showExportInstances: () => void;
@@ -32,8 +32,15 @@ export type ManualActionsPane = {
     hide: () => void;
 };
 
-export function useManualActionsPane(nodeSelection: NodeSelection, schema: Schema, help: Help): ManualActionsPane {
-    const [shownAction, setShownAction] = useState<ManualActionShown>({ type: 'blank-shown', component: <div></div> });
+export function useManualActionsPane(
+    nodeSelection: NodeSelection,
+    schema: Schema,
+    help: Help
+): ManualActionsPane {
+    const [shownAction, setShownAction] = useState<ManualActionShown>({
+        type: 'blank-shown',
+        component: <div></div>,
+    });
     // Add locking mechanism - so that when creating a property, it cannot e.g. change to entity detail!
     const [shownActionLocked, setShownActionLocked] = useState(false);
 
@@ -45,12 +52,17 @@ export function useManualActionsPane(nodeSelection: NodeSelection, schema: Schem
             setShownActionLocked(false);
             help.hideHelp();
         },
-        showMoveProperty: (entity: Entity, property: Property) => {
+        showMoveProperty: (entity: EntitySet, property: PropertySet) => {
             help.hideHelp();
             if (schema.hasEntity(property.value)) {
                 setShownAction({
                     type: 'move-entity-property-shown',
-                    component: <MoveEntityProperty entity={entity} property={property}></MoveEntityProperty>,
+                    component: (
+                        <MoveEntityProperty
+                            entity={entity}
+                            property={property}
+                        ></MoveEntityProperty>
+                    ),
                 });
                 setShownActionLocked(true);
                 nodeSelection.disableSelectedStyle();
@@ -58,7 +70,12 @@ export function useManualActionsPane(nodeSelection: NodeSelection, schema: Schem
             } else {
                 setShownAction({
                     type: 'move-literal-property-shown',
-                    component: <MoveLiteralProperty entity={entity} property={property}></MoveLiteralProperty>,
+                    component: (
+                        <MoveLiteralProperty
+                            entity={entity}
+                            property={property}
+                        ></MoveLiteralProperty>
+                    ),
                 });
                 setShownActionLocked(true);
                 nodeSelection.disableSelectedStyle();
@@ -67,29 +84,41 @@ export function useManualActionsPane(nodeSelection: NodeSelection, schema: Schem
         },
         showCreateEntity: () => {
             help.hideHelp();
-            setShownAction({ type: 'create-entity-shown', component: <CreateEntity></CreateEntity> });
+            setShownAction({
+                type: 'create-entity-shown',
+                component: <CreateEntity></CreateEntity>,
+            });
             setShownActionLocked(true);
             nodeSelection.disableSelectedStyle();
             nodeSelection.clearSelectedNode();
         },
         showCreateLiteralProperty: () => {
             help.hideHelp();
-            setShownAction({ type: 'create-literal-property-shown', component: <CreateLiteralProperty></CreateLiteralProperty> });
+            setShownAction({
+                type: 'create-literal-property-shown',
+                component: <CreateLiteralProperty></CreateLiteralProperty>,
+            });
             setShownActionLocked(true);
             nodeSelection.disableSelectedStyle();
             nodeSelection.clearSelectedNode();
         },
         showCreateEntityProperty: () => {
             help.hideHelp();
-            setShownAction({ type: 'create-entity-property-shown', component: <CreateEntityProperty></CreateEntityProperty> });
+            setShownAction({
+                type: 'create-entity-property-shown',
+                component: <CreateEntityProperty></CreateEntityProperty>,
+            });
             setShownActionLocked(true);
             nodeSelection.disableSelectedStyle();
             nodeSelection.clearSelectedNode();
         },
-        showEntityDetail: (entity: Entity) => {
+        showEntityDetail: (entity: EntitySet) => {
             help.hideHelp();
             if (!shownActionLocked) {
-                setShownAction({ type: 'entity-detail-shown', component: <EntityDetail entityId={entity.id}></EntityDetail> });
+                setShownAction({
+                    type: 'entity-detail-shown',
+                    component: <EntityDetail entityId={entity.id}></EntityDetail>,
+                });
             }
         },
         showPrefixes: () => {
@@ -99,19 +128,28 @@ export function useManualActionsPane(nodeSelection: NodeSelection, schema: Schem
         },
         showUpdateEntityInstancesUris: () => {
             help.hideHelp();
-            setShownAction({ type: 'update-entity-instances-uris-shown', component: <UpdateEntityInstancesUris></UpdateEntityInstancesUris> });
+            setShownAction({
+                type: 'update-entity-instances-uris-shown',
+                component: <UpdateEntityInstancesUris></UpdateEntityInstancesUris>,
+            });
             setShownActionLocked(true);
             nodeSelection.clearSelectedNode();
         },
         showExportInstances: () => {
             help.hideHelp();
-            setShownAction({ type: 'export-instances-shown', component: <ExportInstances></ExportInstances> });
+            setShownAction({
+                type: 'export-instances-shown',
+                component: <ExportInstances></ExportInstances>,
+            });
             nodeSelection.clearSelectedNode();
             showExportInstancesHelp(help);
         },
         showExportOperations: () => {
             showExportOperationsHelp(help);
-            setShownAction({ type: 'export-operations-shown', component: <ExportOperations></ExportOperations> });
+            setShownAction({
+                type: 'export-operations-shown',
+                component: <ExportOperations></ExportOperations>,
+            });
             nodeSelection.clearSelectedNode();
         },
         hide: () => {

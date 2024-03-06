@@ -1,11 +1,11 @@
-import { Literal } from '../../representation/item/literal';
+import { LiteralSet } from '../../representation/item/literal-set';
 import { RawSchema } from '../../representation/raw-schema';
 import { TransformationChanges } from '../transformation-changes';
 
 export interface CreateLiteral {
     type: 'create-literal';
     data: {
-        literal: Literal;
+        literal: LiteralSet;
     };
 }
 

@@ -6,7 +6,7 @@ import { useEntityInstanceToEntityInstanceDiagram } from '../../bipartite-diagra
 import { useEditorContext } from '../../../editor/editor-context';
 import { usePropertyEndsNodesSelector } from '../../utils/diagram-node-selection/property-ends-selector/use-property-ends-nodes-selector';
 import { EntityInstance } from '@klofan/instances';
-import { Entity } from '@klofan/schema/representation';
+import { EntitySet } from '@klofan/schema/representation';
 import { Mapping } from '@klofan/instances/transform';
 import { JoinMappingDetailMapping } from '../../utils/mapping/join/join-mapping-detail';
 import { useEntityInstances } from '../../utils/use-entity-instances';
@@ -17,10 +17,12 @@ export function useCreateEntityProperty() {
     const [propertyName, setPropertyName] = useState('');
     const uri = useUriInput('');
 
-    const [sourceEntity, setSourceEntity] = useState<Entity | null>(null);
-    const [targetEntity, setTargetEntity] = useState<Entity | null>(null);
+    const [sourceEntity, setSourceEntity] = useState<EntitySet | null>(null);
+    const [targetEntity, setTargetEntity] = useState<EntitySet | null>(null);
 
-    const [usedInstanceMapping, setUsedInstanceMapping] = useState<Mapping | JoinMappingDetailMapping>({
+    const [usedInstanceMapping, setUsedInstanceMapping] = useState<
+        Mapping | JoinMappingDetailMapping
+    >({
         type: 'manual-mapping',
         propertyInstances: [],
     });
@@ -28,14 +30,14 @@ export function useCreateEntityProperty() {
     const propertyEndsSelector = usePropertyEndsNodesSelector(
         {
             entity: sourceEntity,
-            set: (entity: Entity) => {
+            set: (entity: EntitySet) => {
                 setSourceInstances([]);
                 setSourceEntity(entity);
             },
         },
         {
             entity: targetEntity,
-            set: (entity: Entity) => {
+            set: (entity: EntitySet) => {
                 setTargetInstances([]);
                 setTargetEntity(entity);
             },
@@ -50,8 +52,10 @@ export function useCreateEntityProperty() {
 
     const [error, setError] = useState<string | null>(null);
 
-    const { entityInstances: sourceInstances, setEntityInstances: setSourceInstances } = useEntityInstances(sourceEntity);
-    const { entityInstances: targetInstances, setEntityInstances: setTargetInstances } = useEntityInstances(targetEntity);
+    const { entityInstances: sourceInstances, setEntityInstances: setSourceInstances } =
+        useEntityInstances(sourceEntity);
+    const { entityInstances: targetInstances, setEntityInstances: setTargetInstances } =
+        useEntityInstances(targetEntity);
 
     const source = { entity: sourceEntity, instances: sourceInstances };
     const target = { entity: targetEntity, instances: targetInstances };
@@ -65,8 +69,12 @@ export function useCreateEntityProperty() {
         setEdges,
         getPropertyInstances: getEntityInstanceTargetPropertyInstances,
     } = useEntityInstanceToEntityInstanceDiagram(
-        source.entity !== null ? (source as { entity: Entity; instances: EntityInstance[] }) : null,
-        target.entity !== null ? (target as { entity: Entity; instances: EntityInstance[] }) : null,
+        source.entity !== null
+            ? (source as { entity: EntitySet; instances: EntityInstance[] })
+            : null,
+        target.entity !== null
+            ? (target as { entity: EntitySet; instances: EntityInstance[] })
+            : null,
         null
     );
 
@@ -99,7 +107,10 @@ export function useCreateEntityProperty() {
         help.hideHelp();
     };
 
-    const nodeTypes = useMemo(() => ({ source: EntityInstanceSourceNode, target: EntityInstanceTargetNode }), []);
+    const nodeTypes = useMemo(
+        () => ({ source: EntityInstanceSourceNode, target: EntityInstanceTargetNode }),
+        []
+    );
     const edgeTypes = useMemo(() => ({}), []);
 
     return {

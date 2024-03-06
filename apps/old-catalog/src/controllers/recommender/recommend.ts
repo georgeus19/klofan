@@ -20,7 +20,7 @@ import { Variable } from '../../queries/variable';
 import { UploadedData } from '@klofan/old-catalog-types';
 import * as DCTERMS from '../../named-nodes/dcterms';
 import { RawSchema } from '@klofan/schema/representation';
-import { PropertyInstance, RawInstances } from '@klofan/instances/representation';
+import { Property, RawInstances } from '@klofan/instances/representation';
 import { Schema } from '@klofan/schema';
 import { InMemoryInstances } from '@klofan/instances';
 import * as _ from 'lodash';
@@ -68,8 +68,8 @@ export const recommend = endpointErrorHandler(async (request: Request, response:
         .flatMap((entity) => entity.properties.map((propertyId) => ({ entity: entity.id, property: propertyId })));
     const newInstances: RawInstances = { ...(instances.raw() as RawInstances) };
     for (const p of pairs) {
-        const propertyInstances: PropertyInstance[] = await instances.propertyInstances(p.entity, p.property);
-        newInstances.propertyInstances[`${p.entity}.${p.property}`] = propertyInstances.map((pi) => {
+        const propertyInstances: Property[] = await instances.propertyInstances(p.entity, p.property);
+        newInstances.properties[`${p.entity}.${p.property}`] = propertyInstances.map((pi) => {
             pi.literals = pi.literals.map((literal) => {
                 const matchingRow: any = _.find(codes, (row: any) => row[code.value].value === literal.value);
                 if (matchingRow) {

@@ -1,22 +1,25 @@
-import { Entity } from '@klofan/schema/representation';
-import { PropertyInstance } from '../../representation/property-instance';
+import { EntitySet } from '@klofan/schema/representation';
+import { Property } from '../../representation/property';
 import { RawInstances } from '../../representation/raw-instances';
 
 export type OneToAllMapping = {
     type: 'one-to-all-mapping';
-    source: Entity;
-    target: Entity;
+    source: EntitySet;
+    target: EntitySet;
 };
 
 export function isOneToAllMappingEligible(sourceInstances: number) {
     return sourceInstances === 1;
 }
 
-export function getOneToAllPropertyInstances(targetInstances: number): PropertyInstance[] {
-    return [{ literals: [], targetInstanceIndices: [...Array(targetInstances).keys()] }];
+export function getOneToAllPropertyInstances(targetInstances: number): Property[] {
+    return [{ literals: [], targetEntities: [...Array(targetInstances).keys()] }];
 }
 
-export function getOneToAllMappingPropertyInstances(instances: RawInstances, mapping: OneToAllMapping): PropertyInstance[] {
-    const targetInstances = instances.entityInstances[mapping.target.id];
+export function getOneToAllMappingPropertyInstances(
+    instances: RawInstances,
+    mapping: OneToAllMapping
+): Property[] {
+    const targetInstances = instances.entities[mapping.target.id];
     return getOneToAllPropertyInstances(targetInstances.count);
 }

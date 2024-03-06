@@ -1,11 +1,11 @@
 import { RawSchema } from '../../representation/raw-schema';
-import { Property } from '../../representation/relation/property';
+import { PropertySet } from '../../representation/relation/property-set';
 import { TransformationChanges } from '../transformation-changes';
 
 export interface CreateProperty {
     type: 'create-property';
     data: {
-        property: Property;
+        property: PropertySet;
     };
 }
 

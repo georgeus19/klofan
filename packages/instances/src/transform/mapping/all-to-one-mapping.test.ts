@@ -1,6 +1,10 @@
 import { describe, expect, test } from '@jest/globals';
-import { AllToOneMapping, getAllToOneMappingPropertyInstances, getAllToOnePropertyInstances } from './all-to-one-mapping';
-import { PropertyInstance } from '../../representation/property-instance';
+import {
+    AllToOneMapping,
+    getAllToOneMappingPropertyInstances,
+    getAllToOnePropertyInstances,
+} from './all-to-one-mapping';
+import { Property } from '../../representation/property';
 import { RawInstances, initEntityInstances } from '../../representation/raw-instances';
 
 describe('Transform Instances', () => {
@@ -8,46 +12,46 @@ describe('Transform Instances', () => {
         describe('All-To-One', () => {
             test('getAllToOnePropertyInstances', () => {
                 const sourceInstances = 10;
-                const expectedPropertyInstances: PropertyInstance[] = [
+                const expectedPropertyInstances: Property[] = [
                     {
                         literals: [],
-                        targetInstanceIndices: [0],
+                        targetEntities: [0],
                     },
                     {
                         literals: [],
-                        targetInstanceIndices: [0],
+                        targetEntities: [0],
                     },
                     {
                         literals: [],
-                        targetInstanceIndices: [0],
+                        targetEntities: [0],
                     },
                     {
                         literals: [],
-                        targetInstanceIndices: [0],
+                        targetEntities: [0],
                     },
                     {
                         literals: [],
-                        targetInstanceIndices: [0],
+                        targetEntities: [0],
                     },
                     {
                         literals: [],
-                        targetInstanceIndices: [0],
+                        targetEntities: [0],
                     },
                     {
                         literals: [],
-                        targetInstanceIndices: [0],
+                        targetEntities: [0],
                     },
                     {
                         literals: [],
-                        targetInstanceIndices: [0],
+                        targetEntities: [0],
                     },
                     {
                         literals: [],
-                        targetInstanceIndices: [0],
+                        targetEntities: [0],
                     },
                     {
                         literals: [],
-                        targetInstanceIndices: [0],
+                        targetEntities: [0],
                     },
                 ];
 
@@ -56,63 +60,63 @@ describe('Transform Instances', () => {
             });
             test('getAllToOneMappingPropertyInstances', () => {
                 const sourceInstances = 10;
-                const expectedPropertyInstances: PropertyInstance[] = [
+                const expectedPropertyInstances: Property[] = [
                     {
                         literals: [],
-                        targetInstanceIndices: [0],
+                        targetEntities: [0],
                     },
                     {
                         literals: [],
-                        targetInstanceIndices: [0],
+                        targetEntities: [0],
                     },
                     {
                         literals: [],
-                        targetInstanceIndices: [0],
+                        targetEntities: [0],
                     },
                     {
                         literals: [],
-                        targetInstanceIndices: [0],
+                        targetEntities: [0],
                     },
                     {
                         literals: [],
-                        targetInstanceIndices: [0],
+                        targetEntities: [0],
                     },
                     {
                         literals: [],
-                        targetInstanceIndices: [0],
+                        targetEntities: [0],
                     },
                     {
                         literals: [],
-                        targetInstanceIndices: [0],
+                        targetEntities: [0],
                     },
                     {
                         literals: [],
-                        targetInstanceIndices: [0],
+                        targetEntities: [0],
                     },
                     {
                         literals: [],
-                        targetInstanceIndices: [0],
+                        targetEntities: [0],
                     },
                     {
                         literals: [],
-                        targetInstanceIndices: [0],
+                        targetEntities: [0],
                     },
                 ];
 
                 const mapping: AllToOneMapping = {
                     type: 'all-to-one-mapping',
-                    source: { id: '0', name: '0', properties: [], type: 'entity' },
-                    target: { id: '1', name: '1', properties: [], type: 'entity' },
+                    source: { id: '0', name: '0', properties: [], type: 'entity-set' },
+                    target: { id: '1', name: '1', properties: [], type: 'entity-set' },
                 };
                 const instances: RawInstances = {
-                    entityInstances: {
+                    entities: {
                         '0': {
                             count: sourceInstances,
                             instances: initEntityInstances(sourceInstances),
                         },
                         '1': { count: 1, instances: initEntityInstances(1) },
                     },
-                    propertyInstances: {},
+                    properties: {},
                 };
 
                 const propertyInstances = getAllToOneMappingPropertyInstances(instances, mapping);

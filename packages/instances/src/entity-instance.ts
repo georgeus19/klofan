@@ -1,8 +1,8 @@
 import { identifier } from '@klofan/utils';
-import { PropertyInstance } from './representation/property-instance';
+import { Property } from './representation/property';
 
 export type EntityInstance = {
-    properties: { [propertyId: identifier]: PropertyInstance };
+    properties: { [propertyId: identifier]: Property };
     id: number;
     uri?: string;
 };

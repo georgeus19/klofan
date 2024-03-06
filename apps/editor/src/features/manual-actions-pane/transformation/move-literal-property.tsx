@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Property, Entity } from '@klofan/schema/representation';
+import { PropertySet, EntitySet } from '@klofan/schema/representation';
 import { useEntityInstanceToLiteralInstanceDiagram } from '../bipartite-diagram/hooks/use-entity-instance-to-literal-instance-diagram';
 import { BipartiteDiagram } from '../bipartite-diagram/bipartite-diagram';
 import EntityInstanceSourceNode from '../bipartite-diagram/nodes/entity-instance-source-node';
@@ -20,11 +20,14 @@ import { Connection } from 'reactflow';
 import { showEntityInstanceToLiteralInstanceDiagramHelp } from '../../help/content/show-entity-instance-to-literal-instance-diagram-help';
 
 export interface MoveLiteralPropertyProps {
-    entity: Entity;
-    property: Property;
+    entity: EntitySet;
+    property: PropertySet;
 }
 
-export function MoveLiteralProperty({ entity: originalSourceEntity, property }: MoveLiteralPropertyProps) {
+export function MoveLiteralProperty({
+    entity: originalSourceEntity,
+    property,
+}: MoveLiteralPropertyProps) {
     const {
         schema,
         updateSchemaAndInstances,
@@ -32,18 +35,16 @@ export function MoveLiteralProperty({ entity: originalSourceEntity, property }: 
         manualActions: { onActionDone },
     } = useEditorContext();
 
-    const [sourceEntity, setSourceEntity] = useState<Entity>(originalSourceEntity);
-    const sourceEntitySelector = useEntityNodeSelector((entity: Entity) => {
+    const [sourceEntity, setSourceEntity] = useState<EntitySet>(originalSourceEntity);
+    const sourceEntitySelector = useEntityNodeSelector((entity: EntitySet) => {
         setSourceEntity(entity);
         showEntityInstanceToLiteralInstanceDiagramHelp(help);
     });
     const { entityInstances: sourceInstances } = useEntityInstances(sourceEntity);
     const source = { entity: sourceEntity, instances: sourceInstances };
 
-    const { sourceNodes, targetNodes, edges, setEdges, onConnect, getPropertyInstances, layout } = useEntityInstanceToLiteralInstanceDiagram(
-        source,
-        property.id
-    );
+    const { sourceNodes, targetNodes, edges, setEdges, onConnect, getPropertyInstances, layout } =
+        useEntityInstanceToLiteralInstanceDiagram(source, property.id);
 
     const { entityInstances: originalSourceInstances } = useEntityInstances(originalSourceEntity);
     const originalSource = { entity: originalSourceEntity, instances: originalSourceInstances };
@@ -79,15 +80,24 @@ export function MoveLiteralProperty({ entity: originalSourceEntity, property }: 
         help.hideHelp();
     };
 
-    const nodeTypes = useMemo(() => ({ source: EntityInstanceSourceNode, target: LiteralTargetNode }), []);
+    const nodeTypes = useMemo(
+        () => ({ source: EntityInstanceSourceNode, target: LiteralTargetNode }),
+        []
+    );
     const edgeTypes = useMemo(() => ({}), []);
 
     return (
         <div>
-            <Header label='Move Property'></Header>
-            <LabelReadonlyInput label='Property' value={`${originalSourceEntity.name}.${property.name}`}></LabelReadonlyInput>
+            <Header label='Move PropertySet'></Header>
+            <LabelReadonlyInput
+                label='PropertySet'
+                value={`${originalSourceEntity.name}.${property.name}`}
+            ></LabelReadonlyInput>
             <Dropdown headerLabel='Original Mapping' showInitially={false}>
-                <LabelReadonlyInput label='Original Source' value={originalSourceEntity.name}></LabelReadonlyInput>
+                <LabelReadonlyInput
+                    label='Original Source'
+                    value={originalSourceEntity.name}
+                ></LabelReadonlyInput>
                 <BipartiteDiagram
                     sourceNodes={originalSourceNodes}
                     targetNodes={originalTargetNodes}
@@ -98,7 +108,11 @@ export function MoveLiteralProperty({ entity: originalSourceEntity, property }: 
                 ></BipartiteDiagram>
             </Dropdown>
             <Dropdown headerLabel='New Mapping' showInitially>
-                <EntityNodeSelector label='Source' {...sourceEntitySelector} entity={sourceEntity}></EntityNodeSelector>
+                <EntityNodeSelector
+                    label='Source'
+                    {...sourceEntitySelector}
+                    entity={sourceEntity}
+                ></EntityNodeSelector>
                 <div className='grid grid-cols-2'>
                     <PreserveButton
                         setEdges={setEdges}
@@ -106,7 +120,10 @@ export function MoveLiteralProperty({ entity: originalSourceEntity, property }: 
                         setUsedInstanceMapping={setUsedInstanceMapping}
                         source={source}
                         target={{ item: schema.literal(property.value) }}
-                        originalSource={{ entity: originalSourceEntity, instances: originalSourceInstances }}
+                        originalSource={{
+                            entity: originalSourceEntity,
+                            instances: originalSourceInstances,
+                        }}
                         originalTarget={{ item: schema.literal(property.value) }}
                         property={property}
                     ></PreserveButton>

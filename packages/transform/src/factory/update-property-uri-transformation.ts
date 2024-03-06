@@ -1,11 +1,15 @@
-import { Property } from '@klofan/schema/representation';
+import { PropertySet } from '@klofan/schema/representation';
 import { Schema } from '@klofan/schema';
 import { UpdateRelation } from '@klofan/schema/transform';
 import { identifier } from '@klofan/utils';
 import { Transformation } from '../transformation';
 
-export function createUpdatePropertyUriTransformation(schema: Schema, relationId: identifier, uri: string): Transformation {
-    const newProperty: Property = {
+export function createUpdatePropertyUriTransformation(
+    schema: Schema,
+    relationId: identifier,
+    uri: string
+): Transformation {
+    const newProperty: PropertySet = {
         ...schema.property(relationId),
         uri: uri === '' ? undefined : uri,
     };

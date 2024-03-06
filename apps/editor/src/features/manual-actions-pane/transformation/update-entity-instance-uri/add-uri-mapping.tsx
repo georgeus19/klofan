@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Property, isLiteral, Entity, getProperties } from '@klofan/schema/representation';
+import { PropertySet, isLiteralSet, EntitySet, getProperties } from '@klofan/schema/representation';
 import { useEditorContext } from '../../../editor/editor-context';
 import { LabelInput } from '../../utils/general-label-input/label-input';
 import { useUriInput } from '../../utils/uri/use-uri-input';
@@ -8,14 +8,16 @@ import { Dropdown } from '../../utils/dropdown';
 import { EntityInstanceUriMapping } from '@klofan/instances/transform';
 
 export type AddUriMappingProps = {
-    entity: Entity;
+    entity: EntitySet;
     addUriMapping: (mapping: EntityInstanceUriMapping) => void;
 };
 
 export function AddUriMapping({ entity, addUriMapping }: AddUriMappingProps) {
     const { schema } = useEditorContext();
-    const selectableProperties = getProperties(schema, entity.id).filter((property) => isLiteral(property.value));
-    const [selectedProperty, setSelectedProperty] = useState<Property | null>(
+    const selectableProperties = getProperties(schema, entity.id).filter((property) =>
+        isLiteralSet(property.value)
+    );
+    const [selectedProperty, setSelectedProperty] = useState<PropertySet | null>(
         selectableProperties.length > 0 ? schema.property(selectableProperties[0].id) : null
     );
     const [error, setError] = useState<string | null>(null);
@@ -38,11 +40,11 @@ export function AddUriMapping({ entity, addUriMapping }: AddUriMappingProps) {
         <Dropdown headerLabel='Add Uri Mapping' showInitially>
             <div className='grid grid-cols-12 px-3 py-1'>
                 <label htmlFor='property' className='col-span-4'>
-                    Property
+                    PropertySet
                 </label>
                 <select
                     id='property'
-                    defaultValue='Select Property'
+                    defaultValue='Select PropertySet'
                     onChange={(e) => setSelectedProperty(schema.property(e.target.value))}
                     className='col-span-8 rounded bg-transparent border-2 border-slate-400 px-1 focus:bg-yellow-200 h-7'
                 >
@@ -57,10 +59,22 @@ export function AddUriMapping({ entity, addUriMapping }: AddUriMappingProps) {
                     ))}
                 </select>
             </div>
-            <LabelInput label='Literal' id='literal' value={literal} updateValue={setLiteral}></LabelInput>
+            <LabelInput
+                label='LiteralSet'
+                id='literal'
+                value={literal}
+                updateValue={setLiteral}
+            ></LabelInput>
             <UriLabelInput label='Uri' {...uri} usePrefix id='uri'></UriLabelInput>
-            {error && <div className='bg-rose-200 p-2 border rounded border-rose-700 text-rose-700'>{error}</div>}
-            <button onClick={add} className='p-1 rounded shadow bg-blue-200 hover:bg-blue-300 w-full'>
+            {error && (
+                <div className='bg-rose-200 p-2 border rounded border-rose-700 text-rose-700'>
+                    {error}
+                </div>
+            )}
+            <button
+                onClick={add}
+                className='p-1 rounded shadow bg-blue-200 hover:bg-blue-300 w-full'
+            >
                 Add
             </button>
         </Dropdown>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDiagramContext } from './diagram/diagram-context';
-import { PropertyInstance } from '@klofan/instances/representation';
+import { Property } from '@klofan/instances/representation';
 import { Header } from '../manual-actions-pane/utils/header';
 import { twMerge } from 'tailwind-merge';
 
@@ -14,7 +14,7 @@ export function ShownDetail({ height }: ShownDetailProps) {
         instances,
     } = useDiagramContext();
 
-    const [propertyInstances, setPropertyInstances] = useState<PropertyInstance[]>([]);
+    const [propertyInstances, setPropertyInstances] = useState<Property[]>([]);
 
     useEffect(() => {
         if (propertySelection.selectedProperty) {

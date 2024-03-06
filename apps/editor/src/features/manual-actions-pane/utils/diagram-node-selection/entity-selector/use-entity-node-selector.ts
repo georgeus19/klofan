@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { usePropertyEndsSelector } from '../property-ends-selector/use-property-ends-selector';
-import { Entity } from '@klofan/schema/representation';
+import { EntitySet } from '@klofan/schema/representation';
 import { useEditorContext } from '../../../../editor/editor-context';
 import { showNodeSelectionHelp } from '../../../../help/content/show-node-selection-help';
 
@@ -8,7 +8,7 @@ import { showNodeSelectionHelp } from '../../../../help/content/show-node-select
  * Hook for creating a selectable field for an entity. The entity is filled in when user selects a node in the
  * main diagram after `onSelectStart()` has been run.
  */
-export function useEntityNodeSelector(setEntity: (entity: Entity) => void) {
+export function useEntityNodeSelector(setEntity: (entity: EntitySet) => void) {
     const propertyEnds = usePropertyEndsSelector();
 
     const {

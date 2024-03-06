@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Entity } from '@klofan/schema/representation';
+import { EntitySet } from '@klofan/schema/representation';
 import { Literal } from '@klofan/instances/representation';
 import { Edge as ReactFlowEdge } from 'reactflow';
 import EntityInstanceSourceNode from '../../bipartite-diagram/nodes/entity-instance-source-node';
@@ -19,7 +19,11 @@ import { useEntityInstances } from '../../utils/use-entity-instances';
 import { showEntityInstanceToLiteralInstanceDiagramHelp } from '../../../help/content/show-entity-instance-to-literal-instance-diagram-help';
 
 export type LiteralNode = LiteralInstanceTargetNode & {
-    data: { literal: Literal; onLiteralValueChange: (literalNodeId: string, value: string) => void; layout: LayoutOptions };
+    data: {
+        literal: Literal;
+        onLiteralValueChange: (literalNodeId: string, value: string) => void;
+        layout: LayoutOptions;
+    };
 };
 export type TargetLiteralEdge = ReactFlowEdge<never>;
 
@@ -34,8 +38,8 @@ export function useCreateLiteralProperty() {
         help,
         manualActions: { onActionDone },
     } = useEditorContext();
-    const [sourceEntity, setSourceEntity] = useState<Entity | null>(null);
-    const sourceEntitySelector = useEntityNodeSelector((entity: Entity) => {
+    const [sourceEntity, setSourceEntity] = useState<EntitySet | null>(null);
+    const sourceEntitySelector = useEntityNodeSelector((entity: EntitySet) => {
         setSourceEntity(entity);
         showEntityInstanceToLiteralInstanceDiagramHelp(help);
     });
@@ -44,12 +48,18 @@ export function useCreateLiteralProperty() {
 
     const source = { entity: sourceEntity, instances: sourceInstances };
 
-    const { sourceNodes, targetNodes, edges, onConnect, layout, getPropertyInstances, setNodes } = useEntityInstanceToLiteralInstanceDiagram(
-        source.entity !== null ? (source as { entity: Entity; instances: EntityInstance[] }) : null,
-        ''
-    );
+    const { sourceNodes, targetNodes, edges, onConnect, layout, getPropertyInstances, setNodes } =
+        useEntityInstanceToLiteralInstanceDiagram(
+            source.entity !== null
+                ? (source as { entity: EntitySet; instances: EntityInstance[] })
+                : null,
+            ''
+        );
 
-    const nodeTypes = useMemo(() => ({ source: EntityInstanceSourceNode, target: UpdatableLiteralTargetNode }), []);
+    const nodeTypes = useMemo(
+        () => ({ source: EntityInstanceSourceNode, target: UpdatableLiteralTargetNode }),
+        []
+    );
     const edgeTypes = useMemo(() => ({}), []);
     const cancel = () => {
         onActionDone();
@@ -90,7 +100,10 @@ export function useCreateLiteralProperty() {
 
     const addLiteralNode = () => {
         setNodes((prev) => {
-            const id = getTargetNodes<{ entity: Entity; entityInstance: EntityInstance }, { literal: Literal; id: number }>(prev).length;
+            const id = getTargetNodes<
+                { entity: EntitySet; entityInstance: EntityInstance },
+                { literal: Literal; id: number }
+            >(prev).length;
             return [
                 ...prev,
                 {

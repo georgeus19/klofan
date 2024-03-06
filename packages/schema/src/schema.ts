@@ -1,10 +1,10 @@
 import { identifier, safeGet } from '@klofan/utils';
 import { Item } from './representation/item/item';
-import { Property, isProperty } from './representation/relation/property';
+import { PropertySet, isPropertySet } from './representation/relation/property-set';
 import { Relation } from './representation/relation/relation';
 import { RawSchema, copySchema } from './representation/raw-schema';
-import { Entity, isEntity } from './representation/item/entity';
-import { Literal, isLiteral } from './representation/item/literal';
+import { EntitySet, isEntitySet } from './representation/item/entity-set';
+import { LiteralSet, isLiteralSet } from './representation/item/literal-set';
 import { Transformation } from './transform/transformations/transformation';
 import { applyTransformation } from './transform/apply-transformation';
 
@@ -19,20 +19,22 @@ export class Schema {
         return Object.values(this.schema.items);
     }
 
-    entities(): Entity[] {
-        return this.items().filter((item): item is Entity => isEntity(item));
+    entities(): EntitySet[] {
+        return this.items().filter((item): item is EntitySet => isEntitySet(item));
     }
 
-    literals(): Literal[] {
-        return this.items().filter((item): item is Literal => isLiteral(item));
+    literals(): LiteralSet[] {
+        return this.items().filter((item): item is LiteralSet => isLiteralSet(item));
     }
 
     relations(): Relation[] {
         return Object.values(this.schema.relations);
     }
 
-    properties(): Property[] {
-        return this.relations().filter((relation): relation is Property => isProperty(relation));
+    properties(): PropertySet[] {
+        return this.relations().filter((relation): relation is PropertySet =>
+            isPropertySet(relation)
+        );
     }
 
     item(id: identifier): Item {
@@ -48,21 +50,21 @@ export class Schema {
             return false;
         }
 
-        return isEntity(this.item(id));
+        return isEntitySet(this.item(id));
     }
 
-    entity(id: identifier): Entity {
+    entity(id: identifier): EntitySet {
         const item = this.item(id);
-        if (isEntity(item)) {
+        if (isEntitySet(item)) {
             return item;
         }
 
         throw new Error(`Item ${id} does not reference entity.`);
     }
 
-    literal(id: identifier): Literal {
+    literal(id: identifier): LiteralSet {
         const item = this.item(id);
-        if (isLiteral(item)) {
+        if (isLiteralSet(item)) {
             return item;
         }
 
@@ -77,9 +79,9 @@ export class Schema {
         return Object.hasOwn(this.schema.relations, id);
     }
 
-    property(id: identifier): Property {
+    property(id: identifier): PropertySet {
         const relation = this.relation(id);
-        if (isProperty(relation)) {
+        if (isPropertySet(relation)) {
             return relation;
         }
 

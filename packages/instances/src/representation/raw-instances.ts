@@ -1,8 +1,8 @@
 import { identifier } from '@klofan/utils';
-import { PropertyInstance } from './property-instance';
+import { Property } from './property';
 
 export interface RawInstances {
-    entityInstances: {
+    entities: {
         [key: identifier]: { count: number; instances: { uri?: string }[] };
     };
     /**
@@ -12,24 +12,24 @@ export interface RawInstances {
      * Key format is: `${EntityId}.${PropertyId}`
      *
      */
-    propertyInstances: { [key: string]: PropertyInstance[] };
+    properties: { [key: string]: Property[] };
 }
 
 export function copyInstances(instances: RawInstances): RawInstances {
     return {
-        entityInstances: { ...instances.entityInstances },
-        propertyInstances: { ...instances.propertyInstances },
+        entities: { ...instances.entities },
+        properties: { ...instances.properties },
     };
 }
 
 export function createEmptyInstanceState(): RawInstances {
-    return { entityInstances: {}, propertyInstances: {} };
+    return { entities: {}, properties: {} };
 }
 
 /**
  * Create key (on `RawInstances.propertyInstances`) for getting instance information of `property` on `entity`.
  */
-export function propertyInstanceKey(entity: identifier, property: identifier): string {
+export function propertyKey(entity: identifier, property: identifier): string {
     return `${entity}.${property}`;
 }
 

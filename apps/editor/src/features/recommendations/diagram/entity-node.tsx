@@ -1,5 +1,11 @@
 import { Handle, NodeProps, Position } from 'reactflow';
-import { Entity, GraphProperty, getProperties, isLiteral, toProperty } from '@klofan/schema/representation';
+import {
+    EntitySet,
+    GraphPropertySet,
+    getProperties,
+    isLiteralSet,
+    toPropertySet,
+} from '@klofan/schema/representation';
 import { twMerge } from 'tailwind-merge';
 import { usePrefixesContext } from '../../prefixes/prefixes-context';
 import { useDiagramContext } from './diagram-context';
@@ -11,7 +17,7 @@ export default function EntityNode({
     selected,
     targetPosition = Position.Top,
     sourcePosition = Position.Bottom,
-}: NodeProps<Entity>) {
+}: NodeProps<EntitySet>) {
     const { diagram, schema } = useDiagramContext();
     const { shownRecommendationDetail } = useRecommendationsContext();
     const propertySelection = diagram.propertySelection;
@@ -22,7 +28,7 @@ export default function EntityNode({
         return <></>;
     }
 
-    const pLabel = (property: GraphProperty) => {
+    const pLabel = (property: GraphPropertySet) => {
         if (property.uri && matchPrefix(property.uri).prefix) {
             const p = matchPrefix(property.uri);
             return `${p.prefix?.value}:${p.rest}`;
@@ -32,10 +38,13 @@ export default function EntityNode({
     };
 
     const literalProperties = getProperties(schema, entity.id)
-        .filter((property) => isLiteral(property.value))
+        .filter((property) => isLiteralSet(property.value))
         .map((property) => {
-            const selectedProperty = property.id === propertySelection.selectedProperty?.property.id;
-            const changedProperty = shownRecommendationDetail.changes.relations.find((relation) => relation === property.id);
+            const selectedProperty =
+                property.id === propertySelection.selectedProperty?.property.id;
+            const changedProperty = shownRecommendationDetail.changes.relations.find(
+                (relation) => relation === property.id
+            );
             return (
                 <div
                     key={property.name}
@@ -43,9 +52,16 @@ export default function EntityNode({
                         'bg-slate-300 rounded p-1',
                         selectedProperty ? propertySelection.selectedStyle : '',
                         changedProperty ? 'bg-rose-300' : '',
-                        selectedProperty && changedProperty ? 'bg-gradient-to-r from-yellow-200 to-rose-300' : ''
+                        selectedProperty && changedProperty
+                            ? 'bg-gradient-to-r from-yellow-200 to-rose-300'
+                            : ''
                     )}
-                    onClick={() => propertySelection.addSelectedProperty({ property: toProperty(property), entity: entity })}
+                    onClick={() =>
+                        propertySelection.addSelectedProperty({
+                            property: toPropertySet(property),
+                            entity: entity,
+                        })
+                    }
                 >
                     {pLabel(property)}
                 </div>

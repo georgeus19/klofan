@@ -1,11 +1,11 @@
 import { twMerge } from 'tailwind-merge';
-import { PropertyInstance } from '@klofan/instances/representation';
+import { Property } from '@klofan/instances/representation';
 import { Mapping } from '@klofan/instances/transform';
 import { JoinMappingDetailMapping } from './join/join-mapping-detail';
 
 export type ManualButtonProps = {
     usedInstanceMapping: Mapping | JoinMappingDetailMapping;
-    setEdges: (propertyInstances: PropertyInstance[]) => void;
+    setEdges: (propertyInstances: Property[]) => void;
     setUsedInstanceMapping: (mapping: Mapping) => void;
 };
 

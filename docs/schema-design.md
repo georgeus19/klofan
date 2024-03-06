@@ -42,25 +42,25 @@ Jedna se o data o produktech prodavanych v supermarketu.
 
 # Reseni
 
-Schema dat je tvoreno jednak popisem struktury (Entity, Property, Literal), tak daty takovymi (\*Instance). Struktura je popsana co nejjednodusse. Modifikace nad modelem se musi provadet pres preddefinovane operace, ktere zachazi s modelem tak, aby slo prochazet stavy modelu do minulosti a zpet. Tyhle operace tedy pouziva uzivatel a i doporuceni. Doporuceni jsou rozdeleny na Recommender, ktery na zaklade modelu generuje doporuceni - Recommendation, ktere uz obsahuje operace k modifikaci schema.
+Schema dat je tvoreno jednak popisem struktury (EntitySet, PropertySet, LiteralSet), tak daty takovymi (\*Instance). Struktura je popsana co nejjednodusse. Modifikace nad modelem se musi provadet pres preddefinovane operace, ktere zachazi s modelem tak, aby slo prochazet stavy modelu do minulosti a zpet. Tyhle operace tedy pouziva uzivatel a i doporuceni. Doporuceni jsou rozdeleny na Recommender, ktery na zaklade modelu generuje doporuceni - Recommendation, ktere uz obsahuje operace k modifikaci schema.
 
 ```ts
-interface Entity {
+interface EntitySet {
     id: string;
-    properties: Property[];
+    properties: PropertySet[];
 
     getInstances(): EntityInstance[];
 }
-interface Property {
+interface PropertySet {
     id: string;
     name: string;
     uri: string;
-    value: Entity | Literal;
+    value: EntitySet | LiteralSet;
 
     getInstances(): (EntityInstance, EntityInstance)[] | (EntityInstance, LiteralInstance)[];
     getInstances(entity): EntityInstance[] | LiteralInstance[];
 }
-interface Literal {
+interface LiteralSet {
     id: string;
     getInstances(): LiteralInstance[];
 }
@@ -69,7 +69,7 @@ interface EntityInstance {
     id: string;
     uri: string;
 }
-interface PropertyInstance {
+interface Property {
     id: string;
     uri: string;
 }
@@ -79,12 +79,12 @@ interface LiteralInstance {
 }
 
 interface InstanceStore {
-    // Store for data in the form of EntityInstance, PropertyInstance, LiteralInstance.
+    // Store for data in the form of EntityInstance, Property, LiteralInstance.
 }
 
 interface BaseModel {
-    entities: Entity[];
-    properties: Property[];
+    entities: EntitySet[];
+    properties: PropertySet[];
 
     // Send info to all analyzers when base model changes about what changed.
     analyzers: Analyzer[];
@@ -97,7 +97,7 @@ interface Operation {
     // Links to old parts of the schema that were replaced by this operation.
     previous: [Any];
     // Get parts of the schema that were somehow changed in this operation.
-    getChangedSchemaParts(): (Entity | Property | Literal)[];
+    getChangedSchemaParts(): (EntitySet | PropertySet | LiteralSet)[];
     // Make requested change to the schema by cloning all related parts of the schema
     // and changing them.
     execute(): void;
@@ -147,21 +147,21 @@ interface Recommendation {
 productEntity1 = {
     properties: [productNameProperty1, countriesProperty1, ingredientsProperty1, nutrimentsProperty1],
     getInstances() { return [ { id: "TN1" } as EntityInstance]}
-} as Entity;
+} as EntitySet;
 
 nutrimentsEntity1 = {
     properties: [calcium100gProperty1, calciumUnitProperty1]
-} as Entity;
+} as EntitySet;
 
-productNameProperty1 = { value: productNameLiteral, name: "product_name" } as Property;
-countriesProperty1 = { value: countriesLiteral1, name: "countries" } as Property;
-calcium100gProperty1 = { value: calcium100gLiteral1, name: "calcium_100g" } as Property;
-calciumUnitProperty1 = { value: calciumUnitLiteral1, name: "calcium_unit" } as Property;
+productNameProperty1 = { value: productNameLiteral, name: "product_name" } as PropertySet;
+countriesProperty1 = { value: countriesLiteral1, name: "countries" } as PropertySet;
+calcium100gProperty1 = { value: calcium100gLiteral1, name: "calcium_100g" } as PropertySet;
+calciumUnitProperty1 = { value: calciumUnitLiteral1, name: "calcium_unit" } as PropertySet;
 
-productNameLiteral = {} as Literal;
-countriesLiteral1 = {} as Literal;
-calcium100gLiteral1 = {} as Literal;
-calciumUnitLiteral1 = {} as Literal;
+productNameLiteral = {} as LiteralSet;
+countriesLiteral1 = {} as LiteralSet;
+calcium100gLiteral1 = {} as LiteralSet;
+calciumUnitLiteral1 = {} as LiteralSet;
 
 // Map country literal to publications europa country uri.
 // Add entity, relink property operations.
@@ -169,28 +169,28 @@ calciumUnitLiteral1 = {} as Literal;
 productEntity2 = {
     properties: [productNameProperty1, countriesProperty2, ingredientsProperty1, nutrimentsProperty1],
     getInstances() { return [ { id: "TN2" } as EntityInstance]}
-} as Entity;
+} as EntitySet;
 
 countriesEntity1 = {
     getInstances() { return [ { id: "CE1" as EntityInstance, uri: "http://publications.europa.eu/resource/authority/country/USA" } as EntityInstance ]}
-} as Entity;
+} as EntitySet;
 
 countriesProperty2 = {
     value: countriesEntity1,
     name: "countries",
     getInstances() { return [({ id: "TN2" } as EntityInstance, { id: "CE1", uri: "http://publications.europa.eu/resource/authority/country/USA" } as EntityInstance)]}
-} as Property;
+} as PropertySet;
 
 // Add property to nutriments `rdf:type http://aims.fao.org/aos/agrovoc/c_10961`.
 // Add property operations.
 
 nutrimentsEntity2 = {
     properties: [calcium100gProperty1, calciumUnitProperty1, agrovocTypeProperty1]
-} as Entity;
+} as EntitySet;
 
 agrovocEntity1 = {
     getInstances() { return [{ id: "A1", uri: "http://aims.fao.org/aos/agrovoc/c_10961"}]}
-} as Entity;
+} as EntitySet;
 
 agrovocTypeProperty1 = {
     value: agrovocEntity1,

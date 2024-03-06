@@ -45,7 +45,7 @@ The user loads a json with product data into the tool. Since there may be a lot 
 
 ![Selecting What To Show](./img/food-loading.png)
 
-### Mapping Countries Property
+### Mapping Countries PropertySet
 
 When the data is loaded, the user wants to see what is loaded graphically. This is shown in the next picture where the loaded data are converted to a schema representing the data.
 
@@ -73,7 +73,7 @@ Updated schema can be seen on the picture below. Any change from the input data 
 
 ## Sub Use Case With Generated Vocabulary
 
-### Mapping Nutriments Property
+### Mapping Nutriments PropertySet
 
 The following picture shows the starting schema for this sub use case.
 ![Start Schema For Sub Use Case With Generated Vocabulary](./img/after-countries-nutriments.png)
@@ -84,13 +84,13 @@ The user selects `Nutriments` recommendation which found matching "[nutrients](h
 
 Again the user is interested about what the found term matched and wants to preview the property or its whole vocabulary (visualised as simple turtle excerpt). The user inspects it but based on the definition does not found the terms matching. However, rather than "nutrients" he founds a related term while browsing the term properties which fits the match - "[food composition](http://aims.fao.org/aos/agrovoc/c_10961)" and manually adds the entity to this class (shown on the picture below).
 
-![Add Entity Manually](./img/nutriments-manual.png)
+![Add EntitySet Manually](./img/nutriments-manual.png)
 
 The right side menu also shows other examples manual tasks that the user could want to perform to adjust the schema per their bidding.
 
 The next picture shows the updated schema.
 
-![Schema After Adding AGROVOC Food Composition Entity](./img/after-nutriments.png)
+![Schema After Adding AGROVOC Food Composition EntitySet](./img/after-nutriments.png)
 
 The user still wants to convert the nutrients properties to known vocabulary properties but there are no recommendations. If no vocabulary terms can be found, there is an option of creating a new vocabulary and assigning its terms in the schema. But before doint that the user does not want to have so many properties of one component (e.g. "calcium", "calciumPer100g", "calciumUnit") for all food components hanged on one entity. Instead each such component could have its own entity. This can be done manually and the end result is shown in the picture below.
 

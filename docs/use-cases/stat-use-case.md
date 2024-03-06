@@ -19,11 +19,11 @@ CZ032,Plzeňský kraj,576358,285530,290828,43.1,41.8,44.3,kraj
 
 ## Use Case
 
-The initial schema of the data is shown in the picture below. It is just one entity representing a csv row with columns as properties. The tool provides two recommendations: `Region Entity`, `Data Cube`.
+The initial schema of the data is shown in the picture below. It is just one entity representing a csv row with columns as properties. The tool provides two recommendations: `Region EntitySet`, `Data Cube`.
 
 ![Initial Schema Of Loaded Data](./img/stat-initial-schema.png)
 
-The user knows that the data contains regions; therefore, selects `Region Entity` recommendation which detected that property "regionSoudrznosti" points to literals with names of physical regions. This is just a general purpose recommendation described in the food use case so it will be skipped here and only result shown.
+The user knows that the data contains regions; therefore, selects `Region EntitySet` recommendation which detected that property "regionSoudrznosti" points to literals with names of physical regions. This is just a general purpose recommendation described in the food use case so it will be skipped here and only result shown.
 
 ![Region Recommendation](./img/region-recommendation.png)
 

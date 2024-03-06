@@ -1,53 +1,57 @@
 import { describe, expect, test } from '@jest/globals';
-import { PropertyInstance } from '../../representation/property-instance';
+import { Property } from '../../representation/property';
 import { RawInstances, initEntityInstances } from '../../representation/raw-instances';
-import { OneToOneMapping, getOneToOneMappingPropertyInstances, getOneToOnePropertyInstances } from './one-to-one-mapping';
+import {
+    OneToOneMapping,
+    getOneToOneMappingPropertyInstances,
+    getOneToOnePropertyInstances,
+} from './one-to-one-mapping';
 
 describe('Transform Instances', () => {
     describe('Instance Mappings', () => {
         describe('One-To-One', () => {
             test('getOneToOnePropertyInstances', () => {
                 const sourceInstances = 10;
-                const expectedPropertyInstances: PropertyInstance[] = [
+                const expectedPropertyInstances: Property[] = [
                     {
                         literals: [],
-                        targetInstanceIndices: [0],
+                        targetEntities: [0],
                     },
                     {
                         literals: [],
-                        targetInstanceIndices: [1],
+                        targetEntities: [1],
                     },
                     {
                         literals: [],
-                        targetInstanceIndices: [2],
+                        targetEntities: [2],
                     },
                     {
                         literals: [],
-                        targetInstanceIndices: [3],
+                        targetEntities: [3],
                     },
                     {
                         literals: [],
-                        targetInstanceIndices: [4],
+                        targetEntities: [4],
                     },
                     {
                         literals: [],
-                        targetInstanceIndices: [5],
+                        targetEntities: [5],
                     },
                     {
                         literals: [],
-                        targetInstanceIndices: [6],
+                        targetEntities: [6],
                     },
                     {
                         literals: [],
-                        targetInstanceIndices: [7],
+                        targetEntities: [7],
                     },
                     {
                         literals: [],
-                        targetInstanceIndices: [8],
+                        targetEntities: [8],
                     },
                     {
                         literals: [],
-                        targetInstanceIndices: [9],
+                        targetEntities: [9],
                     },
                 ];
 
@@ -56,56 +60,56 @@ describe('Transform Instances', () => {
             });
             test('getOneToOneMappingPropertyInstances', () => {
                 const sourceInstances = 10;
-                const expectedPropertyInstances: PropertyInstance[] = [
+                const expectedPropertyInstances: Property[] = [
                     {
                         literals: [],
-                        targetInstanceIndices: [0],
+                        targetEntities: [0],
                     },
                     {
                         literals: [],
-                        targetInstanceIndices: [1],
+                        targetEntities: [1],
                     },
                     {
                         literals: [],
-                        targetInstanceIndices: [2],
+                        targetEntities: [2],
                     },
                     {
                         literals: [],
-                        targetInstanceIndices: [3],
+                        targetEntities: [3],
                     },
                     {
                         literals: [],
-                        targetInstanceIndices: [4],
+                        targetEntities: [4],
                     },
                     {
                         literals: [],
-                        targetInstanceIndices: [5],
+                        targetEntities: [5],
                     },
                     {
                         literals: [],
-                        targetInstanceIndices: [6],
+                        targetEntities: [6],
                     },
                     {
                         literals: [],
-                        targetInstanceIndices: [7],
+                        targetEntities: [7],
                     },
                     {
                         literals: [],
-                        targetInstanceIndices: [8],
+                        targetEntities: [8],
                     },
                     {
                         literals: [],
-                        targetInstanceIndices: [9],
+                        targetEntities: [9],
                     },
                 ];
 
                 const mapping: OneToOneMapping = {
                     type: 'one-to-one-mapping',
-                    source: { id: '0', name: '0', properties: [], type: 'entity' },
-                    target: { id: '1', name: '1', properties: [], type: 'entity' },
+                    source: { id: '0', name: '0', properties: [], type: 'entity-set' },
+                    target: { id: '1', name: '1', properties: [], type: 'entity-set' },
                 };
                 const instances: RawInstances = {
-                    entityInstances: {
+                    entities: {
                         '0': {
                             count: sourceInstances,
                             instances: initEntityInstances(sourceInstances),
@@ -115,7 +119,7 @@ describe('Transform Instances', () => {
                             instances: initEntityInstances(sourceInstances),
                         },
                     },
-                    propertyInstances: {},
+                    properties: {},
                 };
 
                 const propertyInstances = getOneToOneMappingPropertyInstances(instances, mapping);

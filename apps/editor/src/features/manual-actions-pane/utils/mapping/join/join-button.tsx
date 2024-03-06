@@ -1,6 +1,6 @@
 import { twMerge } from 'tailwind-merge';
 import { Mapping } from '@klofan/instances/transform';
-import { isLiteral } from '@klofan/schema/representation';
+import { isLiteralSet } from '@klofan/schema/representation';
 import { useEditorContext } from '../../../../editor/editor-context';
 import { ButtonProps } from '../button-props';
 import { JoinMappingDetailMapping } from './join-mapping-detail';
@@ -10,16 +10,26 @@ export type JoinButtonProps = ButtonProps & {
     usedInstanceMapping: Mapping | JoinMappingDetailMapping;
 };
 
-export function JoinButton({ setEdges, setUsedInstanceMapping, source, target, usedInstanceMapping }: JoinButtonProps) {
+export function JoinButton({
+    setEdges,
+    setUsedInstanceMapping,
+    source,
+    target,
+    usedInstanceMapping,
+}: JoinButtonProps) {
     const { schema } = useEditorContext();
     const sourceHasLiterals =
-        source.entity.properties.map((propertyId) => schema.property(propertyId)).filter((property) => isLiteral(schema.item(property.value)))
-            .length > 0;
+        source.entity.properties
+            .map((propertyId) => schema.property(propertyId))
+            .filter((property) => isLiteralSet(schema.item(property.value))).length > 0;
     const targetHasLiterals =
-        target.entity.properties.map((propertyId) => schema.property(propertyId)).filter((property) => isLiteral(schema.item(property.value)))
-            .length > 0;
+        target.entity.properties
+            .map((propertyId) => schema.property(propertyId))
+            .filter((property) => isLiteralSet(schema.item(property.value))).length > 0;
     const disabled = !sourceHasLiterals || !targetHasLiterals;
-    const used = usedInstanceMapping.type === 'join-mapping' || usedInstanceMapping.type === 'join-mapping-detail';
+    const used =
+        usedInstanceMapping.type === 'join-mapping' ||
+        usedInstanceMapping.type === 'join-mapping-detail';
     return (
         <button
             disabled={disabled}
@@ -28,7 +38,11 @@ export function JoinButton({ setEdges, setUsedInstanceMapping, source, target, u
                 if (usedInstanceMapping.type === 'join-mapping') {
                     setUsedInstanceMapping({ ...usedInstanceMapping, type: 'join-mapping-detail' });
                 } else {
-                    setUsedInstanceMapping({ type: 'join-mapping-detail', source: source.entity, target: target.entity });
+                    setUsedInstanceMapping({
+                        type: 'join-mapping-detail',
+                        source: source.entity,
+                        target: target.entity,
+                    });
                 }
             }}
             className={twMerge(

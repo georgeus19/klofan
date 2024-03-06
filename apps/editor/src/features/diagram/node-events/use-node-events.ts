@@ -1,4 +1,4 @@
-import { Property, Entity } from '@klofan/schema/representation';
+import { PropertySet, EntitySet } from '@klofan/schema/representation';
 import { Schema } from '@klofan/schema';
 import { ManualActionsPane } from '../../manual-actions-pane/use-manual-actions-pane';
 import { EntityNodeEventHandler } from './entity-node-event-handler';
@@ -21,7 +21,7 @@ export function useNodeEvents({
     manualActions: ManualActionsPane;
 }) {
     const entityNodeEventHandler: EntityNodeEventHandler = {
-        onNodeClick: (entity: Entity) => {
+        onNodeClick: (entity: EntitySet) => {
             const selectedNode = diagram.nodes.find((node) => node.id === entity.id);
             if (selectedNode) {
                 nodeSelection.addSelectedNode(selectedNode);
@@ -29,7 +29,7 @@ export function useNodeEvents({
             }
         },
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        onPropertyClick: (_property: Property) => {},
+        onPropertyClick: (_property: PropertySet) => {},
     };
 
     return {

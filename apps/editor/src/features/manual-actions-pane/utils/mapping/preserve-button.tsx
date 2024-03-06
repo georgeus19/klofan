@@ -1,19 +1,23 @@
 import { twMerge } from 'tailwind-merge';
 import { EntityInstance } from '@klofan/instances';
-import { PropertyInstance } from '@klofan/instances/representation';
-import { getPreservedPropertyInstances, isPreserveMappingEligible, Mapping } from '@klofan/instances/transform';
-import { Literal, Property, Entity } from '@klofan/schema/representation';
+import { Property } from '@klofan/instances/representation';
+import {
+    getPreservedPropertyInstances,
+    isPreserveMappingEligible,
+    Mapping,
+} from '@klofan/instances/transform';
+import { LiteralSet, PropertySet, EntitySet } from '@klofan/schema/representation';
 import { JoinMappingDetailMapping } from './join/join-mapping-detail';
 
 export type PreserveButtonProps = {
-    setEdges: (propertyInstances: PropertyInstance[]) => void;
+    setEdges: (propertyInstances: Property[]) => void;
     setUsedInstanceMapping: (mapping: Mapping) => void;
     usedInstanceMapping: Mapping | JoinMappingDetailMapping;
-    source: { entity: Entity; instances: EntityInstance[] };
-    target: { item: Entity; instances: EntityInstance[] } | { item: Literal };
-    originalSource: { entity: Entity; instances: EntityInstance[] };
-    originalTarget: { item: Entity; instances: EntityInstance[] } | { item: Literal };
-    property: Property;
+    source: { entity: EntitySet; instances: EntityInstance[] };
+    target: { item: EntitySet; instances: EntityInstance[] } | { item: LiteralSet };
+    originalSource: { entity: EntitySet; instances: EntityInstance[] };
+    originalTarget: { item: EntitySet; instances: EntityInstance[] } | { item: LiteralSet };
+    property: PropertySet;
 };
 
 export function PreserveButton({
@@ -29,10 +33,12 @@ export function PreserveButton({
     const originalState = {
         source: { entity: originalSource.entity, instances: originalSource.instances.length },
         target:
-            originalTarget.item.type === 'entity'
+            originalTarget.item.type === 'entity-set'
                 ? {
                       item: originalTarget.item,
-                      instances: (originalTarget as { item: Entity; instances: EntityInstance[] }).instances.length,
+                      instances: (
+                          originalTarget as { item: EntitySet; instances: EntityInstance[] }
+                      ).instances.length,
                   }
                 : { item: originalTarget.item },
     };
@@ -40,10 +46,11 @@ export function PreserveButton({
     const newState = {
         source: { entity: source.entity, instances: source.instances.length },
         target:
-            target.item.type === 'entity'
+            target.item.type === 'entity-set'
                 ? {
                       item: target.item,
-                      instances: (target as { item: Entity; instances: EntityInstance[] }).instances.length,
+                      instances: (target as { item: EntitySet; instances: EntityInstance[] })
+                          .instances.length,
                   }
                 : { item: target.item },
     };

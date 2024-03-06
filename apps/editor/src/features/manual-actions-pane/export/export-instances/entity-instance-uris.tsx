@@ -1,4 +1,4 @@
-import { Entity } from '@klofan/schema/representation';
+import { EntitySet } from '@klofan/schema/representation';
 import { createUpdateEntityUriTransformation } from '@klofan/transform';
 import { useEditorContext } from '../../../editor/editor-context';
 import { Dropdown } from '../../utils/dropdown';
@@ -9,7 +9,7 @@ export function EntityInstanceUris({ className }: { className?: string }) {
     const { schema, updateSchemaAndInstances } = useEditorContext();
 
     const entities = schema.entities();
-    const updateEntityUri = (entity: Entity, uri: string) => {
+    const updateEntityUri = (entity: EntitySet, uri: string) => {
         const uriNotUpdated = (entity.uri === undefined && uri === '') || entity.uri === uri;
         if (!uriNotUpdated) {
             const transformation = createUpdateEntityUriTransformation(schema, entity.id, uri);

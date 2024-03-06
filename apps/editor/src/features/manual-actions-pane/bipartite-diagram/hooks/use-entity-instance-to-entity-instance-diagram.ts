@@ -1,18 +1,31 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Entity } from '@klofan/schema/representation';
+import { EntitySet } from '@klofan/schema/representation';
 import { identifier } from '@klofan/utils';
 import { Edge as ReactFlowEdge, addEdge, Connection } from 'reactflow';
 import { EntityInstance } from '@klofan/instances';
-import { PropertyInstance } from '@klofan/instances/representation';
-import { SourceNode, TargetNode, sourceIdPrefix, sourceNodes, targetIdPrefix, targetNodes } from '../common';
+import { Property } from '@klofan/instances/representation';
+import {
+    SourceNode,
+    TargetNode,
+    sourceIdPrefix,
+    sourceNodes,
+    targetIdPrefix,
+    targetNodes,
+} from '../common';
 import { calculateSourceNodePosition, calculateTargetNodePosition, defaultLayout } from '../layout';
 import { Schema } from '@klofan/schema';
 import { useEditorContext } from '../../../editor/editor-context';
 import { max, min } from 'lodash';
 import { styleEdges } from '../../../diagram/edges/style-edges';
 
-export type EntityInstanceSourceNode = SourceNode<{ entity: Entity; entityInstance: EntityInstance }>;
-export type EntityInstanceTargetNode = TargetNode<{ entity: Entity; entityInstance: EntityInstance }>;
+export type EntityInstanceSourceNode = SourceNode<{
+    entity: EntitySet;
+    entityInstance: EntityInstance;
+}>;
+export type EntityInstanceTargetNode = TargetNode<{
+    entity: EntitySet;
+    entityInstance: EntityInstance;
+}>;
 export type SourceTargetEdge = ReactFlowEdge<never>;
 
 /**
@@ -23,8 +36,8 @@ export type SourceTargetEdge = ReactFlowEdge<never>;
  * If the property does not exist yet in them schema, just pass null and it works as well - no edges are known.
  */
 export function useEntityInstanceToEntityInstanceDiagram(
-    source: { entity: Entity; instances: EntityInstance[] } | null,
-    target: { entity: Entity; instances: EntityInstance[] } | null,
+    source: { entity: EntitySet; instances: EntityInstance[] } | null,
+    target: { entity: EntitySet; instances: EntityInstance[] } | null,
     propertyId: identifier | null
 ) {
     const [nodes, setNodes] = useState<(EntityInstanceSourceNode | EntityInstanceTargetNode)[]>([]);
@@ -34,14 +47,24 @@ export function useEntityInstanceToEntityInstanceDiagram(
 
     useEffect(() => {
         if (source) {
-            const sourceNodes: EntityInstanceSourceNode[] = source.instances.map((entityInstance, instanceIndex) => ({
-                id: `${sourceIdPrefix}${instanceIndex}`,
-                type: 'source',
-                position: calculateSourceNodePosition(layout, entityInstance.id),
-                data: { entity: source.entity, entityInstance: entityInstance, layout: layout },
-            }));
+            const sourceNodes: EntityInstanceSourceNode[] = source.instances.map(
+                (entityInstance, instanceIndex) => ({
+                    id: `${sourceIdPrefix}${instanceIndex}`,
+                    type: 'source',
+                    position: calculateSourceNodePosition(layout, entityInstance.id),
+                    data: { entity: source.entity, entityInstance: entityInstance, layout: layout },
+                })
+            );
             if (target) {
-                setEdges(getEdgesBetweenEntities(schema, source.entity, sourceNodes, propertyId, target.entity));
+                setEdges(
+                    getEdgesBetweenEntities(
+                        schema,
+                        source.entity,
+                        sourceNodes,
+                        propertyId,
+                        target.entity
+                    )
+                );
             } else {
                 setEdges([]);
             }
@@ -52,16 +75,26 @@ export function useEntityInstanceToEntityInstanceDiagram(
 
     useEffect(() => {
         if (target) {
-            const targetNodes: EntityInstanceTargetNode[] = target.instances.map((entityInstance, instanceIndex) => ({
-                id: `${targetIdPrefix}${instanceIndex}`,
-                type: 'target',
-                position: calculateTargetNodePosition(layout, entityInstance.id),
-                data: { entity: target.entity, entityInstance: entityInstance, layout: layout },
-            }));
+            const targetNodes: EntityInstanceTargetNode[] = target.instances.map(
+                (entityInstance, instanceIndex) => ({
+                    id: `${targetIdPrefix}${instanceIndex}`,
+                    type: 'target',
+                    position: calculateTargetNodePosition(layout, entityInstance.id),
+                    data: { entity: target.entity, entityInstance: entityInstance, layout: layout },
+                })
+            );
 
             setNodes((prevNodes) => {
                 if (source) {
-                    setEdges(getEdgesBetweenEntities(schema, source.entity, sourceNodes(prevNodes), propertyId, target.entity));
+                    setEdges(
+                        getEdgesBetweenEntities(
+                            schema,
+                            source.entity,
+                            sourceNodes(prevNodes),
+                            propertyId,
+                            target.entity
+                        )
+                    );
                 } else {
                     setEdges([]);
                 }
@@ -72,21 +105,28 @@ export function useEntityInstanceToEntityInstanceDiagram(
     }, [target?.instances]);
 
     const onConnect = useCallback(
-        (connection: Connection) => setEdges((eds) => styleEdges(addEdge(connection, eds) as unknown as SourceTargetEdge[], 2)),
+        (connection: Connection) =>
+            setEdges((eds) =>
+                styleEdges(addEdge(connection, eds) as unknown as SourceTargetEdge[], 2)
+            ),
         [setEdges]
     );
 
-    const getPropertyInstances = (): PropertyInstance[] => {
+    const getPropertyInstances = (): Property[] => {
         const sourceNodesMap = new Map(sourceNodes(nodes).map((node) => [node.id, node]));
         const targetNodesMap = new Map(targetNodes(nodes).map((node) => [node.id, node]));
 
-        const propertyInstances: PropertyInstance[] = sourceNodes(nodes).map((): PropertyInstance => ({ literals: [], targetInstanceIndices: [] }));
+        const propertyInstances: Property[] = sourceNodes(nodes).map(
+            (): Property => ({ literals: [], targetInstanceIndices: [] })
+        );
 
         edges.forEach((edge) => {
             const source = sourceNodesMap.get(edge.source);
             const target = targetNodesMap.get(edge.target);
             if (source && target) {
-                propertyInstances[source.data.entityInstance.id].targetInstanceIndices.push(target.data.entityInstance.id);
+                propertyInstances[source.data.entityInstance.id].targetEntities.push(
+                    target.data.entityInstance.id
+                );
             }
         });
 
@@ -94,16 +134,18 @@ export function useEntityInstanceToEntityInstanceDiagram(
     };
 
     const maxDiagramHeight =
-        min([max(nodes.map((node) => node.position.y + layout.node.height + layout.bottomPadding)), layout.maxDiagramHeight]) ??
-        layout.maxDiagramHeight;
+        min([
+            max(nodes.map((node) => node.position.y + layout.node.height + layout.bottomPadding)),
+            layout.maxDiagramHeight,
+        ]) ?? layout.maxDiagramHeight;
     return {
         sourceNodes: sourceNodes(nodes),
         targetNodes: targetNodes(nodes),
         edges,
         onConnect,
-        setEdges: (propertyInstances: PropertyInstance[]) => {
+        setEdges: (propertyInstances: Property[]) => {
             const edges = propertyInstances.flatMap((propertyInstance, sourceIndex) => {
-                return propertyInstance.targetInstanceIndices.map((targetIndex) => ({
+                return propertyInstance.targetEntities.map((targetIndex) => ({
                     id: `${source?.entity.id ?? ''}${sourceIndex}${propertyId}${target?.entity.id ?? ''}${targetIndex}`,
                     source: `${sourceIdPrefix}${sourceIndex}`,
                     target: `${targetIdPrefix}${targetIndex}`,
@@ -118,32 +160,37 @@ export function useEntityInstanceToEntityInstanceDiagram(
 
 function getEdgesBetweenEntities(
     schema: Schema,
-    sourceEntity: Entity,
+    sourceEntity: EntitySet,
     sourceNodes: EntityInstanceSourceNode[],
     propertyId: identifier | null,
-    targetEntity: Entity
+    targetEntity: EntitySet
 ) {
     if (propertyId === null) {
         return [];
     }
 
-    const propCheck = schema.hasRelation(propertyId) && schema.property(propertyId).value !== targetEntity.id;
+    const propCheck =
+        schema.hasRelation(propertyId) && schema.property(propertyId).value !== targetEntity.id;
     if (propCheck || !sourceEntity.properties.find((property) => property === propertyId)) {
         return [];
     }
     return sourceNodes.flatMap((sourceNode) =>
         styleEdges(
-            sourceNode.data.entityInstance.properties[propertyId].targetInstanceIndices.map((targetInstanceIndex) => ({
-                id: `${sourceEntity.id}${sourceNode.data.entityInstance.id}${propertyId}${targetEntity.id}${targetInstanceIndex}`,
-                source: `${sourceIdPrefix}${sourceNode.data.entityInstance.id}`,
-                target: `${targetIdPrefix}${targetInstanceIndex}`,
-            })),
+            sourceNode.data.entityInstance.properties[propertyId].targetEntities.map(
+                (targetInstanceIndex) => ({
+                    id: `${sourceEntity.id}${sourceNode.data.entityInstance.id}${propertyId}${targetEntity.id}${targetInstanceIndex}`,
+                    source: `${sourceIdPrefix}${sourceNode.data.entityInstance.id}`,
+                    target: `${targetIdPrefix}${targetInstanceIndex}`,
+                })
+            ),
             2
         )
     );
 }
 
-function addZIndices(nodes: (EntityInstanceSourceNode | EntityInstanceTargetNode)[]): (EntityInstanceSourceNode | EntityInstanceTargetNode)[] {
+function addZIndices(
+    nodes: (EntityInstanceSourceNode | EntityInstanceTargetNode)[]
+): (EntityInstanceSourceNode | EntityInstanceTargetNode)[] {
     return nodes.map((node) => ({
         ...node,
         zIndex: nodes.length - node.data.entityInstance.id,

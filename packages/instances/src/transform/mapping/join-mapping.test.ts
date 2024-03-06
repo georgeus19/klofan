@@ -1,26 +1,30 @@
 import { describe, expect, test } from '@jest/globals';
-import { PropertyInstance } from '../../representation/property-instance';
+import { Property } from '../../representation/property';
 import { RawInstances, initEntityInstances } from '../../representation/raw-instances';
-import { JoinMapping, getJoinMappingPropertyInstances, getJoinedPropertyInstances } from './join-mapping';
+import {
+    JoinMapping,
+    getJoinMappingPropertyInstances,
+    getJoinedPropertyInstances,
+} from './join-mapping';
 import { EntityInstance } from '../../entity-instance';
-import { Property } from '@klofan/schema/representation';
+import { PropertySet } from '@klofan/schema/representation';
 
 describe('Transform Instances', () => {
     describe('Instance Mappings', () => {
         describe('Join', () => {
             test('getJoinedPropertyInstances', () => {
-                const expectedPropertyInstances: PropertyInstance[] = [
+                const expectedPropertyInstances: Property[] = [
                     {
                         literals: [],
-                        targetInstanceIndices: [0, 2],
+                        targetEntities: [0, 2],
                     },
                     {
                         literals: [],
-                        targetInstanceIndices: [2],
+                        targetEntities: [2],
                     },
                     {
                         literals: [],
-                        targetInstanceIndices: [2],
+                        targetEntities: [2],
                     },
                 ];
 
@@ -30,7 +34,7 @@ describe('Transform Instances', () => {
                         properties: {
                             IDREF: {
                                 literals: [{ value: 'AAA' }, { value: 'BBB' }],
-                                targetInstanceIndices: [],
+                                targetEntities: [],
                             },
                         },
                     },
@@ -39,7 +43,7 @@ describe('Transform Instances', () => {
                         properties: {
                             IDREF: {
                                 literals: [{ value: 'BBB' }],
-                                targetInstanceIndices: [],
+                                targetEntities: [],
                             },
                         },
                     },
@@ -48,7 +52,7 @@ describe('Transform Instances', () => {
                         properties: {
                             IDREF: {
                                 literals: [{ value: 'BBB' }],
-                                targetInstanceIndices: [],
+                                targetEntities: [],
                             },
                         },
                     },
@@ -58,27 +62,27 @@ describe('Transform Instances', () => {
                     {
                         id: 0,
                         properties: {
-                            ID: { literals: [{ value: 'AAA' }], targetInstanceIndices: [] },
+                            ID: { literals: [{ value: 'AAA' }], targetEntities: [] },
                         },
                     },
                     {
                         id: 1,
                         properties: {
-                            ID: { literals: [{ value: 'CCC' }], targetInstanceIndices: [] },
+                            ID: { literals: [{ value: 'CCC' }], targetEntities: [] },
                         },
                     },
                     {
                         id: 2,
                         properties: {
-                            ID: { literals: [{ value: 'BBB' }], targetInstanceIndices: [] },
+                            ID: { literals: [{ value: 'BBB' }], targetEntities: [] },
                         },
                     },
                 ];
 
-                const sourceJoinProperty: Property = {
+                const sourceJoinProperty: PropertySet = {
                     id: 'IDREF',
                     name: 'idref',
-                    type: 'property',
+                    type: 'property-set',
                     value: '2',
                 };
                 const source = {
@@ -86,10 +90,10 @@ describe('Transform Instances', () => {
                     joinProperty: sourceJoinProperty,
                 };
 
-                const targetJoinProperty: Property = {
+                const targetJoinProperty: PropertySet = {
                     id: 'ID',
                     name: 'id',
-                    type: 'property',
+                    type: 'property-set',
                     value: '3',
                 };
                 const target = {
@@ -101,59 +105,59 @@ describe('Transform Instances', () => {
                 expect(propertyInstances).toEqual(expectedPropertyInstances);
             });
             test('getJoinMappingPropertyInstances', () => {
-                const expectedPropertyInstances: PropertyInstance[] = [
+                const expectedPropertyInstances: Property[] = [
                     {
                         literals: [],
-                        targetInstanceIndices: [0, 2],
+                        targetEntities: [0, 2],
                     },
                     {
                         literals: [],
-                        targetInstanceIndices: [2],
+                        targetEntities: [2],
                     },
                     {
                         literals: [],
-                        targetInstanceIndices: [2],
+                        targetEntities: [2],
                     },
                 ];
 
-                const sourceJoinProperty: Property = {
+                const sourceJoinProperty: PropertySet = {
                     id: 'IDREF',
                     name: 'idref',
-                    type: 'property',
+                    type: 'property-set',
                     value: '2',
                 };
-                const targetJoinProperty: Property = {
+                const targetJoinProperty: PropertySet = {
                     id: 'ID',
                     name: 'id',
-                    type: 'property',
+                    type: 'property-set',
                     value: '3',
                 };
 
                 const mapping: JoinMapping = {
                     type: 'join-mapping',
-                    source: { id: '0', name: '0', properties: ['IDREF'], type: 'entity' },
+                    source: { id: '0', name: '0', properties: ['IDREF'], type: 'entity-set' },
                     sourceJoinProperty: sourceJoinProperty,
-                    target: { id: '1', name: '1', properties: ['ID'], type: 'entity' },
+                    target: { id: '1', name: '1', properties: ['ID'], type: 'entity-set' },
                     targetJoinProperty: targetJoinProperty,
                 };
                 const instances: RawInstances = {
-                    entityInstances: {
+                    entities: {
                         '0': { count: 3, instances: initEntityInstances(3) },
                         '1': { count: 3, instances: initEntityInstances(3) },
                     },
-                    propertyInstances: {
+                    properties: {
                         '0.IDREF': [
                             {
                                 literals: [{ value: 'AAA' }, { value: 'BBB' }],
-                                targetInstanceIndices: [],
+                                targetEntities: [],
                             },
-                            { literals: [{ value: 'BBB' }], targetInstanceIndices: [] },
-                            { literals: [{ value: 'BBB' }], targetInstanceIndices: [] },
+                            { literals: [{ value: 'BBB' }], targetEntities: [] },
+                            { literals: [{ value: 'BBB' }], targetEntities: [] },
                         ],
                         '1.ID': [
-                            { literals: [{ value: 'AAA' }], targetInstanceIndices: [] },
-                            { literals: [{ value: 'CCC' }], targetInstanceIndices: [] },
-                            { literals: [{ value: 'BBB' }], targetInstanceIndices: [] },
+                            { literals: [{ value: 'AAA' }], targetEntities: [] },
+                            { literals: [{ value: 'CCC' }], targetEntities: [] },
+                            { literals: [{ value: 'BBB' }], targetEntities: [] },
                         ],
                     },
                 };

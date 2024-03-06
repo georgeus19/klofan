@@ -1,5 +1,5 @@
-import { Entity } from './entity';
-import { ExternalEntity } from './external-entity';
-import { Literal } from './literal';
+import { EntitySet } from './entity-set';
+import { ExternalEntitySet } from './external-entity-set';
+import { LiteralSet } from './literal-set';
 
-export type Item = Entity | Literal | ExternalEntity;
+export type Item = EntitySet | LiteralSet | ExternalEntitySet;

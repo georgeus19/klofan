@@ -1,4 +1,9 @@
-import { GraphProperty, toProperty, isLiteral, getProperties } from '@klofan/schema/representation';
+import {
+    GraphPropertySet,
+    toPropertySet,
+    isLiteralSet,
+    getProperties,
+} from '@klofan/schema/representation';
 import {
     createUpdateEntityUriTransformation,
     createUpdatePropertyUriTransformation,
@@ -40,13 +45,16 @@ export function EntityDetail({ entityId }: EntityDetailProps) {
         }
     };
 
-    const generatePropertyDetail = (property: GraphProperty) => (
-        <li className='border border-slate-300 rounded shadow decoration-double my-1' key={property.id}>
+    const generatePropertyDetail = (property: GraphPropertySet) => (
+        <li
+            className='border border-slate-300 rounded shadow decoration-double my-1'
+            key={property.id}
+        >
             <div className='bg-slate-500 rounded flex'>
                 <div className='grow text-white p-1'>{property.name}</div>
                 <button
                     className='self-end p-1 rounded shadow bg-blue-200 hover:bg-blue-300'
-                    onClick={() => manualActions.showMoveProperty(entity, toProperty(property))}
+                    onClick={() => manualActions.showMoveProperty(entity, toPropertySet(property))}
                 >
                     Move
                 </button>
@@ -57,7 +65,11 @@ export function EntityDetail({ entityId }: EntityDetailProps) {
                 initialValue={property.name}
                 onChangeDone={(name: string) => {
                     if (name !== property.name) {
-                        const transformation = createUpdateRelationNameTransformation(schema, property.id, name);
+                        const transformation = createUpdateRelationNameTransformation(
+                            schema,
+                            property.id,
+                            name
+                        );
                         updateSchemaAndInstances(transformation);
                     }
                 }}
@@ -68,9 +80,14 @@ export function EntityDetail({ entityId }: EntityDetailProps) {
                 usePrefix
                 initialUri={property.uri ?? ''}
                 onChangeDone={(uri: string) => {
-                    const uriNotUpdated = (property.uri === undefined && uri === '') || property.uri === uri;
+                    const uriNotUpdated =
+                        (property.uri === undefined && uri === '') || property.uri === uri;
                     if (!uriNotUpdated) {
-                        const transformation = createUpdatePropertyUriTransformation(schema, property.id, uri);
+                        const transformation = createUpdatePropertyUriTransformation(
+                            schema,
+                            property.id,
+                            uri
+                        );
                         updateSchemaAndInstances(transformation);
                     }
                 }}
@@ -80,8 +97,10 @@ export function EntityDetail({ entityId }: EntityDetailProps) {
 
     return (
         <div className='relative'>
-            <button className='rounded shadow bg-blue-200 hover:bg-blue-300 p-2 fixed z-50 top-1/2 -translate-y-1/2 -translate-x-1/2 '>Detail</button>
-            <Header label='Entity'></Header>
+            <button className='rounded shadow bg-blue-200 hover:bg-blue-300 p-2 fixed z-50 top-1/2 -translate-y-1/2 -translate-x-1/2 '>
+                Detail
+            </button>
+            <Header label='EntitySet'></Header>
             <Dropdown headerLabel='General' showInitially={true}>
                 <UncontrollableLabelInput
                     id='entityName'
@@ -99,14 +118,18 @@ export function EntityDetail({ entityId }: EntityDetailProps) {
             </Dropdown>
 
             <Dropdown headerLabel='Properties' showInitially={true}>
-                <Dropdown className='mx-2' headerLabel='Literal' showInitially={true}>
+                <Dropdown className='mx-2' headerLabel='LiteralSet' showInitially={true}>
                     <ul className='mx-4'>
-                        {properties.filter((property) => isLiteral(property.value)).map((property) => generatePropertyDetail(property))}
+                        {properties
+                            .filter((property) => isLiteralSet(property.value))
+                            .map((property) => generatePropertyDetail(property))}
                     </ul>
                 </Dropdown>
-                <Dropdown className='mx-2' headerLabel='Entity' showInitially={true}>
+                <Dropdown className='mx-2' headerLabel='EntitySet' showInitially={true}>
                     <ul className='mx-4'>
-                        {properties.filter((property) => !isLiteral(property.value)).map((property) => generatePropertyDetail(property))}
+                        {properties
+                            .filter((property) => !isLiteralSet(property.value))
+                            .map((property) => generatePropertyDetail(property))}
                     </ul>
                 </Dropdown>
             </Dropdown>

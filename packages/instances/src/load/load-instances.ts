@@ -1,6 +1,6 @@
 import { Instances } from '../instances';
-import { PropertyInstance } from '../representation/property-instance';
-import { initEntityInstances, propertyInstanceKey } from '../representation/raw-instances';
+import { Property } from '../representation/property';
+import { initEntityInstances, propertyKey } from '../representation/raw-instances';
 import { identifier } from '@klofan/utils';
 import { InMemoryInstances } from '../in-memory-instances';
 import { EntityTreeNode } from '@klofan/parse';
@@ -12,23 +12,29 @@ export function loadInstances(entityTree: EntityTreeNode): Instances {
     const entities = fillInstanceEntities({}, entityTree);
     const properties = fillInstanceProperties({}, entityTree);
     return new InMemoryInstances({
-        entityInstances: entities,
-        propertyInstances: properties,
+        entities: entities,
+        properties: properties,
     });
 }
 
 function fillInstanceProperties(
-    properties: { [key: string]: PropertyInstance[] },
+    properties: { [key: string]: Property[] },
     entityTree: EntityTreeNode
-): { [key: string]: PropertyInstance[] } {
+): { [key: string]: Property[] } {
     Object.values(entityTree.properties).forEach((propertyInfo) => {
         let targetInstanceIndex = 0;
 
         const instanceProperties = propertyInfo.instances.map((instanceInfo) => {
-            const instanceLinks: PropertyInstance = {
-                targetInstanceIndices: _.range(targetInstanceIndex, targetInstanceIndex + instanceInfo.instances),
+            const instanceLinks: Property = {
+                targetEntities: _.range(
+                    targetInstanceIndex,
+                    targetInstanceIndex + instanceInfo.instances
+                ),
                 literals: instanceInfo.literals
-                    .filter((literal): literal is number | string | boolean | bigint | symbol => literal !== null && literal !== undefined)
+                    .filter(
+                        (literal): literal is number | string | boolean | bigint | symbol =>
+                            literal !== null && literal !== undefined
+                    )
                     .map((literal): Literal => ({ value: literal.toString() })),
             };
             targetInstanceIndex += instanceInfo.instances;
@@ -36,10 +42,12 @@ function fillInstanceProperties(
             return instanceLinks;
         });
 
-        properties[propertyInstanceKey(entityTree.id, propertyInfo.id)] = instanceProperties;
+        properties[propertyKey(entityTree.id, propertyInfo.id)] = instanceProperties;
     });
 
-    Object.values(entityTree.properties).forEach((propertyInfo) => fillInstanceProperties(properties, propertyInfo.targetEntity));
+    Object.values(entityTree.properties).forEach((propertyInfo) =>
+        fillInstanceProperties(properties, propertyInfo.targetEntity)
+    );
 
     return properties;
 }

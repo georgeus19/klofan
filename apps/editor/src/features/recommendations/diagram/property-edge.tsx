@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { BaseEdge, EdgeLabelRenderer, EdgeProps, getBezierPath, useStore } from 'reactflow';
 import { usePrefixesContext } from '../../prefixes/prefixes-context';
-import { Property } from '@klofan/schema/representation';
+import { PropertySet } from '@klofan/schema/representation';
 import { getEdgeParams } from '../../diagram/utils';
 
 export default function PropertyEdge({ data, source, target, style = {}, markerEnd }: EdgeProps) {
@@ -24,7 +24,7 @@ export default function PropertyEdge({ data, source, target, style = {}, markerE
         targetY: ty,
     });
 
-    const pLabel = (property: Property) => {
+    const pLabel = (property: PropertySet) => {
         if (property.uri && matchPrefix(property.uri).prefix) {
             const p = matchPrefix(property.uri);
             return `${p.prefix?.value}:${p.rest}`;

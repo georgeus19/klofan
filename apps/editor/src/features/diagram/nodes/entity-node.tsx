@@ -1,5 +1,10 @@
 import { Handle, NodeProps, Position } from 'reactflow';
-import { Entity, GraphProperty, getProperties, isLiteral } from '@klofan/schema/representation';
+import {
+    EntitySet,
+    GraphPropertySet,
+    getProperties,
+    isLiteralSet,
+} from '@klofan/schema/representation';
 import { twMerge } from 'tailwind-merge';
 import { useEditorContext } from '../../editor/editor-context';
 import { usePrefixesContext } from '../../prefixes/prefixes-context';
@@ -10,7 +15,7 @@ export default function EntityNode({
     selected,
     targetPosition = Position.Top,
     sourcePosition = Position.Bottom,
-}: NodeProps<Entity>) {
+}: NodeProps<EntitySet>) {
     const {
         schema,
         diagram: {
@@ -25,7 +30,7 @@ export default function EntityNode({
         return <></>;
     }
 
-    const pLabel = (property: GraphProperty) => {
+    const pLabel = (property: GraphPropertySet) => {
         if (property.uri && matchPrefix(property.uri).prefix) {
             const p = matchPrefix(property.uri);
             return `${p.prefix?.value}:${p.rest}`;
@@ -35,7 +40,7 @@ export default function EntityNode({
     };
 
     const literalProperties = getProperties(schema, entity.id)
-        .filter((property) => isLiteral(property.value))
+        .filter((property) => isLiteralSet(property.value))
         .map((property) => (
             <div key={property.name} className='bg-slate-300 rounded p-1'>
                 {pLabel(property)}
@@ -50,7 +55,10 @@ export default function EntityNode({
     const style = id === selectedNode?.id ? selectedStyle : '';
     return (
         <>
-            <div className={twMerge('bg-slate-200 p-2 rounded shadow', diagramSelectedStyle, style)} onClick={onNodeClick}>
+            <div
+                className={twMerge('bg-slate-200 p-2 rounded shadow', diagramSelectedStyle, style)}
+                onClick={onNodeClick}
+            >
                 <div>{entity.name}</div>
                 <div className='flex flex-col gap-1'>{literalProperties}</div>
             </div>

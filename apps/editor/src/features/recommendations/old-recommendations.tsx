@@ -22,10 +22,10 @@ export function OldRecommendations({ className }: RecommendationsProps) {
     function favPlaceLiterals(oldRawInstances: RawInstances, newRawInstances: RawInstances) {
         if (recommended) {
             const propertyInstanceId = '2.6-fav-place';
-            const oo = oldRawInstances.propertyInstances[propertyInstanceId].flatMap((property) => {
+            const oo = oldRawInstances.properties[propertyInstanceId].flatMap((property) => {
                 return property.literals.map((literal) => <div className='p-1 text-center bg-blue-300 col-span-4'>{literal.value}</div>);
             });
-            const nn = newRawInstances.propertyInstances[propertyInstanceId].flatMap((property) => {
+            const nn = newRawInstances.properties[propertyInstanceId].flatMap((property) => {
                 return property.literals.map((literal) => <div className='p-1 text-center bg-blue-300 col-span-7'>{literal.value}</div>);
             });
             return [oo[0], <div className='py-6'>TO</div>, nn[0], oo[1], <div className='py-6'>TO</div>, nn[1]];

@@ -9,14 +9,37 @@ import { UriLabelInput } from '../../utils/uri/uri-label-input';
 import { ErrorMessage } from '../../utils/error-message';
 
 export function CreateLiteralProperty() {
-    const { diagram, sourceEntity, propertySourceSelector, property, createProperty, cancel, error } = useCreateLiteralProperty();
+    const {
+        diagram,
+        sourceEntity,
+        propertySourceSelector,
+        property,
+        createProperty,
+        cancel,
+        error,
+    } = useCreateLiteralProperty();
 
     return (
         <div>
-            <Header label='Create Property'></Header>
-            <LabelInput label='Name' value={property.name} updateValue={property.setName} id='name'></LabelInput>
-            <UriLabelInput label='Uri' {...property.uri} onChangeDone={() => {}} usePrefix id='uri'></UriLabelInput>
-            <EntityNodeSelector label='Source' {...propertySourceSelector} entity={sourceEntity}></EntityNodeSelector>
+            <Header label='Create PropertySet'></Header>
+            <LabelInput
+                label='Name'
+                value={property.name}
+                updateValue={property.setName}
+                id='name'
+            ></LabelInput>
+            <UriLabelInput
+                label='Uri'
+                {...property.uri}
+                onChangeDone={() => {}}
+                usePrefix
+                id='uri'
+            ></UriLabelInput>
+            <EntityNodeSelector
+                label='Source'
+                {...propertySourceSelector}
+                entity={sourceEntity}
+            ></EntityNodeSelector>
             {sourceEntity && (
                 <BipartiteDiagram
                     sourceNodes={diagram.sourceNodes}
@@ -28,7 +51,10 @@ export function CreateLiteralProperty() {
                     layout={diagram.layout}
                 >
                     <Panel position='bottom-center'>
-                        <button className='bg-blue-200 rounded p-1' onClick={diagram.addLiteralNode}>
+                        <button
+                            className='bg-blue-200 rounded p-1'
+                            onClick={diagram.addLiteralNode}
+                        >
                             Add Literal
                         </button>
                     </Panel>

@@ -1,4 +1,4 @@
-import { PropertyInstance } from '../../representation/property-instance';
+import { Property } from '../../representation/property';
 import { RawInstances } from '../../representation/raw-instances';
 import { AllToOneMapping, getAllToOneMappingPropertyInstances } from './all-to-one-mapping';
 import { JoinMapping, getJoinMappingPropertyInstances } from './join-mapping';
@@ -9,7 +9,7 @@ import { PreserveMapping, getPreserveMappingPropertyInstances } from './preserve
 
 export type Mapping = PreserveMapping | JoinMapping | OneToOneMapping | OneToAllMapping | AllToOneMapping | ManualMapping;
 
-export function getPropertyInstances(instances: RawInstances, mapping: Mapping): PropertyInstance[] {
+export function getPropertyInstances(instances: RawInstances, mapping: Mapping): Property[] {
     switch (mapping.type) {
         case 'join-mapping':
             return getJoinMappingPropertyInstances(instances, mapping);
