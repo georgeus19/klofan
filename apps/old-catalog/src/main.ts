@@ -34,6 +34,7 @@ import { recommend } from './controllers/recommender/recommend';
 import { showAnalysed } from './controllers/catalog/show-analysed';
 
 const port = process.env.PORT || 3000;
+// eslint-disable-next-line turbo/no-undeclared-env-vars
 export const sparqlEndpoint = process.env.SPARQL_ENDPOINT || 'http://localhost:8890/sparql';
 const app: Express = express();
 export const analyzerConfiguration = { labelPredicates: [SKOS.prefLabel(), RDFS.label()], codePredicates: [SKOS.notation()] };

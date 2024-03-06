@@ -1,6 +1,7 @@
 import { Entity, Property } from '@klofan/schema/representation';
 import { RawInstances, propertyInstanceKey } from '../../representation/raw-instances';
 import { Literal } from '../../representation/literal';
+import { TransformationChanges } from '../transformation-changes';
 
 export interface UpdatePropertyLiterals {
     type: 'update-property-literals';
@@ -40,4 +41,11 @@ export function updatePropertyLiterals(instances: RawInstances, transformation: 
             literals: updatedLiterals,
         };
     });
+}
+
+export function updatePropertyLiteralsChanges(transformation: UpdatePropertyLiterals): TransformationChanges {
+    return {
+        entities: [transformation.data.entity.id],
+        properties: [transformation.data.property.id],
+    };
 }

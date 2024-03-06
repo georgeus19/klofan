@@ -1,9 +1,9 @@
 {
-  "extends": "@klofan/typescript-config/internal-lib.json",
-  "compilerOptions": {
-    "rootDir": "./src",
-    "outDir": "./dist",
-    "noEmit": false,
-  },
-  "include": ["src/**/*"],
+    "extends": "@klofan/typescript-config/internal-lib.json",
+    "compilerOptions": {
+        "rootDir": "./src",
+        "outDir": "./dist",
+        "noEmit": false,
+    },
+    "include": ["src/**/*"],
 }

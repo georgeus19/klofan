@@ -1,6 +1,7 @@
 import { Entity, Item, Property } from '@klofan/schema/representation';
 import { RawInstances, propertyInstanceKey } from '../../representation/raw-instances';
 import { Mapping, getPropertyInstances } from '../mapping/mapping';
+import { TransformationChanges } from '../transformation-changes';
 
 export interface MovePropertyInstances {
     type: 'move-property-instances';
@@ -37,4 +38,11 @@ export function movePropertyInstances(
 
     delete instances.propertyInstances[propertyInstanceKey(originalSource.id, property.id)];
     instances.propertyInstances[propertyInstanceKey(newSource.id, property.id)] = propertyInstances;
+}
+
+export function movePropertyInstancesChanges(transformation: MovePropertyInstances): TransformationChanges {
+    return {
+        entities: [transformation.data.originalSource.id, transformation.data.newSource.id],
+        properties: [transformation.data.property.id],
+    };
 }

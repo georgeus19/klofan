@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-base-to-string */
 import { HTMLProps, useRef } from 'react';
 
 export interface FileLoaderProps extends HTMLProps<HTMLLabelElement> {

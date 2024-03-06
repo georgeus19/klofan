@@ -2,7 +2,6 @@
     "name": "old-catalog",
     "main": "src/main.ts",
     "scripts": {
-        "dev": "tsc  && node dist/main.js",
         "build": "tsc",
         "lint": "eslint . --max-warnings 0",
         "test": "jest"

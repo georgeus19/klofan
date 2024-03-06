@@ -3,6 +3,7 @@ import { Entity, GraphProperty, getProperties, isLiteral, toProperty } from '@kl
 import { twMerge } from 'tailwind-merge';
 import { usePrefixesContext } from '../../prefixes/prefixes-context';
 import { useDiagramContext } from './diagram-context';
+import { useRecommendationsContext } from '../recommendations-context';
 
 export default function EntityNode({
     id,
@@ -12,11 +13,12 @@ export default function EntityNode({
     sourcePosition = Position.Bottom,
 }: NodeProps<Entity>) {
     const { diagram, schema } = useDiagramContext();
+    const { shownRecommendationDetail } = useRecommendationsContext();
     const propertySelection = diagram.propertySelection;
 
     const { matchPrefix } = usePrefixesContext();
 
-    if (!schema.hasEntity(entity.id)) {
+    if (!schema.hasEntity(entity.id) || !shownRecommendationDetail) {
         return <></>;
     }
 
@@ -31,18 +33,24 @@ export default function EntityNode({
 
     const literalProperties = getProperties(schema, entity.id)
         .filter((property) => isLiteral(property.value))
-        .map((property) => (
-            <div
-                key={property.name}
-                className={twMerge(
-                    'bg-slate-300 rounded p-1',
-                    property.id === propertySelection.selectedProperty?.property.id ? propertySelection.selectedStyle : ''
-                )}
-                onClick={() => propertySelection.addSelectedProperty({ property: toProperty(property), entity: entity })}
-            >
-                {pLabel(property)}
-            </div>
-        ));
+        .map((property) => {
+            const selectedProperty = property.id === propertySelection.selectedProperty?.property.id;
+            const changedProperty = shownRecommendationDetail.changes.relations.find((relation) => relation === property.id);
+            return (
+                <div
+                    key={property.name}
+                    className={twMerge(
+                        'bg-slate-300 rounded p-1',
+                        selectedProperty ? propertySelection.selectedStyle : '',
+                        changedProperty ? 'bg-rose-300' : '',
+                        selectedProperty && changedProperty ? 'bg-gradient-to-r from-yellow-200 to-rose-300' : ''
+                    )}
+                    onClick={() => propertySelection.addSelectedProperty({ property: toProperty(property), entity: entity })}
+                >
+                    {pLabel(property)}
+                </div>
+            );
+        });
 
     const diagramSelectedStyle = selected ? 'border border-black' : '';
     return (

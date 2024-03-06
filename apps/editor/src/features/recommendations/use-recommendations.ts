@@ -11,6 +11,8 @@ import { Schema } from '@klofan/schema';
 import { InMemoryInstances } from '@klofan/instances';
 import { NodeChange, applyNodeChanges } from 'reactflow';
 import { PropertySelection, usePropertySelection } from '../diagram/use-property-selection';
+import { TransformationChanges, transformationChanges as schemaTransformationChanges } from '@klofan/schema/transform';
+import { transformationChanges as instancesTransformationChanges } from '@klofan/instances/transform';
 
 export type RecommendationDiagram = {
     nodes: SchemaNode[];
@@ -26,6 +28,7 @@ export type Recommendations = {
     hideRecommendationDetail: () => void;
     shownRecommendationDetail: {
         recommendation: Recommendation;
+        changes: TransformationChanges;
         recommendationIndex: number;
         old: {
             schema: Schema;
@@ -42,6 +45,7 @@ export type Recommendations = {
 
 type RawRecommendationDetail = {
     recommendation: Recommendation;
+    changes: TransformationChanges;
     recommendationIndex: number;
     old: {
         schema: RawSchema;
@@ -102,9 +106,22 @@ export function useRecommendations(): Recommendations {
             instances: (await instances.transform(recommendation.transformations.instanceTransformations)).raw() as RawInstances,
             diagram: reflectSchema({ nodes: structuredClone(diagram.nodes), edges: structuredClone(diagram.edges) }, newSchema),
         };
+        const instancesChanges = recommendation.transformations.instanceTransformations.map((transformation) =>
+            instancesTransformationChanges(transformation)
+        );
+        const schemaChanges = recommendation.transformations.schemaTransformations.map((transformation) =>
+            schemaTransformationChanges(transformation)
+        );
+
+        const itemChanges = [...instancesChanges.flatMap((ch) => ch.entities), ...schemaChanges.flatMap((ch) => ch.items)];
+        const relationChanges = [...instancesChanges.flatMap((ch) => ch.properties), ...schemaChanges.flatMap((ch) => ch.relations)];
 
         setSelectedRecommendation({
             recommendation: recommendation,
+            changes: {
+                items: itemChanges,
+                relations: relationChanges,
+            },
             recommendationIndex: index,
             old: old,
             new: n,
@@ -135,6 +152,7 @@ export function useRecommendations(): Recommendations {
     const shownRecommendationDetail = selectedRecommendation
         ? {
               recommendation: selectedRecommendation.recommendation,
+              changes: selectedRecommendation.changes,
               recommendationIndex: selectedRecommendation.recommendationIndex,
               old: {
                   schema: new Schema(selectedRecommendation.old.schema),

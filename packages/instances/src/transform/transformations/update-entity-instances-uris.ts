@@ -1,5 +1,6 @@
 import { Entity, Property } from '@klofan/schema/representation';
 import { RawInstances, propertyInstanceKey } from '../../representation/raw-instances';
+import { TransformationChanges } from '../transformation-changes';
 
 export type EntityInstanceUriMapping = {
     literalProperty: Property;
@@ -28,4 +29,11 @@ export function updateEntityInstancesUris(instances: RawInstances, transformatio
             return newInstance;
         }
     );
+}
+
+export function updateEntityInstancesUrisChanges(transformation: UpdateEntityInstancesUris): TransformationChanges {
+    return {
+        entities: [transformation.data.entity.id],
+        properties: [],
+    };
 }

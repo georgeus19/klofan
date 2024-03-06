@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import { AnalysedStructure, UploadedData } from '@klofan/old-catalog-types';
 import { useEffect, useState } from 'react';
 import { twMerge } from 'tailwind-merge';

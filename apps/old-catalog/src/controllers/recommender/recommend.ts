@@ -26,23 +26,17 @@ import { InMemoryInstances } from '@klofan/instances';
 import * as _ from 'lodash';
 import { alternativePath } from '../../queries/paths';
 
-const showUpdadedDataRequestSchema = z.object({
+const requestSchema = z.object({
     body: z.object({
-        schema: z.object({
-            items: z.object({}),
-            relations: z.object({}),
-        }),
-        instances: z.object({
-            entityInstances: z.object({}),
-            propertyInstances: z.object({}),
-        }),
+        schema: z.object({}).passthrough(),
+        instances: z.object({}).passthrough(),
     }),
 });
 
 export const recommend = endpointErrorHandler(async (request: Request, response: Response, next: NextFunction) => {
     const sparqlStore = new SparlqEndpointStore(sparqlEndpoint);
     console.log('BODY', request.body);
-    // const { body } = await parseRequest(showUpdadedDataRequestSchema, request);
+    const { body } = await parseRequest(requestSchema, request);
     const schema = new Schema(request.body.schema);
     const instances = new InMemoryInstances(request.body.instances);
     // const literals: string[] = _.uniq(

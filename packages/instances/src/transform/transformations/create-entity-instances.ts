@@ -1,5 +1,6 @@
 import { Entity, ExternalEntity } from '@klofan/schema/representation';
 import { RawInstances } from '../../representation/raw-instances';
+import { TransformationChanges } from '../transformation-changes';
 
 export interface CreateEntityInstances {
     type: 'create-entity-instances';
@@ -21,4 +22,9 @@ export function createEntityInstances(instances: RawInstances, transformation: C
     };
 }
 
-// export function changes
+export function createEntityInstancesChanges(transformation: CreateEntityInstances): TransformationChanges {
+    return {
+        entities: [transformation.data.entity.id],
+        properties: [],
+    };
+}
