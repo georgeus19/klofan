@@ -14,58 +14,64 @@ export function saveAsDataSchema(
 ) {
     outputWriter.addPrefixes({ ...dataSchema.prefixes });
 
-    schema.entities().forEach((entity) => {
-        const entityUri = entity.uri ? entity.uri : saveConfiguration.defaultEntityUri + entity.id;
+    schema.entitySets().forEach((entitySet) => {
+        const entitySetUri = entitySet.uri
+            ? entitySet.uri
+            : saveConfiguration.defaultEntitySetUri + entitySet.id;
         outputWriter.addQuad(
-            namedNode(entityUri),
+            namedNode(entitySetUri),
             namedNode(rdfType),
             namedNode(dataSchema.core.Entity)
         );
     });
 
-    schema.entities().forEach((entity) => {
-        const properties = getProperties(schema, entity.id);
-        const entityUri = entity.uri ? entity.uri : saveConfiguration.defaultEntityUri + entity.id;
-        const propertyUri = (property: GraphPropertySet) =>
-            property.uri ? property.uri : saveConfiguration.defaultPropertyUri + property.id;
+    schema.entitySets().forEach((entitySet) => {
+        const propertySets = getProperties(schema, entitySet.id);
+        const entitySetUri = entitySet.uri
+            ? entitySet.uri
+            : saveConfiguration.defaultEntitySetUri + entitySet.id;
+        const propertySetUri = (propertySet: GraphPropertySet) =>
+            propertySet.uri
+                ? propertySet.uri
+                : saveConfiguration.defaultPropertySetUri + propertySet.id;
 
-        properties.forEach((property) => {
+        propertySets.forEach((propertySet) => {
             outputWriter.addQuad(
-                namedNode(entityUri),
+                namedNode(entitySetUri),
                 namedNode(dataSchema.core.Property),
-                namedNode(propertyUri(property))
+                namedNode(propertySetUri(propertySet))
             );
         });
 
-        properties.forEach((property) => {
-            if (isEntitySet(property.value)) {
-                const objectUri = property.value.uri
-                    ? property.value.uri
-                    : saveConfiguration.defaultEntityUri + property.value.id;
+        propertySets.forEach((propertySet) => {
+            if (isEntitySet(propertySet.value)) {
+                const objectUri = propertySet.value.uri
+                    ? propertySet.value.uri
+                    : saveConfiguration.defaultEntitySetUri + propertySet.value.id;
                 outputWriter.addQuad(
-                    namedNode(entityUri),
-                    namedNode(propertyUri(property)),
+                    namedNode(entitySetUri),
+                    namedNode(propertySetUri(propertySet)),
                     namedNode(objectUri)
                 );
             } else {
                 outputWriter.addQuad(
-                    namedNode(entityUri),
-                    namedNode(propertyUri(property)),
-                    namedNode(saveConfiguration.defaultEntityUri + property.value.id)
+                    namedNode(entitySetUri),
+                    namedNode(propertySetUri(propertySet)),
+                    namedNode(saveConfiguration.defaultEntitySetUri + propertySet.value.id)
                 );
             }
         });
 
-        properties.forEach((property) => {
+        propertySets.forEach((propertySet) => {
             outputWriter.addQuad(
-                namedNode(propertyUri(property)),
+                namedNode(propertySetUri(propertySet)),
                 namedNode(rdfType),
                 namedNode(dataSchema.core.Property)
             );
             outputWriter.addQuad(
-                namedNode(propertyUri(property)),
+                namedNode(propertySetUri(propertySet)),
                 namedNode(dataSchema.core.technicalName),
-                literal(property.name)
+                literal(propertySet.name)
             );
         });
     });

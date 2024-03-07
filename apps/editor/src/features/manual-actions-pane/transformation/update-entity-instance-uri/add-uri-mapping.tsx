@@ -14,11 +14,11 @@ export type AddUriMappingProps = {
 
 export function AddUriMapping({ entity, addUriMapping }: AddUriMappingProps) {
     const { schema } = useEditorContext();
-    const selectableProperties = getProperties(schema, entity.id).filter((property) =>
-        isLiteralSet(property.value)
+    const selectableProperties = getProperties(schema, entity.id).filter((propertySet) =>
+        isLiteralSet(propertySet.value)
     );
     const [selectedProperty, setSelectedProperty] = useState<PropertySet | null>(
-        selectableProperties.length > 0 ? schema.property(selectableProperties[0].id) : null
+        selectableProperties.length > 0 ? schema.propertySet(selectableProperties[0].id) : null
     );
     const [error, setError] = useState<string | null>(null);
     const [literal, setLiteral] = useState<string>('');
@@ -39,22 +39,22 @@ export function AddUriMapping({ entity, addUriMapping }: AddUriMappingProps) {
     return (
         <Dropdown headerLabel='Add Uri Mapping' showInitially>
             <div className='grid grid-cols-12 px-3 py-1'>
-                <label htmlFor='property' className='col-span-4'>
+                <label htmlFor='propertySet' className='col-span-4'>
                     PropertySet
                 </label>
                 <select
-                    id='property'
+                    id='propertySet'
                     defaultValue='Select PropertySet'
-                    onChange={(e) => setSelectedProperty(schema.property(e.target.value))}
+                    onChange={(e) => setSelectedProperty(schema.propertySet(e.target.value))}
                     className='col-span-8 rounded bg-transparent border-2 border-slate-400 px-1 focus:bg-yellow-200 h-7'
                 >
-                    {selectableProperties.map((property) => (
+                    {selectableProperties.map((propertySet) => (
                         <option
                             className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300 overflow-auto whitespace-nowrap'
-                            key={property.id}
-                            value={property.id}
+                            key={propertySet.id}
+                            value={propertySet.id}
                         >
-                            {property.name}
+                            {propertySet.name}
                         </option>
                     ))}
                 </select>

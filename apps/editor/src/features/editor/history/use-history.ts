@@ -5,7 +5,7 @@ import { UpdateOperation } from './update-operation';
 const emptyState = {
     diagram: { nodes: [], edges: [] },
     schema: { items: {}, relations: {} },
-    instances: { entityInstances: {}, propertyInstances: {} },
+    instances: { entities: {}, properties: {} },
 };
 
 export function currentEditor(history: RawHistory): RawEditor {
@@ -21,7 +21,9 @@ export function useHistory(): EditorHistory {
     const updateCurrentState = (newEditor: (prev: RawEditor) => RawEditor) => {
         setHistory((currentHistory) => {
             const updatedOperations = currentHistory.operations.map((operation, index) =>
-                index === currentHistory.currentOperation ? { ...operation, updatedEditor: newEditor(currentEditor(currentHistory)) } : operation
+                index === currentHistory.currentOperation
+                    ? { ...operation, updatedEditor: newEditor(currentEditor(currentHistory)) }
+                    : operation
             );
             return {
                 operations: updatedOperations,
@@ -33,7 +35,10 @@ export function useHistory(): EditorHistory {
     const update = (newEditor: (prev: RawEditor) => UpdateOperation) => {
         setHistory((currentHistory) => {
             return {
-                operations: [...currentHistory.operations.slice(0, currentHistory.currentOperation + 1), newEditor(currentEditor(currentHistory))],
+                operations: [
+                    ...currentHistory.operations.slice(0, currentHistory.currentOperation + 1),
+                    newEditor(currentEditor(currentHistory)),
+                ],
                 currentOperation: currentHistory.currentOperation + 1,
             };
         });
@@ -43,7 +48,10 @@ export function useHistory(): EditorHistory {
         setHistory((currentHistory) => {
             const newOperations = newEditor(currentEditor(currentHistory));
             return {
-                operations: [...currentHistory.operations.slice(0, currentHistory.currentOperation + 1), ...newOperations],
+                operations: [
+                    ...currentHistory.operations.slice(0, currentHistory.currentOperation + 1),
+                    ...newOperations,
+                ],
                 currentOperation: currentHistory.currentOperation + newOperations.length,
             };
         });
@@ -55,7 +63,10 @@ export function useHistory(): EditorHistory {
                 return currentHistory;
             }
 
-            return { operations: currentHistory.operations, currentOperation: currentHistory.currentOperation - 1 };
+            return {
+                operations: currentHistory.operations,
+                currentOperation: currentHistory.currentOperation - 1,
+            };
         });
     };
 
@@ -65,7 +76,10 @@ export function useHistory(): EditorHistory {
                 return currentHistory;
             }
 
-            return { operations: currentHistory.operations, currentOperation: currentHistory.currentOperation + 1 };
+            return {
+                operations: currentHistory.operations,
+                currentOperation: currentHistory.currentOperation + 1,
+            };
         });
     };
 

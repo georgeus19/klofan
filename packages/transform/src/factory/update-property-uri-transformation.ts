@@ -10,7 +10,7 @@ export function createUpdatePropertyUriTransformation(
     uri: string
 ): Transformation {
     const newProperty: PropertySet = {
-        ...schema.property(relationId),
+        ...schema.propertySet(relationId),
         uri: uri === '' ? undefined : uri,
     };
     const updateRelationTransformation: UpdateRelation = {

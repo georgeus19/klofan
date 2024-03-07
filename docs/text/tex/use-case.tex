@@ -8,23 +8,23 @@
 \label{sec:fit-vocab-res}
 
 \subsection{Description}
-User has a conceptual model of some data. The user would like to find the best vocabulary resources to fit the data. User presents a graph of entities and their relations. The user can also specify other search parameters such as what predicates to consider for matching entities or which domain the data come from. The system returns a best-effort mapping options of vocabulary resources and predicates to specified entities and relationships between them. The user can then select the most fitting option or change the input specification to make the system search again. 
+User has a conceptual model of some data. The user would like to find the best vocabulary resources to fit the data. User presents a graph of entitySets and their relations. The user can also specify other search parameters such as what predicates to consider for matching entitySets or which domain the data come from. The system returns a best-effort mapping options of vocabulary resources and predicates to specified entitySets and relationships between them. The user can then select the most fitting option or change the input specification to make the system search again.
 
 The system tracks the last inputs and outputs so user does not have to repeat the search again if they want to go back. 
 
 \subsection{Input}
-The specification of entities and relationships within the input graph can be done multiple ways:
+The specification of entitySets and relationships within the input graph can be done multiple ways:
 \begin{itemize}
-    \item Provide string tags describing an entity or a relation.
+    \item Provide string tags describing an entitySet or a relation.
     \item Provide already defined resource (IRI) as a final result value which stays in the result.
     \item Provide already defined resource (IRI) as a hint from which to gather tags.
-    \item Provide placeholder relation or entity which can be matched by anything.
+    \item Provide placeholder relation or entitySet which can be matched by anything.
 \end{itemize}
 
-The system contains default rules for mapping entities and relations. The user can remove some rules or add more. Rules typically specify what general descriptive properties are used for tag matching or how different the output model can be from the input one. The rule can be specified for all entities or for any one entity. User can also indicate which domains the vocabularies should not be about so they can be filtered out beforehand or whether to search through all vocabularies.
+The system contains default rules for mapping entitySets and relations. The user can remove some rules or add more. Rules typically specify what general descriptive propertySets are used for tag matching or how different the output model can be from the input one. The rule can be specified for all entitySets or for any one entitySet. User can also indicate which domains the vocabularies should not be about so they can be filtered out beforehand or whether to search through all vocabularies.
 
 \subsection{Output}
-The output should provide the most fitting mappings for the input graph of entities and resources.
+The output should provide the most fitting mappings for the input graph of entitySets and resources.
 
 \section{Map Data To Fitting Vocabulary Resources}
 \subsection{Description}
@@ -33,14 +33,14 @@ User can upload their RDF data and specify which resources and predicates should
 \subsection{Input}
 The input is RDF data in N-Quads or JSON-LD format. Same RDF things which fit under one logical class must have a class and belong to the same class so that the system can identify which RDF things represent the same concepts. (Or potentially let user load a conceptual model along with the data?)
 
-User can specify which entities and predicates the mapping is found for via UI. Additionaly, any input for \autoref{sec:fit-vocab-res} can be added for customization of the mapping search.
+User can specify which entitySets and predicates the mapping is found for via UI. Additionaly, any input for \autoref{sec:fit-vocab-res} can be added for customization of the mapping search.
 
 \subsection{Output}
 The output are triples which make the specified RDF things and predicates the found vocabulary classes. 
 
 \section{Visualize Vocabulary And Its Resources}
 \subsection{Description}
-The system provides visualization for registered vocabularies. The visualization has two main components. One is a graph representation with entities as nodes and predicates as edges. User is able to navigate to the definition of entities and predicates via clicking on their representation in graph. The system also provides a definition for each entity which includes a list of all predicates along with their objects. User can view both predicates and objects by clicking on them. Predicate definitions contain any predicates made about them.
+The system provides visualization for registered vocabularies. The visualization has two main components. One is a graph representation with entitySets as nodes and predicates as edges. User is able to navigate to the definition of entitySets and predicates via clicking on their representation in graph. The system also provides a definition for each entitySet which includes a list of all predicates along with their objects. User can view both predicates and objects by clicking on them. Predicate definitions contain any predicates made about them.
 
 \section{Register Vocabulary}
 \subsection{Description}

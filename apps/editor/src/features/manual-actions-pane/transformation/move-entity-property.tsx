@@ -44,7 +44,7 @@ export function MoveEntityProperty({
         manualActions: { onActionDone },
     } = useEditorContext();
 
-    const originalTargetEntity = schema.entity(property.value);
+    const originalTargetEntity = schema.entitySet(property.value);
 
     const { entityInstances: originalSourceInstances } = useEntityInstances(originalSourceEntity);
     const { entityInstances: originalTargetInstances } = useEntityInstances(originalTargetEntity);

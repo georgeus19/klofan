@@ -1,12 +1,17 @@
 import { Relation } from './relation';
 import { identifier } from '@klofan/utils';
 
-export interface PropertySet {
+export interface PropertySet extends Relation {
     type: 'property-set';
-    id: identifier;
-    name: string;
     uri?: string;
     value: identifier;
+}
+
+export function createPropertySet(propertySet: Omit<PropertySet, 'type'>): PropertySet {
+    return {
+        ...propertySet,
+        type: 'property-set',
+    };
 }
 
 export function isPropertySet(relation: Relation): relation is PropertySet {

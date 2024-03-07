@@ -2,7 +2,8 @@
     "name": "@klofan/parse",
     "scripts": {
         "build": "tsc",
-        "lint": "eslint . --max-warnings 0"
+        "lint": "eslint . --max-warnings 0",
+        "clean": "rm -rf node_modules .turbo dist tsconfig.tsbuildinfo"
     },
     "files": [
         "dist/**"

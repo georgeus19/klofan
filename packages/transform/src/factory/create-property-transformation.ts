@@ -1,10 +1,16 @@
-import { EntitySet, LiteralSet, PropertySet } from '@klofan/schema/representation';
+import {
+    createLiteralSet,
+    createPropertySet,
+    EntitySet,
+    LiteralSet,
+    PropertySet,
+} from '@klofan/schema/representation';
 import { Schema } from '@klofan/schema';
 import {
     Transformation as SchemaTransformation,
-    UpdateEntity,
-    CreateLiteral,
-    CreateProperty,
+    UpdateEntitySet,
+    CreateLiteralSet,
+    CreatePropertySet,
 } from '@klofan/schema/transform';
 import { identifier, getNewId } from '@klofan/utils';
 import { Transformation } from './../transformation';
@@ -27,7 +33,7 @@ export function createCreatePropertyTransformation(
         propertyInstances: Property[];
     }
 ): Transformation {
-    const sourceEntity = schema.entity(sourceEntityId);
+    const sourceEntity = schema.entitySet(sourceEntityId);
     const { property, schemaTransformations } = createSchemaTransformations(
         name,
         value,
@@ -57,14 +63,13 @@ function createSchemaTransformations(
     let valueId;
     let targetSchemaTransformations: SchemaTransformation[];
     if (propertyValue.type === 'literal') {
-        const literal: LiteralSet = {
+        const literal: LiteralSet = createLiteralSet({
             id: getNewId(),
-            type: 'literal-set',
             name: propertyName,
-        };
-        const createLiteralTransformation: CreateLiteral = {
-            type: 'create-literal',
-            data: { literal: literal },
+        });
+        const createLiteralTransformation: CreateLiteralSet = {
+            type: 'create-literal-set',
+            data: { literalSet: literal },
         };
         targetSchemaTransformations = [createLiteralTransformation];
         valueId = literal.id;
@@ -73,21 +78,20 @@ function createSchemaTransformations(
         targetSchemaTransformations = [];
     }
 
-    const property: PropertySet = {
+    const property: PropertySet = createPropertySet({
         id: getNewId(),
-        type: 'property-set',
         uri: propertyUri,
         name: propertyName,
         value: valueId,
+    });
+    const createPropertyTransformation: CreatePropertySet = {
+        type: 'create-property-set',
+        data: { propertySet: property },
     };
-    const createPropertyTransformation: CreateProperty = {
-        type: 'create-property',
-        data: { property: property },
-    };
-    const updateSourceEntityTransformation: UpdateEntity = {
-        type: 'update-entity',
+    const updateSourceEntityTransformation: UpdateEntitySet = {
+        type: 'update-entity-set',
         data: {
-            entity: {
+            entitySet: {
                 ...sourceEntity,
                 properties: sourceEntity.properties.concat(property.id),
             },

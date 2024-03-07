@@ -30,7 +30,7 @@ export function JoinMappingDetail({
     const { schema } = useEditorContext();
 
     const sourceProperties = usedInstanceMapping.source.properties
-        .map((propertyId) => schema.property(propertyId))
+        .map((propertyId) => schema.propertySet(propertyId))
         .filter((property) => isLiteralSet(schema.item(property.value)))
         .map((property) => (
             <button
@@ -58,7 +58,7 @@ export function JoinMappingDetail({
             </button>
         ));
     const targetProperties = usedInstanceMapping.target.properties
-        .map((propertyId) => schema.property(propertyId))
+        .map((propertyId) => schema.propertySet(propertyId))
         .filter((property) => isLiteralSet(schema.item(property.value)))
         .map((property) => (
             <button

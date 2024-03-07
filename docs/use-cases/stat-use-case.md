@@ -1,6 +1,6 @@
 # Statistical Data Use Case
 
-In this use case, a user wants to convert their statistical csv data about czech regions to rdf so that entities and properties are represented correctly using known vocabularies.
+In this use case, a user wants to convert their statistical csv data about czech regions to rdf so that entitySets and propertySets are represented correctly using known vocabularies.
 
 This is a follow up to the food use case so there will be a lot of steps skipped and the focus will be on a vocabulary specific recommendation rather than on general purpose recommendation which was showcased in the food use case.
 
@@ -19,19 +19,19 @@ CZ032,Plzeňský kraj,576358,285530,290828,43.1,41.8,44.3,kraj
 
 ## Use Case
 
-The initial schema of the data is shown in the picture below. It is just one entity representing a csv row with columns as properties. The tool provides two recommendations: `Region EntitySet`, `Data Cube`.
+The initial schema of the data is shown in the picture below. It is just one entitySet representing a csv row with columns as propertySets. The tool provides two recommendations: `Region EntitySet`, `Data Cube`.
 
 ![Initial Schema Of Loaded Data](./img/stat-initial-schema.png)
 
-The user knows that the data contains regions; therefore, selects `Region EntitySet` recommendation which detected that property "regionSoudrznosti" points to literals with names of physical regions. This is just a general purpose recommendation described in the food use case so it will be skipped here and only result shown.
+The user knows that the data contains regions; therefore, selects `Region EntitySet` recommendation which detected that propertySet "regionSoudrznosti" points to literalSets with names of physical regions. This is just a general purpose recommendation described in the food use case so it will be skipped here and only result shown.
 
 ![Region Recommendation](./img/region-recommendation.png)
 
-The result of applying the recommendation is shown below where a new entity matching representing a physical region was created and given some properties originally attached to the row entity.
+The result of applying the recommendation is shown below where a new entitySet matching representing a physical region was created and given some propertySets originally attached to the row entitySet.
 
 ![Schema After Region Recommendation](./img/after-region.png)
 
-The user selects `Data Cube` recommendation. This recommendation detected several possible literals (green highlight) which could serve as observations in a data cube in Data Cube vocabulary.
+The user selects `Data Cube` recommendation. This recommendation detected several possible literalSets (green highlight) which could serve as observations in a data cube in Data Cube vocabulary.
 
 ![Recommendation - Select Dimensions](./img/stat-obs.png)
 
@@ -41,6 +41,6 @@ The user does not know the vocabulary so it is up to the recommendation to repre
 
 Since the recommendation is ultimately tied to Data Cube vocabulary, it can include constraints of what must be in the data to use the recommendation or what would be good if the data had for good Data Cube representation. The recommendation could then nudge the user to select the correct unit attributes, measures, etc...
 
-Below are the data represented in Data Cube. Note that since the recommendation is tried to the vocabulary, it can make vast schema changes such as adding a lot of new entities, blank nodes etc.. which would not be feasible in case of general purpose recommendation.
+Below are the data represented in Data Cube. Note that since the recommendation is tried to the vocabulary, it can make vast schema changes such as adding a lot of new entitySets, blank nodes etc.. which would not be feasible in case of general purpose recommendation.
 
 ![Final Schema](./img/final-stat-schema.png)

@@ -6,6 +6,7 @@ import {
     getOneToAllMappingPropertyInstances,
     getOneToAllPropertyInstances,
 } from './one-to-all-mapping';
+import { createEntitySet } from '@klofan/schema/representation';
 
 describe('Transform Instances', () => {
     describe('Instance Mappings', () => {
@@ -32,8 +33,8 @@ describe('Transform Instances', () => {
                 ];
                 const mapping: OneToAllMapping = {
                     type: 'one-to-all-mapping',
-                    source: { id: '0', name: '0', properties: [], type: 'entity-set' },
-                    target: { id: '1', name: '1', properties: [], type: 'entity-set' },
+                    source: createEntitySet({ id: '0', name: '0', properties: [] }),
+                    target: createEntitySet({ id: '1', name: '1', properties: [] }),
                 };
                 const instances: RawInstances = {
                     entities: {

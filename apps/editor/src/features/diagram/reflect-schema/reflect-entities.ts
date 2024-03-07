@@ -8,15 +8,15 @@ export function reflectEntities(schemaNodes: SchemaNode[], schema: Schema): Sche
     const notEntityNodes = schemaNodes.filter((node) => !isEntitySet(node.data));
 
     const newNodes: EntityNode[] = schema
-        .entities()
+        .entitySets()
         .filter((item) => !nodeIds.has(item.id))
         .map((item) => ({ id: item.id, position: { x: 0, y: 100 }, data: item }));
     const updatedNodes: EntityNode[] = schemaNodes
-        .filter((node) => schema.hasEntity(node.data.id))
+        .filter((node) => schema.hasEntitySet(node.data.id))
         .map((node) => ({
             ...node,
-            id: schema.entity(node.data.id).id,
-            data: schema.entity(node.data.id),
+            id: schema.entitySet(node.data.id).id,
+            data: schema.entitySet(node.data.id),
         }));
 
     const entityNodes = [...updatedNodes, ...newNodes].map((node) => {

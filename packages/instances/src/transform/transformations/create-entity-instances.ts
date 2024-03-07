@@ -1,18 +1,13 @@
-import { EntitySet, ExternalEntitySet } from '@klofan/schema/representation';
+import { EntitySet } from '@klofan/schema/representation';
 import { RawInstances } from '../../representation/raw-instances';
 import { TransformationChanges } from '../transformation-changes';
 
 export interface CreateEntityInstances {
     type: 'create-entity-instances';
-    data:
-        | {
-              entity: EntitySet;
-              instances: { uri?: string }[];
-          }
-        | {
-              entity: ExternalEntitySet;
-              instances: { uri: string }[];
-          };
+    data: {
+        entity: EntitySet;
+        instances: { uri?: string }[];
+    };
 }
 
 export function createEntityInstances(

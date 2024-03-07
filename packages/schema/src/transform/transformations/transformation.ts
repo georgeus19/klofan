@@ -1,9 +1,16 @@
-import { CreateEntity } from './create-entity';
-import { CreateLiteral } from './create-literal';
-import { CreateProperty } from './create-property';
-import { MoveProperty } from './move-property';
-import { UpdateEntity } from './update-entity';
+import { CreateEntitySet } from './create-entity-set';
+import { CreateLiteralSet } from './create-literal-set';
+import { CreatePropertySet } from './create-property-set';
+import { MovePropertySet } from './move-property-set';
+import { UpdateEntitySet } from './update-entity-set';
 import { UpdateItem } from './update-item';
 import { UpdateRelation } from './update-relation';
 
-export type Transformation = UpdateEntity | UpdateItem | UpdateRelation | CreateEntity | CreateProperty | CreateLiteral | MoveProperty;
+export type Transformation =
+    | UpdateEntitySet
+    | UpdateItem
+    | UpdateRelation
+    | CreateEntitySet
+    | CreatePropertySet
+    | CreateLiteralSet
+    | MovePropertySet;

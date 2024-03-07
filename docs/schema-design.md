@@ -2,7 +2,7 @@
 
 Jednim z cilu me diplomky je vytvorit program, kam uzivatel nacte data s vidinou transformace dat to rdf tak, aby byla data reprezentovana pomoci vhodnych pojmu z uz existujicich slovniku. Program vhodne slovnikove pojmy spolu s moznou transformaci struktury dat uzivateli doporucuje. Obrazkovy use case je zde: https://github.com/georgeus19/MastersThesis/blob/main/docs/use-cases/food-use-case.md
 
-Ukolem je rucne simulovat praci dp programu na malych datech dole. Jde o to navrhnout model/schema pro reprezentaci dat (vstupni data, uz trochu premodelovana data) a v ramci simulace se zamyslet nad nasledujicimi otazkami. Jak se bude s modelem pracovat - api pro pristup k datum, transformaci dat, pamatovani stavu, ...? V datech se mohou detektovat optional property, syntakticke vlastnosti (e.g. typy), semanticke vlastnosti. Kdy se detekuji a jak se vyuziji? Jak vypada api pro doporucovaci metodu, ktera nabizi uzivateli transformacni operaci nad modelem (doporuceni slovnikoveho pojmu, doporuceni zmeny struktury, ...) a kterou je mozno dodat jako plugin?
+Ukolem je rucne simulovat praci dp programu na malych datech dole. Jde o to navrhnout model/schema pro reprezentaci dat (vstupni data, uz trochu premodelovana data) a v ramci simulace se zamyslet nad nasledujicimi otazkami. Jak se bude s modelem pracovat - api pro pristup k datum, transformaci dat, pamatovani stavu, ...? V datech se mohou detektovat optional propertySet, syntakticke vlastnosti (e.g. typy), semanticke vlastnosti. Kdy se detekuji a jak se vyuziji? Jak vypada api pro doporucovaci metodu, ktera nabizi uzivateli transformacni operaci nad modelem (doporuceni slovnikoveho pojmu, doporuceni zmeny struktury, ...) a kterou je mozno dodat jako plugin?
 
 Jedna se o data o produktech prodavanych v supermarketu.
 
@@ -47,7 +47,7 @@ Schema dat je tvoreno jednak popisem struktury (EntitySet, PropertySet, LiteralS
 ```ts
 interface EntitySet {
     id: string;
-    properties: PropertySet[];
+    propertySets: PropertySet[];
 
     getInstances(): Entity[];
 }
@@ -58,7 +58,7 @@ interface PropertySet {
     value: EntitySet | LiteralSet;
 
     getInstances(): (Entity, Entity)[] | (Entity, LiteralInstance)[];
-    getInstances(entity): Entity[] | LiteralInstance[];
+    getInstances(entitySet): Entity[] | LiteralInstance[];
 }
 interface LiteralSet {
     id: string;
@@ -83,8 +83,8 @@ interface InstanceStore {
 }
 
 interface BaseModel {
-    entities: EntitySet[];
-    properties: PropertySet[];
+    entitySets: EntitySet[];
+    propertySets: PropertySet[];
 
     // Send info to all analyzers when base model changes about what changed.
     analyzers: Analyzer[];
@@ -108,25 +108,25 @@ class AddPropertyOperation implements Operation {}
 class AddEntityOperation implements Operation {}
 class RelinkPropertyOperation implements Operation {}
 
-// Analyzer here just represents an entity built on top of the base model
+// Analyzer here just represents an entitySet built on top of the base model
 // which add more information about hte model and the model sends any schema
 // changes to the analyzer so that it can keep its values up to date.
 interface Analyzer {
     getSchemaChanges(changes): void;
 }
 interface TypeDetector extends Analyzer {
-    getType(property): Type;
+    getType(propertySet): Type;
 }
 interface OptionalPropertiesDetector extends Analyzer {
-    isOptional(property): boolean;
+    isOptional(propertySet): boolean;
 }
 interface MultipleObjectValuesDetector extends Analyzer {
-    isSingleValue(property): boolean;
-    isSetValue(property): boolean;
+    isSingleValue(propertySet): boolean;
+    isSetValue(propertySet): boolean;
 }
 interface SubsetDetector extends Analyzer {
-    getPotentialSubsets(entity): Subset[];
-    getPotentialSubsets(property): Subset[];
+    getPotentialSubsets(entitySet): Subset[];
+    getPotentialSubsets(propertySet): Subset[];
 }
 
 interface Recommender {
@@ -145,12 +145,12 @@ interface Recommendation {
 ```ts
 // Initial schema example;
 productEntity1 = {
-    properties: [productNameProperty1, countriesProperty1, ingredientsProperty1, nutrimentsProperty1],
+    propertySets: [productNameProperty1, countriesProperty1, ingredientsProperty1, nutrimentsProperty1],
     getInstances() { return [ { id: "TN1" } as Entity]}
 } as EntitySet;
 
 nutrimentsEntity1 = {
-    properties: [calcium100gProperty1, calciumUnitProperty1]
+    propertySets: [calcium100gProperty1, calciumUnitProperty1]
 } as EntitySet;
 
 productNameProperty1 = { value: productNameLiteral, name: "product_name" } as PropertySet;
@@ -163,11 +163,11 @@ countriesLiteral1 = {} as LiteralSet;
 calcium100gLiteral1 = {} as LiteralSet;
 calciumUnitLiteral1 = {} as LiteralSet;
 
-// Map country literal to publications europa country uri.
-// Add entity, relink property operations.
+// Map country literalSet to publications europa country uri.
+// Add entitySet, relink propertySet operations.
 
 productEntity2 = {
-    properties: [productNameProperty1, countriesProperty2, ingredientsProperty1, nutrimentsProperty1],
+    propertySets: [productNameProperty1, countriesProperty2, ingredientsProperty1, nutrimentsProperty1],
     getInstances() { return [ { id: "TN2" } as Entity]}
 } as EntitySet;
 
@@ -181,11 +181,11 @@ countriesProperty2 = {
     getInstances() { return [({ id: "TN2" } as Entity, { id: "CE1", uri: "http://publications.europa.eu/resource/authority/country/USA" } as Entity)]}
 } as PropertySet;
 
-// Add property to nutriments `rdf:type http://aims.fao.org/aos/agrovoc/c_10961`.
-// Add property operations.
+// Add propertySet to nutriments `rdf:type http://aims.fao.org/aos/agrovoc/c_10961`.
+// Add propertySet operations.
 
 nutrimentsEntity2 = {
-    properties: [calcium100gProperty1, calciumUnitProperty1, agrovocTypeProperty1]
+    propertySets: [calcium100gProperty1, calciumUnitProperty1, agrovocTypeProperty1]
 } as EntitySet;
 
 agrovocEntity1 = {

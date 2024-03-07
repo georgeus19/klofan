@@ -3,7 +3,8 @@
     "scripts": {
         "build": "tsc",
         "test": "jest",
-        "lint": "eslint . --max-warnings 0"
+        "lint": "eslint . --max-warnings 0",
+        "clean": "rm -rf node_modules .turbo dist tsconfig.tsbuildinfo"
     },
     "files": [
         "dist/**"

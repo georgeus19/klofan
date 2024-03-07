@@ -10,7 +10,10 @@ export type RecommendationsProps = {
 };
 
 export function OldRecommendations({ className }: RecommendationsProps) {
-    const [changeInstances, setChangedInstances] = useState<RawInstances>({ entityInstances: {}, propertyInstances: {} });
+    const [changeInstances, setChangedInstances] = useState<RawInstances>({
+        entities: {},
+        properties: {},
+    });
     const [recommended, setRecommended] = useState<boolean>(false);
     const [hide, setHide] = useState<boolean>(false);
 
@@ -23,12 +26,23 @@ export function OldRecommendations({ className }: RecommendationsProps) {
         if (recommended) {
             const propertyInstanceId = '2.6-fav-place';
             const oo = oldRawInstances.properties[propertyInstanceId].flatMap((property) => {
-                return property.literals.map((literal) => <div className='p-1 text-center bg-blue-300 col-span-4'>{literal.value}</div>);
+                return property.literals.map((literal) => (
+                    <div className='p-1 text-center bg-blue-300 col-span-4'>{literal.value}</div>
+                ));
             });
             const nn = newRawInstances.properties[propertyInstanceId].flatMap((property) => {
-                return property.literals.map((literal) => <div className='p-1 text-center bg-blue-300 col-span-7'>{literal.value}</div>);
+                return property.literals.map((literal) => (
+                    <div className='p-1 text-center bg-blue-300 col-span-7'>{literal.value}</div>
+                ));
             });
-            return [oo[0], <div className='py-6'>TO</div>, nn[0], oo[1], <div className='py-6'>TO</div>, nn[1]];
+            return [
+                oo[0],
+                <div className='py-6'>TO</div>,
+                nn[0],
+                oo[1],
+                <div className='py-6'>TO</div>,
+                nn[1],
+            ];
             // return (
             //     <div className='flex flex-col gap-2'>
             //         {oldRawInstances.propertyInstances[propertyInstanceId].flatMap((property) => {
@@ -41,8 +55,10 @@ export function OldRecommendations({ className }: RecommendationsProps) {
     }
 
     function accept() {
-        const productEntity = schema.entities().find((entity) => entity.name === 'product');
-        const countriesProperty = schema.properties().find((property) => property.name === 'countries');
+        const productEntity = schema.entitySets().find((entity) => entity.name === 'product');
+        const countriesProperty = schema
+            .propertySets()
+            .find((property) => property.name === 'countries');
         if (productEntity && countriesProperty) {
             const transformation = createUpdatePropertyLiteralsValueTransformation({
                 entity: productEntity,
@@ -81,7 +97,7 @@ export function OldRecommendations({ className }: RecommendationsProps) {
             });
     }
 
-    const product = schema.entities().find((entity) => entity.name === 'product');
+    const product = schema.entitySets().find((entity) => entity.name === 'product');
     let changes = null;
     if (product) {
         changes = (
@@ -93,14 +109,23 @@ export function OldRecommendations({ className }: RecommendationsProps) {
                     <div className='text-center bg-slate-200 p-2 font-bold'>Original Values</div>
                     <div className='text-center bg-slate-200 p-2 font-bold'>New Values</div>
                     <div className='text-center'>"United States"</div>
-                    <div className='text-center'>&lt;http://publications.europa.eu/resource/authority/country/USA&gt;</div>
+                    <div className='text-center'>
+                        &lt;http://publications.europa.eu/resource/authority/country/USA&gt;
+                    </div>
                 </div>
             </div>
         );
     }
 
     return (
-        <div className={twMerge('bg-slate-300 flex flex-col', className, showChanges && 'w-full', hide && 'hidden')}>
+        <div
+            className={twMerge(
+                'bg-slate-300 flex flex-col',
+                className,
+                showChanges && 'w-full',
+                hide && 'hidden'
+            )}
+        >
             <Dropdown headerLabel='CodeList recommendation' showInitially>
                 <button
                     className='rounded shadow bg-blue-200 hover:bg-blue-300 p-2'
@@ -118,7 +143,10 @@ export function OldRecommendations({ className }: RecommendationsProps) {
                         <div className='grid grid-cols-12 mx-2 gap-1'>{favPlaceLiterals(instances.raw() as RawInstances, changeInstances)}</div>
                     </Dropdown>
                 )} */}
-                <button className='rounded shadow bg-blue-200 hover:bg-blue-300 p-2' onClick={accept}>
+                <button
+                    className='rounded shadow bg-blue-200 hover:bg-blue-300 p-2'
+                    onClick={accept}
+                >
                     Accept
                 </button>
             </Dropdown>

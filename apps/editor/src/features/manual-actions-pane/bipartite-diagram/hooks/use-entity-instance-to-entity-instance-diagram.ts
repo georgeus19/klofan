@@ -117,7 +117,7 @@ export function useEntityInstanceToEntityInstanceDiagram(
         const targetNodesMap = new Map(targetNodes(nodes).map((node) => [node.id, node]));
 
         const propertyInstances: Property[] = sourceNodes(nodes).map(
-            (): Property => ({ literals: [], targetInstanceIndices: [] })
+            (): Property => ({ literals: [], targetEntities: [] })
         );
 
         edges.forEach((edge) => {
@@ -170,7 +170,7 @@ function getEdgesBetweenEntities(
     }
 
     const propCheck =
-        schema.hasRelation(propertyId) && schema.property(propertyId).value !== targetEntity.id;
+        schema.hasRelation(propertyId) && schema.propertySet(propertyId).value !== targetEntity.id;
     if (propCheck || !sourceEntity.properties.find((property) => property === propertyId)) {
         return [];
     }

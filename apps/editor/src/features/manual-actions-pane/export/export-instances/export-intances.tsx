@@ -23,7 +23,7 @@ export function ExportInstances() {
         const writer = new Writer();
         const entityInstanceUriBuilders = Object.fromEntries(
             schema
-                .entities()
+                .entitySets()
                 .map((entity) => [
                     entity.id,
                     entity.uri

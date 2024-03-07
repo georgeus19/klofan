@@ -10,7 +10,7 @@ export function createUpdateEntityUriTransformation(
     uri: string
 ): Transformation {
     const newEntity: EntitySet = {
-        ...schema.entity(entityId),
+        ...schema.entitySet(entityId),
         uri: uri === '' ? undefined : uri,
     };
     const updateItemTransformation: UpdateItem = {

@@ -2,10 +2,11 @@
     "name": "@klofan/czech-date-recommender",
     "main": "src/main.ts",
     "scripts": {
-        "dev": "tsc  && node dist/main.js",
+        "dev": "tsc && node dist/main.js",
         "build": "tsc",
         "lint": "eslint . --max-warnings 0",
-        "test": "jest"
+        "test": "jest",
+        "clean": "rm -rf node_modules .turbo dist tsconfig.tsbuildinfo"
     },
     "dependencies": {
         "@klofan/analyzer": "*",

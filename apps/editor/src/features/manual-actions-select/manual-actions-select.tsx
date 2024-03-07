@@ -28,13 +28,23 @@ export function ManualActionsSelect() {
     const onImport = (file: { content: string; type: string }) => {
         manualActions.onActionDone();
         resetId();
-        const tree = file.type === 'application/json' ? parseJson(file.content) : parseCsv(file.content, csvParse);
+        const tree =
+            file.type === 'application/json'
+                ? parseJson(file.content)
+                : parseCsv(file.content, csvParse);
         addSchemaAndInstances({ schema: loadSchema(tree), instances: loadInstances(tree) });
     };
 
     const onSchemaExport = (download: (file: File) => void) => {
         const writer = new Writer();
-        saveAsDataSchema(schema, { defaultEntityUri: 'http://example.com/entity', defaultPropertyUri: 'http://example.com/property' }, writer);
+        saveAsDataSchema(
+            schema,
+            {
+                defaultEntitySetUri: 'http://example.com/entity',
+                defaultPropertySetUri: 'http://example.com/property',
+            },
+            writer
+        );
         writer.end((error, result: string) => {
             download(new File([result], 'schema.ttl', { type: 'text/turtle' }));
         });
@@ -43,8 +53,14 @@ export function ManualActionsSelect() {
     const onImportOperations = (file: { content: string; type: string }) => {
         try {
             manualActions.onActionDone();
-            const content: { operations: UpdateOperation[]; prefixes: Prefix[] } = JSON.parse(file.content);
-            if (content.operations.find((operation) => operation.type === 'import-schema-and-instances')) {
+            const content: { operations: UpdateOperation[]; prefixes: Prefix[] } = JSON.parse(
+                file.content
+            );
+            if (
+                content.operations.find(
+                    (operation) => operation.type === 'import-schema-and-instances'
+                )
+            ) {
                 resetId();
             }
             for (const prefix of content.prefixes) {
@@ -61,16 +77,28 @@ export function ManualActionsSelect() {
             <div className='relative group'>
                 <div className='p-2 rounded shadow bg-blue-200'>Auto Layout</div>
                 <div className='absolute hidden group-hover:flex z-10 flex-col bg-slate-300 min-w-[10rem] shadow rounded'>
-                    <button className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300' onClick={() => nodePositioning.layoutNodesVertically()}>
+                    <button
+                        className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300'
+                        onClick={() => nodePositioning.layoutNodesVertically()}
+                    >
                         vertical layout
                     </button>
-                    <button className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300' onClick={() => nodePositioning.layoutNodesHorizontally()}>
+                    <button
+                        className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300'
+                        onClick={() => nodePositioning.layoutNodesHorizontally()}
+                    >
                         horizontal layout
                     </button>
-                    <button className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300' onClick={() => nodePositioning.layoutNodesRadially()}>
+                    <button
+                        className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300'
+                        onClick={() => nodePositioning.layoutNodesRadially()}
+                    >
                         radial layout
                     </button>
-                    <button className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300' onClick={() => nodePositioning.layoutNodesUsingForce()}>
+                    <button
+                        className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300'
+                        onClick={() => nodePositioning.layoutNodesUsingForce()}
+                    >
                         force layout
                     </button>
                 </div>
@@ -79,36 +107,61 @@ export function ManualActionsSelect() {
             <div className='relative group'>
                 <div className='p-2 rounded shadow bg-blue-200'>Create</div>
                 <div className='absolute hidden group-hover:flex z-10 flex-col bg-slate-300 min-w-[10rem] shadow rounded'>
-                    <button className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300' onClick={manualActions.showCreateEntity}>
+                    <button
+                        className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300'
+                        onClick={manualActions.showCreateEntity}
+                    >
                         entity
                     </button>
-                    <button className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300' onClick={manualActions.showCreateEntityProperty}>
+                    <button
+                        className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300'
+                        onClick={manualActions.showCreateEntityProperty}
+                    >
                         entity property
                     </button>
-                    <button className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300' onClick={manualActions.showCreateLiteralProperty}>
+                    <button
+                        className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300'
+                        onClick={manualActions.showCreateLiteralProperty}
+                    >
                         literal property
                     </button>
                 </div>
             </div>
-            <button className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300' onClick={history.undo}>
+            <button
+                className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300'
+                onClick={history.undo}
+            >
                 Undo
             </button>
 
-            <button className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300' onClick={history.redo}>
+            <button
+                className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300'
+                onClick={history.redo}
+            >
                 Redo
             </button>
 
-            <button className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300' onClick={manualActions.showPrefixes}>
+            <button
+                className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300'
+                onClick={manualActions.showPrefixes}
+            >
                 Prefixes
             </button>
 
-            <button className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300' onClick={manualActions.showUpdateEntityInstancesUris}>
+            <button
+                className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300'
+                onClick={manualActions.showUpdateEntityInstancesUris}
+            >
                 Uris
             </button>
             <div className='relative group'>
                 <div className='p-2 rounded shadow bg-blue-200'>Import</div>
                 <div className='absolute hidden group-hover:flex z-10 flex-col bg-slate-300 min-w-[10rem] shadow rounded'>
-                    <FileLoader name='Data' className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300' onFileLoad={onImport}></FileLoader>
+                    <FileLoader
+                        name='Data'
+                        className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300'
+                        onFileLoad={onImport}
+                    ></FileLoader>
                     <FileLoader
                         name='Operations'
                         className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300'
@@ -120,13 +173,22 @@ export function ManualActionsSelect() {
             <div className='relative group'>
                 <div className='p-2 rounded shadow bg-blue-200'>Export</div>
                 <div className='absolute hidden group-hover:flex z-10 flex-col bg-slate-300 min-w-[10rem] shadow rounded'>
-                    <FileSaver className='block p-2 rounded shadow bg-blue-200 hover:bg-blue-300' onFileSave={onSchemaExport}>
+                    <FileSaver
+                        className='block p-2 rounded shadow bg-blue-200 hover:bg-blue-300'
+                        onFileSave={onSchemaExport}
+                    >
                         Schema
                     </FileSaver>
-                    <button className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300' onClick={manualActions.showExportInstances}>
+                    <button
+                        className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300'
+                        onClick={manualActions.showExportInstances}
+                    >
                         Instances
                     </button>
-                    <button className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300' onClick={manualActions.showExportOperations}>
+                    <button
+                        className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300'
+                        onClick={manualActions.showExportOperations}
+                    >
                         Transformations
                     </button>
                 </div>

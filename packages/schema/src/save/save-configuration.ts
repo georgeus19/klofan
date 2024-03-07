@@ -1,4 +1,4 @@
 export interface SaveConfiguration {
-    defaultEntityUri: string;
-    defaultPropertyUri: string;
+    defaultEntitySetUri: string;
+    defaultPropertySetUri: string;
 }

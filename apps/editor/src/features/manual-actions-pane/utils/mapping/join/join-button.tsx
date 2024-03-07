@@ -20,11 +20,11 @@ export function JoinButton({
     const { schema } = useEditorContext();
     const sourceHasLiterals =
         source.entity.properties
-            .map((propertyId) => schema.property(propertyId))
+            .map((propertyId) => schema.propertySet(propertyId))
             .filter((property) => isLiteralSet(schema.item(property.value))).length > 0;
     const targetHasLiterals =
         target.entity.properties
-            .map((propertyId) => schema.property(propertyId))
+            .map((propertyId) => schema.propertySet(propertyId))
             .filter((property) => isLiteralSet(schema.item(property.value))).length > 0;
     const disabled = !sourceHasLiterals || !targetHasLiterals;
     const used =

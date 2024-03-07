@@ -6,7 +6,8 @@
         "build": "tsc && vite build",
         "lint": "eslint . --max-warnings 0",
         "preview": "vite preview",
-        "test": "jest"
+        "test": "jest",
+        "clean": "rm -rf node_modules .turbo dist tsconfig.tsbuildinfo"
     },
     "dependencies": {
         "react": "^18.2.0",

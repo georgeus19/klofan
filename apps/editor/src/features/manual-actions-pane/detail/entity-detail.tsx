@@ -25,10 +25,10 @@ export interface EntityDetailProps {
 
 export function EntityDetail({ entityId }: EntityDetailProps) {
     const { schema, updateSchemaAndInstances, manualActions } = useEditorContext();
-    const entity = schema.entity(entityId);
+    const entity = schema.entitySet(entityId);
     const { entityInstances } = useEntityInstances(entity);
 
-    const properties = getProperties(schema, entity.id);
+    const propertySets = getProperties(schema, entity.id);
 
     const handleEntityNameChange = (name: string) => {
         if (name !== entity.name) {
@@ -120,14 +120,14 @@ export function EntityDetail({ entityId }: EntityDetailProps) {
             <Dropdown headerLabel='Properties' showInitially={true}>
                 <Dropdown className='mx-2' headerLabel='LiteralSet' showInitially={true}>
                     <ul className='mx-4'>
-                        {properties
+                        {propertySets
                             .filter((property) => isLiteralSet(property.value))
                             .map((property) => generatePropertyDetail(property))}
                     </ul>
                 </Dropdown>
                 <Dropdown className='mx-2' headerLabel='EntitySet' showInitially={true}>
                     <ul className='mx-4'>
-                        {properties
+                        {propertySets
                             .filter((property) => !isLiteralSet(property.value))
                             .map((property) => generatePropertyDetail(property))}
                     </ul>

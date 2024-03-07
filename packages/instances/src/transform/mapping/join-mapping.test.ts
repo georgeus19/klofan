@@ -7,7 +7,7 @@ import {
     getJoinedPropertyInstances,
 } from './join-mapping';
 import { Entity } from '../../representation/entity';
-import { PropertySet } from '@klofan/schema/representation';
+import { createEntitySet, createPropertySet, PropertySet } from '@klofan/schema/representation';
 
 describe('Transform Instances', () => {
     describe('Instance Mappings', () => {
@@ -79,23 +79,21 @@ describe('Transform Instances', () => {
                     },
                 ];
 
-                const sourceJoinProperty: PropertySet = {
+                const sourceJoinProperty: PropertySet = createPropertySet({
                     id: 'IDREF',
                     name: 'idref',
-                    type: 'property-set',
                     value: '2',
-                };
+                });
                 const source = {
                     instances: sourceEntityInstances,
                     joinProperty: sourceJoinProperty,
                 };
 
-                const targetJoinProperty: PropertySet = {
+                const targetJoinProperty: PropertySet = createPropertySet({
                     id: 'ID',
                     name: 'id',
-                    type: 'property-set',
                     value: '3',
-                };
+                });
                 const target = {
                     instances: targetEntityInstances,
                     joinProperty: targetJoinProperty,
@@ -120,24 +118,22 @@ describe('Transform Instances', () => {
                     },
                 ];
 
-                const sourceJoinProperty: PropertySet = {
+                const sourceJoinProperty: PropertySet = createPropertySet({
                     id: 'IDREF',
                     name: 'idref',
-                    type: 'property-set',
                     value: '2',
-                };
-                const targetJoinProperty: PropertySet = {
+                });
+                const targetJoinProperty: PropertySet = createPropertySet({
                     id: 'ID',
                     name: 'id',
-                    type: 'property-set',
                     value: '3',
-                };
+                });
 
                 const mapping: JoinMapping = {
                     type: 'join-mapping',
-                    source: { id: '0', name: '0', properties: ['IDREF'], type: 'entity-set' },
+                    source: createEntitySet({ id: '0', name: '0', properties: ['IDREF'] }),
                     sourceJoinProperty: sourceJoinProperty,
-                    target: { id: '1', name: '1', properties: ['ID'], type: 'entity-set' },
+                    target: createEntitySet({ id: '1', name: '1', properties: ['ID'] }),
                     targetJoinProperty: targetJoinProperty,
                 };
                 const instances: RawInstances = {

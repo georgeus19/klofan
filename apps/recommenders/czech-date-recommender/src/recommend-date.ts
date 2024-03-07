@@ -19,7 +19,7 @@ export async function recommendDate({
     instances: Instances;
 }): Promise<Recommendation[]> {
     const literalPropertyInstances = await Promise.all(
-        schema.entities().flatMap((entity) =>
+        schema.entitySets().flatMap((entity) =>
             getProperties(schema, entity.id)
                 .map((property) => ({ entity, property }))
                 .filter(({ property }) => isLiteralSet(property.value))

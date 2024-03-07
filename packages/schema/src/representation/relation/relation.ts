@@ -1,4 +1,7 @@
-import { PropertySet } from './property-set';
-import { GraphPropertySet } from './graph-property-set';
+import { identifier } from '@klofan/utils';
 
-export type Relation = PropertySet | GraphPropertySet;
+export interface Relation {
+    type: string;
+    id: identifier;
+    name: string;
+}

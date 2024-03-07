@@ -8,7 +8,7 @@ import { UriCard } from './uri-card';
 export function EntityInstanceUris({ className }: { className?: string }) {
     const { schema, updateSchemaAndInstances } = useEditorContext();
 
-    const entities = schema.entities();
+    const entitySets = schema.entitySets();
     const updateEntityUri = (entity: EntitySet, uri: string) => {
         const uriNotUpdated = (entity.uri === undefined && uri === '') || entity.uri === uri;
         if (!uriNotUpdated) {
@@ -21,7 +21,7 @@ export function EntityInstanceUris({ className }: { className?: string }) {
         <div className={className}>
             <Dropdown headerLabel='Blank Nodes' showInitially>
                 <div className='flex gap-1 flex-col'>
-                    {entities
+                    {entitySets
                         .filter((entity) => !entity.uri)
                         .map((entity) => (
                             <UriCard
@@ -36,7 +36,7 @@ export function EntityInstanceUris({ className }: { className?: string }) {
             </Dropdown>
             <Dropdown headerLabel='Entities With Invalid Uri' showInitially>
                 <div className='flex gap-1 flex-col'>
-                    {entities
+                    {entitySets
                         .filter((entity) => entity.uri)
                         .filter((entity) => !validUri(entity.uri ?? ''))
                         .map((entity) => (

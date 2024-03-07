@@ -7,7 +7,7 @@ import {
     getPreservedPropertyInstances,
 } from './preserve-mapping';
 import { RawInstances, initEntityInstances } from '../../representation/raw-instances';
-import { PropertySet } from '@klofan/schema/representation';
+import { createEntitySet, createPropertySet, PropertySet } from '@klofan/schema/representation';
 
 describe('Transform Instances', () => {
     describe('Instance Mappings', () => {
@@ -58,12 +58,11 @@ describe('Transform Instances', () => {
                     },
                 ];
 
-                const property: PropertySet = {
+                const property: PropertySet = createPropertySet({
                     id: 'IDREF',
                     name: 'idref',
-                    type: 'property-set',
                     value: '2',
-                };
+                });
 
                 const propertyInstances = getPreservedPropertyInstances(
                     originalSourceEntityInstances,
@@ -86,28 +85,25 @@ describe('Transform Instances', () => {
                         targetEntities: [],
                     },
                 ];
-                const property: PropertySet = {
+                const property: PropertySet = createPropertySet({
                     id: 'IDREF',
                     name: 'idref',
-                    type: 'property-set',
                     value: '2',
-                };
+                });
                 const mapping: PreserveMapping = {
                     type: 'preserve-mapping',
-                    originalSource: {
+                    originalSource: createEntitySet({
                         id: '0',
                         name: '0',
                         properties: ['IDREF'],
-                        type: 'entity-set',
-                    },
-                    originalTarget: {
+                    }),
+                    originalTarget: createEntitySet({
                         id: '1',
                         name: '1',
                         properties: [],
-                        type: 'entity-set',
-                    },
-                    newSource: { id: '2', name: '2', properties: [], type: 'entity-set' },
-                    newTarget: { id: '3', name: '3', properties: [], type: 'entity-set' },
+                    }),
+                    newSource: createEntitySet({ id: '2', name: '2', properties: [] }),
+                    newTarget: createEntitySet({ id: '3', name: '3', properties: [] }),
                     property: property,
                 };
                 const instances: RawInstances = {

@@ -54,7 +54,7 @@ export function useManualActionsPane(
         },
         showMoveProperty: (entity: EntitySet, property: PropertySet) => {
             help.hideHelp();
-            if (schema.hasEntity(property.value)) {
+            if (schema.hasEntitySet(property.value)) {
                 setShownAction({
                     type: 'move-entity-property-shown',
                     component: (

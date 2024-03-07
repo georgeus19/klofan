@@ -1,12 +1,12 @@
 import { identifier } from '@klofan/utils';
 import { Transformation } from './transformations/transformation';
 import { updateItemChanges } from './transformations/update-item';
-import { updateEntityChanges } from './transformations/update-entity';
+import { updateEntitySetChanges } from './transformations/update-entity-set';
 import { updateRelationChanges } from './transformations/update-relation';
-import { createEntityChanges } from './transformations/create-entity';
-import { createLiteralChanges } from './transformations/create-literal';
-import { createPropertyChanges } from './transformations/create-property';
-import { movePropertyChanges } from './transformations/move-property';
+import { createEntitySetChanges } from './transformations/create-entity-set';
+import { createLiteralSetChanges } from './transformations/create-literal-set';
+import { createPropertySetChanges } from './transformations/create-property-set';
+import { movePropertySetChanges } from './transformations/move-property-set';
 
 export type TransformationChanges = {
     items: identifier[];
@@ -17,17 +17,17 @@ export function transformationChanges(transformation: Transformation): Transform
     switch (transformation.type) {
         case 'update-item':
             return updateItemChanges(transformation);
-        case 'update-entity':
-            return updateEntityChanges(transformation);
+        case 'update-entity-set':
+            return updateEntitySetChanges(transformation);
         case 'update-relation':
             return updateRelationChanges(transformation);
-        case 'create-entity':
-            return createEntityChanges(transformation);
-        case 'create-literal':
-            return createLiteralChanges(transformation);
-        case 'create-property':
-            return createPropertyChanges(transformation);
-        case 'move-property':
-            return movePropertyChanges(transformation);
+        case 'create-entity-set':
+            return createEntitySetChanges(transformation);
+        case 'create-literal-set':
+            return createLiteralSetChanges(transformation);
+        case 'create-property-set':
+            return createPropertySetChanges(transformation);
+        case 'move-property-set':
+            return movePropertySetChanges(transformation);
     }
 }

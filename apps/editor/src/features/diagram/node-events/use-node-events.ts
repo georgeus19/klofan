@@ -25,7 +25,7 @@ export function useNodeEvents({
             const selectedNode = diagram.nodes.find((node) => node.id === entity.id);
             if (selectedNode) {
                 nodeSelection.addSelectedNode(selectedNode);
-                manualActions.showEntityDetail(schema.entity(selectedNode.id));
+                manualActions.showEntityDetail(schema.entitySet(selectedNode.id));
             }
         },
         // eslint-disable-next-line @typescript-eslint/no-unused-vars

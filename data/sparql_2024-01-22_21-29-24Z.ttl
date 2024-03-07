@@ -129,7 +129,7 @@ _:_ res:solution [
       res:binding [ res:variable "s" ; res:value dbo:torqueOutput ] ;
       res:binding [ res:variable "p" ; res:value rdf:type ] ;
       res:binding [ res:variable "o" ; res:value owl:FunctionalProperty ] ] .
-@prefix dbp:	<http://dbpedia.org/property/> .
+@prefix dbp:	<http://dbpedia.org/propertySet/> .
 _:_ res:solution [
       res:binding [ res:variable "s" ; res:value dbp:name ] ;
       res:binding [ res:variable "p" ; res:value rdf:type ] ;
@@ -239,7 +239,7 @@ _:_ res:solution [
       res:binding [ res:variable "p" ; res:value rdf:type ] ;
       res:binding [ res:variable "o" ; res:value rdf:PropertySet ] ] .
 _:_ res:solution [
-      res:binding [ res:variable "s" ; res:value <http://dbpedia.org/property/selenium\u039Cg> ] ;
+      res:binding [ res:variable "s" ; res:value <http://dbpedia.org/propertySet/selenium\u039Cg> ] ;
       res:binding [ res:variable "p" ; res:value rdf:type ] ;
       res:binding [ res:variable "o" ; res:value rdf:PropertySet ] ] .
 _:_ res:solution [

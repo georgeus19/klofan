@@ -65,7 +65,7 @@ export const recommend = endpointErrorHandler(
 
         const codes = await sparqlStore.selectQuery(getCodes);
         const pairs: { entity: string; property: string }[] = schema
-            .entities()
+            .entitySets()
             .flatMap((entity) =>
                 entity.properties.map((propertyId) => ({ entity: entity.id, property: propertyId }))
             );

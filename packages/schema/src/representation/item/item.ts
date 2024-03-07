@@ -1,5 +1,7 @@
-import { EntitySet } from './entity-set';
-import { ExternalEntitySet } from './external-entity-set';
-import { LiteralSet } from './literal-set';
+import { identifier } from '@klofan/utils';
 
-export type Item = EntitySet | LiteralSet | ExternalEntitySet;
+export interface Item {
+    type: string;
+    id: identifier;
+    name: string;
+}

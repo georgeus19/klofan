@@ -5,7 +5,8 @@
         "build": "turbo build",
         "dev": "dotenv -- turbo dev --concurrency=25",
         "lint": "turbo lint",
-        "format": "prettier --write \"**/*.{ts,tsx,md}\""
+        "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+        "clean": "rm -rf node_modules .turbo && turbo clean"
     },
     "workspaces": [
         "apps/*",

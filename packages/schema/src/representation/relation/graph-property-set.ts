@@ -1,16 +1,22 @@
 import { Item } from '../item/item';
-import { PropertySet } from './property-set';
+import { createPropertySet, PropertySet } from './property-set';
 import { Relation } from './relation';
-import type { identifier } from '@klofan/utils';
 
-export interface GraphPropertySet {
+export interface GraphPropertySet extends Relation {
     type: 'graph-property-set';
-    id: identifier;
-    name: string;
     uri?: string;
     value: Item;
 }
 
+export function createGraphPropertySet(
+    graphPropertySet: Omit<GraphPropertySet, 'type'>
+): GraphPropertySet {
+    return {
+        ...graphPropertySet,
+        type: 'graph-property-set',
+    };
+}
+
 export function toPropertySet(graphProperty: GraphPropertySet): PropertySet {
-    return { ...graphProperty, type: 'property-set', value: graphProperty.value.id };
+    return createPropertySet({ ...graphProperty, value: graphProperty.value.id });
 }

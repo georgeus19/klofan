@@ -13,7 +13,7 @@ export function reflectProperties(schemaEdges: SchemaEdge[], schema: Schema): Sc
     const notPropertyEdges = schemaEdges.filter((edge) => !isPropertySet(edge.data));
 
     const properties = schema
-        .entities()
+        .entitySets()
         .flatMap((entity) =>
             getProperties(schema, entity.id).map((property) => ({ ...property, source: entity.id }))
         );

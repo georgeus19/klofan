@@ -4076,7 +4076,7 @@
         "centavo"@sk,
         "centavo"@sl,
         "centavo"@sv ;
-    skos:definition "The Unidad de Valor Real (unit of real value) is a unit of account that reflects the purchasing power of the currency based on the variation in the consumer price index. The Unidad de Valor Real is certified by the Banco de la República (Bank of Republic of Colombia) and is used to calculate the cost of housing loans that allows financial entities to maintain the purchasing power of the borrowed money."@en ;
+    skos:definition "The Unidad de Valor Real (unit of real value) is a unit of account that reflects the purchasing power of the currency based on the variation in the consumer price index. The Unidad de Valor Real is certified by the Banco de la República (Bank of Republic of Colombia) and is used to calculate the cost of housing loans that allows financial entitySets to maintain the purchasing power of the borrowed money."@en ;
     skos:inScheme atold:currency ;
     skos:notation <http://publications.europa.eu/resource/authority/currency/0dfb1c6ae65002f3f4232117dd47e4d7>,
         <http://publications.europa.eu/resource/authority/currency/e56ebbf3c10ad5ab5bd3822f6d49efc9> ;

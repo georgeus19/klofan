@@ -13,7 +13,7 @@ export async function save(
     saveConfiguration: SaveConfiguration,
     outputWriter: Writer
 ) {
-    for (const subjectEntity of schema.entities()) {
+    for (const subjectEntity of schema.entitySets()) {
         const properties = getProperties(schema, subjectEntity.id);
         const subjectRepresentationBuilder: EntityInstanceRepresentationBuilder = safeGet(
             saveConfiguration.entityInstanceUriBuilders,

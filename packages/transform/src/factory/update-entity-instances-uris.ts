@@ -13,7 +13,7 @@ export function createUpdateEntityInstancesUris(
     const updateEntityInstanceUrisTransformation: UpdateEntityInstancesUris = {
         type: 'update-entity-instances-uris',
         data: {
-            entity: schema.entity(data.entity),
+            entity: schema.entitySet(data.entity),
             uris: data.uris,
         },
     };

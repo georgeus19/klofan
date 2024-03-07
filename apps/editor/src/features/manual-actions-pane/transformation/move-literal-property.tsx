@@ -119,12 +119,12 @@ export function MoveLiteralProperty({
                         usedInstanceMapping={usedInstanceMapping}
                         setUsedInstanceMapping={setUsedInstanceMapping}
                         source={source}
-                        target={{ item: schema.literal(property.value) }}
+                        target={{ item: schema.literalSet(property.value) }}
                         originalSource={{
                             entity: originalSourceEntity,
                             instances: originalSourceInstances,
                         }}
-                        originalTarget={{ item: schema.literal(property.value) }}
+                        originalTarget={{ item: schema.literalSet(property.value) }}
                         property={property}
                     ></PreserveButton>
                     <ManualButton

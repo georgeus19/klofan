@@ -4,7 +4,8 @@
     "scripts": {
         "build": "tsc",
         "lint": "eslint . --max-warnings 0",
-        "test": "jest"
+        "test": "jest",
+        "clean": "rm -rf node_modules .turbo dist tsconfig.tsbuildinfo"
     },
     "dependencies": {
         "@comunica/query-sparql-rdfjs": "^2.10.2",

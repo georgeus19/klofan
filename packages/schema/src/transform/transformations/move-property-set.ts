@@ -4,8 +4,12 @@ import { RawSchema } from '../../representation/raw-schema';
 import { PropertySet } from '../../representation/relation/property-set';
 import { TransformationChanges } from '../transformation-changes';
 
-export interface MoveProperty {
-    type: 'move-property';
+/**
+ * Move property set from one source entity to another source entity.
+ * The target item can also be changed by setting `newTarget`
+ */
+export interface MovePropertySet {
+    type: 'move-property-set';
     data: {
         originalSource: EntitySet;
         newSource: EntitySet;
@@ -14,9 +18,9 @@ export interface MoveProperty {
     };
 }
 
-export function moveProperty(
+export function movePropertySet(
     schema: RawSchema,
-    { data: { originalSource, newSource, property, newTarget } }: MoveProperty
+    { data: { originalSource, newSource, property, newTarget } }: MovePropertySet
 ) {
     const updatedSource: EntitySet = {
         ...originalSource,
@@ -38,7 +42,7 @@ export function moveProperty(
     schema.relations[property.id] = updatedProperty;
 }
 
-export function movePropertyChanges(transformation: MoveProperty): TransformationChanges {
+export function movePropertySetChanges(transformation: MovePropertySet): TransformationChanges {
     return {
         items: [transformation.data.newSource.id, transformation.data.originalSource.id],
         relations: [transformation.data.property.id],

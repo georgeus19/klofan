@@ -1,6 +1,6 @@
 import { MovePropertyInstances } from '@klofan/instances/transform';
 import { Schema } from '@klofan/schema';
-import { MoveProperty } from '@klofan/schema/transform';
+import { MovePropertySet } from '@klofan/schema/transform';
 import { identifier } from '@klofan/utils';
 import { Transformation } from '../transformation';
 import { Mapping } from '@klofan/instances/transform';
@@ -15,13 +15,13 @@ export function createMovePropertyTransformation(
         instanceMapping: Mapping;
     }
 ): Transformation {
-    const originalSource = schema.entity(data.originalSource);
-    const newSource = schema.entity(data.newSource ?? data.originalSource);
-    const property = schema.property(data.property);
+    const originalSource = schema.entitySet(data.originalSource);
+    const newSource = schema.entitySet(data.newSource ?? data.originalSource);
+    const property = schema.propertySet(data.property);
     const newTarget = schema.item(data.newTarget ?? property.value);
 
-    const movePropertyTransformation: MoveProperty = {
-        type: 'move-property',
+    const movePropertyTransformation: MovePropertySet = {
+        type: 'move-property-set',
         data: {
             originalSource: originalSource,
             property: property,

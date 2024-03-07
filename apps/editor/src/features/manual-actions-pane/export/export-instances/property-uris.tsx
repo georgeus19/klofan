@@ -14,7 +14,7 @@ export function PropertyUris({
     defaultPropertyUri: Uri;
 }) {
     const { schema, updateSchemaAndInstances } = useEditorContext();
-    const entities = schema.entities();
+    const entities = schema.entitySets();
     const updatePropertyUri = (property: PropertySet, uri: string) => {
         const uriNotUpdated = (property.uri === undefined && uri === '') || property.uri === uri;
         if (!uriNotUpdated) {

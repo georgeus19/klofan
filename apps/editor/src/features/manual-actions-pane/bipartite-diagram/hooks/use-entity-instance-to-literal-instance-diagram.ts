@@ -135,7 +135,7 @@ export function useEntityInstanceToLiteralInstanceDiagram(
         const propertyInstances: Property[] = sourceNodes<
             { entity: EntitySet; entityInstance: Entity },
             { literal: Literal; id: number }
-        >(nodes).map((): Property => ({ literals: [], targetInstanceIndices: [] }));
+        >(nodes).map((): Property => ({ literals: [], targetEntities: [] }));
 
         edges.forEach((edge) => {
             const source = sourceNodesMap.get(edge.source);

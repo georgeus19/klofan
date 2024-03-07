@@ -26,7 +26,7 @@ export default function EntityNode({
 
     const { matchPrefix } = usePrefixesContext();
 
-    if (!schema.hasEntity(entity.id)) {
+    if (!schema.hasEntitySet(entity.id)) {
         return <></>;
     }
 
