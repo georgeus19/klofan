@@ -1,27 +1,12 @@
 import { Literal } from './literal';
 
 /**
- * Type for storing information of one instance of source entity for one property.
- * It contains the literals for the instance for the property and links to instances on the target entity.
+ * Represents property of an entity under Schema.PropertySet. It contains target entity indices.
+ * Getting target entities must be done using Schema.PropertySet which knows target EntitySet.
+ *
+ * Literals are contained directly in the property.
  */
 export interface Property {
     targetEntities: number[];
     literals: Literal[];
 }
-
-// *OLD version
-// export type propertyType = 'literalLink' | 'entityLink';
-
-// export interface InstanceProperty {
-//     type: propertyType;
-// }
-
-// export interface LiteralInstanceProperty extends InstanceProperty {
-//     type: 'literalLink';
-//     literals: literal[];
-// }
-
-// export interface EntityInstanceProperty extends InstanceProperty {
-//     type: 'entityLink';
-//     targetInstanceIndices: number[];
-// }

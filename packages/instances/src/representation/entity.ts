@@ -1,7 +1,10 @@
 import { identifier } from '@klofan/utils';
-import { Property } from './representation/property';
+import { Property } from './property';
 
-export type EntityInstance = {
+/**
+ * Represents entity in Schema.EntitySet.
+ */
+export type Entity = {
     properties: { [propertyId: identifier]: Property };
     id: number;
     uri?: string;

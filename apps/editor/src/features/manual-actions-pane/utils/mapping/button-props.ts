@@ -1,4 +1,4 @@
-import { EntityInstance } from '@klofan/instances';
+import { Entity } from '@klofan/instances';
 import { Property } from '@klofan/instances/representation';
 import { Mapping } from '@klofan/instances/transform';
 import { EntitySet } from '@klofan/schema/representation';
@@ -8,6 +8,6 @@ export type ButtonProps = {
     setEdges: (propertyInstances: Property[]) => void;
     usedInstanceMapping: Mapping | JoinMappingDetailMapping;
     setUsedInstanceMapping: (mapping: Mapping | JoinMappingDetailMapping) => void;
-    source: { entity: EntitySet; instances: EntityInstance[] };
-    target: { entity: EntitySet; instances: EntityInstance[] };
+    source: { entity: EntitySet; instances: Entity[] };
+    target: { entity: EntitySet; instances: Entity[] };
 };

@@ -1,5 +1,5 @@
 import { twMerge } from 'tailwind-merge';
-import { EntityInstance } from '@klofan/instances';
+import { Entity } from '@klofan/instances';
 import { Property } from '@klofan/instances/representation';
 import {
     getPreservedPropertyInstances,
@@ -13,10 +13,10 @@ export type PreserveButtonProps = {
     setEdges: (propertyInstances: Property[]) => void;
     setUsedInstanceMapping: (mapping: Mapping) => void;
     usedInstanceMapping: Mapping | JoinMappingDetailMapping;
-    source: { entity: EntitySet; instances: EntityInstance[] };
-    target: { item: EntitySet; instances: EntityInstance[] } | { item: LiteralSet };
-    originalSource: { entity: EntitySet; instances: EntityInstance[] };
-    originalTarget: { item: EntitySet; instances: EntityInstance[] } | { item: LiteralSet };
+    source: { entity: EntitySet; instances: Entity[] };
+    target: { item: EntitySet; instances: Entity[] } | { item: LiteralSet };
+    originalSource: { entity: EntitySet; instances: Entity[] };
+    originalTarget: { item: EntitySet; instances: Entity[] } | { item: LiteralSet };
     property: PropertySet;
 };
 
@@ -36,9 +36,8 @@ export function PreserveButton({
             originalTarget.item.type === 'entity-set'
                 ? {
                       item: originalTarget.item,
-                      instances: (
-                          originalTarget as { item: EntitySet; instances: EntityInstance[] }
-                      ).instances.length,
+                      instances: (originalTarget as { item: EntitySet; instances: Entity[] })
+                          .instances.length,
                   }
                 : { item: originalTarget.item },
     };
@@ -49,8 +48,8 @@ export function PreserveButton({
             target.item.type === 'entity-set'
                 ? {
                       item: target.item,
-                      instances: (target as { item: EntitySet; instances: EntityInstance[] })
-                          .instances.length,
+                      instances: (target as { item: EntitySet; instances: Entity[] }).instances
+                          .length,
                   }
                 : { item: target.item },
     };

@@ -33,21 +33,22 @@ const requestSchema = z.object({
     }),
 });
 
-export const recommend = endpointErrorHandler(async (request: Request, response: Response, next: NextFunction) => {
-    const sparqlStore = new SparlqEndpointStore(sparqlEndpoint);
-    console.log('BODY', request.body);
-    const { body } = await parseRequest(requestSchema, request);
-    const schema = new Schema(request.body.schema);
-    const instances = new InMemoryInstances(request.body.instances);
-    // const literals: string[] = _.uniq(
-    //     propertyInstances.flatMap((propertyInstances) => propertyInstances.flatMap((p) => p.literals.map((l) => l.value)))
-    // );
+export const recommend = endpointErrorHandler(
+    async (request: Request, response: Response, next: NextFunction) => {
+        const sparqlStore = new SparlqEndpointStore(sparqlEndpoint);
+        console.log('BODY', request.body);
+        const { body } = await parseRequest(requestSchema, request);
+        const schema = new Schema(request.body.schema);
+        const instances = new InMemoryInstances(request.body.instances);
+        // const literals: string[] = _.uniq(
+        //     propertyInstances.flatMap((propertyInstances) => propertyInstances.flatMap((p) => p.literals.map((l) => l.value)))
+        // );
 
-    const codeList = new Variable('codeList');
-    const code = new Variable('code');
-    const codeEntity = new Variable('codeEntity');
+        const codeList = new Variable('codeList');
+        const code = new Variable('code');
+        const codeEntity = new Variable('codeEntity');
 
-    const getCodes = `
+        const getCodes = `
         SELECT ${code.toSparql()}, ${codeEntity.toSparql()}
         WHERE {
             GRAPH ${CATALOG.MetadataGraph().toSparql()} {
@@ -60,26 +61,32 @@ export const recommend = endpointErrorHandler(async (request: Request, response:
         }
             
             `;
-    console.log(getCodes);
+        console.log(getCodes);
 
-    const codes = await sparqlStore.selectQuery(getCodes);
-    const pairs: { entity: string; property: string }[] = schema
-        .entities()
-        .flatMap((entity) => entity.properties.map((propertyId) => ({ entity: entity.id, property: propertyId })));
-    const newInstances: RawInstances = { ...(instances.raw() as RawInstances) };
-    for (const p of pairs) {
-        const propertyInstances: Property[] = await instances.propertyInstances(p.entity, p.property);
-        newInstances.properties[`${p.entity}.${p.property}`] = propertyInstances.map((pi) => {
-            pi.literals = pi.literals.map((literal) => {
-                const matchingRow: any = _.find(codes, (row: any) => row[code.value].value === literal.value);
-                if (matchingRow) {
-                    return { value: matchingRow[codeEntity.value].value };
-                }
-                return literal;
+        const codes = await sparqlStore.selectQuery(getCodes);
+        const pairs: { entity: string; property: string }[] = schema
+            .entities()
+            .flatMap((entity) =>
+                entity.properties.map((propertyId) => ({ entity: entity.id, property: propertyId }))
+            );
+        const newInstances: RawInstances = { ...(instances.raw() as RawInstances) };
+        for (const p of pairs) {
+            const propertyInstances: Property[] = await instances.properties(p.entity, p.property);
+            newInstances.properties[`${p.entity}.${p.property}`] = propertyInstances.map((pi) => {
+                pi.literals = pi.literals.map((literal) => {
+                    const matchingRow: any = _.find(
+                        codes,
+                        (row: any) => row[code.value].value === literal.value
+                    );
+                    if (matchingRow) {
+                        return { value: matchingRow[codeEntity.value].value };
+                    }
+                    return literal;
+                });
+                return pi;
             });
-            return pi;
-        });
+        }
+        console.log('ewInstances', newInstances);
+        response.status(200).send(newInstances);
     }
-    console.log('ewInstances', newInstances);
-    response.status(200).send(newInstances);
-});
+);

@@ -1,4 +1,4 @@
-import { EntityInstance } from '@klofan/instances';
+import { Entity } from '@klofan/instances';
 import { isLiteralSet, EntitySet, getProperties, isEntitySet } from '@klofan/schema/representation';
 import { useEditorContext } from '../../editor/editor-context';
 import { Dropdown } from './dropdown';
@@ -7,7 +7,7 @@ import { LabelReadonlyUriInput } from './uri/label-readonly-uri-input';
 
 export type EntityInstanceViewProps = {
     entity: EntitySet;
-    entityInstance: EntityInstance;
+    entityInstance: Entity;
     showLiteralProperties?: boolean;
     showEntityProperties?: boolean;
     className?: string;

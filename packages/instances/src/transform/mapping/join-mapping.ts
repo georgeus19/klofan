@@ -1,4 +1,4 @@
-import { EntityInstance } from '../../entity-instance';
+import { Entity } from '../../representation/entity';
 import { Property } from '../../representation/property';
 import { intersectionWith } from 'lodash';
 import { RawInstances, propertyKey } from '../../representation/raw-instances';
@@ -13,8 +13,8 @@ export type JoinMapping = {
 };
 
 export function getJoinedPropertyInstances(
-    source: { instances: EntityInstance[]; joinProperty: PropertySet },
-    target: { instances: EntityInstance[]; joinProperty: PropertySet }
+    source: { instances: Entity[]; joinProperty: PropertySet },
+    target: { instances: Entity[]; joinProperty: PropertySet }
 ): Property[] {
     return source.instances.map((sourceInstance) => {
         const joinedTargetInstances: number[] = target.instances

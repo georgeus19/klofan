@@ -1,12 +1,12 @@
 import { Property } from './representation/property';
 import { Instances } from './instances';
 import { RawInstances, copyInstances, propertyKey } from './representation/raw-instances';
-import { EntityInstance } from './entity-instance';
+import { Entity } from './representation/entity';
 import { applyTransformation } from './transform/apply-transformation';
 import { Transformation } from './transform/transformations/transformation';
 import { EntitySet, ExternalEntitySet } from '@klofan/schema/representation';
 import { safeGet } from '@klofan/utils';
-import { ExternalEntityInstance } from './external-entity-instance';
+import { ExternalEntity } from './representation/external-entity';
 
 export class InMemoryInstances implements Instances {
     constructor(private instances: RawInstances) {}
@@ -15,45 +15,44 @@ export class InMemoryInstances implements Instances {
         return this.instances;
     }
 
-    entityInstances(entity: EntitySet): Promise<EntityInstance[]> {
-        const entityInstances: EntityInstance[] = safeGet(
-            this.instances.entities,
-            entity.id
-        ).instances.map((entityInstance, index) => ({
-            ...entityInstance,
-            properties: {},
-            id: index,
-        }));
+    entities(entitySet: EntitySet): Promise<Entity[]> {
+        const entities: Entity[] = safeGet(this.instances.entities, entitySet.id).instances.map(
+            (entity, index) => ({
+                ...entity,
+                properties: {},
+                id: index,
+            })
+        );
 
-        entity.properties.forEach((propertyId) => {
-            safeGet(this.instances.properties, propertyKey(entity.id, propertyId)).forEach(
-                (propertyInstance, instanceIndex) => {
-                    entityInstances[instanceIndex].properties[propertyId] = propertyInstance;
+        entitySet.properties.forEach((propertySetId) => {
+            safeGet(this.instances.properties, propertyKey(entitySet.id, propertySetId)).forEach(
+                (property, instanceIndex) => {
+                    entities[instanceIndex].properties[propertySetId] = property;
                 }
             );
         });
-        return Promise.resolve(entityInstances);
+        return Promise.resolve(entities);
     }
 
-    externalEntityInstances(externalEntity: ExternalEntitySet): Promise<ExternalEntityInstance[]> {
-        const entityInstances: ExternalEntityInstance[] = safeGet(
+    externalEntities(externalEntitySet: ExternalEntitySet): Promise<ExternalEntity[]> {
+        const entities: ExternalEntity[] = safeGet(
             this.instances.entities,
-            externalEntity.id
-        ).instances.map((entityInstance, index) => ({
-            ...entityInstance,
-            uri: safeGet(entityInstance, 'uri'),
+            externalEntitySet.id
+        ).instances.map((entity, index) => ({
+            ...entity,
+            uri: safeGet(entity, 'uri'),
             id: index,
         }));
-        return Promise.resolve(entityInstances);
+        return Promise.resolve(entities);
     }
 
-    entityInstanceCount(entity: EntitySet | ExternalEntitySet): Promise<number> {
-        return Promise.resolve(this.instances.entities[entity.id].count);
+    entityCount(entitySet: EntitySet | ExternalEntitySet): Promise<number> {
+        return Promise.resolve(this.instances.entities[entitySet.id].count);
     }
 
-    propertyInstances(entityId: string, propertyId: string): Promise<Property[]> {
+    properties(entitySetId: string, propertySetId: string): Promise<Property[]> {
         return Promise.resolve(
-            safeGet(this.instances.properties, propertyKey(entityId, propertyId))
+            safeGet(this.instances.properties, propertyKey(entitySetId, propertySetId))
         );
     }
 

@@ -49,7 +49,7 @@ interface EntitySet {
     id: string;
     properties: PropertySet[];
 
-    getInstances(): EntityInstance[];
+    getInstances(): Entity[];
 }
 interface PropertySet {
     id: string;
@@ -57,15 +57,15 @@ interface PropertySet {
     uri: string;
     value: EntitySet | LiteralSet;
 
-    getInstances(): (EntityInstance, EntityInstance)[] | (EntityInstance, LiteralInstance)[];
-    getInstances(entity): EntityInstance[] | LiteralInstance[];
+    getInstances(): (Entity, Entity)[] | (Entity, LiteralInstance)[];
+    getInstances(entity): Entity[] | LiteralInstance[];
 }
 interface LiteralSet {
     id: string;
     getInstances(): LiteralInstance[];
 }
 
-interface EntityInstance {
+interface Entity {
     id: string;
     uri: string;
 }
@@ -79,7 +79,7 @@ interface LiteralInstance {
 }
 
 interface InstanceStore {
-    // Store for data in the form of EntityInstance, Property, LiteralInstance.
+    // Store for data in the form of Entity, Property, LiteralInstance.
 }
 
 interface BaseModel {
@@ -146,7 +146,7 @@ interface Recommendation {
 // Initial schema example;
 productEntity1 = {
     properties: [productNameProperty1, countriesProperty1, ingredientsProperty1, nutrimentsProperty1],
-    getInstances() { return [ { id: "TN1" } as EntityInstance]}
+    getInstances() { return [ { id: "TN1" } as Entity]}
 } as EntitySet;
 
 nutrimentsEntity1 = {
@@ -168,17 +168,17 @@ calciumUnitLiteral1 = {} as LiteralSet;
 
 productEntity2 = {
     properties: [productNameProperty1, countriesProperty2, ingredientsProperty1, nutrimentsProperty1],
-    getInstances() { return [ { id: "TN2" } as EntityInstance]}
+    getInstances() { return [ { id: "TN2" } as Entity]}
 } as EntitySet;
 
 countriesEntity1 = {
-    getInstances() { return [ { id: "CE1" as EntityInstance, uri: "http://publications.europa.eu/resource/authority/country/USA" } as EntityInstance ]}
+    getInstances() { return [ { id: "CE1" as Entity, uri: "http://publications.europa.eu/resource/authority/country/USA" } as Entity ]}
 } as EntitySet;
 
 countriesProperty2 = {
     value: countriesEntity1,
     name: "countries",
-    getInstances() { return [({ id: "TN2" } as EntityInstance, { id: "CE1", uri: "http://publications.europa.eu/resource/authority/country/USA" } as EntityInstance)]}
+    getInstances() { return [({ id: "TN2" } as Entity, { id: "CE1", uri: "http://publications.europa.eu/resource/authority/country/USA" } as Entity)]}
 } as PropertySet;
 
 // Add property to nutriments `rdf:type http://aims.fao.org/aos/agrovoc/c_10961`.

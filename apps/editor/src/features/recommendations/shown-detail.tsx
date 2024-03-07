@@ -19,7 +19,10 @@ export function ShownDetail({ height }: ShownDetailProps) {
     useEffect(() => {
         if (propertySelection.selectedProperty) {
             instances
-                .propertyInstances(propertySelection.selectedProperty.entity.id, propertySelection.selectedProperty.property.id)
+                .properties(
+                    propertySelection.selectedProperty.entity.id,
+                    propertySelection.selectedProperty.property.id
+                )
                 .then((propertyInstances) => setPropertyInstances(propertyInstances));
         }
     }, [propertySelection.selectedProperty]);
@@ -44,7 +47,9 @@ export function ShownDetail({ height }: ShownDetailProps) {
                 className='text-lg bg-opacity-70'
                 label={`${propertySelection.selectedProperty.entity.name}.${propertySelection.selectedProperty.property.name}`}
             ></Header>
-            <div className={twMerge('flex flex-col gap-1 text-center overflow-auto', height)}>{ps}</div>
+            <div className={twMerge('flex flex-col gap-1 text-center overflow-auto', height)}>
+                {ps}
+            </div>
         </div>
     );
 }

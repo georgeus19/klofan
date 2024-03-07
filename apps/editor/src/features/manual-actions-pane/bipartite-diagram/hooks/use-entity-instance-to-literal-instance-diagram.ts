@@ -11,14 +11,14 @@ import {
     targetIdPrefix,
     targetNodes,
 } from '../common';
-import { EntityInstance } from '@klofan/instances';
+import { Entity } from '@klofan/instances';
 import { calculateSourceNodePosition, calculateTargetNodePosition, defaultLayout } from '../layout';
 import { min, max } from 'lodash';
 import { styleEdges } from '../../../diagram/edges/style-edges';
 
 export type EntityInstanceSourceNode = SourceNode<{
     entity: EntitySet;
-    entityInstance: EntityInstance;
+    entityInstance: Entity;
 }>;
 export type LiteralInstanceTargetNode = TargetNode<{ literal: Literal; id: number }>;
 export type SourceTargetEdge = ReactFlowEdge<never>;
@@ -30,7 +30,7 @@ export type SourceTargetEdge = ReactFlowEdge<never>;
  * Passing null proeprty id means that it does not exist in the schema - resulting edges are empty array.
  */
 export function useEntityInstanceToLiteralInstanceDiagram(
-    source: { entity: EntitySet; instances: EntityInstance[] } | null,
+    source: { entity: EntitySet; instances: Entity[] } | null,
     propertyId: identifier | null
 ) {
     const [nodes, setNodes] = useState<(EntityInstanceSourceNode | LiteralInstanceTargetNode)[]>(
@@ -101,7 +101,7 @@ export function useEntityInstanceToLiteralInstanceDiagram(
                     addZIndices([
                         ...sourceNodes,
                         ...targetNodes<
-                            { entity: EntitySet; entityInstance: EntityInstance },
+                            { entity: EntitySet; entityInstance: Entity },
                             { literal: Literal; id: number }
                         >(nodes),
                     ])
@@ -121,19 +121,19 @@ export function useEntityInstanceToLiteralInstanceDiagram(
     const getPropertyInstances = (): Property[] => {
         const sourceNodesMap = new Map(
             sourceNodes<
-                { entity: EntitySet; entityInstance: EntityInstance },
+                { entity: EntitySet; entityInstance: Entity },
                 { literal: Literal; id: number }
             >(nodes).map((node) => [node.id, node])
         );
         const targetNodesMap = new Map(
             targetNodes<
-                { entity: EntitySet; entityInstance: EntityInstance },
+                { entity: EntitySet; entityInstance: Entity },
                 { literal: Literal; id: number }
             >(nodes).map((node) => [node.id, node])
         );
 
         const propertyInstances: Property[] = sourceNodes<
-            { entity: EntitySet; entityInstance: EntityInstance },
+            { entity: EntitySet; entityInstance: Entity },
             { literal: Literal; id: number }
         >(nodes).map((): Property => ({ literals: [], targetInstanceIndices: [] }));
 
@@ -155,11 +155,11 @@ export function useEntityInstanceToLiteralInstanceDiagram(
         ]) ?? layout.maxDiagramHeight;
     return {
         sourceNodes: sourceNodes<
-            { entity: EntitySet; entityInstance: EntityInstance },
+            { entity: EntitySet; entityInstance: Entity },
             { literal: Literal; id: number }
         >(nodes),
         targetNodes: targetNodes<
-            { entity: EntitySet; entityInstance: EntityInstance },
+            { entity: EntitySet; entityInstance: Entity },
             { literal: Literal; id: number }
         >(nodes),
         edges,

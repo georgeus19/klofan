@@ -12,7 +12,7 @@ import {
     LiteralInstanceTargetNode,
     useEntityInstanceToLiteralInstanceDiagram,
 } from '../../bipartite-diagram/hooks/use-entity-instance-to-literal-instance-diagram';
-import { EntityInstance } from '@klofan/instances';
+import { Entity } from '@klofan/instances';
 import { useEntityNodeSelector } from '../../utils/diagram-node-selection/entity-selector/use-entity-node-selector';
 import { useUriInput } from '../../utils/uri/use-uri-input';
 import { useEntityInstances } from '../../utils/use-entity-instances';
@@ -50,9 +50,7 @@ export function useCreateLiteralProperty() {
 
     const { sourceNodes, targetNodes, edges, onConnect, layout, getPropertyInstances, setNodes } =
         useEntityInstanceToLiteralInstanceDiagram(
-            source.entity !== null
-                ? (source as { entity: EntitySet; instances: EntityInstance[] })
-                : null,
+            source.entity !== null ? (source as { entity: EntitySet; instances: Entity[] }) : null,
             ''
         );
 
@@ -101,7 +99,7 @@ export function useCreateLiteralProperty() {
     const addLiteralNode = () => {
         setNodes((prev) => {
             const id = getTargetNodes<
-                { entity: EntitySet; entityInstance: EntityInstance },
+                { entity: EntitySet; entityInstance: Entity },
                 { literal: Literal; id: number }
             >(prev).length;
             return [

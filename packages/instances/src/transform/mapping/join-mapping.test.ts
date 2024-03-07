@@ -6,7 +6,7 @@ import {
     getJoinMappingPropertyInstances,
     getJoinedPropertyInstances,
 } from './join-mapping';
-import { EntityInstance } from '../../entity-instance';
+import { Entity } from '../../representation/entity';
 import { PropertySet } from '@klofan/schema/representation';
 
 describe('Transform Instances', () => {
@@ -28,7 +28,7 @@ describe('Transform Instances', () => {
                     },
                 ];
 
-                const sourceEntityInstances: EntityInstance[] = [
+                const sourceEntityInstances: Entity[] = [
                     {
                         id: 0,
                         properties: {
@@ -58,7 +58,7 @@ describe('Transform Instances', () => {
                     },
                 ];
 
-                const targetEntityInstances: EntityInstance[] = [
+                const targetEntityInstances: Entity[] = [
                     {
                         id: 0,
                         properties: {

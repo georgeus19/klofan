@@ -1,6 +1,6 @@
 import { describe, expect, test } from '@jest/globals';
 import { Property } from '../../representation/property';
-import { EntityInstance } from '../../entity-instance';
+import { Entity } from '../../representation/entity';
 import {
     PreserveMapping,
     getPreserveMappingPropertyInstances,
@@ -28,7 +28,7 @@ describe('Transform Instances', () => {
                     },
                 ];
 
-                const originalSourceEntityInstances: EntityInstance[] = [
+                const originalSourceEntityInstances: Entity[] = [
                     {
                         id: 0,
                         properties: {

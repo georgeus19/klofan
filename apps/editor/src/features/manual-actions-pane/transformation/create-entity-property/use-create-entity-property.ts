@@ -5,7 +5,7 @@ import { createCreatePropertyTransformation } from '@klofan/transform';
 import { useEntityInstanceToEntityInstanceDiagram } from '../../bipartite-diagram/hooks/use-entity-instance-to-entity-instance-diagram';
 import { useEditorContext } from '../../../editor/editor-context';
 import { usePropertyEndsNodesSelector } from '../../utils/diagram-node-selection/property-ends-selector/use-property-ends-nodes-selector';
-import { EntityInstance } from '@klofan/instances';
+import { Entity } from '@klofan/instances';
 import { EntitySet } from '@klofan/schema/representation';
 import { Mapping } from '@klofan/instances/transform';
 import { JoinMappingDetailMapping } from '../../utils/mapping/join/join-mapping-detail';
@@ -69,12 +69,8 @@ export function useCreateEntityProperty() {
         setEdges,
         getPropertyInstances: getEntityInstanceTargetPropertyInstances,
     } = useEntityInstanceToEntityInstanceDiagram(
-        source.entity !== null
-            ? (source as { entity: EntitySet; instances: EntityInstance[] })
-            : null,
-        target.entity !== null
-            ? (target as { entity: EntitySet; instances: EntityInstance[] })
-            : null,
+        source.entity !== null ? (source as { entity: EntitySet; instances: Entity[] }) : null,
+        target.entity !== null ? (target as { entity: EntitySet; instances: Entity[] }) : null,
         null
     );
 

@@ -19,7 +19,7 @@ export async function save(
             saveConfiguration.entityInstanceUriBuilders,
             subjectEntity.id
         );
-        for (const subjectInstance of await instances.entityInstances(subjectEntity)) {
+        for (const subjectInstance of await instances.entities(subjectEntity)) {
             const subjectRepresentation = subjectInstance.uri
                 ? namedNode(subjectInstance.uri)
                 : subjectRepresentationBuilder.getRepresentation(subjectInstance.id);
@@ -40,7 +40,7 @@ export async function save(
                 }
 
                 if (isEntitySet(objectItem)) {
-                    const objectInstances = await instances.entityInstances(objectItem);
+                    const objectInstances = await instances.entities(objectItem);
                     const objectRepresentationBuilder = safeGet(
                         saveConfiguration.entityInstanceUriBuilders,
                         property.value.id

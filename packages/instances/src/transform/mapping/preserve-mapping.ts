@@ -6,7 +6,7 @@ import {
     LiteralSet,
     PropertySet,
 } from '@klofan/schema/representation';
-import { EntityInstance } from '../../entity-instance';
+import { Entity } from '../../representation/entity';
 import { Property } from '../../representation/property';
 import { RawInstances, propertyKey } from '../../representation/raw-instances';
 
@@ -47,7 +47,7 @@ export function isPreserveMappingEligible(
 }
 
 export function getPreservedPropertyInstances(
-    originalSourceInstances: EntityInstance[],
+    originalSourceInstances: Entity[],
     property: PropertySet
 ): Property[] {
     return originalSourceInstances.map((instance): Property => instance.properties[property.id]);

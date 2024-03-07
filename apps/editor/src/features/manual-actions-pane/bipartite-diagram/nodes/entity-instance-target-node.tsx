@@ -1,5 +1,5 @@
 import { Handle, NodeProps, Position } from 'reactflow';
-import { EntityInstance } from '@klofan/instances';
+import { Entity } from '@klofan/instances';
 import { EntitySet, getProperties } from '@klofan/schema/representation';
 import { EntityInstanceDetail } from '../../detail/entity-instance-detail';
 import { twMerge } from 'tailwind-merge';
@@ -8,7 +8,7 @@ import { useEditorContext } from '../../../editor/editor-context';
 
 export default function EntityInstanceTargetNode({
     data,
-}: NodeProps<{ entity: EntitySet; entityInstance: EntityInstance; layout: LayoutOptions }>) {
+}: NodeProps<{ entity: EntitySet; entityInstance: Entity; layout: LayoutOptions }>) {
     const { schema } = useEditorContext();
     const properties = getProperties(schema, data.entity.id);
     return (

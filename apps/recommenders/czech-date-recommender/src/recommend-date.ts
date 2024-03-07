@@ -24,10 +24,7 @@ export async function recommendDate({
                 .map((property) => ({ entity, property }))
                 .filter(({ property }) => isLiteralSet(property.value))
                 .map(async ({ entity, property }) => {
-                    const propertyInstances = await instances.propertyInstances(
-                        entity.id,
-                        property.id
-                    );
+                    const propertyInstances = await instances.properties(entity.id, property.id);
                     return {
                         entity,
                         property,

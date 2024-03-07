@@ -10,7 +10,7 @@ import { OneToOneButton } from '../../utils/mapping/one-to-one-button';
 import { AllToOneButton } from '../../utils/mapping/all-to-one-button';
 import { ManualButton } from '../../utils/mapping/manual-button';
 import { ButtonProps } from '../../utils/mapping/button-props';
-import { EntityInstance } from '@klofan/instances';
+import { Entity } from '@klofan/instances';
 import { EntitySet } from '@klofan/schema/representation';
 import { JoinMappingDetail } from '../../utils/mapping/join/join-mapping-detail';
 import { UriLabelInput } from '../../utils/uri/uri-label-input';
@@ -34,8 +34,8 @@ export function CreateEntityProperty() {
         setEdges: diagram.setEdges,
         setUsedInstanceMapping,
         usedInstanceMapping: usedInstanceMapping,
-        source: source as { entity: EntitySet; instances: EntityInstance[] },
-        target: target as { entity: EntitySet; instances: EntityInstance[] },
+        source: source as { entity: EntitySet; instances: Entity[] },
+        target: target as { entity: EntitySet; instances: Entity[] },
     };
 
     return (

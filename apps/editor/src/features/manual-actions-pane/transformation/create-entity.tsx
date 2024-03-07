@@ -17,7 +17,7 @@ export function CreateEntity() {
     );
 
     const entityNodeSelector = useEntityNodeSelector((entity: EntitySet) => {
-        instances.entityInstances(entity).then((entityInstances) => {
+        instances.entities(entity).then((entityInstances) => {
             setEntityInstances([...Array(entityInstances.length).keys()].map(() => ({})));
         });
 

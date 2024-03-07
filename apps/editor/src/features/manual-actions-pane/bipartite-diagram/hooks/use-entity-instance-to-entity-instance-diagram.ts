@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { EntitySet } from '@klofan/schema/representation';
 import { identifier } from '@klofan/utils';
 import { Edge as ReactFlowEdge, addEdge, Connection } from 'reactflow';
-import { EntityInstance } from '@klofan/instances';
+import { Entity } from '@klofan/instances';
 import { Property } from '@klofan/instances/representation';
 import {
     SourceNode,
@@ -20,11 +20,11 @@ import { styleEdges } from '../../../diagram/edges/style-edges';
 
 export type EntityInstanceSourceNode = SourceNode<{
     entity: EntitySet;
-    entityInstance: EntityInstance;
+    entityInstance: Entity;
 }>;
 export type EntityInstanceTargetNode = TargetNode<{
     entity: EntitySet;
-    entityInstance: EntityInstance;
+    entityInstance: Entity;
 }>;
 export type SourceTargetEdge = ReactFlowEdge<never>;
 
@@ -36,8 +36,8 @@ export type SourceTargetEdge = ReactFlowEdge<never>;
  * If the property does not exist yet in them schema, just pass null and it works as well - no edges are known.
  */
 export function useEntityInstanceToEntityInstanceDiagram(
-    source: { entity: EntitySet; instances: EntityInstance[] } | null,
-    target: { entity: EntitySet; instances: EntityInstance[] } | null,
+    source: { entity: EntitySet; instances: Entity[] } | null,
+    target: { entity: EntitySet; instances: Entity[] } | null,
     propertyId: identifier | null
 ) {
     const [nodes, setNodes] = useState<(EntityInstanceSourceNode | EntityInstanceTargetNode)[]>([]);

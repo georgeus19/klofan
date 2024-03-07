@@ -9,7 +9,7 @@ export interface RawInstances {
      * Column representation of which entity instances have which properties and their values.
      * All values (arrays) have the same length - the number of instances of the corresponding schema entity (which is the source entity of the property).
      *
-     * Key format is: `${EntityId}.${PropertyId}`
+     * Key format is: `${EntitySetId}.${PropertySetId}`
      *
      */
     properties: { [key: string]: Property[] };
@@ -27,10 +27,10 @@ export function createEmptyInstanceState(): RawInstances {
 }
 
 /**
- * Create key (on `RawInstances.propertyInstances`) for getting instance information of `property` on `entity`.
+ * Create key (on `RawInstances.properties`) for getting instance information of `propertySet` on `entitySet`.
  */
-export function propertyKey(entity: identifier, property: identifier): string {
-    return `${entity}.${property}`;
+export function propertyKey(entitySet: identifier, propertySet: identifier): string {
+    return `${entitySet}.${propertySet}`;
 }
 
 export function initEntityInstances(count: number): { uri?: string }[] {
