@@ -5,7 +5,7 @@
     "globalDotEnv": [".env"],
     "pipeline": {
         "build": {
-            "dependsOn": ["^build"],
+            "dependsOn": ["^build"]
         },
         "test": {
             "outputs": ["coverage/**"],
