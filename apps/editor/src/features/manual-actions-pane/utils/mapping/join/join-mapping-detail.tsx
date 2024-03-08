@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { DisplaySelect } from '../../display-select';
 import { useEditorContext } from '../../../../editor/editor-context';
 import { PropertySet, EntitySet, isLiteralSet } from '@klofan/schema/representation';
-import { JoinMapping, getJoinedPropertyInstances } from '@klofan/instances/transform';
+import { JoinMapping, getJoinedProperties } from '@klofan/instances/transform';
 import { ButtonProps } from '../button-props';
 
 export type JoinMappingDetailProps = ButtonProps & {
@@ -13,9 +13,9 @@ export type JoinMappingDetailProps = ButtonProps & {
 export type JoinMappingDetailMapping = {
     type: 'join-mapping-detail';
     source: EntitySet;
-    sourceJoinProperty?: PropertySet;
+    sourceJoinPropertySet?: PropertySet;
     target: EntitySet;
-    targetJoinProperty?: PropertySet;
+    targetJoinPropertySet?: PropertySet;
 };
 
 export function JoinMappingDetail({
@@ -25,64 +25,70 @@ export function JoinMappingDetail({
     source,
     target,
 }: JoinMappingDetailProps) {
-    const [selectSourceJoinProperty, setSelectSourceJoinProperty] = useState<boolean>(false);
-    const [selectTargetJoinProperty, setSelectTargetJoinProperty] = useState<boolean>(false);
+    const [selectSourceJoinPropertySet, setSelectSourceJoinPropertySet] = useState<boolean>(false);
+    const [selectTargetJoinPropertySet, setSelectTargetJoinPropertySet] = useState<boolean>(false);
     const { schema } = useEditorContext();
 
-    const sourceProperties = usedInstanceMapping.source.properties
-        .map((propertyId) => schema.propertySet(propertyId))
-        .filter((property) => isLiteralSet(schema.item(property.value)))
-        .map((property) => (
+    const sourcePropertySets = usedInstanceMapping.source.properties
+        .map((propertySetId) => schema.propertySet(propertySetId))
+        .filter((propertySet) => isLiteralSet(schema.item(propertySet.value)))
+        .map((propertySet) => (
             <button
-                key={property.id}
+                key={propertySet.id}
                 className='p-1 rounded shadow bg-blue-200 hover:bg-blue-300'
                 onClick={() => {
-                    setSelectSourceJoinProperty(false);
-                    const newMapping = { ...usedInstanceMapping, sourceJoinProperty: property };
+                    setSelectSourceJoinPropertySet(false);
+                    const newMapping = {
+                        ...usedInstanceMapping,
+                        sourceJoinPropertySet: propertySet,
+                    };
                     setUsedInstanceMapping(newMapping);
-                    if (newMapping.targetJoinProperty) {
+                    if (newMapping.targetJoinPropertySet) {
                         setUsedInstanceMapping({
                             ...newMapping,
                             type: 'join-mapping',
                         } as JoinMapping);
                         setEdges(
-                            getJoinedPropertyInstances(
-                                { ...source, joinProperty: property },
-                                { ...target, joinProperty: newMapping.targetJoinProperty }
+                            getJoinedProperties(
+                                { ...source, joinPropertySet: propertySet },
+                                { ...target, joinPropertySet: newMapping.targetJoinPropertySet }
                             )
                         );
                     }
                 }}
             >
-                {property.name}
+                {propertySet.name}
             </button>
         ));
-    const targetProperties = usedInstanceMapping.target.properties
-        .map((propertyId) => schema.propertySet(propertyId))
-        .filter((property) => isLiteralSet(schema.item(property.value)))
-        .map((property) => (
+    const targetPropertySets = usedInstanceMapping.target.properties
+        .map((propertySetId) => schema.propertySet(propertySetId))
+        .filter((propertySet) => isLiteralSet(schema.item(propertySet.value)))
+        .map((propertySet) => (
             <button
-                key={property.id}
+                key={propertySet.id}
                 className='p-1 rounded shadow bg-blue-200 hover:bg-blue-300'
                 onClick={() => {
-                    setSelectTargetJoinProperty(false);
-                    const newMapping = { ...usedInstanceMapping, targetJoinProperty: property };
+                    setSelectTargetJoinPropertySet(false);
+                    const newMapping = {
+                        ...usedInstanceMapping,
+                        targetJoinPropertySet: propertySet,
+                    };
                     setUsedInstanceMapping(newMapping);
-                    if (newMapping.sourceJoinProperty) {
+                    if (newMapping.sourceJoinPropertySet) {
                         setUsedInstanceMapping({
                             ...newMapping,
                             type: 'join-mapping',
                         } as JoinMapping);
                         setEdges(
-                            getJoinedPropertyInstances(
-                                { ...source, joinProperty: newMapping.sourceJoinProperty },
-                                { ...target, joinProperty: property }
+                            getJoinedProperties(
+                                { ...source, joinPropertySet: newMapping.sourceJoinPropertySet },
+                                { ...target, joinPropertySet: propertySet }
                             )
                         );
                     }
                 }}
             >
-                {property.name}
+                {propertySet.name}
             </button>
         ));
     return (
@@ -90,22 +96,22 @@ export function JoinMappingDetail({
             <div className='text-center'>Join Mapping Properties</div>
             <DisplaySelect
                 label='Source'
-                displayValue={usedInstanceMapping.sourceJoinProperty?.name}
+                displayValue={usedInstanceMapping.sourceJoinPropertySet?.name}
                 onSelect={() => {
-                    setSelectSourceJoinProperty(true);
+                    setSelectSourceJoinPropertySet(true);
                 }}
             ></DisplaySelect>
-            {selectSourceJoinProperty && <div>Available properties on source:</div>}
-            {selectSourceJoinProperty && sourceProperties}
+            {selectSourceJoinPropertySet && <div>Available properties on source:</div>}
+            {selectSourceJoinPropertySet && sourcePropertySets}
             <DisplaySelect
                 label='Target'
-                displayValue={usedInstanceMapping.targetJoinProperty?.name}
+                displayValue={usedInstanceMapping.targetJoinPropertySet?.name}
                 onSelect={() => {
-                    setSelectTargetJoinProperty(true);
+                    setSelectTargetJoinPropertySet(true);
                 }}
             ></DisplaySelect>
-            {selectTargetJoinProperty && <div>Available properties on Target:</div>}
-            {selectTargetJoinProperty && targetProperties}
+            {selectTargetJoinPropertySet && <div>Available properties on Target:</div>}
+            {selectTargetJoinPropertySet && targetPropertySets}
         </div>
     );
 }

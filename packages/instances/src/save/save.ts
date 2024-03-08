@@ -4,7 +4,7 @@ import { SaveConfiguration } from './save-configuration';
 import { safeGet } from '@klofan/utils';
 import { getProperties, isEntitySet, isLiteralSet } from '@klofan/schema/representation';
 import { Schema } from '@klofan/schema';
-import { EntityInstanceRepresentationBuilder } from './uri-builders/instance-uri-builder';
+import { EntityRepresentationBuilder } from './uri-builders/entity-representation-builder';
 const { namedNode, literal } = DataFactory;
 
 export async function save(
@@ -13,24 +13,24 @@ export async function save(
     saveConfiguration: SaveConfiguration,
     outputWriter: Writer
 ) {
-    for (const subjectEntity of schema.entitySets()) {
-        const properties = getProperties(schema, subjectEntity.id);
-        const subjectRepresentationBuilder: EntityInstanceRepresentationBuilder = safeGet(
-            saveConfiguration.entityInstanceUriBuilders,
-            subjectEntity.id
+    for (const subjectEntitySet of schema.entitySets()) {
+        const properties = getProperties(schema, subjectEntitySet.id);
+        const subjectRepresentationBuilder: EntityRepresentationBuilder = safeGet(
+            saveConfiguration.entityRepresentationBuilders,
+            subjectEntitySet.id
         );
-        for (const subjectInstance of await instances.entities(subjectEntity)) {
-            const subjectRepresentation = subjectInstance.uri
-                ? namedNode(subjectInstance.uri)
-                : subjectRepresentationBuilder.getRepresentation(subjectInstance.id);
-            for (const property of properties) {
-                const objectItem = schema.item(property.value.id);
-                const propertyUri = property.uri
-                    ? property.uri
-                    : `${saveConfiguration.defaultPropertyUri}/${property.id.replaceAll(/\s/g, '_')}`;
+        for (const subjectEntity of await instances.entities(subjectEntitySet)) {
+            const subjectRepresentation = subjectEntity.uri
+                ? namedNode(subjectEntity.uri)
+                : subjectRepresentationBuilder.getRepresentation(subjectEntity.id);
+            for (const propertySet of properties) {
+                const objectItem = schema.item(propertySet.value.id);
+                const propertyUri = propertySet.uri
+                    ? propertySet.uri
+                    : `${saveConfiguration.defaultPropertyUri}/${propertySet.id.replaceAll(/\s/g, '_')}`;
 
                 if (isLiteralSet(objectItem)) {
-                    safeGet(subjectInstance.properties, property.id).literals.forEach((l) => {
+                    safeGet(subjectEntity.properties, propertySet.id).literals.forEach((l) => {
                         outputWriter.addQuad(
                             subjectRepresentation,
                             namedNode(propertyUri),
@@ -40,18 +40,20 @@ export async function save(
                 }
 
                 if (isEntitySet(objectItem)) {
-                    const objectInstances = await instances.entities(objectItem);
+                    const objectEntities = await instances.entities(objectItem);
                     const objectRepresentationBuilder = safeGet(
-                        saveConfiguration.entityInstanceUriBuilders,
-                        property.value.id
+                        saveConfiguration.entityRepresentationBuilders,
+                        propertySet.value.id
                     );
 
-                    for (const objectIndex of safeGet(subjectInstance.properties, property.id)
-                        .targetEntities) {
-                        const objectExpliticUri = objectInstances[objectIndex].uri;
+                    for (const objectEntityIndex of safeGet(
+                        subjectEntity.properties,
+                        propertySet.id
+                    ).targetEntities) {
+                        const objectExpliticUri = objectEntities[objectEntityIndex].uri;
                         const objectRepresentation = objectExpliticUri
                             ? namedNode(objectExpliticUri)
-                            : objectRepresentationBuilder.getRepresentation(objectIndex);
+                            : objectRepresentationBuilder.getRepresentation(objectEntityIndex);
                         outputWriter.addQuad(
                             subjectRepresentation,
                             namedNode(propertyUri),

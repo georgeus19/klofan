@@ -8,6 +8,9 @@ export type Help = {
     hideHelp: () => void;
 };
 
+/**
+ * Logic for showing help to user. Visualised Help is react component or null in which case nothing is shown.
+ */
 export function useHelp(): Help {
     const [shownHelp, setShownHelp] = useState<ShownHelp>(null);
 

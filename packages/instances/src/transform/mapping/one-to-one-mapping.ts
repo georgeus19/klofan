@@ -8,12 +8,12 @@ export type OneToOneMapping = {
     target: EntitySet;
 };
 
-export function isOneToOneMappingEligible(sourceInstances: number, targetInstances: number) {
-    return sourceInstances === targetInstances;
+export function isOneToOneMappingEligible(sourceEntities: number, targetEntities: number) {
+    return sourceEntities === targetEntities;
 }
 
-export function getOneToOnePropertyInstances(sourceInstances: number): Property[] {
-    return [...Array(sourceInstances).keys()].map(
+export function getOneToOneProperties(sourceEntities: number): Property[] {
+    return [...Array(sourceEntities).keys()].map(
         (index): Property => ({
             literals: [],
             targetEntities: [index],
@@ -21,10 +21,10 @@ export function getOneToOnePropertyInstances(sourceInstances: number): Property[
     );
 }
 
-export function getOneToOneMappingPropertyInstances(
+export function getOneToOneMappingProperties(
     instances: RawInstances,
     mapping: OneToOneMapping
 ): Property[] {
-    const sourceInstances = instances.entities[mapping.source.id];
-    return getOneToOnePropertyInstances(sourceInstances.count);
+    const sourceEntities = instances.entities[mapping.source.id];
+    return getOneToOneProperties(sourceEntities.count);
 }

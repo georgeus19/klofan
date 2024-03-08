@@ -3,22 +3,22 @@ import { EntitySet } from '@klofan/schema/representation';
 import { Literal } from '@klofan/instances/representation';
 import { Edge as ReactFlowEdge } from 'reactflow';
 import EntityInstanceSourceNode from '../../bipartite-diagram/nodes/entity-instance-source-node';
-import { createCreatePropertyTransformation } from '@klofan/transform';
+import { createCreatePropertySetTransformation } from '@klofan/transform';
 import UpdatableLiteralTargetNode from '../../bipartite-diagram/nodes/updatable-literal-target-node';
 import { LayoutOptions, calculateTargetNodePosition } from '../../bipartite-diagram/layout';
 import { useEditorContext } from '../../../editor/editor-context';
 import { targetNodes as getTargetNodes } from '../../bipartite-diagram/common';
 import {
-    LiteralInstanceTargetNode,
-    useEntityInstanceToLiteralInstanceDiagram,
-} from '../../bipartite-diagram/hooks/use-entity-instance-to-literal-instance-diagram';
+    LiteralTargetNode,
+    useEntityToLiteralDiagram,
+} from '../../bipartite-diagram/hooks/use-entity-to-literal-diagram.ts';
 import { Entity } from '@klofan/instances';
-import { useEntityNodeSelector } from '../../utils/diagram-node-selection/entity-selector/use-entity-node-selector';
+import { useEntitySetNodeSelector } from '../../utils/diagram-node-selection/entity-set-selector/use-entity-set-node-selector.ts';
 import { useUriInput } from '../../utils/uri/use-uri-input';
-import { useEntityInstances } from '../../utils/use-entity-instances';
-import { showEntityInstanceToLiteralInstanceDiagramHelp } from '../../../help/content/show-entity-instance-to-literal-instance-diagram-help';
+import { useEntities } from '../../utils/use-entities.ts';
+import { showEntityToLiteralDiagramHelp } from '../../../help/content/show-entity-to-literal-diagram-help.tsx';
 
-export type LiteralNode = LiteralInstanceTargetNode & {
+export type LiteralNode = LiteralTargetNode & {
     data: {
         literal: Literal;
         onLiteralValueChange: (literalNodeId: string, value: string) => void;
@@ -38,19 +38,21 @@ export function useCreateLiteralProperty() {
         help,
         manualActions: { onActionDone },
     } = useEditorContext();
-    const [sourceEntity, setSourceEntity] = useState<EntitySet | null>(null);
-    const sourceEntitySelector = useEntityNodeSelector((entity: EntitySet) => {
-        setSourceEntity(entity);
-        showEntityInstanceToLiteralInstanceDiagramHelp(help);
+    const [sourceEntitySet, setSourceEntitySet] = useState<EntitySet | null>(null);
+    const sourceEntitySelector = useEntitySetNodeSelector((entitySet: EntitySet) => {
+        setSourceEntitySet(entitySet);
+        showEntityToLiteralDiagramHelp(help);
     });
 
-    const { entityInstances: sourceInstances } = useEntityInstances(sourceEntity);
+    const { entities: sourceEntities } = useEntities(sourceEntitySet);
 
-    const source = { entity: sourceEntity, instances: sourceInstances };
+    const source = { entitySet: sourceEntitySet, entities: sourceEntities };
 
     const { sourceNodes, targetNodes, edges, onConnect, layout, getPropertyInstances, setNodes } =
-        useEntityInstanceToLiteralInstanceDiagram(
-            source.entity !== null ? (source as { entity: EntitySet; instances: Entity[] }) : null,
+        useEntityToLiteralDiagram(
+            source.entitySet !== null
+                ? (source as { entitySet: EntitySet; entities: Entity[] })
+                : null,
             ''
         );
 
@@ -65,18 +67,18 @@ export function useCreateLiteralProperty() {
     };
 
     const createProperty = () => {
-        if (propertyName.trim().length === 0 || !sourceEntity) {
+        if (propertyName.trim().length === 0 || !sourceEntitySet) {
             setError('Name and source must be set!');
             return;
         }
-        const transformation = createCreatePropertyTransformation(schema, {
-            property: {
+        const transformation = createCreatePropertySetTransformation(schema, {
+            propertySet: {
                 name: propertyName,
                 uri: uri.uriWithoutPrefix,
-                value: { type: 'literal' },
+                value: { type: 'literal-set' },
             },
-            sourceEntityId: sourceEntity.id,
-            propertyInstances: getPropertyInstances(),
+            sourceEntitySetId: sourceEntitySet.id,
+            properties: getPropertyInstances(),
         });
         updateSchemaAndInstances(transformation);
         onActionDone();
@@ -90,7 +92,10 @@ export function useCreateLiteralProperty() {
                 ...p.filter((node) => node.id !== literalNodeId),
                 {
                     ...node,
-                    data: { ...node.data, literal: { ...node.data.literal, value: newValue } },
+                    data: {
+                        ...node.data,
+                        literal: { ...node.data.literal, value: newValue },
+                    },
                 },
             ];
         });
@@ -99,7 +104,7 @@ export function useCreateLiteralProperty() {
     const addLiteralNode = () => {
         setNodes((prev) => {
             const id = getTargetNodes<
-                { entity: EntitySet; entityInstance: Entity },
+                { entitySet: EntitySet; entity: Entity },
                 { literal: Literal; id: number }
             >(prev).length;
             return [
@@ -136,7 +141,7 @@ export function useCreateLiteralProperty() {
             setName: setPropertyName,
             uri: uri,
         },
-        sourceEntity,
+        sourceEntity: sourceEntitySet,
         createProperty,
         cancel,
         error,

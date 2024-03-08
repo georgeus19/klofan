@@ -8,9 +8,9 @@ import { useEditorContext } from '../../../editor/editor-context';
 
 export default function EntityInstanceSourceNode({
     data,
-}: NodeProps<{ entity: EntitySet; entityInstance: Entity; layout: LayoutOptions }>) {
+}: NodeProps<{ entitySet: EntitySet; entity: Entity; layout: LayoutOptions }>) {
     const { schema } = useEditorContext();
-    const properties = getProperties(schema, data.entity.id);
+    const properties = getProperties(schema, data.entitySet.id);
 
     return (
         <>
@@ -22,12 +22,12 @@ export default function EntityInstanceSourceNode({
                 )}
             >
                 <div className='overflow-clip'>
-                    {data.entity.name}.{data.entityInstance.id}
+                    {data.entitySet.name}.{data.entity.id}
                 </div>
                 <EntityInstanceDetail
-                    entity={data.entity}
+                    entity={data.entitySet}
                     properties={properties}
-                    entityInstance={data.entityInstance}
+                    entityInstance={data.entity}
                     className='hidden absolute -right-52 left-0 p-2 top-10 group-hover:block bg-slate-100 overflow-visible'
                 ></EntityInstanceDetail>
             </div>

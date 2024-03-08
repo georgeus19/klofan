@@ -2,23 +2,31 @@ import { RawInstances } from '@klofan/instances/representation';
 import { Recommendation } from '@klofan/recommender/recommendation';
 import { RawSchema } from '@klofan/schema/representation';
 import { RawDiagram, SchemaEdge, SchemaNode } from '../diagram/raw-diagram';
-import EntityNode from './diagram/entity-node';
-import PropertyEdge from './diagram/property-edge';
+import EntitySetNode from './diagram/entity-set-node.tsx';
+import PropertySetEdge from './diagram/property-set-edge.tsx';
 import { useState } from 'react';
 import { useEditorContext } from '../editor/editor-context';
 import { reflectSchema } from '../diagram/reflect-schema/reflect-schema';
 import { Schema } from '@klofan/schema';
 import { InMemoryInstances } from '@klofan/instances';
 import { NodeChange, applyNodeChanges } from 'reactflow';
-import { PropertySelection, usePropertySelection } from '../diagram/use-property-selection';
-import { TransformationChanges, transformationChanges as schemaTransformationChanges } from '@klofan/schema/transform';
+import {
+    PropertySetSelection,
+    usePropertySetSelection,
+} from '../diagram/use-property-set-selection.ts';
+import {
+    TransformationChanges,
+    transformationChanges as schemaTransformationChanges,
+} from '@klofan/schema/transform';
 import { transformationChanges as instancesTransformationChanges } from '@klofan/instances/transform';
+import { ENTITY_SET_NODE } from '../diagram/nodes/entity-set-node.tsx';
+import { PROPERTY_SET_EDGE } from '../diagram/edges/property-set-edge.tsx';
 
 export type RecommendationDiagram = {
     nodes: SchemaNode[];
     edges: SchemaEdge[];
     onNodesChange: (changes: NodeChange[]) => void;
-    propertySelection: PropertySelection;
+    propertySelection: PropertySetSelection;
 };
 
 export type Recommendations = {
@@ -59,16 +67,17 @@ type RawRecommendationDetail = {
     };
 };
 
-export const nodeTypes = { entity: EntityNode };
+export const nodeTypes = { [ENTITY_SET_NODE]: EntitySetNode };
 
-export const edgeTypes = { property: PropertyEdge };
+export const edgeTypes = { [PROPERTY_SET_EDGE]: PropertySetEdge };
 
 export function useRecommendations(): Recommendations {
     const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
-    const [selectedRecommendation, setSelectedRecommendation] = useState<RawRecommendationDetail | null>(null);
+    const [selectedRecommendation, setSelectedRecommendation] =
+        useState<RawRecommendationDetail | null>(null);
     const { schema, instances, manualActions, diagram } = useEditorContext();
-    const oldPropertySelection = usePropertySelection();
-    const newPropertySelection = usePropertySelection();
+    const oldPropertySelection = usePropertySetSelection();
+    const newPropertySelection = usePropertySetSelection();
 
     function getRecommendations() {
         const url = 'http://localhost:5000/api/v1/recommend';
@@ -97,24 +106,38 @@ export function useRecommendations(): Recommendations {
         const old = {
             schema: schema.raw(),
             instances: instances.raw() as RawInstances,
-            diagram: { nodes: structuredClone(diagram.nodes), edges: structuredClone(diagram.edges) },
+            diagram: {
+                nodes: structuredClone(diagram.nodes),
+                edges: structuredClone(diagram.edges),
+            },
         };
 
         const newSchema = schema.transform(recommendation.transformations.schemaTransformations);
         const n = {
             schema: newSchema.raw(),
-            instances: (await instances.transform(recommendation.transformations.instanceTransformations)).raw() as RawInstances,
-            diagram: reflectSchema({ nodes: structuredClone(diagram.nodes), edges: structuredClone(diagram.edges) }, newSchema),
+            instances: (
+                await instances.transform(recommendation.transformations.instanceTransformations)
+            ).raw() as RawInstances,
+            diagram: reflectSchema(
+                { nodes: structuredClone(diagram.nodes), edges: structuredClone(diagram.edges) },
+                newSchema
+            ),
         };
-        const instancesChanges = recommendation.transformations.instanceTransformations.map((transformation) =>
-            instancesTransformationChanges(transformation)
+        const instancesChanges = recommendation.transformations.instanceTransformations.map(
+            (transformation) => instancesTransformationChanges(transformation)
         );
-        const schemaChanges = recommendation.transformations.schemaTransformations.map((transformation) =>
-            schemaTransformationChanges(transformation)
+        const schemaChanges = recommendation.transformations.schemaTransformations.map(
+            (transformation) => schemaTransformationChanges(transformation)
         );
 
-        const itemChanges = [...instancesChanges.flatMap((ch) => ch.entities), ...schemaChanges.flatMap((ch) => ch.items)];
-        const relationChanges = [...instancesChanges.flatMap((ch) => ch.properties), ...schemaChanges.flatMap((ch) => ch.relations)];
+        const itemChanges = [
+            ...instancesChanges.flatMap((ch) => ch.entities),
+            ...schemaChanges.flatMap((ch) => ch.items),
+        ];
+        const relationChanges = [
+            ...instancesChanges.flatMap((ch) => ch.properties),
+            ...schemaChanges.flatMap((ch) => ch.relations),
+        ];
 
         setSelectedRecommendation({
             recommendation: recommendation,
@@ -141,7 +164,10 @@ export function useRecommendations(): Recommendations {
                         ...prev[oldOrNew],
                         diagram: {
                             ...prev[oldOrNew].diagram,
-                            nodes: applyNodeChanges(changes, prev[oldOrNew].diagram.nodes) as SchemaNode[],
+                            nodes: applyNodeChanges(
+                                changes,
+                                prev[oldOrNew].diagram.nodes
+                            ) as SchemaNode[],
                         },
                     },
                 };

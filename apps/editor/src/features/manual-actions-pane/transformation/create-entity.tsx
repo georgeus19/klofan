@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { createCreateEntityTransformation } from '@klofan/transform';
+import { createCreateEntitySetTransformation } from '@klofan/transform';
 import { ActionOkCancel } from '../utils/action-ok-cancel';
 import { LabelInput } from '../utils/general-label-input/label-input';
 import { Header } from '../utils/header';
 import { useEditorContext } from '../../editor/editor-context';
-import { useEntityNodeSelector } from '../utils/diagram-node-selection/entity-selector/use-entity-node-selector';
+import { useEntitySetNodeSelector } from '../utils/diagram-node-selection/entity-set-selector/use-entity-set-node-selector.ts';
 import { EntitySet } from '@klofan/schema/representation';
 import { UncontrollableUriLabelInput } from '../utils/uri/uncontrollable-uri-label-input';
 import { Dropdown } from '../utils/dropdown';
@@ -16,7 +16,7 @@ export function CreateEntity() {
         [...Array(1).keys()].map(() => ({}))
     );
 
-    const entityNodeSelector = useEntityNodeSelector((entity: EntitySet) => {
+    const entityNodeSelector = useEntitySetNodeSelector((entity: EntitySet) => {
         instances.entities(entity).then((entityInstances) => {
             setEntityInstances([...Array(entityInstances.length).keys()].map(() => ({})));
         });
@@ -39,7 +39,7 @@ export function CreateEntity() {
         if (entityName.trim().length === 0 || entityInstances.length === 0) {
             setError('Name and instance count must be set!');
         }
-        const transformation = createCreateEntityTransformation({
+        const transformation = createCreateEntitySetTransformation({
             schema: { name: entityName },
             instances: { count: entityInstances.length, instances: entityInstances },
         });

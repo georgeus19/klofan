@@ -14,17 +14,17 @@ export type PreserveMapping = {
     type: 'preserve-mapping';
     originalSource: EntitySet;
     originalTarget: Item;
-    property: PropertySet;
+    propertySet: PropertySet;
     newSource: EntitySet;
     newTarget: Item;
 };
 
-export type EntityWithInstances = { entity: EntitySet; instances: number };
+export type EntitySetWithInstances = { entity: EntitySet; instances: number };
 export type ItemWithInstances = { item: EntitySet; instances: number } | { item: LiteralSet };
 
 export function isPreserveMappingEligible(
-    originalState: { source: EntityWithInstances; target: ItemWithInstances },
-    newState: { source: EntityWithInstances; target: ItemWithInstances }
+    originalState: { source: EntitySetWithInstances; target: ItemWithInstances },
+    newState: { source: EntitySetWithInstances; target: ItemWithInstances }
 ): boolean {
     if (originalState.source.instances !== newState.source.instances) {
         return false;
@@ -46,16 +46,16 @@ export function isPreserveMappingEligible(
     return false;
 }
 
-export function getPreservedPropertyInstances(
-    originalSourceInstances: Entity[],
-    property: PropertySet
+export function getPreservedProperties(
+    originalSourceEntities: Entity[],
+    propertySet: PropertySet
 ): Property[] {
-    return originalSourceInstances.map((instance): Property => instance.properties[property.id]);
+    return originalSourceEntities.map((entity): Property => entity.properties[propertySet.id]);
 }
 
-export function getPreserveMappingPropertyInstances(
+export function getPreserveMappingProperties(
     instances: RawInstances,
     mapping: PreserveMapping
 ): Property[] {
-    return instances.properties[propertyKey(mapping.originalSource.id, mapping.property.id)];
+    return instances.properties[propertyKey(mapping.originalSource.id, mapping.propertySet.id)];
 }

@@ -1,5 +1,5 @@
-export { BlankNodeInstanceBuilder } from '../save/uri-builders/blank-node-instance-builder';
-export type { EntityInstanceRepresentationBuilder } from '../save/uri-builders/instance-uri-builder';
-export { NamedNodeInstanceBuilder } from '../save/uri-builders/named-node-instance-builder';
+export { BlankNodeBuilder } from '../save/uri-builders/blank-node-builder';
+export type { EntityRepresentationBuilder } from '../save/uri-builders/entity-representation-builder';
+export { NamedNodeBuilder } from '../save/uri-builders/named-node-builder';
 export { save } from '../save/save';
 export type { SaveConfiguration } from '../save/save-configuration';

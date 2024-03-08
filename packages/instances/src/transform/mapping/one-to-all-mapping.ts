@@ -8,18 +8,18 @@ export type OneToAllMapping = {
     target: EntitySet;
 };
 
-export function isOneToAllMappingEligible(sourceInstances: number) {
-    return sourceInstances === 1;
+export function isOneToAllMappingEligible(sourceEntities: number) {
+    return sourceEntities === 1;
 }
 
-export function getOneToAllPropertyInstances(targetInstances: number): Property[] {
-    return [{ literals: [], targetEntities: [...Array(targetInstances).keys()] }];
+export function getOneToAllProperties(targetEntities: number): Property[] {
+    return [{ literals: [], targetEntities: [...Array(targetEntities).keys()] }];
 }
 
-export function getOneToAllMappingPropertyInstances(
+export function getOneToAllMappingProperties(
     instances: RawInstances,
     mapping: OneToAllMapping
 ): Property[] {
-    const targetInstances = instances.entities[mapping.target.id];
-    return getOneToAllPropertyInstances(targetInstances.count);
+    const targetEntities = instances.entities[mapping.target.id];
+    return getOneToAllProperties(targetEntities.count);
 }

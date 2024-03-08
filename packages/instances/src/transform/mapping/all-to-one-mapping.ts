@@ -8,20 +8,20 @@ export type AllToOneMapping = {
     target: EntitySet;
 };
 
-export function isAllToOneMappingEligible(targetInstances: number) {
-    return targetInstances === 1;
+export function isAllToOneMappingEligible(targetEntities: number) {
+    return targetEntities === 1;
 }
 
-export function getAllToOnePropertyInstances(sourceInstances: number): Property[] {
-    return [...Array(sourceInstances).keys()].map(
+export function getAllToOneProperties(sourceEntities: number): Property[] {
+    return [...Array(sourceEntities).keys()].map(
         (): Property => ({ literals: [], targetEntities: [0] })
     );
 }
 
-export function getAllToOneMappingPropertyInstances(
+export function getAllToOneMappingProperties(
     instances: RawInstances,
     mapping: AllToOneMapping
 ): Property[] {
-    const sourceInstances = instances.entities[mapping.source.id];
-    return getAllToOnePropertyInstances(sourceInstances.count);
+    const sourceEntities = instances.entities[mapping.source.id];
+    return getAllToOneProperties(sourceEntities.count);
 }

@@ -3,8 +3,8 @@ import { Property } from '../../representation/property';
 import { Entity } from '../../representation/entity';
 import {
     PreserveMapping,
-    getPreserveMappingPropertyInstances,
-    getPreservedPropertyInstances,
+    getPreserveMappingProperties,
+    getPreservedProperties,
 } from './preserve-mapping';
 import { RawInstances, initEntityInstances } from '../../representation/raw-instances';
 import { createEntitySet, createPropertySet, PropertySet } from '@klofan/schema/representation';
@@ -64,7 +64,7 @@ describe('Transform Instances', () => {
                     value: '2',
                 });
 
-                const propertyInstances = getPreservedPropertyInstances(
+                const propertyInstances = getPreservedProperties(
                     originalSourceEntityInstances,
                     property
                 );
@@ -104,7 +104,7 @@ describe('Transform Instances', () => {
                     }),
                     newSource: createEntitySet({ id: '2', name: '2', properties: [] }),
                     newTarget: createEntitySet({ id: '3', name: '3', properties: [] }),
-                    property: property,
+                    propertySet: property,
                 };
                 const instances: RawInstances = {
                     entities: {
@@ -124,7 +124,7 @@ describe('Transform Instances', () => {
                         ],
                     },
                 };
-                const propertyInstances = getPreserveMappingPropertyInstances(instances, mapping);
+                const propertyInstances = getPreserveMappingProperties(instances, mapping);
                 expect(propertyInstances).toEqual(expectedPropertyInstances);
             });
         });

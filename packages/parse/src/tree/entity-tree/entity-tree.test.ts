@@ -72,7 +72,7 @@ describe('Parse Tests', () => {
 
             expect(createEntityTree(treeInput, schemaTree)).toEqual(expectedEntityTree);
         });
-        test('Entity with entities', () => {
+        test('Entity with instances', () => {
             resetId();
             const treeInput: Tree = {
                 name: 'Salad',
@@ -215,7 +215,8 @@ describe('Parse Tests', () => {
             resetId();
             const treeInput: Tree = {
                 product: {
-                    product_name: 'Thai peanut noodle kit includes stir-fry rice noodles & thai peanut seasoning',
+                    product_name:
+                        'Thai peanut noodle kit includes stir-fry rice noodles & thai peanut seasoning',
                     countries: 'United States',
                     ingredients: [
                         {
@@ -255,7 +256,8 @@ describe('Parse Tests', () => {
 
             const schemaTree: SchemaTreeNode = {
                 product: {
-                    product_name: 'Thai peanut noodle kit includes stir-fry rice noodles & thai peanut seasoning',
+                    product_name:
+                        'Thai peanut noodle kit includes stir-fry rice noodles & thai peanut seasoning',
                     countries: 'United States',
                     ingredients: {
                         id: null,
@@ -432,7 +434,9 @@ describe('Parse Tests', () => {
                         instances: [
                             {
                                 instances: 0,
-                                literals: ['Thai peanut noodle kit includes stir-fry rice noodles & thai peanut seasoning'],
+                                literals: [
+                                    'Thai peanut noodle kit includes stir-fry rice noodles & thai peanut seasoning',
+                                ],
                             },
                         ],
                     },

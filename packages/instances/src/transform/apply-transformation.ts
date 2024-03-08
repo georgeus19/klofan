@@ -1,24 +1,24 @@
 import { RawInstances } from '../representation/raw-instances';
-import { createEntityInstances } from './transformations/create-entity-instances';
-import { createPropertyInstances } from './transformations/create-property-instances';
-import { movePropertyInstances } from './transformations/move-property-instances';
+import { createEntities } from './transformations/create-entities';
+import { createProperties } from './transformations/create-properties';
+import { moveProperties } from './transformations/move-properties';
 import { Transformation } from './transformations/transformation';
-import { updateEntityInstancesUris } from './transformations/update-entity-instances-uris';
+import { updateEntitiesUris } from './transformations/update-entities-uris';
 import { updatePropertyLiterals } from './transformations/update-property-literals';
 
 export function applyTransformation(instances: RawInstances, transformation: Transformation) {
     switch (transformation.type) {
-        case 'create-entity-instances':
-            createEntityInstances(instances, transformation);
+        case 'create-entities':
+            createEntities(instances, transformation);
             break;
-        case 'create-property-instances':
-            createPropertyInstances(instances, transformation);
+        case 'create-properties':
+            createProperties(instances, transformation);
             break;
-        case 'move-property-instances':
-            movePropertyInstances(instances, transformation);
+        case 'move-properties':
+            moveProperties(instances, transformation);
             break;
-        case 'update-entity-instances-uris':
-            updateEntityInstancesUris(instances, transformation);
+        case 'update-entities-uris':
+            updateEntitiesUris(instances, transformation);
             break;
         case 'update-property-literals':
             updatePropertyLiterals(instances, transformation);

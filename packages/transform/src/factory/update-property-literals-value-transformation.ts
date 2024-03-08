@@ -4,20 +4,20 @@ import { EntitySet, PropertySet } from '@klofan/schema/representation';
 import { Literal } from '@klofan/instances/representation';
 
 export function createUpdatePropertyLiteralsValueTransformation(data: {
-    entity: EntitySet;
-    property: PropertySet;
+    entitySet: EntitySet;
+    propertySet: PropertySet;
     literals: {
         from: Literal;
         to: Literal;
     };
 }): Transformation {
-    const updateEntityInstanceUrisTransformation: UpdatePropertyLiterals = {
+    const updatePropertyLiteralsTransformation: UpdatePropertyLiterals = {
         type: 'update-property-literals',
         data: { ...data, literals: { ...data.literals, type: 'value' } },
     };
 
     return {
         schemaTransformations: [],
-        instanceTransformations: [updateEntityInstanceUrisTransformation],
+        instanceTransformations: [updatePropertyLiteralsTransformation],
     };
 }

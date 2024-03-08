@@ -1,15 +1,15 @@
 import { useMemo, useState } from 'react';
 import EntityInstanceSourceNode from '../../bipartite-diagram/nodes/entity-instance-source-node';
 import EntityInstanceTargetNode from '../../bipartite-diagram/nodes/entity-instance-target-node';
-import { createCreatePropertyTransformation } from '@klofan/transform';
-import { useEntityInstanceToEntityInstanceDiagram } from '../../bipartite-diagram/hooks/use-entity-instance-to-entity-instance-diagram';
+import { createCreatePropertySetTransformation } from '@klofan/transform';
+import { useEntityToEntityDiagram } from '../../bipartite-diagram/hooks/use-entity-to-entity-diagram.ts';
 import { useEditorContext } from '../../../editor/editor-context';
-import { usePropertyEndsNodesSelector } from '../../utils/diagram-node-selection/property-ends-selector/use-property-ends-nodes-selector';
+import { usePropertySetEndsNodesSelector } from '../../utils/diagram-node-selection/property-ends-selector/use-property-set-ends-nodes-selector.ts';
 import { Entity } from '@klofan/instances';
 import { EntitySet } from '@klofan/schema/representation';
 import { Mapping } from '@klofan/instances/transform';
 import { JoinMappingDetailMapping } from '../../utils/mapping/join/join-mapping-detail';
-import { useEntityInstances } from '../../utils/use-entity-instances';
+import { useEntities } from '../../utils/use-entities.ts';
 import { Connection } from 'reactflow';
 import { useUriInput } from '../../utils/uri/use-uri-input';
 
@@ -17,29 +17,29 @@ export function useCreateEntityProperty() {
     const [propertyName, setPropertyName] = useState('');
     const uri = useUriInput('');
 
-    const [sourceEntity, setSourceEntity] = useState<EntitySet | null>(null);
-    const [targetEntity, setTargetEntity] = useState<EntitySet | null>(null);
+    const [sourceEntitySet, setSourceEntitySet] = useState<EntitySet | null>(null);
+    const [targetEntitySet, setTargetEntitySet] = useState<EntitySet | null>(null);
 
     const [usedInstanceMapping, setUsedInstanceMapping] = useState<
         Mapping | JoinMappingDetailMapping
     >({
         type: 'manual-mapping',
-        propertyInstances: [],
+        properties: [],
     });
 
-    const propertyEndsSelector = usePropertyEndsNodesSelector(
+    const propertyEndsSelector = usePropertySetEndsNodesSelector(
         {
-            entity: sourceEntity,
+            entitySet: sourceEntitySet,
             set: (entity: EntitySet) => {
-                setSourceInstances([]);
-                setSourceEntity(entity);
+                setSourceEntities([]);
+                setSourceEntitySet(entity);
             },
         },
         {
-            entity: targetEntity,
+            entitySet: targetEntitySet,
             set: (entity: EntitySet) => {
-                setTargetInstances([]);
-                setTargetEntity(entity);
+                setTargetEntities([]);
+                setTargetEntitySet(entity);
             },
         }
     );
@@ -52,13 +52,13 @@ export function useCreateEntityProperty() {
 
     const [error, setError] = useState<string | null>(null);
 
-    const { entityInstances: sourceInstances, setEntityInstances: setSourceInstances } =
-        useEntityInstances(sourceEntity);
-    const { entityInstances: targetInstances, setEntityInstances: setTargetInstances } =
-        useEntityInstances(targetEntity);
+    const { entities: sourceEntities, setEntities: setSourceEntities } =
+        useEntities(sourceEntitySet);
+    const { entities: targetEntities, setEntities: setTargetEntities } =
+        useEntities(targetEntitySet);
 
-    const source = { entity: sourceEntity, instances: sourceInstances };
-    const target = { entity: targetEntity, instances: targetInstances };
+    const source = { entitySet: sourceEntitySet, entities: sourceEntities };
+    const target = { entitySet: targetEntitySet, entities: targetEntities };
 
     const {
         sourceNodes,
@@ -68,14 +68,14 @@ export function useCreateEntityProperty() {
         layout,
         setEdges,
         getPropertyInstances: getEntityInstanceTargetPropertyInstances,
-    } = useEntityInstanceToEntityInstanceDiagram(
-        source.entity !== null ? (source as { entity: EntitySet; instances: Entity[] }) : null,
-        target.entity !== null ? (target as { entity: EntitySet; instances: Entity[] }) : null,
+    } = useEntityToEntityDiagram(
+        source.entitySet !== null ? (source as { entitySet: EntitySet; entities: Entity[] }) : null,
+        target.entitySet !== null ? (target as { entitySet: EntitySet; entities: Entity[] }) : null,
         null
     );
 
     const onConnect = (connection: Connection) => {
-        setUsedInstanceMapping({ type: 'manual-mapping', propertyInstances: [] });
+        setUsedInstanceMapping({ type: 'manual-mapping', properties: [] });
         onInstanceTargetConnect(connection);
     };
 
@@ -85,18 +85,18 @@ export function useCreateEntityProperty() {
     };
 
     const createProperty = () => {
-        if (propertyName.trim().length === 0 || !sourceEntity || !targetEntity) {
+        if (propertyName.trim().length === 0 || !sourceEntitySet || !targetEntitySet) {
             setError('Name, source and target must be set!');
             return;
         }
-        const transformation = createCreatePropertyTransformation(schema, {
-            property: {
+        const transformation = createCreatePropertySetTransformation(schema, {
+            propertySet: {
                 name: propertyName,
                 uri: uri.asIri(),
-                value: { type: 'entity', entityId: targetEntity.id },
+                value: { type: 'entity-set', entitySetId: targetEntitySet.id },
             },
-            sourceEntityId: sourceEntity.id,
-            propertyInstances: getEntityInstanceTargetPropertyInstances(),
+            sourceEntitySetId: sourceEntitySet.id,
+            properties: getEntityInstanceTargetPropertyInstances(),
         });
         updateSchemaAndInstances(transformation);
         onActionDone();

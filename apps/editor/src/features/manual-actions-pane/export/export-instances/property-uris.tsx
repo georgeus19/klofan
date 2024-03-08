@@ -1,5 +1,5 @@
 import { PropertySet, toPropertySet, getProperties } from '@klofan/schema/representation';
-import { createUpdatePropertyUriTransformation } from '@klofan/transform';
+import { createUpdatePropertySetUriTransformation } from '@klofan/transform';
 import { useEditorContext } from '../../../editor/editor-context';
 import { Dropdown } from '../../utils/dropdown';
 import { UriLabelInput } from '../../utils/uri/uri-label-input';
@@ -14,17 +14,25 @@ export function PropertyUris({
     defaultPropertyUri: Uri;
 }) {
     const { schema, updateSchemaAndInstances } = useEditorContext();
-    const entities = schema.entitySets();
-    const updatePropertyUri = (property: PropertySet, uri: string) => {
-        const uriNotUpdated = (property.uri === undefined && uri === '') || property.uri === uri;
+    const entitySets = schema.entitySets();
+    const updatePropertySetUri = (propertySet: PropertySet, uri: string) => {
+        const uriNotUpdated =
+            (propertySet.uri === undefined && uri === '') || propertySet.uri === uri;
         if (!uriNotUpdated) {
-            const transformation = createUpdatePropertyUriTransformation(schema, property.id, uri);
+            const transformation = createUpdatePropertySetUriTransformation(
+                schema,
+                propertySet.id,
+                uri
+            );
             updateSchemaAndInstances(transformation);
         }
     };
 
-    const entityPropertyPairs = entities.flatMap((entity) =>
-        getProperties(schema, entity.id).map((property) => ({ entity: entity, property: property }))
+    const entityPropertySetPairs = entitySets.flatMap((entitySet) =>
+        getProperties(schema, entitySet.id).map((propertySet) => ({
+            entitySet: entitySet,
+            propertySet: propertySet,
+        }))
     );
     return (
         <div className={className}>
@@ -35,17 +43,17 @@ export function PropertyUris({
                 usePrefix
             ></UriLabelInput>
             <Dropdown headerLabel='Properties With Invalid Or Missing Uri' showInitially>
-                {entityPropertyPairs
-                    .filter(({ property }) => !validUri(property.uri ?? ''))
-                    .map(({ entity, property }) => (
+                {entityPropertySetPairs
+                    .filter(({ propertySet }) => !validUri(propertySet.uri ?? ''))
+                    .map(({ entitySet, propertySet }) => (
                         <UriCard
-                            key={property.id}
-                            id={property.id}
-                            label={`${entity.name}.${property.name}`}
+                            key={propertySet.id}
+                            id={propertySet.id}
+                            label={`${entitySet.name}.${propertySet.name}`}
                             onChangeDone={(uri: string) =>
-                                updatePropertyUri(toPropertySet(property), uri)
+                                updatePropertySetUri(toPropertySet(propertySet), uri)
                             }
-                            uri={property.uri}
+                            uri={propertySet.uri}
                         ></UriCard>
                     ))}
             </Dropdown>

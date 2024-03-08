@@ -1,16 +1,26 @@
 import { twMerge } from 'tailwind-merge';
-import { getOneToAllPropertyInstances, isOneToAllMappingEligible } from '@klofan/instances/transform';
+import { getOneToAllProperties, isOneToAllMappingEligible } from '@klofan/instances/transform';
 import { ButtonProps } from './button-props';
 
-export function OneToAllButton({ setEdges, setUsedInstanceMapping, usedInstanceMapping, source, target }: ButtonProps) {
-    const disabled = !isOneToAllMappingEligible(source.instances.length);
+export function OneToAllButton({
+    setEdges,
+    setUsedInstanceMapping,
+    usedInstanceMapping,
+    source,
+    target,
+}: ButtonProps) {
+    const disabled = !isOneToAllMappingEligible(source.entities.length);
     const used = usedInstanceMapping.type === 'one-to-all-mapping';
     return (
         <button
             disabled={disabled}
             onClick={() => {
-                setEdges(getOneToAllPropertyInstances(target.instances.length));
-                setUsedInstanceMapping({ type: 'one-to-all-mapping', source: source.entity, target: target.entity });
+                setEdges(getOneToAllProperties(target.entities.length));
+                setUsedInstanceMapping({
+                    type: 'one-to-all-mapping',
+                    source: source.entitySet,
+                    target: target.entitySet,
+                });
             }}
             className={twMerge(
                 'p-1 rounded shadow bg-blue-200 hover:bg-blue-300',

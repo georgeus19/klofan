@@ -17,17 +17,17 @@ export function ShownDetail({ height }: ShownDetailProps) {
     const [propertyInstances, setPropertyInstances] = useState<Property[]>([]);
 
     useEffect(() => {
-        if (propertySelection.selectedProperty) {
+        if (propertySelection.selectedPropertySet) {
             instances
                 .properties(
-                    propertySelection.selectedProperty.entity.id,
-                    propertySelection.selectedProperty.property.id
+                    propertySelection.selectedPropertySet.entitySet.id,
+                    propertySelection.selectedPropertySet.propertySet.id
                 )
                 .then((propertyInstances) => setPropertyInstances(propertyInstances));
         }
-    }, [propertySelection.selectedProperty]);
+    }, [propertySelection.selectedPropertySet]);
 
-    if (!propertySelection.selectedProperty) {
+    if (!propertySelection.selectedPropertySet) {
         return <></>;
     }
 
@@ -45,7 +45,7 @@ export function ShownDetail({ height }: ShownDetailProps) {
         <div className={'bg-slate-200'}>
             <Header
                 className='text-lg bg-opacity-70'
-                label={`${propertySelection.selectedProperty.entity.name}.${propertySelection.selectedProperty.property.name}`}
+                label={`${propertySelection.selectedPropertySet.entitySet.name}.${propertySelection.selectedPropertySet.propertySet.name}`}
             ></Header>
             <div className={twMerge('flex flex-col gap-1 text-center overflow-auto', height)}>
                 {ps}

@@ -6,8 +6,8 @@ import { TransformationChanges } from '../transformation-changes';
 export interface UpdatePropertyLiterals {
     type: 'update-property-literals';
     data: {
-        entity: EntitySet;
-        property: PropertySet;
+        entitySet: EntitySet;
+        propertySet: PropertySet;
         literals:
             | {
                   type: 'value';
@@ -26,7 +26,7 @@ export function updatePropertyLiterals(
     instances: RawInstances,
     transformation: UpdatePropertyLiterals
 ): void {
-    const pk = propertyKey(transformation.data.entity.id, transformation.data.property.id);
+    const pk = propertyKey(transformation.data.entitySet.id, transformation.data.propertySet.id);
     const transformationLiterals = transformation.data.literals;
     instances.properties[pk] = instances.properties[pk].map((propertyInstance) => {
         const updatedLiterals = propertyInstance.literals.map((literal) => {
@@ -55,7 +55,7 @@ export function updatePropertyLiteralsChanges(
     transformation: UpdatePropertyLiterals
 ): TransformationChanges {
     return {
-        entities: [transformation.data.entity.id],
-        properties: [transformation.data.property.id],
+        entities: [transformation.data.entitySet.id],
+        properties: [transformation.data.propertySet.id],
     };
 }

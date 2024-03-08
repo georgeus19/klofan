@@ -1,5 +1,8 @@
 import { MarkerType } from 'reactflow';
 
+/**
+ * Style edges. It seems that it cannot be done in PropertySetEdge component.
+ */
 export function styleEdges<T>(edges: T[], width: number): T[] {
     return edges.map((edge) => ({
         ...edge,

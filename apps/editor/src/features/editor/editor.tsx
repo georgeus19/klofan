@@ -6,6 +6,10 @@ import { Diagram } from '../diagram/diagram';
 import { RecommendationsPane } from '../recommendations/recommendations-pane';
 import { RecommendationsContextProvider } from '../recommendations/recommendations-context';
 
+/**
+ * Component holding all editor functionality.
+ * @see EditorContextProvider which contains editor logic in hook and passes it down using react context.
+ */
 export default function Editor() {
     return (
         <EditorContextProvider>

@@ -3,8 +3,8 @@ import { Property } from '../../representation/property';
 import { RawInstances, initEntityInstances } from '../../representation/raw-instances';
 import {
     OneToAllMapping,
-    getOneToAllMappingPropertyInstances,
-    getOneToAllPropertyInstances,
+    getOneToAllMappingProperties,
+    getOneToAllProperties,
 } from './one-to-all-mapping';
 import { createEntitySet } from '@klofan/schema/representation';
 
@@ -20,7 +20,7 @@ describe('Transform Instances', () => {
                     },
                 ];
 
-                const propertyInstances = getOneToAllPropertyInstances(targetInstances);
+                const propertyInstances = getOneToAllProperties(targetInstances);
                 expect(propertyInstances).toEqual(expectedPropertyInstances);
             });
             test('getOneToAllMappingPropertyInstances', () => {
@@ -47,7 +47,7 @@ describe('Transform Instances', () => {
                     properties: {},
                 };
 
-                const propertyInstances = getOneToAllMappingPropertyInstances(instances, mapping);
+                const propertyInstances = getOneToAllMappingProperties(instances, mapping);
                 expect(propertyInstances).toEqual(expectedPropertyInstances);
             });
         });

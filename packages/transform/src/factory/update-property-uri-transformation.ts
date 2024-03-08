@@ -4,18 +4,18 @@ import { UpdateRelation } from '@klofan/schema/transform';
 import { identifier } from '@klofan/utils';
 import { Transformation } from '../transformation';
 
-export function createUpdatePropertyUriTransformation(
+export function createUpdatePropertySetUriTransformation(
     schema: Schema,
     relationId: identifier,
     uri: string
 ): Transformation {
-    const newProperty: PropertySet = {
+    const newPropertySet: PropertySet = {
         ...schema.propertySet(relationId),
         uri: uri === '' ? undefined : uri,
     };
     const updateRelationTransformation: UpdateRelation = {
         type: 'update-relation',
-        data: { relation: newProperty },
+        data: { relation: newPropertySet },
     };
     return {
         schemaTransformations: [updateRelationTransformation],

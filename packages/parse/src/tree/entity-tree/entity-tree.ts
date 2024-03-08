@@ -39,10 +39,12 @@ function convertToEntityTree(schemaTree: SchemaTreeNode): EntityTreeNode {
         };
     } else {
         const id = getNewId();
-        const propertyTargets = Object.entries(schemaTree).map(([propertyName, targetSchemaNode]): [identifier, EntityTreeNode] => [
-            propertyName,
-            { ...convertToEntityTree(targetSchemaNode), name: propertyName },
-        ]);
+        const propertyTargets = Object.entries(schemaTree).map(
+            ([propertyName, targetSchemaNode]): [identifier, EntityTreeNode] => [
+                propertyName,
+                { ...convertToEntityTree(targetSchemaNode), name: propertyName },
+            ]
+        );
         const properties = Object.fromEntries(
             propertyTargets.map(([propertyName, targetEntity]) => [
                 propertyName,
@@ -63,16 +65,24 @@ function convertToEntityTree(schemaTree: SchemaTreeNode): EntityTreeNode {
     }
 }
 
-function fillInstancestoEntityTree(instanceTree: Tree, entityTree: EntityTreeNode): (object | primitiveType)[] {
+function fillInstancestoEntityTree(
+    instanceTree: Tree,
+    entityTree: EntityTreeNode
+): (object | primitiveType)[] {
     if (isPrimitiveType(instanceTree)) {
         return [instanceTree];
     } else if (Array.isArray(instanceTree)) {
-        return instanceTree.map((instance) => fillInstancestoEntityTree(instance, entityTree)).flat();
+        return instanceTree
+            .map((instance) => fillInstancestoEntityTree(instance, entityTree))
+            .flat();
     } else {
         Object.entries(entityTree.properties).forEach(([property, propertyInfo]) => {
             if (Object.hasOwn(instanceTree, property)) {
                 const { literals, instances } = parseInstances(
-                    fillInstancestoEntityTree(instanceTree[property as keyof typeof instanceTree], propertyInfo.targetEntity)
+                    fillInstancestoEntityTree(
+                        instanceTree[property as keyof typeof instanceTree],
+                        propertyInfo.targetEntity
+                    )
                 );
 
                 propertyInfo.instances.push({

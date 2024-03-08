@@ -61,8 +61,8 @@ export function OldRecommendations({ className }: RecommendationsProps) {
             .find((property) => property.name === 'countries');
         if (productEntity && countriesProperty) {
             const transformation = createUpdatePropertyLiteralsValueTransformation({
-                entity: productEntity,
-                property: countriesProperty,
+                entitySet: productEntity,
+                propertySet: countriesProperty,
                 literals: {
                     from: { value: 'United States' },
                     to: { value: 'http://publications.europa.eu/resource/authority/country/USA' },

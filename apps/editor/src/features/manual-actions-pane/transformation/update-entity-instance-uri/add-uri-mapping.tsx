@@ -5,11 +5,11 @@ import { LabelInput } from '../../utils/general-label-input/label-input';
 import { useUriInput } from '../../utils/uri/use-uri-input';
 import { UriLabelInput } from '../../utils/uri/uri-label-input';
 import { Dropdown } from '../../utils/dropdown';
-import { EntityInstanceUriMapping } from '@klofan/instances/transform';
+import { EntityUriMapping } from '@klofan/instances/transform';
 
 export type AddUriMappingProps = {
     entity: EntitySet;
-    addUriMapping: (mapping: EntityInstanceUriMapping) => void;
+    addUriMapping: (mapping: EntityUriMapping) => void;
 };
 
 export function AddUriMapping({ entity, addUriMapping }: AddUriMappingProps) {

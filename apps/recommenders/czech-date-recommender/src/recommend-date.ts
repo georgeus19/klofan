@@ -18,7 +18,7 @@ export async function recommendDate({
     schema: Schema;
     instances: Instances;
 }): Promise<Recommendation[]> {
-    const literalPropertyInstances = await Promise.all(
+    const literalProperties = await Promise.all(
         schema.entitySets().flatMap((entity) =>
             getProperties(schema, entity.id)
                 .map((property) => ({ entity, property }))
@@ -26,8 +26,8 @@ export async function recommendDate({
                 .map(async ({ entity, property }) => {
                     const propertyInstances = await instances.properties(entity.id, property.id);
                     return {
-                        entity,
-                        property,
+                        entitySet: entity,
+                        propertySet: property,
                         propertyInstances,
                     };
                 })
@@ -38,7 +38,7 @@ export async function recommendDate({
 
     const description = `Proposing to change czech date format DD.MM.YYYY to standard xsd:dateTime YYYY-MM-DD.`;
     const category = 'Date';
-    const recommendations: Recommendation[] = literalPropertyInstances
+    const recommendations: Recommendation[] = literalProperties
         .filter(
             ({ propertyInstances }) =>
                 propertyInstances.filter(
@@ -48,11 +48,11 @@ export async function recommendDate({
                         ).length > 0
                 ).length > 0
         )
-        .map(({ entity, property }) => {
+        .map(({ entitySet, propertySet }) => {
             return {
                 transformations: createUpdatePropertyLiteralsPatternTransformation({
-                    entity: entity,
-                    property: toPropertySet(property),
+                    entitySet: entitySet,
+                    propertySet: toPropertySet(propertySet),
                     literals: {
                         matchPattern: czechDateRegExp.source,
                         replacementPattern: replacementPattern,

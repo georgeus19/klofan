@@ -3,6 +3,9 @@ import { ImportSchemaAndInstances } from '../update-operations/import-schema-and
 import { TransformSchemaAndInstances } from '../update-operations/transform-schema-and-instances-operation';
 import { RawEditor } from './history';
 
+/**
+ * All types of operations that update editor history so that it can be reconstructed from them (e.g. for import, export).
+ */
 export type UpdateOperation = {
     updatedEditor: RawEditor;
 } & (InitialOperation | UpdateDiagram | ImportSchemaAndInstances | TransformSchemaAndInstances);

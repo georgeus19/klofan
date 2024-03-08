@@ -34,13 +34,13 @@ export function CreateEntityProperty() {
         setEdges: diagram.setEdges,
         setUsedInstanceMapping,
         usedInstanceMapping: usedInstanceMapping,
-        source: source as { entity: EntitySet; instances: Entity[] },
-        target: target as { entity: EntitySet; instances: Entity[] },
+        source: source as { entitySet: EntitySet; entities: Entity[] },
+        target: target as { entitySet: EntitySet; entities: Entity[] },
     };
 
     return (
         <div>
-            <Header label='Create EntitySet PropertySet'></Header>
+            <Header label='Create Properties'></Header>
             <LabelInput
                 label='Name'
                 value={property.name}
@@ -58,10 +58,10 @@ export function CreateEntityProperty() {
             <div>
                 <PropertyEndsNodesSelector
                     {...propertyEndsSelection}
-                    sourceEntity={source.entity}
-                    targetEntity={target.entity}
+                    sourceEntity={source.entitySet}
+                    targetEntity={target.entitySet}
                 ></PropertyEndsNodesSelector>
-                {source.entity && target.entity && (
+                {source.entitySet && target.entitySet && (
                     <>
                         <div className='text-center p-1 rounded border-2 border-slate-400'>
                             Instance Mapping

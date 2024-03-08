@@ -1,23 +1,23 @@
 import { useMemo, useState } from 'react';
 import { PropertySet, EntitySet } from '@klofan/schema/representation';
-import { useEntityInstanceToLiteralInstanceDiagram } from '../bipartite-diagram/hooks/use-entity-instance-to-literal-instance-diagram';
+import { useEntityToLiteralDiagram } from '../bipartite-diagram/hooks/use-entity-to-literal-diagram.ts';
 import { BipartiteDiagram } from '../bipartite-diagram/bipartite-diagram';
 import EntityInstanceSourceNode from '../bipartite-diagram/nodes/entity-instance-source-node';
-import { createMovePropertyTransformation } from '@klofan/transform';
+import { createMovePropertySetTransformation } from '@klofan/transform';
 import LiteralTargetNode from '../bipartite-diagram/nodes/literal-target-node';
 import { ActionOkCancel } from '../utils/action-ok-cancel';
 import { Header } from '../utils/header';
 import { LabelReadonlyInput } from '../utils/general-label-input/label-readonly-input';
 import { useEditorContext } from '../../editor/editor-context';
 import { Dropdown } from '../utils/dropdown';
-import { EntityNodeSelector } from '../utils/diagram-node-selection/entity-selector/entity-node-selector';
-import { useEntityNodeSelector } from '../utils/diagram-node-selection/entity-selector/use-entity-node-selector';
+import { EntitySetNodeSelector } from '../utils/diagram-node-selection/entity-set-selector/entity-set-node-selector.tsx';
+import { useEntitySetNodeSelector } from '../utils/diagram-node-selection/entity-set-selector/use-entity-set-node-selector.ts';
 import { Mapping } from '@klofan/instances/transform';
 import { PreserveButton } from '../utils/mapping/preserve-button';
 import { ManualButton } from '../utils/mapping/manual-button';
-import { useEntityInstances } from '../utils/use-entity-instances';
+import { useEntities } from '../utils/use-entities.ts';
 import { Connection } from 'reactflow';
-import { showEntityInstanceToLiteralInstanceDiagramHelp } from '../../help/content/show-entity-instance-to-literal-instance-diagram-help';
+import { showEntityToLiteralDiagramHelp } from '../../help/content/show-entity-to-literal-diagram-help.tsx';
 
 export interface MoveLiteralPropertyProps {
     entity: EntitySet;
@@ -36,22 +36,22 @@ export function MoveLiteralProperty({
     } = useEditorContext();
 
     const [sourceEntity, setSourceEntity] = useState<EntitySet>(originalSourceEntity);
-    const sourceEntitySelector = useEntityNodeSelector((entity: EntitySet) => {
+    const sourceEntitySelector = useEntitySetNodeSelector((entity: EntitySet) => {
         setSourceEntity(entity);
-        showEntityInstanceToLiteralInstanceDiagramHelp(help);
+        showEntityToLiteralDiagramHelp(help);
     });
-    const { entityInstances: sourceInstances } = useEntityInstances(sourceEntity);
-    const source = { entity: sourceEntity, instances: sourceInstances };
+    const { entities: sourceEntities } = useEntities(sourceEntity);
+    const source = { entitySet: sourceEntity, entities: sourceEntities };
 
     const { sourceNodes, targetNodes, edges, setEdges, onConnect, getPropertyInstances, layout } =
-        useEntityInstanceToLiteralInstanceDiagram(source, property.id);
+        useEntityToLiteralDiagram(source, property.id);
 
-    const { entityInstances: originalSourceInstances } = useEntityInstances(originalSourceEntity);
-    const originalSource = { entity: originalSourceEntity, instances: originalSourceInstances };
+    const { entities: originalSourceEntities } = useEntities(originalSourceEntity);
+    const originalSource = { entitySet: originalSourceEntity, entities: originalSourceEntities };
 
     const [usedInstanceMapping, setUsedInstanceMapping] = useState<Mapping>({
         type: 'manual-mapping',
-        propertyInstances: [],
+        properties: [],
     });
 
     const {
@@ -59,16 +59,16 @@ export function MoveLiteralProperty({
         targetNodes: originalTargetNodes,
         edges: originalEdges,
         layout: originalLayout,
-    } = useEntityInstanceToLiteralInstanceDiagram(originalSource, property.id);
+    } = useEntityToLiteralDiagram(originalSource, property.id);
 
     const moveProperty = () => {
-        const transformation = createMovePropertyTransformation(schema, {
+        const transformation = createMovePropertySetTransformation(schema, {
             originalSource: originalSourceEntity.id,
-            property: property.id,
+            propertySet: property.id,
             newSource: sourceEntity.id,
             instanceMapping:
                 usedInstanceMapping.type === 'manual-mapping'
-                    ? { type: 'manual-mapping', propertyInstances: getPropertyInstances() }
+                    ? { type: 'manual-mapping', properties: getPropertyInstances() }
                     : usedInstanceMapping,
         });
         updateSchemaAndInstances(transformation);
@@ -108,11 +108,11 @@ export function MoveLiteralProperty({
                 ></BipartiteDiagram>
             </Dropdown>
             <Dropdown headerLabel='New Mapping' showInitially>
-                <EntityNodeSelector
+                <EntitySetNodeSelector
                     label='Source'
                     {...sourceEntitySelector}
-                    entity={sourceEntity}
-                ></EntityNodeSelector>
+                    entitySet={sourceEntity}
+                ></EntitySetNodeSelector>
                 <div className='grid grid-cols-2'>
                     <PreserveButton
                         setEdges={setEdges}
@@ -121,11 +121,11 @@ export function MoveLiteralProperty({
                         source={source}
                         target={{ item: schema.literalSet(property.value) }}
                         originalSource={{
-                            entity: originalSourceEntity,
-                            instances: originalSourceInstances,
+                            entitySet: originalSourceEntity,
+                            entities: originalSourceEntities,
                         }}
                         originalTarget={{ item: schema.literalSet(property.value) }}
-                        property={property}
+                        propertySet={property}
                     ></PreserveButton>
                     <ManualButton
                         setEdges={setEdges}
@@ -141,7 +141,7 @@ export function MoveLiteralProperty({
                     edgeTypes={edgeTypes}
                     layout={layout}
                     onConnect={(connection: Connection) => {
-                        setUsedInstanceMapping({ type: 'manual-mapping', propertyInstances: [] });
+                        setUsedInstanceMapping({ type: 'manual-mapping', properties: [] });
                         onConnect(connection);
                     }}
                 ></BipartiteDiagram>

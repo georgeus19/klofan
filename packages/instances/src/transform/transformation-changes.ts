@@ -1,23 +1,23 @@
 import { identifier } from '@klofan/utils';
 import { Transformation } from './transformations/transformation';
-import { createEntityInstancesChanges } from './transformations/create-entity-instances';
-import { createPropertyInstancesChanges } from './transformations/create-property-instances';
-import { movePropertyInstancesChanges } from './transformations/move-property-instances';
-import { updateEntityInstancesUrisChanges } from './transformations/update-entity-instances-uris';
+import { createEntitiesChanges } from './transformations/create-entities';
+import { createPropertiesChanges } from './transformations/create-properties';
+import { movePropertiesChanges } from './transformations/move-properties';
+import { updateEntitiesUrisChanges } from './transformations/update-entities-uris';
 import { updatePropertyLiteralsChanges } from './transformations/update-property-literals';
 
 export type TransformationChanges = { entities: identifier[]; properties: identifier[] };
 
 export function transformationChanges(transformation: Transformation): TransformationChanges {
     switch (transformation.type) {
-        case 'create-entity-instances':
-            return createEntityInstancesChanges(transformation);
-        case 'create-property-instances':
-            return createPropertyInstancesChanges(transformation);
-        case 'move-property-instances':
-            return movePropertyInstancesChanges(transformation);
-        case 'update-entity-instances-uris':
-            return updateEntityInstancesUrisChanges(transformation);
+        case 'create-entities':
+            return createEntitiesChanges(transformation);
+        case 'create-properties':
+            return createPropertiesChanges(transformation);
+        case 'move-properties':
+            return movePropertiesChanges(transformation);
+        case 'update-entities-uris':
+            return updateEntitiesUrisChanges(transformation);
         case 'update-property-literals':
             return updatePropertyLiteralsChanges(transformation);
     }

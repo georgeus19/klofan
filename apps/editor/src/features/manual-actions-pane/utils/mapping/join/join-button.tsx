@@ -19,11 +19,11 @@ export function JoinButton({
 }: JoinButtonProps) {
     const { schema } = useEditorContext();
     const sourceHasLiterals =
-        source.entity.properties
+        source.entitySet.properties
             .map((propertyId) => schema.propertySet(propertyId))
             .filter((property) => isLiteralSet(schema.item(property.value))).length > 0;
     const targetHasLiterals =
-        target.entity.properties
+        target.entitySet.properties
             .map((propertyId) => schema.propertySet(propertyId))
             .filter((property) => isLiteralSet(schema.item(property.value))).length > 0;
     const disabled = !sourceHasLiterals || !targetHasLiterals;
@@ -40,8 +40,8 @@ export function JoinButton({
                 } else {
                     setUsedInstanceMapping({
                         type: 'join-mapping-detail',
-                        source: source.entity,
-                        target: target.entity,
+                        source: source.entitySet,
+                        target: target.entitySet,
                     });
                 }
             }}

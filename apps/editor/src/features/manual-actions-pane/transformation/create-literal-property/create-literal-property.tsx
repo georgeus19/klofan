@@ -4,7 +4,7 @@ import { ActionOkCancel } from '../../utils/action-ok-cancel';
 import { Header } from '../../utils/header';
 import { LabelInput } from '../../utils/general-label-input/label-input';
 import { useCreateLiteralProperty } from './use-create-literal-property';
-import { EntityNodeSelector } from '../../utils/diagram-node-selection/entity-selector/entity-node-selector';
+import { EntitySetNodeSelector } from '../../utils/diagram-node-selection/entity-set-selector/entity-set-node-selector.tsx';
 import { UriLabelInput } from '../../utils/uri/uri-label-input';
 import { ErrorMessage } from '../../utils/error-message';
 
@@ -35,11 +35,11 @@ export function CreateLiteralProperty() {
                 usePrefix
                 id='uri'
             ></UriLabelInput>
-            <EntityNodeSelector
+            <EntitySetNodeSelector
                 label='Source'
                 {...propertySourceSelector}
-                entity={sourceEntity}
-            ></EntityNodeSelector>
+                entitySet={sourceEntity}
+            ></EntitySetNodeSelector>
             {sourceEntity && (
                 <BipartiteDiagram
                     sourceNodes={diagram.sourceNodes}

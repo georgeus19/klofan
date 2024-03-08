@@ -2,12 +2,12 @@ import { Writer } from 'n3';
 import { ActionOkCancel } from '../../utils/action-ok-cancel';
 import { Dropdown } from '../../utils/dropdown';
 import { Header } from '../../utils/header';
-import { EntityInstanceUris } from './entity-instance-uris';
+import { EntityUris } from './entity-uris.tsx';
 import { PropertyUris } from './property-uris';
 import { save } from '@klofan/instances/save';
 import { useEditorContext } from '../../../editor/editor-context';
 import { useUriInput } from '../../utils/uri/use-uri-input';
-import { BlankNodeInstanceBuilder, NamedNodeInstanceBuilder } from '@klofan/instances/save';
+import { BlankNodeBuilder, NamedNodeBuilder } from '@klofan/instances/save';
 import { EntitySet } from '@klofan/schema/representation';
 import { download } from '../download';
 
@@ -21,14 +21,14 @@ export function ExportInstances() {
 
     const exportInstances = () => {
         const writer = new Writer();
-        const entityInstanceUriBuilders = Object.fromEntries(
+        const entityRepresentationBuilders = Object.fromEntries(
             schema
                 .entitySets()
-                .map((entity) => [
-                    entity.id,
-                    entity.uri
-                        ? new NamedNodeInstanceBuilder(entity as EntitySet & { uri: string })
-                        : new BlankNodeInstanceBuilder(entity),
+                .map((entitySet) => [
+                    entitySet.id,
+                    entitySet.uri
+                        ? new NamedNodeBuilder(entitySet as EntitySet & { uri: string })
+                        : new BlankNodeBuilder(entitySet),
                 ])
         );
         save(
@@ -36,7 +36,7 @@ export function ExportInstances() {
             schema,
             {
                 defaultPropertyUri: defaultPropertyUri.asIri(),
-                entityInstanceUriBuilders: entityInstanceUriBuilders,
+                entityRepresentationBuilders: entityRepresentationBuilders,
             },
             writer
         ).then(() => {
@@ -53,10 +53,10 @@ export function ExportInstances() {
     return (
         <div>
             <Header label='Export Instances'></Header>
-            <Dropdown headerLabel='EntitySet Uris' showInitially>
-                <EntityInstanceUris className='mx-2'></EntityInstanceUris>
+            <Dropdown headerLabel='Entity Uris' showInitially>
+                <EntityUris className='mx-2'></EntityUris>
             </Dropdown>
-            <Dropdown headerLabel='PropertySet Uris' showInitially>
+            <Dropdown headerLabel='Property Uris' showInitially>
                 <PropertyUris
                     className='mx-2'
                     defaultPropertyUri={defaultPropertyUri}

@@ -12,6 +12,9 @@ export function currentEditor(history: RawHistory): RawEditor {
     return history.operations[history.currentOperation].updatedEditor;
 }
 
+/**
+ * Store history of editor operations and enable updating it - update current state, add new state, undo, redo.
+ */
 export function useHistory(): EditorHistory {
     const [history, setHistory] = useState<RawHistory>({
         operations: [{ updatedEditor: emptyState, type: 'initial-operation' }],

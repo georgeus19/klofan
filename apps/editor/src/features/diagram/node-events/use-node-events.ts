@@ -1,26 +1,25 @@
-import { PropertySet, EntitySet } from '@klofan/schema/representation';
+import { EntitySet } from '@klofan/schema/representation';
 import { Schema } from '@klofan/schema';
 import { ManualActionsPane } from '../../manual-actions-pane/use-manual-actions-pane';
-import { EntityNodeEventHandler } from './entity-node-event-handler';
+import { EntitySetNodeEventHandler } from './entity-set-node-event-handler.ts';
 import { NodeSelection } from '../use-node-selection';
 import { SchemaEdge, SchemaNode } from '../raw-diagram';
-import { PropertySelection } from '../use-property-selection';
 
+/**
+ * Logic for interacting with schema diagram with not only layouting effects. E.g. showing entity set detail when node is clicked.
+ */
 export function useNodeEvents({
     diagram,
     schema,
     nodeSelection,
-    edgeSelection,
     manualActions,
 }: {
     diagram: { nodes: SchemaNode[]; edges: SchemaEdge[] };
     schema: Schema;
     nodeSelection: NodeSelection;
-
-    edgeSelection: PropertySelection;
     manualActions: ManualActionsPane;
 }) {
-    const entityNodeEventHandler: EntityNodeEventHandler = {
+    const entitySetNodeEventHandler: EntitySetNodeEventHandler = {
         onNodeClick: (entity: EntitySet) => {
             const selectedNode = diagram.nodes.find((node) => node.id === entity.id);
             if (selectedNode) {
@@ -28,11 +27,9 @@ export function useNodeEvents({
                 manualActions.showEntityDetail(schema.entitySet(selectedNode.id));
             }
         },
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        onPropertyClick: (_property: PropertySet) => {},
     };
 
     return {
-        entityNodeHandler: entityNodeEventHandler,
+        entitySetNodeEventHandler: entitySetNodeEventHandler,
     };
 }

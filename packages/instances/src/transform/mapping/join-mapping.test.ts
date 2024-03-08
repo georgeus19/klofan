@@ -1,11 +1,7 @@
 import { describe, expect, test } from '@jest/globals';
 import { Property } from '../../representation/property';
 import { RawInstances, initEntityInstances } from '../../representation/raw-instances';
-import {
-    JoinMapping,
-    getJoinMappingPropertyInstances,
-    getJoinedPropertyInstances,
-} from './join-mapping';
+import { JoinMapping, getJoinMappingProperties, getJoinedProperties } from './join-mapping';
 import { Entity } from '../../representation/entity';
 import { createEntitySet, createPropertySet, PropertySet } from '@klofan/schema/representation';
 
@@ -85,8 +81,8 @@ describe('Transform Instances', () => {
                     value: '2',
                 });
                 const source = {
-                    instances: sourceEntityInstances,
-                    joinProperty: sourceJoinProperty,
+                    entities: sourceEntityInstances,
+                    joinPropertySet: sourceJoinProperty,
                 };
 
                 const targetJoinProperty: PropertySet = createPropertySet({
@@ -95,11 +91,11 @@ describe('Transform Instances', () => {
                     value: '3',
                 });
                 const target = {
-                    instances: targetEntityInstances,
-                    joinProperty: targetJoinProperty,
+                    entities: targetEntityInstances,
+                    joinPropertySet: targetJoinProperty,
                 };
 
-                const propertyInstances = getJoinedPropertyInstances(source, target);
+                const propertyInstances = getJoinedProperties(source, target);
                 expect(propertyInstances).toEqual(expectedPropertyInstances);
             });
             test('getJoinMappingPropertyInstances', () => {
@@ -132,9 +128,9 @@ describe('Transform Instances', () => {
                 const mapping: JoinMapping = {
                     type: 'join-mapping',
                     source: createEntitySet({ id: '0', name: '0', properties: ['IDREF'] }),
-                    sourceJoinProperty: sourceJoinProperty,
+                    sourceJoinPropertySet: sourceJoinProperty,
                     target: createEntitySet({ id: '1', name: '1', properties: ['ID'] }),
-                    targetJoinProperty: targetJoinProperty,
+                    targetJoinPropertySet: targetJoinProperty,
                 };
                 const instances: RawInstances = {
                     entities: {
@@ -158,7 +154,7 @@ describe('Transform Instances', () => {
                     },
                 };
 
-                const propertyInstances = getJoinMappingPropertyInstances(instances, mapping);
+                const propertyInstances = getJoinMappingProperties(instances, mapping);
                 expect(propertyInstances).toEqual(expectedPropertyInstances);
             });
         });

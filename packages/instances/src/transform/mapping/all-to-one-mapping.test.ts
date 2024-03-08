@@ -1,8 +1,8 @@
 import { describe, expect, test } from '@jest/globals';
 import {
     AllToOneMapping,
-    getAllToOneMappingPropertyInstances,
-    getAllToOnePropertyInstances,
+    getAllToOneMappingProperties,
+    getAllToOneProperties,
 } from './all-to-one-mapping';
 import { Property } from '../../representation/property';
 import { RawInstances, initEntityInstances } from '../../representation/raw-instances';
@@ -56,7 +56,7 @@ describe('Transform Instances', () => {
                     },
                 ];
 
-                const propertyInstances = getAllToOnePropertyInstances(sourceInstances);
+                const propertyInstances = getAllToOneProperties(sourceInstances);
                 expect(propertyInstances).toEqual(expectedPropertyInstances);
             });
             test('getAllToOneMappingPropertyInstances', () => {
@@ -120,7 +120,7 @@ describe('Transform Instances', () => {
                     properties: {},
                 };
 
-                const propertyInstances = getAllToOneMappingPropertyInstances(instances, mapping);
+                const propertyInstances = getAllToOneMappingProperties(instances, mapping);
                 expect(propertyInstances).toEqual(expectedPropertyInstances);
             });
         });

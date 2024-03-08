@@ -1,18 +1,18 @@
 import { useState } from 'react';
 import { EntitySet } from '@klofan/schema/representation';
-import { useEntityNodeSelector } from '../../utils/diagram-node-selection/entity-selector/use-entity-node-selector';
-import { EntityNodeSelector } from '../../utils/diagram-node-selection/entity-selector/entity-node-selector';
+import { useEntitySetNodeSelector } from '../../utils/diagram-node-selection/entity-set-selector/use-entity-set-node-selector.ts';
+import { EntitySetNodeSelector } from '../../utils/diagram-node-selection/entity-set-selector/entity-set-node-selector.tsx';
 import { Header } from '../../utils/header';
 import { ActionOkCancel } from '../../utils/action-ok-cancel';
-import { useEntityInstances } from '../../utils/use-entity-instances';
+import { useEntities } from '../../utils/use-entities.ts';
 import { useEditorContext } from '../../../editor/editor-context';
 import { AddUriMapping } from './add-uri-mapping';
 import { LabelReadonlyInput } from '../../utils/general-label-input/label-readonly-input';
 import { Dropdown } from '../../utils/dropdown';
-import { EntityInstanceView } from '../../utils/entity-instance-view';
-import { EntityInstanceUriMapping } from '@klofan/instances/transform';
-import { createUpdateEntityInstancesUris } from '@klofan/transform';
-import { showUpdateEntityInstancesUrisHelp } from '../../../help/content/show-update-entity-instances-uris-help';
+import { EntityView } from '../../utils/entity-view.tsx';
+import { EntityUriMapping } from '@klofan/instances/transform';
+import { createUpdateEntitiesUris } from '@klofan/transform';
+import { showUpdateEntitiesUrisHelp } from '../../../help/content/show-update-entities-uris-help.tsx';
 import { ErrorMessage } from '../../utils/error-message';
 
 export interface UpdateEntityInstancesUrisShown {
@@ -21,17 +21,17 @@ export interface UpdateEntityInstancesUrisShown {
 
 export function UpdateEntityInstancesUris() {
     const { manualActions, schema, updateSchemaAndInstances, help } = useEditorContext();
-    const [entity, setEntity] = useState<EntitySet | null>(null);
+    const [entitySet, setEntitySet] = useState<EntitySet | null>(null);
     const [error, setError] = useState<string | null>(null);
 
-    const entityNodeSelector = useEntityNodeSelector((entity: EntitySet) => {
-        setEntity(entity);
-        showUpdateEntityInstancesUrisHelp(help);
+    const entitySetNodeSelector = useEntitySetNodeSelector((entitySet: EntitySet) => {
+        setEntitySet(entitySet);
+        showUpdateEntitiesUrisHelp(help);
     });
-    const { entityInstances } = useEntityInstances(entity);
-    const [uriMappings, setUriMappings] = useState<EntityInstanceUriMapping[]>([]);
+    const { entities } = useEntities(entitySet);
+    const [uriMappings, setUriMappings] = useState<EntityUriMapping[]>([]);
 
-    const unmappedEntityInstances = entityInstances.filter(
+    const unmappedEntityInstances = entities.filter(
         (entityInstance) =>
             uriMappings.filter(
                 (mapping) =>
@@ -41,13 +41,13 @@ export function UpdateEntityInstancesUris() {
             ).length === 0
     );
 
-    const updateEntityInstanceUris = () => {
-        if (!entity || uriMappings.length === 0) {
+    const updateEntityUris = () => {
+        if (!entitySet || uriMappings.length === 0) {
             setError('Entity must be selected. Positive number of mappings1 is necessary.');
             return;
         }
-        const transformation = createUpdateEntityInstancesUris(schema, {
-            entity: entity.id,
+        const transformation = createUpdateEntitiesUris(schema, {
+            entitySet: entitySet.id,
             uris: uriMappings,
         });
         updateSchemaAndInstances(transformation);
@@ -58,7 +58,7 @@ export function UpdateEntityInstancesUris() {
         manualActions.onActionDone();
     };
 
-    const addUriMapping = (uriMapping: EntityInstanceUriMapping) => {
+    const addUriMapping = (uriMapping: EntityUriMapping) => {
         setUriMappings([uriMapping, ...uriMappings]);
     };
 
@@ -66,17 +66,17 @@ export function UpdateEntityInstancesUris() {
         <div>
             <Header label='Update EntitySet Instances Uris'></Header>
 
-            <EntityNodeSelector
+            <EntitySetNodeSelector
                 label='EntitySet'
-                entity={entity}
-                onSelectStart={entityNodeSelector.onSelectStart}
-            ></EntityNodeSelector>
+                entitySet={entitySet}
+                onSelectStart={entitySetNodeSelector.onSelectStart}
+            ></EntitySetNodeSelector>
 
-            {entity && (
-                <AddUriMapping entity={entity} addUriMapping={addUriMapping}></AddUriMapping>
+            {entitySet && (
+                <AddUriMapping entity={entitySet} addUriMapping={addUriMapping}></AddUriMapping>
             )}
 
-            {entity && (
+            {entitySet && (
                 <Dropdown headerLabel='Created Uri Mappings' showInitially>
                     {uriMappings.map((mapping, index) => (
                         <div
@@ -107,24 +107,24 @@ export function UpdateEntityInstancesUris() {
                     ))}
                 </Dropdown>
             )}
-            {entity && (
+            {entitySet && (
                 <Dropdown
                     headerLabel='EntitySet Instances Without Uri Or Not Matched'
                     showInitially
                 >
-                    {unmappedEntityInstances.map((entityInstance) => (
-                        <EntityInstanceView
-                            key={`${entity.id}.${entityInstance.id}`}
+                    {unmappedEntityInstances.map((entity) => (
+                        <EntityView
+                            key={`${entitySet.id}.${entity.id}`}
+                            entitySet={entitySet}
                             entity={entity}
-                            entityInstance={entityInstance}
                             showLiteralProperties
                             className='mt-0 mx-2'
-                        ></EntityInstanceView>
+                        ></EntityView>
                     ))}
                 </Dropdown>
             )}
             <ErrorMessage error={error}></ErrorMessage>
-            <ActionOkCancel onOk={updateEntityInstanceUris} onCancel={cancel}></ActionOkCancel>
+            <ActionOkCancel onOk={updateEntityUris} onCancel={cancel}></ActionOkCancel>
         </div>
     );
 }

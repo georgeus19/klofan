@@ -5,18 +5,17 @@ import {
     getProperties,
 } from '@klofan/schema/representation';
 import {
-    createUpdateEntityUriTransformation,
-    createUpdatePropertyUriTransformation,
+    createUpdateEntitySetUriTransformation,
+    createUpdatePropertySetUriTransformation,
     createUpdateRelationNameTransformation,
     createUpdateItemNameTransformation,
 } from '@klofan/transform';
 import { UncontrollableLabelInput } from '../utils/general-label-input/uncontrollable-label-input';
 import { Dropdown } from '../utils/dropdown';
 import { useEditorContext } from '../../editor/editor-context';
-import { useEntityInstances } from '../utils/use-entity-instances';
+import { useEntities } from '../utils/use-entities.ts';
 import { identifier } from '@klofan/utils';
 import { UncontrollableUriLabelInput } from '../utils/uri/uncontrollable-uri-label-input';
-import { EntityInstanceView } from '../utils/entity-instance-view';
 import { Header } from '../utils/header';
 
 export interface EntityDetailProps {
@@ -26,7 +25,7 @@ export interface EntityDetailProps {
 export function EntityDetail({ entityId }: EntityDetailProps) {
     const { schema, updateSchemaAndInstances, manualActions } = useEditorContext();
     const entity = schema.entitySet(entityId);
-    const { entityInstances } = useEntityInstances(entity);
+    const { entities } = useEntities(entity);
 
     const propertySets = getProperties(schema, entity.id);
 
@@ -40,7 +39,7 @@ export function EntityDetail({ entityId }: EntityDetailProps) {
     const handleEntityUriChange = (uri: string) => {
         const uriNotUpdated = (entity.uri === undefined && uri === '') || entity.uri === uri;
         if (!uriNotUpdated) {
-            const transformation = createUpdateEntityUriTransformation(schema, entity.id, uri);
+            const transformation = createUpdateEntitySetUriTransformation(schema, entity.id, uri);
             updateSchemaAndInstances(transformation);
         }
     };
@@ -83,7 +82,7 @@ export function EntityDetail({ entityId }: EntityDetailProps) {
                     const uriNotUpdated =
                         (property.uri === undefined && uri === '') || property.uri === uri;
                     if (!uriNotUpdated) {
-                        const transformation = createUpdatePropertyUriTransformation(
+                        const transformation = createUpdatePropertySetUriTransformation(
                             schema,
                             property.id,
                             uri

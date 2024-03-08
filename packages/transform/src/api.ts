@@ -1,10 +1,10 @@
-export { createCreateEntityTransformation } from './factory/create-entity-transformation';
-export { createCreatePropertyTransformation } from './factory/create-property-transformation';
-export { createUpdateEntityInstancesUris } from './factory/update-entity-instances-uris';
-export { createMovePropertyTransformation } from './factory/move-property-transformation';
-export { createUpdateEntityUriTransformation } from './factory/update-entity-uri-transformation';
+export { createCreateEntitySetTransformation } from './factory/create-entity-set-transformation';
+export { createCreatePropertySetTransformation } from './factory/create-property-set-transformation';
+export { createUpdateEntitiesUris } from './factory/update-entities-uris';
+export { createMovePropertySetTransformation } from './factory/move-property-set-transformation';
+export { createUpdateEntitySetUriTransformation } from './factory/update-entity-set-uri-transformation';
 export { createUpdateItemNameTransformation } from './factory/update-item-name-transformation';
-export { createUpdatePropertyUriTransformation } from './factory/update-property-uri-transformation';
+export { createUpdatePropertySetUriTransformation } from './factory/update-property-uri-transformation';
 export { createUpdateRelationNameTransformation } from './factory/update-relation-name-transformation';
 export { createUpdatePropertyLiteralsValueTransformation } from './factory/update-property-literals-value-transformation';
 export { createUpdatePropertyLiteralsPatternTransformation } from './factory/update-property-literals-pattern-transformation';

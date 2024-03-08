@@ -9,26 +9,26 @@ import _ from 'lodash';
 import { Literal } from '../representation/literal';
 
 export function loadInstances(entityTree: EntityTreeNode): Instances {
-    const entities = fillInstanceEntities({}, entityTree);
-    const properties = fillInstanceProperties({}, entityTree);
+    const entities = fillEntities({}, entityTree);
+    const properties = fillProperties({}, entityTree);
     return new InMemoryInstances({
         entities: entities,
         properties: properties,
     });
 }
 
-function fillInstanceProperties(
+function fillProperties(
     properties: { [key: string]: Property[] },
     entityTree: EntityTreeNode
 ): { [key: string]: Property[] } {
     Object.values(entityTree.properties).forEach((propertyInfo) => {
-        let targetInstanceIndex = 0;
+        let targetEntityIndex = 0;
 
         const instanceProperties = propertyInfo.instances.map((instanceInfo) => {
-            const instanceLinks: Property = {
+            const property: Property = {
                 targetEntities: _.range(
-                    targetInstanceIndex,
-                    targetInstanceIndex + instanceInfo.instances
+                    targetEntityIndex,
+                    targetEntityIndex + instanceInfo.instances
                 ),
                 literals: instanceInfo.literals
                     .filter(
@@ -37,22 +37,22 @@ function fillInstanceProperties(
                     )
                     .map((literal): Literal => ({ value: literal.toString() })),
             };
-            targetInstanceIndex += instanceInfo.instances;
+            targetEntityIndex += instanceInfo.instances;
 
-            return instanceLinks;
+            return property;
         });
 
         properties[propertyKey(entityTree.id, propertyInfo.id)] = instanceProperties;
     });
 
     Object.values(entityTree.properties).forEach((propertyInfo) =>
-        fillInstanceProperties(properties, propertyInfo.targetEntity)
+        fillProperties(properties, propertyInfo.targetEntity)
     );
 
     return properties;
 }
 
-function fillInstanceEntities(
+function fillEntities(
     entities: {
         [key: identifier]: { count: number; instances: { uri?: string }[] };
     },
@@ -63,7 +63,7 @@ function fillInstanceEntities(
         instances: initEntityInstances(entityTree.instanceCount),
     };
     Object.values(entityTree.properties).forEach((propertyInfo) => {
-        fillInstanceEntities(entities, propertyInfo.targetEntity);
+        fillEntities(entities, propertyInfo.targetEntity);
     });
     return entities;
 }

@@ -1,12 +1,15 @@
 import { Schema } from '@klofan/schema';
 import { RawDiagram } from '../raw-diagram';
-import { reflectEntities } from './reflect-entities';
-import { reflectProperties } from './reflect-properties';
+import { reflectEntitySets } from './reflect-entity-sets.ts';
+import { reflectPropertySets } from './reflect-property-sets.ts';
 import { styleEdges } from '../edges/style-edges';
 
+/**
+ * Return updated diagram which reflect any changes to schema.
+ */
 export function reflectSchema(diagram: RawDiagram, schema: Schema): RawDiagram {
     return {
-        nodes: reflectEntities(diagram.nodes, schema),
-        edges: styleEdges(reflectProperties(diagram.edges, schema), 3),
+        nodes: reflectEntitySets(diagram.nodes, schema),
+        edges: styleEdges(reflectPropertySets(diagram.edges, schema), 3),
     };
 }

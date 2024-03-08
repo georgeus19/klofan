@@ -64,27 +64,35 @@ export const recommend = endpointErrorHandler(
         console.log(getCodes);
 
         const codes = await sparqlStore.selectQuery(getCodes);
-        const pairs: { entity: string; property: string }[] = schema
+        const pairs: { entitySet: string; property: string }[] = schema
             .entitySets()
             .flatMap((entity) =>
-                entity.properties.map((propertyId) => ({ entity: entity.id, property: propertyId }))
+                entity.properties.map((propertyId) => ({
+                    entitySet: entity.id,
+                    property: propertyId,
+                }))
             );
         const newInstances: RawInstances = { ...(instances.raw() as RawInstances) };
         for (const p of pairs) {
-            const propertyInstances: Property[] = await instances.properties(p.entity, p.property);
-            newInstances.properties[`${p.entity}.${p.property}`] = propertyInstances.map((pi) => {
-                pi.literals = pi.literals.map((literal) => {
-                    const matchingRow: any = _.find(
-                        codes,
-                        (row: any) => row[code.value].value === literal.value
-                    );
-                    if (matchingRow) {
-                        return { value: matchingRow[codeEntity.value].value };
-                    }
-                    return literal;
-                });
-                return pi;
-            });
+            const propertyInstances: Property[] = await instances.properties(
+                p.entitySet,
+                p.property
+            );
+            newInstances.properties[`${p.entitySet}.${p.property}`] = propertyInstances.map(
+                (pi) => {
+                    pi.literals = pi.literals.map((literal) => {
+                        const matchingRow: any = _.find(
+                            codes,
+                            (row: any) => row[code.value].value === literal.value
+                        );
+                        if (matchingRow) {
+                            return { value: matchingRow[codeEntity.value].value };
+                        }
+                        return literal;
+                    });
+                    return pi;
+                }
+            );
         }
         console.log('ewInstances', newInstances);
         response.status(200).send(newInstances);
