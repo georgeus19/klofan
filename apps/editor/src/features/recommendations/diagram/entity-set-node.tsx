@@ -20,7 +20,7 @@ export default function EntitySetNode({
 }: NodeProps<EntitySet>) {
     const { diagram, schema } = useDiagramContext();
     const { shownRecommendationDetail } = useRecommendationsContext();
-    const propertySelection = diagram.propertySelection;
+    const propertySelection = diagram.propertySetSelection;
 
     const { matchPrefix } = usePrefixesContext();
 
@@ -56,22 +56,41 @@ export default function EntitySetNode({
                             ? 'bg-gradient-to-r from-yellow-200 to-rose-300'
                             : ''
                     )}
-                    onClick={() =>
+                    onClick={(event) => {
                         propertySelection.addSelectedPropertySet({
                             propertySet: toPropertySet(property),
                             entitySet: entitySet,
-                        })
-                    }
+                        });
+                        diagram.nodeSelection.clearSelectedNode();
+                        event.stopPropagation();
+                    }}
                 >
                     {pLabel(property)}
                 </div>
             );
         });
 
+    const onNodeClick = () => {
+        const selectedNode = diagram.nodes.find((node) => node.id === entitySet.id);
+        if (selectedNode) {
+            diagram.nodeSelection.addSelectedNode(selectedNode);
+            diagram.propertySetSelection.clearSelectedPropertySet();
+        }
+    };
+
     const diagramSelectedStyle = selected ? 'border border-black' : '';
     return (
         <>
-            <div className={twMerge('bg-slate-200 p-2 rounded shadow', diagramSelectedStyle)}>
+            <div
+                className={twMerge(
+                    'bg-slate-200 p-2 rounded shadow',
+                    diagramSelectedStyle,
+                    id === diagram.nodeSelection.selectedNode?.id
+                        ? diagram.nodeSelection.selectedStyle
+                        : ''
+                )}
+                onClick={onNodeClick}
+            >
                 <div>{entitySet.name}</div>
                 <div className='flex flex-col gap-1'>{literalProperties}</div>
             </div>

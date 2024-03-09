@@ -39,6 +39,7 @@ export function MoveEntityProperty({
 }: MoveEntityPropertyProps) {
     const {
         schema,
+        instances,
         updateSchemaAndInstances,
         help,
         manualActions: { onActionDone },
@@ -46,8 +47,8 @@ export function MoveEntityProperty({
 
     const originalTargetEntity = schema.entitySet(property.value);
 
-    const { entities: originalSourceInstances } = useEntities(originalSourceEntity);
-    const { entities: originalTargetInstances } = useEntities(originalTargetEntity);
+    const { entities: originalSourceInstances } = useEntities(originalSourceEntity, instances);
+    const { entities: originalTargetInstances } = useEntities(originalTargetEntity, instances);
 
     const [sourceEntity, setSourceEntity] = useState<EntitySet>(originalSourceEntity);
     const [targetEntity, setTargetEntity] = useState<EntitySet>(originalTargetEntity);
@@ -68,8 +69,14 @@ export function MoveEntityProperty({
             },
         }
     );
-    const { entities: sourceEntities, setEntities: setSourceEntities } = useEntities(sourceEntity);
-    const { entities: targetEntities, setEntities: setTargetEntities } = useEntities(targetEntity);
+    const { entities: sourceEntities, setEntities: setSourceEntities } = useEntities(
+        sourceEntity,
+        instances
+    );
+    const { entities: targetEntities, setEntities: setTargetEntities } = useEntities(
+        targetEntity,
+        instances
+    );
 
     const source = { entitySet: sourceEntity, entities: sourceEntities };
     const target = { entitySet: targetEntity, entities: targetEntities };

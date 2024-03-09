@@ -21,12 +21,14 @@ import {
 import { transformationChanges as instancesTransformationChanges } from '@klofan/instances/transform';
 import { ENTITY_SET_NODE } from '../diagram/nodes/entity-set-node.tsx';
 import { PROPERTY_SET_EDGE } from '../diagram/edges/property-set-edge.tsx';
+import { NodeSelection, useNodeSelection } from '../diagram/use-node-selection.ts';
 
 export type RecommendationDiagram = {
     nodes: SchemaNode[];
     edges: SchemaEdge[];
     onNodesChange: (changes: NodeChange[]) => void;
-    propertySelection: PropertySetSelection;
+    propertySetSelection: PropertySetSelection;
+    nodeSelection: NodeSelection;
 };
 
 export type Recommendations = {
@@ -76,8 +78,10 @@ export function useRecommendations(): Recommendations {
     const [selectedRecommendation, setSelectedRecommendation] =
         useState<RawRecommendationDetail | null>(null);
     const { schema, instances, manualActions, diagram } = useEditorContext();
-    const oldPropertySelection = usePropertySetSelection();
-    const newPropertySelection = usePropertySetSelection();
+    const oldPropertySetSelection = usePropertySetSelection();
+    const newPropertySetSelection = usePropertySetSelection();
+    const oldNodeSelection = useNodeSelection();
+    const newNodeSelection = useNodeSelection();
 
     function getRecommendations() {
         const url = 'http://localhost:5000/api/v1/recommend';
@@ -187,7 +191,8 @@ export function useRecommendations(): Recommendations {
                       nodes: selectedRecommendation.old.diagram.nodes,
                       edges: selectedRecommendation.old.diagram.edges,
                       onNodesChange: onNodesChange('old'),
-                      propertySelection: oldPropertySelection,
+                      propertySetSelection: oldPropertySetSelection,
+                      nodeSelection: oldNodeSelection,
                   },
               },
               new: {
@@ -197,7 +202,8 @@ export function useRecommendations(): Recommendations {
                       nodes: selectedRecommendation.new.diagram.nodes,
                       edges: selectedRecommendation.new.diagram.edges,
                       onNodesChange: onNodesChange('new'),
-                      propertySelection: newPropertySelection,
+                      propertySetSelection: newPropertySetSelection,
+                      nodeSelection: newNodeSelection,
                   },
               },
           }

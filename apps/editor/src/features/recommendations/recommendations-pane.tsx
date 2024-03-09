@@ -5,8 +5,9 @@ import ReactFlow, { Background, BackgroundVariant, ReactFlowProvider } from 'rea
 import { useRecommendationsContext } from './recommendations-context';
 import { edgeTypes, nodeTypes } from './use-recommendations';
 import { DiagramContextProvider } from './diagram/diagram-context';
-import { ShownDetail } from './shown-detail';
+import { LiteralPropertySetDetail } from './detail/literal-property-set-detail.tsx';
 import { Header } from '../manual-actions-pane/utils/header';
+import { EntitySetDetail } from './detail/entity-set-detail.tsx';
 
 export type RecommendationsPaneProps = {
     className?: string;
@@ -14,13 +15,19 @@ export type RecommendationsPaneProps = {
 
 export function RecommendationsPane({ className }: RecommendationsPaneProps) {
     const { manualActions } = useEditorContext();
-    const { recommendations, showRecommendationDetail, shownRecommendationDetail, getRecommendations, hideRecommendationDetail } =
-        useRecommendationsContext();
+    const {
+        recommendations,
+        showRecommendationDetail,
+        shownRecommendationDetail,
+        getRecommendations,
+        hideRecommendationDetail,
+    } = useRecommendationsContext();
 
     const recommendationsList = recommendations.map((recommendation, index) => (
         <div key={index} className='grid grid-cols-12 rounded p-1 bg-slate-500 mx-2'>
             <div className='col-span-6'>
-                Category: <span className='text-white rounded p-1  '>{recommendation.category}</span>
+                Category:{' '}
+                <span className='text-white rounded p-1  '>{recommendation.category}</span>
             </div>
             <button
                 className='col-start-10 col-span-3 rounded shadow bg-blue-200 hover:bg-blue-300 p-2'
@@ -38,7 +45,10 @@ export function RecommendationsPane({ className }: RecommendationsPaneProps) {
         <div className={twMerge('flex', className, shownRecommendationDetail ? 'w-full' : '')}>
             <div className={twMerge('bg-slate-300 flex flex-col gap-1')}>
                 <Header label='Recommendations'></Header>
-                <button className='rounded shadow bg-blue-200 hover:bg-blue-300 p-2 w-96' onClick={getRecommendations}>
+                <button
+                    className='rounded shadow bg-blue-200 hover:bg-blue-300 p-2 w-96'
+                    onClick={getRecommendations}
+                >
                     Get Recommendations
                 </button>
                 <Dropdown headerLabel='Expert' className='my-0' showInitially>
@@ -58,18 +68,25 @@ export function RecommendationsPane({ className }: RecommendationsPaneProps) {
                     </button>
                     <div className='w-1/2'>
                         <DiagramContextProvider value={shownRecommendationDetail.old}>
-                            <ShownDetail height='h-60'></ShownDetail>
+                            <EntitySetDetail height='h-60'></EntitySetDetail>
+                            <LiteralPropertySetDetail height='h-60'></LiteralPropertySetDetail>
                             <ReactFlowProvider>
                                 <ReactFlow
                                     nodeTypes={nodeTypes}
                                     edgeTypes={edgeTypes}
                                     nodes={shownRecommendationDetail.old.diagram.nodes}
                                     edges={shownRecommendationDetail.old.diagram.edges}
-                                    onNodesChange={shownRecommendationDetail.old.diagram.onNodesChange}
+                                    onNodesChange={
+                                        shownRecommendationDetail.old.diagram.onNodesChange
+                                    }
                                     draggable={true}
                                     elementsSelectable={true}
                                 >
-                                    <Background variant={BackgroundVariant.Dots} gap={12} size={1} />
+                                    <Background
+                                        variant={BackgroundVariant.Dots}
+                                        gap={12}
+                                        size={1}
+                                    />
                                 </ReactFlow>
                             </ReactFlowProvider>
                         </DiagramContextProvider>
@@ -80,18 +97,25 @@ export function RecommendationsPane({ className }: RecommendationsPaneProps) {
                     {/* <div className='w-1/2'></div> */}
                     <div className='w-1/2'>
                         <DiagramContextProvider value={shownRecommendationDetail.new}>
-                            <ShownDetail height='h-60'></ShownDetail>
+                            <EntitySetDetail height='h-60'></EntitySetDetail>
+                            <LiteralPropertySetDetail height='h-60'></LiteralPropertySetDetail>
                             <ReactFlowProvider>
                                 <ReactFlow
                                     nodeTypes={nodeTypes}
                                     edgeTypes={edgeTypes}
                                     nodes={shownRecommendationDetail.new.diagram.nodes}
                                     edges={shownRecommendationDetail.new.diagram.edges}
-                                    onNodesChange={shownRecommendationDetail.new.diagram.onNodesChange}
+                                    onNodesChange={
+                                        shownRecommendationDetail.new.diagram.onNodesChange
+                                    }
                                     draggable={true}
                                     elementsSelectable={true}
                                 >
-                                    <Background variant={BackgroundVariant.Dots} gap={12} size={1} />
+                                    <Background
+                                        variant={BackgroundVariant.Dots}
+                                        gap={12}
+                                        size={1}
+                                    />
                                 </ReactFlow>
                             </ReactFlowProvider>
                         </DiagramContextProvider>

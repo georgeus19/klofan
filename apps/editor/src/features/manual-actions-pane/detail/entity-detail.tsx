@@ -23,9 +23,9 @@ export interface EntityDetailProps {
 }
 
 export function EntityDetail({ entityId }: EntityDetailProps) {
-    const { schema, updateSchemaAndInstances, manualActions } = useEditorContext();
+    const { schema, instances, updateSchemaAndInstances, manualActions } = useEditorContext();
     const entity = schema.entitySet(entityId);
-    const { entities } = useEntities(entity);
+    const { entities } = useEntities(entity, instances);
 
     const propertySets = getProperties(schema, entity.id);
 

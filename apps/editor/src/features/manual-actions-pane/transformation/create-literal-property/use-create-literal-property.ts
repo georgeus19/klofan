@@ -34,6 +34,7 @@ export function useCreateLiteralProperty() {
     const [error, setError] = useState<string | null>(null);
     const {
         schema,
+        instances,
         updateSchemaAndInstances,
         help,
         manualActions: { onActionDone },
@@ -44,7 +45,7 @@ export function useCreateLiteralProperty() {
         showEntityToLiteralDiagramHelp(help);
     });
 
-    const { entities: sourceEntities } = useEntities(sourceEntitySet);
+    const { entities: sourceEntities } = useEntities(sourceEntitySet, instances);
 
     const source = { entitySet: sourceEntitySet, entities: sourceEntities };
 

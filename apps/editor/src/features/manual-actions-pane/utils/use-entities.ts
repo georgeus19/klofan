@@ -1,15 +1,14 @@
 import { useEffect, useState } from 'react';
-import { Entity } from '@klofan/instances';
+import { Entity, Instances } from '@klofan/instances';
 import { useEditorContext } from '../../editor/editor-context';
 import { EntitySet } from '@klofan/schema/representation';
 import { identifier } from '@klofan/utils';
 
-export function useEntities(entity: EntitySet | null) {
+export function useEntities(entity: EntitySet | null, instances: Instances) {
     const [entities, setEntities] = useState<Entity[]>([]);
     const [loadedEntitiesEntitySetId, setLoadedEntitiesEntitySetId] = useState<identifier | null>(
         null
     );
-    const { instances } = useEditorContext();
     useEffect(() => {
         if (entity) {
             instances.entities(entity).then((entities) => {

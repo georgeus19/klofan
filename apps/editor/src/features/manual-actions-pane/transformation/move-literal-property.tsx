@@ -30,6 +30,7 @@ export function MoveLiteralProperty({
 }: MoveLiteralPropertyProps) {
     const {
         schema,
+        instances,
         updateSchemaAndInstances,
         help,
         manualActions: { onActionDone },
@@ -40,13 +41,13 @@ export function MoveLiteralProperty({
         setSourceEntity(entity);
         showEntityToLiteralDiagramHelp(help);
     });
-    const { entities: sourceEntities } = useEntities(sourceEntity);
+    const { entities: sourceEntities } = useEntities(sourceEntity, instances);
     const source = { entitySet: sourceEntity, entities: sourceEntities };
 
     const { sourceNodes, targetNodes, edges, setEdges, onConnect, getPropertyInstances, layout } =
         useEntityToLiteralDiagram(source, property.id);
 
-    const { entities: originalSourceEntities } = useEntities(originalSourceEntity);
+    const { entities: originalSourceEntities } = useEntities(originalSourceEntity, instances);
     const originalSource = { entitySet: originalSourceEntity, entities: originalSourceEntities };
 
     const [usedInstanceMapping, setUsedInstanceMapping] = useState<Mapping>({

@@ -20,7 +20,7 @@ export interface UpdateEntityInstancesUrisShown {
 }
 
 export function UpdateEntityInstancesUris() {
-    const { manualActions, schema, updateSchemaAndInstances, help } = useEditorContext();
+    const { manualActions, schema, instances, updateSchemaAndInstances, help } = useEditorContext();
     const [entitySet, setEntitySet] = useState<EntitySet | null>(null);
     const [error, setError] = useState<string | null>(null);
 
@@ -28,7 +28,7 @@ export function UpdateEntityInstancesUris() {
         setEntitySet(entitySet);
         showUpdateEntitiesUrisHelp(help);
     });
-    const { entities } = useEntities(entitySet);
+    const { entities } = useEntities(entitySet, instances);
     const [uriMappings, setUriMappings] = useState<EntityUriMapping[]>([]);
 
     const unmappedEntityInstances = entities.filter(

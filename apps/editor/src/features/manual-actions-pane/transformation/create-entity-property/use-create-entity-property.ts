@@ -45,6 +45,7 @@ export function useCreateEntityProperty() {
     );
     const {
         schema,
+        instances,
         updateSchemaAndInstances,
         help,
         manualActions: { onActionDone },
@@ -52,10 +53,14 @@ export function useCreateEntityProperty() {
 
     const [error, setError] = useState<string | null>(null);
 
-    const { entities: sourceEntities, setEntities: setSourceEntities } =
-        useEntities(sourceEntitySet);
-    const { entities: targetEntities, setEntities: setTargetEntities } =
-        useEntities(targetEntitySet);
+    const { entities: sourceEntities, setEntities: setSourceEntities } = useEntities(
+        sourceEntitySet,
+        instances
+    );
+    const { entities: targetEntities, setEntities: setTargetEntities } = useEntities(
+        targetEntitySet,
+        instances
+    );
 
     const source = { entitySet: sourceEntitySet, entities: sourceEntities };
     const target = { entitySet: targetEntitySet, entities: targetEntities };
