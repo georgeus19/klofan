@@ -66,8 +66,8 @@ export function RecommendationsPane({ className }: RecommendationsPaneProps) {
                     >
                         Cancel
                     </button>
-                    <div className='w-1/2'>
-                        <DiagramContextProvider value={shownRecommendationDetail.old}>
+                    <DiagramContextProvider value={shownRecommendationDetail.old}>
+                        <div className='w-1/2 flex flex-col'>
                             <EntitySetDetail height='h-60'></EntitySetDetail>
                             <LiteralPropertySetDetail height='h-60'></LiteralPropertySetDetail>
                             <ReactFlowProvider>
@@ -89,14 +89,14 @@ export function RecommendationsPane({ className }: RecommendationsPaneProps) {
                                     />
                                 </ReactFlow>
                             </ReactFlowProvider>
-                        </DiagramContextProvider>
-                    </div>
+                        </div>
+                    </DiagramContextProvider>
                     {/* <div className='w-96 bg-slate-300'></div> */}
                     <div className='w-1 bg-slate-800 h-full'></div>
                     {/* <div className='w-96 bg-slate-300'></div> */}
                     {/* <div className='w-1/2'></div> */}
-                    <div className='w-1/2'>
-                        <DiagramContextProvider value={shownRecommendationDetail.new}>
+                    <DiagramContextProvider value={shownRecommendationDetail.new}>
+                        <div className='w-1/2 flex flex-col'>
                             <EntitySetDetail height='h-60'></EntitySetDetail>
                             <LiteralPropertySetDetail height='h-60'></LiteralPropertySetDetail>
                             <ReactFlowProvider>
@@ -118,8 +118,8 @@ export function RecommendationsPane({ className }: RecommendationsPaneProps) {
                                     />
                                 </ReactFlow>
                             </ReactFlowProvider>
-                        </DiagramContextProvider>
-                    </div>
+                        </div>
+                    </DiagramContextProvider>
                 </div>
             )}
         </div>

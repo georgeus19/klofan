@@ -4,6 +4,7 @@ import { useEditorContext } from '../../editor/editor-context';
 import { Dropdown } from './dropdown';
 import { ReadonlyInput } from './general-label-input/readonly-input';
 import { LabelReadonlyUriInput } from './uri/label-readonly-uri-input';
+import { Schema } from '@klofan/schema';
 
 export type EntityViewProps = {
     entitySet: EntitySet;
@@ -11,6 +12,7 @@ export type EntityViewProps = {
     showLiteralProperties?: boolean;
     showEntityProperties?: boolean;
     className?: string;
+    schema: Schema;
 };
 
 export function EntityView({
@@ -19,8 +21,9 @@ export function EntityView({
     showEntityProperties,
     showLiteralProperties,
     className,
+    schema,
 }: EntityViewProps) {
-    const { schema } = useEditorContext();
+    // const { schema } = useEditorContext();
 
     const instance = getProperties(schema, entitySet.id)
         .filter((propertySet) => showEntityProperties || isLiteralSet(propertySet.value))
@@ -63,7 +66,7 @@ export function EntityView({
 
     return (
         <div className={className}>
-            <Dropdown headerLabel={`${entitySet.name}.${entity.id}`} showInitially>
+            <Dropdown headerLabel={`${entitySet.name}.${entity.id}`} showInitially={true}>
                 <LabelReadonlyUriInput
                     label='Uri'
                     uri={entity.uri ?? ''}

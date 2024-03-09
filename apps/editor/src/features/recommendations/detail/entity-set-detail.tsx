@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDiagramContext } from '../diagram/diagram-context';
 import { Property } from '@klofan/instances/representation';
 import { Header } from '../../manual-actions-pane/utils/header';
 import { twMerge } from 'tailwind-merge';
 import { Entity } from '@klofan/instances/representation';
 import { EntityView } from '../../manual-actions-pane/utils/entity-view.tsx';
+import { ViewportList } from 'react-viewport-list';
 
 export type ShownDetailProps = {
     height?: string;
@@ -13,8 +14,10 @@ export type ShownDetailProps = {
 export function EntitySetDetail({ height }: ShownDetailProps) {
     const {
         diagram: { propertySetSelection, nodeSelection },
+        schema,
         instances,
     } = useDiagramContext();
+    const ref = useRef<HTMLDivElement | null>(null);
 
     const [entities, setEntities] = useState<Entity[]>([]);
 
@@ -40,22 +43,63 @@ export function EntitySetDetail({ height }: ShownDetailProps) {
     //         ))}
     //     </div>
     // ));
-    const entitiesView = entities.map((entity) => (
+    // const entitiesView = entities.map((entity) => (
+    //     <EntityView
+    //         key={entity.id}
+    //         entitySet={selectedEntitySet}
+    //         entity={entity}
+    //         showLiteralProperties
+    //         showEntityProperties
+    //     ></EntityView>
+    // ));
+
+    const Row = ({ index }: { index: number }) => (
         <EntityView
-            key={entity.id}
+            key={entities[index].id}
             entitySet={selectedEntitySet}
-            entity={entity}
+            entity={entities[index]}
+            schema={schema}
             showLiteralProperties
             showEntityProperties
         ></EntityView>
-    ));
+    );
+
     return (
         <div className={'bg-slate-200'}>
             <Header className='text-lg bg-opacity-70' label={`${selectedEntitySet.name}`}></Header>
-            <div className={twMerge('flex flex-col gap-1 text-center overflow-auto', height)}>
-                {entitiesView}
-                {/*    {propertiesView}*/}
+            {/*<div className={twMerge('flex flex-col gap-1 text-center overflow-auto', height)}>*/}
+            <div className={twMerge('scroll-container overflow-auto h-60')} ref={ref}>
+                <ViewportList viewportRef={ref} items={entities}>
+                    {(entity) => (
+                        <EntityView
+                            key={entity.id}
+                            entitySet={selectedEntitySet}
+                            entity={entity}
+                            schema={schema}
+                            showLiteralProperties
+                            showEntityProperties
+                        ></EntityView>
+                    )}
+                </ViewportList>
             </div>
         </div>
     );
 }
+// <div className={twMerge('', height)}>
+//     {/*<AutoSizer>*/}
+//     {/*    {({ height, width }) => (*/}
+//     {/*        <List*/}
+//     {/*            height={height}*/}
+//     {/*            rowCount={entities.length}*/}
+//     {/*            rowHeight={20}*/}
+//     {/*            rowRenderer={Row}*/}
+//     {/*            width={width}*/}
+//     {/*        />*/}
+//     {/*    )}*/}
+//     {/*</AutoSizer>*/}
+//     <List itemSize={40} height={100} itemCount={entities.length} width='100%'>
+//         {Row}
+//     </List>
+//     {/*{entitiesView}*/}
+//     {/*    {propertiesView}*/}
+// </div>
