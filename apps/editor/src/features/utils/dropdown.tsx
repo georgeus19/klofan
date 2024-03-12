@@ -5,7 +5,7 @@ import { twMerge } from 'tailwind-merge';
 
 export interface DetailDropdownProps {
     children: ReactNode;
-    headerLabel: string;
+    headerLabel: ReactNode;
     showInitially: boolean;
     className?: string;
 }
@@ -19,8 +19,18 @@ export function Dropdown({ className, headerLabel, children, showInitially }: De
 
     return (
         <>
-            <div className={twMerge('flex bg-slate-500 text-white border-2 rounded p-1  border-slate-600 my-1', className)} onClick={handleClick}>
-                {show ? <img src={triangleDown} alt='triangle'></img> : <img src={triangleRight} alt='triangle'></img>}
+            <div
+                className={twMerge(
+                    'flex bg-slate-500 text-white border-2 rounded p-1  border-slate-600 my-1',
+                    className
+                )}
+                onClick={handleClick}
+            >
+                {show ? (
+                    <img src={triangleDown} alt='triangle'></img>
+                ) : (
+                    <img src={triangleRight} alt='triangle'></img>
+                )}
                 {headerLabel}
             </div>
             {show && children}
