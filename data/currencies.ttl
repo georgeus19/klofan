@@ -4,7 +4,7 @@
   skos:prefLabel "meny"@cs .
 
 <http://publications.europa.eu/resource/authority/currency/CZK> a skos:Concept;
-  skos:inScheme <https://data.mvcr.gov.cz/zdroj/číselníky/typy-dřevin>;
+  skos:inScheme <https://publications.europa.eu/resource/authority/currency/CZK>;
   skos:prefLabel "ceska koruna"@cs;
   skos:notation "CZK" .
 
