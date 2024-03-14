@@ -22,6 +22,9 @@ import { transformationChanges as instancesTransformationChanges } from '@klofan
 import { ENTITY_SET_NODE } from '../diagram/nodes/entity-set-node.tsx';
 import { PROPERTY_SET_EDGE } from '../diagram/edges/property-set-edge.tsx';
 import { NodeSelection, useNodeSelection } from '../diagram/use-node-selection.ts';
+import { Transformation } from '@klofan/transform';
+import { TransformSchemaAndInstances } from '../editor/update-operations/transform-schema-and-instances-operation.ts';
+import { UpdateHistoryOperation } from '../editor/history/update-history-operation.ts';
 
 export type RecommendationDiagram = {
     nodes: SchemaNode[];
@@ -34,9 +37,10 @@ export type RecommendationDiagram = {
 export type Recommendations = {
     recommendations: Recommendation[];
     getRecommendations: () => void;
+    applyRecommendation: (recommendation: Recommendation) => void;
     showRecommendationDetail: (recommendation: Recommendation, index: number) => Promise<void>;
     hideRecommendationDetail: () => void;
-    shownRecommendationDetail: {
+    shownRecommendationDetail?: {
         recommendation: Recommendation;
         changes: TransformationChanges;
         recommendationIndex: number;
@@ -50,7 +54,7 @@ export type Recommendations = {
             instances: InMemoryInstances;
             diagram: RecommendationDiagram;
         };
-    } | null;
+    };
 };
 
 type RawRecommendationDetail = {
@@ -77,7 +81,8 @@ export function useRecommendations(): Recommendations {
     const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
     const [selectedRecommendation, setSelectedRecommendation] =
         useState<RawRecommendationDetail | null>(null);
-    const { schema, instances, manualActions, diagram } = useEditorContext();
+    const { schema, instances, updateSchemaAndInstances, diagram, runOperations, history } =
+        useEditorContext();
     const oldPropertySetSelection = usePropertySetSelection();
     const newPropertySetSelection = usePropertySetSelection();
     const oldNodeSelection = useNodeSelection();
@@ -116,22 +121,32 @@ export function useRecommendations(): Recommendations {
             },
         };
 
-        const newSchema = schema.transform(recommendation.transformations.schemaTransformations);
+        let newSchema = schema;
+        for (const transformation of recommendation.transformations) {
+            newSchema = newSchema.transform(transformation.schemaTransformations);
+        }
+
+        let newInstances = instances;
+        for (const transformation of recommendation.transformations) {
+            newInstances = await newInstances.transform(transformation.instanceTransformations);
+        }
         const n = {
             schema: newSchema.raw(),
-            instances: (
-                await instances.transform(recommendation.transformations.instanceTransformations)
-            ).raw() as RawInstances,
+            instances: newInstances.raw() as RawInstances,
             diagram: reflectSchema(
                 { nodes: structuredClone(diagram.nodes), edges: structuredClone(diagram.edges) },
                 newSchema
             ),
         };
-        const instancesChanges = recommendation.transformations.instanceTransformations.map(
-            (transformation) => instancesTransformationChanges(transformation)
+        const instancesChanges = recommendation.transformations.flatMap((transformation) =>
+            transformation.instanceTransformations.map((transformation) =>
+                instancesTransformationChanges(transformation)
+            )
         );
-        const schemaChanges = recommendation.transformations.schemaTransformations.map(
-            (transformation) => schemaTransformationChanges(transformation)
+        const schemaChanges = recommendation.transformations.flatMap((transformation) =>
+            transformation.schemaTransformations.map((transformation) =>
+                schemaTransformationChanges(transformation)
+            )
         );
 
         const itemChanges = [
@@ -153,6 +168,11 @@ export function useRecommendations(): Recommendations {
             old: old,
             new: n,
         });
+
+        oldNodeSelection.clearSelectedNode();
+        newNodeSelection.clearSelectedNode();
+        oldPropertySetSelection.clearSelectedPropertySet();
+        newPropertySetSelection.clearSelectedPropertySet();
     };
 
     const hideRecommendationDetail = () => {
@@ -207,11 +227,39 @@ export function useRecommendations(): Recommendations {
                   },
               },
           }
-        : null;
+        : undefined;
+
+    const applyRecommendation = async (recommendation: Recommendation) => {
+        const operations: TransformSchemaAndInstances[] = recommendation.transformations.map(
+            (transformation) => ({
+                type: 'transform-schema-and-instances',
+                transformation: transformation,
+            })
+        );
+        // const ops = operations.map((op) => {
+        //     const up: UpdateOperation = {
+        //         updatedEditor: history.operations[history.operations.length - 1].updatedEditor,
+        //         ...op,
+        //     };
+        //     return up;
+        // });
+        runOperations(operations).then(() => {
+            setRecommendations([]);
+            setSelectedRecommendation(null);
+            oldPropertySetSelection.clearSelectedPropertySet();
+            oldNodeSelection.clearSelectedNode();
+            newPropertySetSelection.clearSelectedPropertySet();
+            newNodeSelection.clearSelectedNode();
+        });
+        // for (const transformation of recommendation.transformations) {
+        //     await updateSchemaAndInstances(transformation);
+        // }
+    };
 
     return {
         recommendations,
         getRecommendations,
+        applyRecommendation,
         showRecommendationDetail,
         hideRecommendationDetail,
         shownRecommendationDetail: shownRecommendationDetail,

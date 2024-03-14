@@ -4,7 +4,7 @@ import { useEditorContext } from '../../../editor/editor-context';
 import { LabelInput } from '../../utils/general-label-input/label-input';
 import { useUriInput } from '../../utils/uri/use-uri-input';
 import { UriLabelInput } from '../../utils/uri/uri-label-input';
-import { Dropdown } from '../../utils/dropdown';
+import { Dropdown } from '../../../utils/dropdown.tsx';
 import { EntityUriMapping } from '@klofan/instances/transform';
 
 export type AddUriMappingProps = {

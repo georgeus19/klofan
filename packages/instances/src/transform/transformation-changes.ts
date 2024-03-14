@@ -5,6 +5,11 @@ import { createPropertiesChanges } from './transformations/create-properties';
 import { movePropertiesChanges } from './transformations/move-properties';
 import { updateEntitiesUrisChanges } from './transformations/update-entities-uris';
 import { updatePropertyLiteralsChanges } from './transformations/update-property-literals';
+import {
+    convertLiteralToEntity,
+    convertLiteralToEntityChanges,
+} from './transformations/convert-literal-to-entity';
+import { deleteLiteralsChanges } from './transformations/delete-literals';
 
 export type TransformationChanges = { entities: identifier[]; properties: identifier[] };
 
@@ -20,5 +25,9 @@ export function transformationChanges(transformation: Transformation): Transform
             return updateEntitiesUrisChanges(transformation);
         case 'update-property-literals':
             return updatePropertyLiteralsChanges(transformation);
+        case 'convert-literal-to-entity':
+            return convertLiteralToEntityChanges(transformation);
+        case 'delete-literals':
+            return deleteLiteralsChanges(transformation);
     }
 }

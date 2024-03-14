@@ -3,7 +3,7 @@ import { NodeSelection } from '../diagram/use-node-selection';
 import { PropertySet, EntitySet } from '@klofan/schema/representation';
 import { Schema } from '@klofan/schema';
 import { ManualActionShown } from './actions';
-import { MoveEntityProperty } from './transformation/move-entity-property';
+import { MoveEntityPropertySet } from './transformation/move-entity-property-set.tsx';
 import { MoveLiteralProperty } from './transformation/move-literal-property';
 import { CreateEntity } from './transformation/create-entity';
 import { EntityDetail } from './detail/entity-detail';
@@ -21,12 +21,12 @@ export type ManualActionsPane = {
     shownAction: ManualActionShown;
     onActionDone: () => void;
     showMoveProperty: (entity: EntitySet, property: PropertySet) => void;
-    showCreateEntity: () => void;
-    showCreateLiteralProperty: () => void;
-    showCreateEntityProperty: () => void;
-    showEntityDetail: (entity: EntitySet) => void;
+    showCreateEntitySet: () => void;
+    showCreateLiteralPropertySet: () => void;
+    showCreateEntityPropertySet: () => void;
+    showEntitySetDetail: (entitySet: EntitySet) => void;
     showPrefixes: () => void;
-    showUpdateEntityInstancesUris: () => void;
+    showUpdateEntitiesUris: () => void;
     showExportInstances: () => void;
     showExportOperations: () => void;
     hide: () => void;
@@ -52,16 +52,16 @@ export function useManualActionsPane(
             setShownActionLocked(false);
             help.hideHelp();
         },
-        showMoveProperty: (entity: EntitySet, property: PropertySet) => {
+        showMoveProperty: (entitySet: EntitySet, propertySet: PropertySet) => {
             help.hideHelp();
-            if (schema.hasEntitySet(property.value)) {
+            if (schema.hasEntitySet(propertySet.value)) {
                 setShownAction({
-                    type: 'move-entity-property-shown',
+                    type: 'move-entity-property-set-shown',
                     component: (
-                        <MoveEntityProperty
-                            entity={entity}
-                            property={property}
-                        ></MoveEntityProperty>
+                        <MoveEntityPropertySet
+                            entitySet={entitySet}
+                            propertySet={propertySet}
+                        ></MoveEntityPropertySet>
                     ),
                 });
                 setShownActionLocked(true);
@@ -69,11 +69,11 @@ export function useManualActionsPane(
                 nodeSelection.clearSelectedNode();
             } else {
                 setShownAction({
-                    type: 'move-literal-property-shown',
+                    type: 'move-literal-property-set-shown',
                     component: (
                         <MoveLiteralProperty
-                            entity={entity}
-                            property={property}
+                            entity={entitySet}
+                            property={propertySet}
                         ></MoveLiteralProperty>
                     ),
                 });
@@ -82,41 +82,41 @@ export function useManualActionsPane(
                 nodeSelection.clearSelectedNode();
             }
         },
-        showCreateEntity: () => {
+        showCreateEntitySet: () => {
             help.hideHelp();
             setShownAction({
-                type: 'create-entity-shown',
+                type: 'create-entity-set-shown',
                 component: <CreateEntity></CreateEntity>,
             });
             setShownActionLocked(true);
             nodeSelection.disableSelectedStyle();
             nodeSelection.clearSelectedNode();
         },
-        showCreateLiteralProperty: () => {
+        showCreateLiteralPropertySet: () => {
             help.hideHelp();
             setShownAction({
-                type: 'create-literal-property-shown',
+                type: 'create-literal-property-set-shown',
                 component: <CreateLiteralProperty></CreateLiteralProperty>,
             });
             setShownActionLocked(true);
             nodeSelection.disableSelectedStyle();
             nodeSelection.clearSelectedNode();
         },
-        showCreateEntityProperty: () => {
+        showCreateEntityPropertySet: () => {
             help.hideHelp();
             setShownAction({
-                type: 'create-entity-property-shown',
+                type: 'create-entity-property-set-shown',
                 component: <CreateEntityProperty></CreateEntityProperty>,
             });
             setShownActionLocked(true);
             nodeSelection.disableSelectedStyle();
             nodeSelection.clearSelectedNode();
         },
-        showEntityDetail: (entity: EntitySet) => {
+        showEntitySetDetail: (entity: EntitySet) => {
             help.hideHelp();
             if (!shownActionLocked) {
                 setShownAction({
-                    type: 'entity-detail-shown',
+                    type: 'entity-set-detail-shown',
                     component: <EntityDetail entityId={entity.id}></EntityDetail>,
                 });
             }
@@ -126,7 +126,7 @@ export function useManualActionsPane(
             setShownAction({ type: 'prefixes-shown', component: <Prefixes></Prefixes> });
             nodeSelection.clearSelectedNode();
         },
-        showUpdateEntityInstancesUris: () => {
+        showUpdateEntitiesUris: () => {
             help.hideHelp();
             setShownAction({
                 type: 'update-entity-instances-uris-shown',

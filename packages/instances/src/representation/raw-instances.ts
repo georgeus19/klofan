@@ -1,9 +1,16 @@
 import { identifier } from '@klofan/utils';
 import { Property } from './property';
+import { EntityWithoutProperties } from './entity';
 
 export interface RawInstances {
+    // entities: {
+    //     [key: identifier]: { count: number; instances: { uri?: string }[] };
+    // };
+    // entities: {
+    //     [key: identifier]: { uri: (string | null)[], type: number[] };
+    // };
     entities: {
-        [key: identifier]: { count: number; instances: { uri?: string }[] };
+        [key: identifier]: EntityWithoutProperties[];
     };
     /**
      * Column representation of which entity instances have which properties and their values.
@@ -33,6 +40,6 @@ export function propertyKey(entitySet: identifier, propertySet: identifier): str
     return `${entitySet}.${propertySet}`;
 }
 
-export function initEntityInstances(count: number): { uri?: string }[] {
+export function initEntities(count: number): EntityWithoutProperties[] {
     return [...Array(count).keys()].map(() => ({}));
 }

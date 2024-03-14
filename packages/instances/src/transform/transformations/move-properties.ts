@@ -10,21 +10,21 @@ export interface MoveProperties {
         newSource: EntitySet;
         propertySet: PropertySet;
         newTarget: Item;
-        propertyInstancesMapping: Mapping;
+        propertiesMapping: Mapping;
     };
 }
 
 export function moveProperties(
     instances: RawInstances,
     {
-        data: { originalSource, newSource, propertySet, newTarget, propertyInstancesMapping },
+        data: { originalSource, newSource, propertySet, newTarget, propertiesMapping },
     }: MoveProperties
 ) {
-    const properties = getProperties(instances, propertyInstancesMapping);
+    const properties = getProperties(instances, propertiesMapping);
 
-    if (instances.entities[newSource.id].count !== properties.length) {
+    if (instances.entities[newSource.id].length !== properties.length) {
         throw new Error(
-            `The number of source entities (${instances.entities[newSource.id].count}) is different than the number properties(${
+            `The number of source entities (${instances.entities[newSource.id].length}) is different than the number properties(${
                 properties.length
             }).`
         );
@@ -33,7 +33,7 @@ export function moveProperties(
     if (
         properties.flatMap((propertyInstance) =>
             propertyInstance.targetEntities.filter(
-                (targetEntity) => targetEntity >= instances.entities[newTarget.id].count
+                (targetEntity) => targetEntity >= instances.entities[newTarget.id].length
             )
         ).length > 0
     ) {

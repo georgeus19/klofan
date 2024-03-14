@@ -19,19 +19,17 @@ export async function recommendDate({
     instances: Instances;
 }): Promise<Recommendation[]> {
     const literalProperties = await Promise.all(
-        schema.entitySets().flatMap((entity) =>
-            getProperties(schema, entity.id)
-                .map((property) => ({ entity, property }))
-                .filter(({ property }) => isLiteralSet(property.value))
-                .map(async ({ entity, property }) => {
-                    const propertyInstances = await instances.properties(entity.id, property.id);
-                    return {
-                        entitySet: entity,
-                        propertySet: property,
-                        propertyInstances,
-                    };
-                })
-        )
+        schema
+            .entitySetPropertySetPairs()
+            .filter(({ propertySet }) => isLiteralSet(propertySet.value))
+            .map(async ({ entitySet, propertySet }) => {
+                const properties = await instances.properties(entitySet.id, propertySet.id);
+                return {
+                    entitySet,
+                    propertySet,
+                    properties,
+                };
+            })
     );
     const czechDateRegExp = new RegExp(/^(\d\d)\.(\d\d)\.(\d\d\d\d)$/);
     const replacementPattern = '$3-$2-$1';
@@ -40,24 +38,25 @@ export async function recommendDate({
     const category = 'Date';
     const recommendations: Recommendation[] = literalProperties
         .filter(
-            ({ propertyInstances }) =>
-                propertyInstances.filter(
-                    (propertyInstance) =>
-                        propertyInstance.literals.filter((literal) =>
-                            literal.value.match(czechDateRegExp)
-                        ).length > 0
+            ({ properties }) =>
+                properties.filter(
+                    (property) =>
+                        property.literals.filter((literal) => literal.value.match(czechDateRegExp))
+                            .length > 0
                 ).length > 0
         )
         .map(({ entitySet, propertySet }) => {
             return {
-                transformations: createUpdatePropertyLiteralsPatternTransformation({
-                    entitySet: entitySet,
-                    propertySet: toPropertySet(propertySet),
-                    literals: {
-                        matchPattern: czechDateRegExp.source,
-                        replacementPattern: replacementPattern,
-                    },
-                }),
+                transformations: [
+                    createUpdatePropertyLiteralsPatternTransformation({
+                        entitySet: entitySet,
+                        propertySet: toPropertySet(propertySet),
+                        literals: {
+                            matchPattern: czechDateRegExp.source,
+                            replacementPattern: replacementPattern,
+                        },
+                    }),
+                ],
                 category,
                 description,
                 recommenderType: 'expert',

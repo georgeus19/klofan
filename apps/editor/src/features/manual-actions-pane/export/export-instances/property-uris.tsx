@@ -1,7 +1,7 @@
 import { PropertySet, toPropertySet, getProperties } from '@klofan/schema/representation';
 import { createUpdatePropertySetUriTransformation } from '@klofan/transform';
 import { useEditorContext } from '../../../editor/editor-context';
-import { Dropdown } from '../../utils/dropdown';
+import { Dropdown } from '../../../utils/dropdown.tsx';
 import { UriLabelInput } from '../../utils/uri/uri-label-input';
 import { Uri, validUri } from '../../utils/uri/use-uri-input';
 import { UriCard } from './uri-card';

@@ -6,13 +6,13 @@ import {
     getPreserveMappingProperties,
     getPreservedProperties,
 } from './preserve-mapping';
-import { RawInstances, initEntityInstances } from '../../representation/raw-instances';
+import { RawInstances, initEntities } from '../../representation/raw-instances';
 import { createEntitySet, createPropertySet, PropertySet } from '@klofan/schema/representation';
 
 describe('Transform Instances', () => {
-    describe('Instance Mappings', () => {
-        describe('Join', () => {
-            test('getPreservedPropertyInstances', () => {
+    describe('Property Mappings', () => {
+        describe('Preserve', () => {
+            test('getPreservedProperties', () => {
                 const expectedPropertyInstances: Property[] = [
                     {
                         literals: [{ value: 'AAA' }, { value: 'BBB' }],
@@ -108,10 +108,10 @@ describe('Transform Instances', () => {
                 };
                 const instances: RawInstances = {
                     entities: {
-                        '0': { count: 3, instances: initEntityInstances(3) },
-                        '1': { count: 2, instances: initEntityInstances(2) },
-                        '2': { count: 3, instances: initEntityInstances(3) },
-                        '3': { count: 2, instances: initEntityInstances(2) },
+                        '1': initEntities(2),
+                        '2': initEntities(3),
+                        '3': initEntities(2),
+                        '0': initEntities(3),
                     },
                     properties: {
                         '0.IDREF': [

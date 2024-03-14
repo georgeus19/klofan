@@ -4,26 +4,16 @@ import { EntityPropertySetDetail } from './detail/entity-property-set-detail.tsx
 import { LiteralPropertySetDetail } from './detail/literal-property-set-detail.tsx';
 import ReactFlow, { Background, BackgroundVariant, ReactFlowProvider } from 'reactflow';
 import { edgeTypes, nodeTypes, Recommendations } from './use-recommendations.ts';
-import { useRecommendationsContext } from './recommendations-context.tsx';
 
-export type RecommendationDetailProps = Pick<Recommendations, 'shownRecommendationDetail'>;
+export type RecommendationDetailProps = Required<
+    Pick<Recommendations, 'shownRecommendationDetail'>
+>;
 
-export function RecommendationDetail() {
-    const {
-        recommendations,
-        showRecommendationDetail,
-        shownRecommendationDetail,
-        getRecommendations,
-        hideRecommendationDetail,
-    } = useRecommendationsContext();
+export function DiagramRecommendationDiff({
+    shownRecommendationDetail,
+}: RecommendationDetailProps) {
     return (
-        <div className='w-full relative flex'>
-            <button
-                className='rounded shadow bg-blue-200 hover:bg-blue-300 p-2 z-50 fixed top-1/2 -translate-x-1/2  translate-y-1/2'
-                onClick={hideRecommendationDetail}
-            >
-                Cancel
-            </button>
+        <>
             <DiagramContextProvider value={shownRecommendationDetail.old}>
                 <div className='w-1/2 flex flex-col'>
                     <EntitySetDetail height='h-60'></EntitySetDetail>
@@ -68,6 +58,6 @@ export function RecommendationDetail() {
                     </ReactFlowProvider>
                 </div>
             </DiagramContextProvider>
-        </div>
+        </>
     );
 }

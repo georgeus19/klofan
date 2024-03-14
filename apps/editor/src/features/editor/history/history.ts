@@ -1,7 +1,7 @@
 import { RawInstances } from '@klofan/instances/representation';
 import { RawSchema } from '@klofan/schema/representation';
 import { RawDiagram } from '../../diagram/raw-diagram';
-import { UpdateOperation } from './update-operation';
+import { UpdateHistoryOperation } from './update-history-operation.ts';
 
 /**
  * Api for manipulating raw editor history data. This api showing a lot of info is needed
@@ -11,9 +11,9 @@ export type EditorHistory = {
     undo: () => void;
     redo: () => void;
     updateCurrentState: (newEditor: (prev: RawEditor) => RawEditor) => void;
-    update: (newEditor: (prev: RawEditor) => UpdateOperation) => void;
-    batchUpdate: (newEditor: (prev: RawEditor) => UpdateOperation[]) => void;
-    operations: UpdateOperation[];
+    update: (newEditor: (prev: RawEditor) => UpdateHistoryOperation) => void;
+    batchUpdate: (newEditor: (prev: RawEditor) => UpdateHistoryOperation[]) => void;
+    operations: UpdateHistoryOperation[];
     current: RawEditor;
 };
 
@@ -21,7 +21,7 @@ export type EditorHistory = {
  * Raw data stored as history state.
  */
 export type RawHistory = {
-    operations: UpdateOperation[];
+    operations: UpdateHistoryOperation[];
     currentOperation: number;
 };
 

@@ -1,7 +1,7 @@
 import { EntitySet } from '@klofan/schema/representation';
 import { createUpdateEntitySetUriTransformation } from '@klofan/transform';
 import { useEditorContext } from '../../../editor/editor-context';
-import { Dropdown } from '../../utils/dropdown';
+import { Dropdown } from '../../../utils/dropdown.tsx';
 import { validUri } from '../../utils/uri/use-uri-input';
 import { UriCard } from './uri-card';
 

@@ -2,20 +2,23 @@ import { EntitySet, PropertySet } from '@klofan/schema/representation';
 import { Property } from '../../representation/property';
 import { RawInstances, propertyKey } from '../../representation/raw-instances';
 import { TransformationChanges } from '../transformation-changes';
+import { getProperties, Mapping } from '../mapping/mapping';
 
 export interface CreateProperties {
     type: 'create-properties';
     data: {
         entitySet: EntitySet;
         propertySet: PropertySet;
-        properties: Property[];
+        propertiesMapping: Mapping;
     };
 }
 
 export function createProperties(instances: RawInstances, transformation: CreateProperties): void {
+    const properties = getProperties(instances, transformation.data.propertiesMapping);
+
     instances.properties[
         propertyKey(transformation.data.entitySet.id, transformation.data.propertySet.id)
-    ] = transformation.data.properties;
+    ] = properties;
 }
 
 export function createPropertiesChanges(transformation: CreateProperties): TransformationChanges {

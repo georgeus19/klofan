@@ -6,9 +6,15 @@ import { RawEditor } from './history';
 /**
  * All types of operations that update editor history so that it can be reconstructed from them (e.g. for import, export).
  */
-export type UpdateOperation = {
+export type UpdateHistoryOperation = {
     updatedEditor: RawEditor;
-} & (InitialOperation | UpdateDiagram | ImportSchemaAndInstances | TransformSchemaAndInstances);
+} & UpdateOperation;
+
+export type UpdateOperation =
+    | InitialOperation
+    | UpdateDiagram
+    | ImportSchemaAndInstances
+    | TransformSchemaAndInstances;
 
 export type InitialOperation = {
     type: 'initial-operation';

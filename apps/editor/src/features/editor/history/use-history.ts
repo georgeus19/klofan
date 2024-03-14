@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { EditorHistory, RawEditor, RawHistory } from './history';
-import { UpdateOperation } from './update-operation';
+import { UpdateHistoryOperation } from './update-history-operation.ts';
 
 const emptyState = {
     diagram: { nodes: [], edges: [] },
@@ -35,7 +35,7 @@ export function useHistory(): EditorHistory {
         });
     };
 
-    const update = (newEditor: (prev: RawEditor) => UpdateOperation) => {
+    const update = (newEditor: (prev: RawEditor) => UpdateHistoryOperation) => {
         setHistory((currentHistory) => {
             return {
                 operations: [
@@ -47,7 +47,7 @@ export function useHistory(): EditorHistory {
         });
     };
 
-    const batchUpdate = (newEditor: (prev: RawEditor) => UpdateOperation[]) => {
+    const batchUpdate = (newEditor: (prev: RawEditor) => UpdateHistoryOperation[]) => {
         setHistory((currentHistory) => {
             const newOperations = newEditor(currentEditor(currentHistory));
             return {

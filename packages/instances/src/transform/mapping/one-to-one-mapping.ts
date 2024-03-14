@@ -26,5 +26,5 @@ export function getOneToOneMappingProperties(
     mapping: OneToOneMapping
 ): Property[] {
     const sourceEntities = instances.entities[mapping.source.id];
-    return getOneToOneProperties(sourceEntities.count);
+    return getOneToOneProperties(sourceEntities.length);
 }

@@ -10,7 +10,7 @@ export interface InternalCodeListAnalysis extends InternalAnalysis {
     internal: InternalCodeListAnalysisData;
 }
 
-export interface CodeListAnalysis extends Analysis, InternalCodeListAnalysisData {
+export interface CodeListAnalysis extends Analysis {
     type: 'code-list-analysis';
     internal: InternalCodeListAnalysisData;
 }

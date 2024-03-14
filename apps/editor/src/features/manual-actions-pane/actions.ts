@@ -5,41 +5,41 @@ import { ExportInstancesShown } from './export/export-instances/export-intances'
 import { ExportOperationsShown } from './export/export-operations';
 
 export type ManualActionShown = { component: ReactNode } & (
-    | EntityDetailShown
+    | EntitySetDetailShown
     | BlankShown
-    | CreateEntityShown
-    | CreateEntityPropertyShown
-    | CreateLiteralPropertyShown
-    | MoveEntityPropertyShown
-    | MoveLiteralPropertyShown
+    | CreateEntitySetShown
+    | CreateEntityPropertySetShown
+    | CreateLiteralPropertySetShown
+    | MoveEntityPropertySetShown
+    | MoveLiteralPropertySetShown
     | PrefixesShown
     | UpdateEntityInstancesUrisShown
     | ExportInstancesShown
     | ExportOperationsShown
 );
 
-export interface EntityDetailShown {
-    type: 'entity-detail-shown';
+export interface EntitySetDetailShown {
+    type: 'entity-set-detail-shown';
 }
 
-export interface CreateEntityShown {
-    type: 'create-entity-shown';
+export interface CreateEntitySetShown {
+    type: 'create-entity-set-shown';
 }
 
-export interface CreateEntityPropertyShown {
-    type: 'create-entity-property-shown';
+export interface CreateEntityPropertySetShown {
+    type: 'create-entity-property-set-shown';
 }
 
-export interface CreateLiteralPropertyShown {
-    type: 'create-literal-property-shown';
+export interface CreateLiteralPropertySetShown {
+    type: 'create-literal-property-set-shown';
 }
 
-export interface MoveEntityPropertyShown {
-    type: 'move-entity-property-shown';
+export interface MoveEntityPropertySetShown {
+    type: 'move-entity-property-set-shown';
 }
 
-export interface MoveLiteralPropertyShown {
-    type: 'move-literal-property-shown';
+export interface MoveLiteralPropertySetShown {
+    type: 'move-literal-property-set-shown';
 }
 
 export interface BlankShown {

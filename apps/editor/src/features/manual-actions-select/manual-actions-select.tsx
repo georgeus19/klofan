@@ -8,7 +8,7 @@ import { saveAsDataSchema } from '@klofan/schema/save';
 import { resetId } from '@klofan/utils';
 import { Prefix } from '../prefixes/use-prefixes';
 import { usePrefixesContext } from '../prefixes/prefixes-context';
-import { UpdateOperation } from '../editor/history/update-operation';
+import { UpdateHistoryOperation } from '../editor/history/update-history-operation.ts';
 import { loadSchema } from '@klofan/schema/load';
 import { loadInstances } from '@klofan/instances/load';
 import { parse as csvParse } from 'csv-parse/browser/esm/sync';
@@ -53,9 +53,8 @@ export function ManualActionsSelect() {
     const onImportOperations = (file: { content: string; type: string }) => {
         try {
             manualActions.onActionDone();
-            const content: { operations: UpdateOperation[]; prefixes: Prefix[] } = JSON.parse(
-                file.content
-            );
+            const content: { operations: UpdateHistoryOperation[]; prefixes: Prefix[] } =
+                JSON.parse(file.content);
             if (
                 content.operations.find(
                     (operation) => operation.type === 'import-schema-and-instances'
@@ -109,19 +108,19 @@ export function ManualActionsSelect() {
                 <div className='absolute hidden group-hover:flex z-10 flex-col bg-slate-300 min-w-[10rem] shadow rounded'>
                     <button
                         className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300'
-                        onClick={manualActions.showCreateEntity}
+                        onClick={manualActions.showCreateEntitySet}
                     >
                         entity
                     </button>
                     <button
                         className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300'
-                        onClick={manualActions.showCreateEntityProperty}
+                        onClick={manualActions.showCreateEntityPropertySet}
                     >
                         entity property
                     </button>
                     <button
                         className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300'
-                        onClick={manualActions.showCreateLiteralProperty}
+                        onClick={manualActions.showCreateLiteralPropertySet}
                     >
                         literal property
                     </button>
@@ -150,7 +149,7 @@ export function ManualActionsSelect() {
 
             <button
                 className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300'
-                onClick={manualActions.showUpdateEntityInstancesUris}
+                onClick={manualActions.showUpdateEntitiesUris}
             >
                 Uris
             </button>

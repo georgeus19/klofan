@@ -21,5 +21,5 @@ export function getOneToAllMappingProperties(
     mapping: OneToAllMapping
 ): Property[] {
     const targetEntities = instances.entities[mapping.target.id];
-    return getOneToAllProperties(targetEntities.count);
+    return getOneToAllProperties(targetEntities.length);
 }

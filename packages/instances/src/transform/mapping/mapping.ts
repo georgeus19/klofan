@@ -6,6 +6,7 @@ import { ManualMapping } from './manual-mapping';
 import { OneToAllMapping, getOneToAllMappingProperties } from './one-to-all-mapping';
 import { OneToOneMapping, getOneToOneMappingProperties } from './one-to-one-mapping';
 import { PreserveMapping, getPreserveMappingProperties } from './preserve-mapping';
+import { EmptyMapping, getEmptyMappingProperties } from './empty-mapping';
 
 export type Mapping =
     | PreserveMapping
@@ -13,7 +14,8 @@ export type Mapping =
     | OneToOneMapping
     | OneToAllMapping
     | AllToOneMapping
-    | ManualMapping;
+    | ManualMapping
+    | EmptyMapping;
 
 export function getProperties(instances: RawInstances, mapping: Mapping): Property[] {
     switch (mapping.type) {
@@ -27,6 +29,8 @@ export function getProperties(instances: RawInstances, mapping: Mapping): Proper
             return getOneToAllMappingProperties(instances, mapping);
         case 'all-to-one-mapping':
             return getAllToOneMappingProperties(instances, mapping);
+        case 'empty-mapping':
+            return getEmptyMappingProperties(instances, mapping);
         case 'manual-mapping':
             return mapping.properties;
     }

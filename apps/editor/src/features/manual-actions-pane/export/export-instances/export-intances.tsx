@@ -1,6 +1,6 @@
 import { Writer } from 'n3';
 import { ActionOkCancel } from '../../utils/action-ok-cancel';
-import { Dropdown } from '../../utils/dropdown';
+import { Dropdown } from '../../../utils/dropdown.tsx';
 import { Header } from '../../utils/header';
 import { EntityUris } from './entity-uris.tsx';
 import { PropertyUris } from './property-uris';

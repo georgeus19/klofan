@@ -9,18 +9,18 @@ import { Entity } from '@klofan/instances';
 import { EntitySet } from '@klofan/schema/representation';
 import { Mapping } from '@klofan/instances/transform';
 import { JoinMappingDetailMapping } from '../../utils/mapping/join/join-mapping-detail';
-import { useEntities } from '../../utils/use-entities.ts';
+import { useEntities } from '../../../utils/use-entities.ts';
 import { Connection } from 'reactflow';
 import { useUriInput } from '../../utils/uri/use-uri-input';
 
 export function useCreateEntityProperty() {
-    const [propertyName, setPropertyName] = useState('');
+    const [propertySetName, setPropertySetName] = useState('');
     const uri = useUriInput('');
 
     const [sourceEntitySet, setSourceEntitySet] = useState<EntitySet | null>(null);
     const [targetEntitySet, setTargetEntitySet] = useState<EntitySet | null>(null);
 
-    const [usedInstanceMapping, setUsedInstanceMapping] = useState<
+    const [usedPropertiesMapping, setUsedPropertiesMapping] = useState<
         Mapping | JoinMappingDetailMapping
     >({
         type: 'manual-mapping',
@@ -72,7 +72,7 @@ export function useCreateEntityProperty() {
         onConnect: onInstanceTargetConnect,
         layout,
         setEdges,
-        getPropertyInstances: getEntityInstanceTargetPropertyInstances,
+        getPropertyInstances,
     } = useEntityToEntityDiagram(
         source.entitySet !== null ? (source as { entitySet: EntitySet; entities: Entity[] }) : null,
         target.entitySet !== null ? (target as { entitySet: EntitySet; entities: Entity[] }) : null,
@@ -80,7 +80,7 @@ export function useCreateEntityProperty() {
     );
 
     const onConnect = (connection: Connection) => {
-        setUsedInstanceMapping({ type: 'manual-mapping', properties: [] });
+        setUsedPropertiesMapping({ type: 'manual-mapping', properties: [] });
         onInstanceTargetConnect(connection);
     };
 
@@ -90,19 +90,29 @@ export function useCreateEntityProperty() {
     };
 
     const createProperty = () => {
-        if (propertyName.trim().length === 0 || !sourceEntitySet || !targetEntitySet) {
+        if (propertySetName.trim().length === 0 || !sourceEntitySet || !targetEntitySet) {
             setError('Name, source and target must be set!');
             return;
         }
-        const transformation = createCreatePropertySetTransformation(schema, {
-            propertySet: {
-                name: propertyName,
-                uri: uri.asIri(),
-                value: { type: 'entity-set', entitySetId: targetEntitySet.id },
-            },
-            sourceEntitySetId: sourceEntitySet.id,
-            properties: getEntityInstanceTargetPropertyInstances(),
-        });
+        const transformation = createCreatePropertySetTransformation(
+            { schema, instances },
+            {
+                propertySet: {
+                    name: propertySetName,
+                    uri: uri.asIri(),
+                    value: { type: 'entity-set', entitySetId: targetEntitySet.id },
+                },
+                sourceEntitySetId: sourceEntitySet.id,
+                propertiesMapping:
+                    usedPropertiesMapping.type === 'manual-mapping' ||
+                    usedPropertiesMapping.type === 'join-mapping-detail'
+                        ? {
+                              type: 'manual-mapping',
+                              properties: getPropertyInstances(),
+                          }
+                        : usedPropertiesMapping,
+            }
+        );
         updateSchemaAndInstances(transformation);
         onActionDone();
         help.hideHelp();
@@ -127,12 +137,12 @@ export function useCreateEntityProperty() {
         },
         source,
         target,
-        usedInstanceMapping,
-        setUsedInstanceMapping,
+        usedInstanceMapping: usedPropertiesMapping,
+        setUsedInstanceMapping: setUsedPropertiesMapping,
         propertyEndsSelection: propertyEndsSelector,
         property: {
-            name: propertyName,
-            setName: setPropertyName,
+            name: propertySetName,
+            setName: setPropertySetName,
             uri,
         },
         createProperty,

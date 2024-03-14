@@ -9,13 +9,13 @@ import { ActionOkCancel } from '../utils/action-ok-cancel';
 import { Header } from '../utils/header';
 import { LabelReadonlyInput } from '../utils/general-label-input/label-readonly-input';
 import { useEditorContext } from '../../editor/editor-context';
-import { Dropdown } from '../utils/dropdown';
+import { Dropdown } from '../../utils/dropdown.tsx';
 import { EntitySetNodeSelector } from '../utils/diagram-node-selection/entity-set-selector/entity-set-node-selector.tsx';
 import { useEntitySetNodeSelector } from '../utils/diagram-node-selection/entity-set-selector/use-entity-set-node-selector.ts';
 import { Mapping } from '@klofan/instances/transform';
 import { PreserveButton } from '../utils/mapping/preserve-button';
 import { ManualButton } from '../utils/mapping/manual-button';
-import { useEntities } from '../utils/use-entities.ts';
+import { useEntities } from '../../utils/use-entities.ts';
 import { Connection } from 'reactflow';
 import { showEntityToLiteralDiagramHelp } from '../../help/content/show-entity-to-literal-diagram-help.tsx';
 
@@ -50,7 +50,7 @@ export function MoveLiteralProperty({
     const { entities: originalSourceEntities } = useEntities(originalSourceEntity, instances);
     const originalSource = { entitySet: originalSourceEntity, entities: originalSourceEntities };
 
-    const [usedInstanceMapping, setUsedInstanceMapping] = useState<Mapping>({
+    const [usedPropertiesMapping, setUsedPropertiesMapping] = useState<Mapping>({
         type: 'manual-mapping',
         properties: [],
     });
@@ -67,10 +67,10 @@ export function MoveLiteralProperty({
             originalSource: originalSourceEntity.id,
             propertySet: property.id,
             newSource: sourceEntity.id,
-            instanceMapping:
-                usedInstanceMapping.type === 'manual-mapping'
+            propertiesMapping:
+                usedPropertiesMapping.type === 'manual-mapping'
                     ? { type: 'manual-mapping', properties: getPropertyInstances() }
-                    : usedInstanceMapping,
+                    : usedPropertiesMapping,
         });
         updateSchemaAndInstances(transformation);
         onActionDone();
@@ -117,8 +117,8 @@ export function MoveLiteralProperty({
                 <div className='grid grid-cols-2'>
                     <PreserveButton
                         setEdges={setEdges}
-                        usedInstanceMapping={usedInstanceMapping}
-                        setUsedInstanceMapping={setUsedInstanceMapping}
+                        usedInstanceMapping={usedPropertiesMapping}
+                        setUsedInstanceMapping={setUsedPropertiesMapping}
                         source={source}
                         target={{ item: schema.literalSet(property.value) }}
                         originalSource={{
@@ -130,8 +130,8 @@ export function MoveLiteralProperty({
                     ></PreserveButton>
                     <ManualButton
                         setEdges={setEdges}
-                        setUsedInstanceMapping={setUsedInstanceMapping}
-                        usedInstanceMapping={usedInstanceMapping}
+                        setUsedInstanceMapping={setUsedPropertiesMapping}
+                        usedInstanceMapping={usedPropertiesMapping}
                     ></ManualButton>
                 </div>
                 <BipartiteDiagram
@@ -142,7 +142,7 @@ export function MoveLiteralProperty({
                     edgeTypes={edgeTypes}
                     layout={layout}
                     onConnect={(connection: Connection) => {
-                        setUsedInstanceMapping({ type: 'manual-mapping', properties: [] });
+                        setUsedPropertiesMapping({ type: 'manual-mapping', properties: [] });
                         onConnect(connection);
                     }}
                 ></BipartiteDiagram>

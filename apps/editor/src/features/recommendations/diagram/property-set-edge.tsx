@@ -1,8 +1,11 @@
 import { useCallback } from 'react';
 import { BaseEdge, EdgeLabelRenderer, EdgeProps, getBezierPath, useStore } from 'reactflow';
 import { usePrefixesContext } from '../../prefixes/prefixes-context';
-import { PropertySet } from '@klofan/schema/representation';
+import { PropertySet, toPropertySet } from '@klofan/schema/representation';
 import { getEdgeParams } from '../../diagram/utils';
+import { useDiagramContext } from './diagram-context.tsx';
+import { useRecommendationsContext } from '../recommendations-context.tsx';
+import { twMerge } from 'tailwind-merge';
 
 export default function PropertySetEdge({
     data,
@@ -14,9 +17,16 @@ export default function PropertySetEdge({
     const sourceNode = useStore(useCallback((store) => store.nodeInternals.get(source), [source]));
     const targetNode = useStore(useCallback((store) => store.nodeInternals.get(target), [target]));
     const { matchPrefix } = usePrefixesContext();
+    const { diagram, schema } = useDiagramContext();
+    const { shownRecommendationDetail } = useRecommendationsContext();
+    const propertySelection = diagram.propertySetSelection;
 
     if (!sourceNode || !targetNode) {
         return null;
+    }
+
+    if (!schema.hasRelation(data.id) || !shownRecommendationDetail) {
+        return <></>;
     }
 
     const { sx, sy, tx, ty, sourcePos, targetPos } = getEdgeParams(sourceNode, targetNode);
@@ -39,6 +49,18 @@ export default function PropertySetEdge({
         return property.name;
     };
 
+    const onEdgeClick = () => {
+        propertySelection.addSelectedPropertySet({
+            propertySet: data,
+            entitySet: sourceNode.data,
+        });
+        diagram.nodeSelection.clearSelectedNode();
+    };
+
+    const selectedProperty = data.id === propertySelection.selectedPropertySet?.propertySet.id;
+    const changedProperty = shownRecommendationDetail.changes.relations.find(
+        (relation) => relation === data.id
+    );
     return (
         <>
             <EdgeLabelRenderer>
@@ -52,8 +74,20 @@ export default function PropertySetEdge({
                         pointerEvents: 'all',
                     }}
                     className='nodrag nopan'
+                    onClick={onEdgeClick}
                 >
-                    <div className={'bg-slate-300 rounded p-1'}>{pLabel(data)}</div>
+                    <div
+                        className={twMerge(
+                            'bg-slate-300 rounded p-1',
+                            selectedProperty ? propertySelection.selectedStyle : '',
+                            changedProperty ? 'bg-rose-300' : '',
+                            selectedProperty && changedProperty
+                                ? 'bg-gradient-to-r from-yellow-200 to-rose-300'
+                                : ''
+                        )}
+                    >
+                        {pLabel(data)}
+                    </div>
                 </div>
             </EdgeLabelRenderer>
             <BaseEdge path={edgePath} markerEnd={markerEnd} style={style} />

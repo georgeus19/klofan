@@ -15,7 +15,7 @@ export class InMemoryInstances implements Instances {
     }
 
     entities(entitySet: EntitySet): Promise<Entity[]> {
-        const entities: Entity[] = safeGet(this.instances.entities, entitySet.id).instances.map(
+        const entities: Entity[] = safeGet(this.instances.entities, entitySet.id).map(
             (entity, index) => ({
                 ...entity,
                 properties: {},
@@ -25,8 +25,8 @@ export class InMemoryInstances implements Instances {
 
         entitySet.properties.forEach((propertySetId) => {
             safeGet(this.instances.properties, propertyKey(entitySet.id, propertySetId)).forEach(
-                (property, instanceIndex) => {
-                    entities[instanceIndex].properties[propertySetId] = property;
+                (property, entityIndex) => {
+                    entities[entityIndex].properties[propertySetId] = property;
                 }
             );
         });
@@ -34,12 +34,18 @@ export class InMemoryInstances implements Instances {
     }
 
     entityCount(entitySet: EntitySet): Promise<number> {
-        return Promise.resolve(this.instances.entities[entitySet.id].count);
+        return Promise.resolve(this.instances.entities[entitySet.id].length);
     }
 
     properties(entitySetId: string, propertySetId: string): Promise<Property[]> {
         return Promise.resolve(
             safeGet(this.instances.properties, propertyKey(entitySetId, propertySetId))
+        );
+    }
+
+    hasProperties(entitySetId: string, propertySetId: string): Promise<boolean> {
+        return Promise.resolve(
+            Object.hasOwn(this.instances.properties, propertyKey(entitySetId, propertySetId))
         );
     }
 

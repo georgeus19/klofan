@@ -12,6 +12,7 @@ export interface Instances {
     entities(entitySet: EntitySet): Promise<Entity[]>;
     entityCount(entitySet: EntitySet): Promise<number>;
     properties(entitySetId: identifier, propertySetId: identifier): Promise<Property[]>;
+    hasProperties(entitySetId: identifier, propertySetId: identifier): Promise<boolean>;
 
     // Transform instances by producing new instances with applied transformations.
     transform(transformations: Transformation[]): Promise<Instances>;

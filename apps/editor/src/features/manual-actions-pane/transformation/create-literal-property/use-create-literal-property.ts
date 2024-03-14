@@ -15,7 +15,7 @@ import {
 import { Entity } from '@klofan/instances';
 import { useEntitySetNodeSelector } from '../../utils/diagram-node-selection/entity-set-selector/use-entity-set-node-selector.ts';
 import { useUriInput } from '../../utils/uri/use-uri-input';
-import { useEntities } from '../../utils/use-entities.ts';
+import { useEntities } from '../../../utils/use-entities.ts';
 import { showEntityToLiteralDiagramHelp } from '../../../help/content/show-entity-to-literal-diagram-help.tsx';
 
 export type LiteralNode = LiteralTargetNode & {
@@ -72,15 +72,18 @@ export function useCreateLiteralProperty() {
             setError('Name and source must be set!');
             return;
         }
-        const transformation = createCreatePropertySetTransformation(schema, {
-            propertySet: {
-                name: propertyName,
-                uri: uri.uriWithoutPrefix,
-                value: { type: 'literal-set' },
-            },
-            sourceEntitySetId: sourceEntitySet.id,
-            properties: getPropertyInstances(),
-        });
+        const transformation = createCreatePropertySetTransformation(
+            { schema, instances },
+            {
+                propertySet: {
+                    name: propertyName,
+                    uri: uri.uriWithoutPrefix,
+                    value: { type: 'literal-set' },
+                },
+                sourceEntitySetId: sourceEntitySet.id,
+                propertiesMapping: { type: 'manual-mapping', properties: getPropertyInstances() },
+            }
+        );
         updateSchemaAndInstances(transformation);
         onActionDone();
         help.hideHelp();

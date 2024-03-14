@@ -2,7 +2,7 @@ import { usePrefixesContext } from '../../../prefixes/prefixes-context';
 import { UncontrollableLabelInput } from '../../utils/general-label-input/uncontrollable-label-input';
 import { Header } from '../../utils/header';
 import { AddPrefix } from './add-prefix';
-import { Dropdown } from '../../utils/dropdown';
+import { Dropdown } from '../../../utils/dropdown.tsx';
 import { UncontrollableUriLabelInput } from '../../utils/uri/uncontrollable-uri-label-input';
 
 export interface PrefixesShown {
@@ -14,7 +14,10 @@ export function Prefixes() {
 
     const prefixesView = prefixes.map((prefix) => (
         <div className='bg-slate-100 rounded m-1' key={prefix.value}>
-            <button onClick={() => removePrefix(prefix.value)} className='p-1 rounded shadow bg-blue-200 hover:bg-blue-300'>
+            <button
+                onClick={() => removePrefix(prefix.value)}
+                className='p-1 rounded shadow bg-blue-200 hover:bg-blue-300'
+            >
                 Delete
             </button>
             <UncontrollableLabelInput

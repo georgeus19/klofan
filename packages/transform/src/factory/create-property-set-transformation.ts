@@ -14,27 +14,32 @@ import {
 } from '@klofan/schema/transform';
 import { identifier, getNewId } from '@klofan/utils';
 import { Transformation } from './../transformation';
-import { CreateProperties } from '@klofan/instances/transform';
+import { CreateProperties, Mapping } from '@klofan/instances/transform';
 import { Property } from '@klofan/instances/representation';
+import { Instances } from '@klofan/instances';
 
 export function createCreatePropertySetTransformation(
-    schema: Schema,
+    { schema }: { schema: Schema; instances: Instances },
     {
-        propertySet: { name, uri, value },
+        propertySet: { id, name, uri, value },
         sourceEntitySetId,
-        properties,
+        propertiesMapping,
     }: {
         propertySet: {
+            id?: string;
             name: string;
             uri?: string;
-            value: { type: 'entity-set'; entitySetId: identifier } | { type: 'literal-set' };
+            value:
+                | { type: 'entity-set'; entitySetId: identifier }
+                | { type: 'literal-set'; literalSetId?: identifier };
         };
         sourceEntitySetId: identifier;
-        properties: Property[];
+        propertiesMapping: Mapping;
     }
 ): Transformation {
     const sourceEntitySet = schema.entitySet(sourceEntitySetId);
     const { propertySet, schemaTransformations } = createSchemaTransformations(
+        id ? id : getNewId(),
         name,
         value,
         sourceEntitySet,
@@ -45,7 +50,7 @@ export function createCreatePropertySetTransformation(
         data: {
             entitySet: sourceEntitySet,
             propertySet: propertySet,
-            properties: properties,
+            propertiesMapping: propertiesMapping,
         },
     };
     return {
@@ -55,8 +60,11 @@ export function createCreatePropertySetTransformation(
 }
 
 function createSchemaTransformations(
+    propertyId: string,
     propertyName: string,
-    propertyValue: { type: 'entity-set'; entitySetId: identifier } | { type: 'literal-set' },
+    propertyValue:
+        | { type: 'entity-set'; entitySetId: identifier }
+        | { type: 'literal-set'; literalSetId?: identifier },
     sourceEntitySet: EntitySet,
     propertyUri?: string
 ): { propertySet: PropertySet; schemaTransformations: SchemaTransformation[] } {
@@ -64,7 +72,7 @@ function createSchemaTransformations(
     let targetSchemaTransformations: SchemaTransformation[];
     if (propertyValue.type === 'literal-set') {
         const literal: LiteralSet = createLiteralSet({
-            id: getNewId(),
+            id: propertyValue.literalSetId ? propertyValue.literalSetId : getNewId(),
             name: propertyName,
         });
         const createLiteralTransformation: CreateLiteralSet = {
@@ -79,7 +87,7 @@ function createSchemaTransformations(
     }
 
     const propertySet: PropertySet = createPropertySet({
-        id: getNewId(),
+        id: propertyId,
         uri: propertyUri,
         name: propertyName,
         value: valueId,

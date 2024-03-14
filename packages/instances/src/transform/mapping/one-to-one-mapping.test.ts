@@ -1,6 +1,6 @@
 import { describe, expect, test } from '@jest/globals';
 import { Property } from '../../representation/property';
-import { RawInstances, initEntityInstances } from '../../representation/raw-instances';
+import { RawInstances, initEntities } from '../../representation/raw-instances';
 import {
     OneToOneMapping,
     getOneToOneMappingProperties,
@@ -9,9 +9,9 @@ import {
 import { createEntitySet } from '@klofan/schema/representation';
 
 describe('Transform Instances', () => {
-    describe('Instance Mappings', () => {
+    describe('Property Mappings', () => {
         describe('One-To-One', () => {
-            test('getOneToOnePropertyInstances', () => {
+            test('getOneToOneProperties', () => {
                 const sourceInstances = 10;
                 const expectedPropertyInstances: Property[] = [
                     {
@@ -111,14 +111,8 @@ describe('Transform Instances', () => {
                 };
                 const instances: RawInstances = {
                     entities: {
-                        '0': {
-                            count: sourceInstances,
-                            instances: initEntityInstances(sourceInstances),
-                        },
-                        '1': {
-                            count: sourceInstances,
-                            instances: initEntityInstances(sourceInstances),
-                        },
+                        '0': initEntities(sourceInstances),
+                        '1': initEntities(sourceInstances),
                     },
                     properties: {},
                 };

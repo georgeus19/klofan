@@ -3,6 +3,7 @@ import {
     toPropertySet,
     isLiteralSet,
     getProperties,
+    isEntitySet,
 } from '@klofan/schema/representation';
 import {
     createUpdateEntitySetUriTransformation,
@@ -11,12 +12,15 @@ import {
     createUpdateItemNameTransformation,
 } from '@klofan/transform';
 import { UncontrollableLabelInput } from '../utils/general-label-input/uncontrollable-label-input';
-import { Dropdown } from '../utils/dropdown';
+import { Dropdown } from '../../utils/dropdown.tsx';
 import { useEditorContext } from '../../editor/editor-context';
-import { useEntities } from '../utils/use-entities.ts';
+import { useEntities } from '../../utils/use-entities.ts';
 import { identifier } from '@klofan/utils';
 import { UncontrollableUriLabelInput } from '../utils/uri/uncontrollable-uri-label-input';
 import { Header } from '../utils/header';
+import { EntityView } from '../../utils/entity-view.tsx';
+import { useRef } from 'react';
+import { VirtualList } from '../../utils/virtual-list.tsx';
 
 export interface EntityDetailProps {
     entityId: identifier;
@@ -24,22 +28,26 @@ export interface EntityDetailProps {
 
 export function EntityDetail({ entityId }: EntityDetailProps) {
     const { schema, instances, updateSchemaAndInstances, manualActions } = useEditorContext();
-    const entity = schema.entitySet(entityId);
-    const { entities } = useEntities(entity, instances);
+    const entitySet = schema.entitySet(entityId);
+    const { entities } = useEntities(entitySet, instances);
 
-    const propertySets = getProperties(schema, entity.id);
+    const propertySets = getProperties(schema, entitySet.id);
 
     const handleEntityNameChange = (name: string) => {
-        if (name !== entity.name) {
-            const transformation = createUpdateItemNameTransformation(schema, entity.id, name);
+        if (name !== entitySet.name) {
+            const transformation = createUpdateItemNameTransformation(schema, entitySet.id, name);
             updateSchemaAndInstances(transformation);
         }
     };
 
     const handleEntityUriChange = (uri: string) => {
-        const uriNotUpdated = (entity.uri === undefined && uri === '') || entity.uri === uri;
+        const uriNotUpdated = (entitySet.uri === undefined && uri === '') || entitySet.uri === uri;
         if (!uriNotUpdated) {
-            const transformation = createUpdateEntitySetUriTransformation(schema, entity.id, uri);
+            const transformation = createUpdateEntitySetUriTransformation(
+                schema,
+                entitySet.id,
+                uri
+            );
             updateSchemaAndInstances(transformation);
         }
     };
@@ -53,7 +61,9 @@ export function EntityDetail({ entityId }: EntityDetailProps) {
                 <div className='grow text-white p-1'>{property.name}</div>
                 <button
                     className='self-end p-1 rounded shadow bg-blue-200 hover:bg-blue-300'
-                    onClick={() => manualActions.showMoveProperty(entity, toPropertySet(property))}
+                    onClick={() =>
+                        manualActions.showMoveProperty(entitySet, toPropertySet(property))
+                    }
                 >
                     Move
                 </button>
@@ -103,13 +113,13 @@ export function EntityDetail({ entityId }: EntityDetailProps) {
             <Dropdown headerLabel='General' showInitially={true}>
                 <UncontrollableLabelInput
                     id='entityName'
-                    initialValue={entity.name}
+                    initialValue={entitySet.name}
                     onChangeDone={handleEntityNameChange}
                     label='Name'
                 ></UncontrollableLabelInput>
                 <UncontrollableUriLabelInput
                     id='entityUri'
-                    initialUri={entity.uri ?? ''}
+                    initialUri={entitySet.uri ?? ''}
                     onChangeDone={handleEntityUriChange}
                     label='Uri'
                     usePrefix
@@ -118,35 +128,51 @@ export function EntityDetail({ entityId }: EntityDetailProps) {
 
             <Dropdown headerLabel='Properties' showInitially={true}>
                 <Dropdown className='mx-2' headerLabel='LiteralSet' showInitially={true}>
-                    <ul className='mx-4'>
+                    <ul className='mx-4 max-h-96 overflow-auto'>
                         {propertySets
                             .filter((property) => isLiteralSet(property.value))
                             .map((property) => generatePropertyDetail(property))}
                     </ul>
                 </Dropdown>
                 <Dropdown className='mx-2' headerLabel='EntitySet' showInitially={true}>
-                    <ul className='mx-4'>
+                    <ul className='mx-4 max-h-96 overflow-auto'>
                         {propertySets
-                            .filter((property) => !isLiteralSet(property.value))
+                            .filter((property) => isEntitySet(property.value))
                             .map((property) => generatePropertyDetail(property))}
                     </ul>
                 </Dropdown>
             </Dropdown>
 
-            {/* <Dropdown headerLabel='Instance' showInitially={true}>
-                {entityInstances.map((entityInstance) => {
-                    return (
-                        <EntityInstanceView
-                            key={`${entity.id}.${entityInstance.id}`}
+            <Dropdown headerLabel='Entities' showInitially={true}>
+                <VirtualList items={entities} height='max-h-160' className='mx-2'>
+                    {(entity) => (
+                        <EntityView
+                            key={entity.id}
+                            entitySet={entitySet}
                             entity={entity}
-                            entityInstance={entityInstance}
-                            showEntityProperties
+                            schema={schema}
                             showLiteralProperties
-                            className='mt-0 mx-2'
-                        ></EntityInstanceView>
-                    );
-                })}
-            </Dropdown> */}
+                            showEntityProperties
+                            expanded
+                        ></EntityView>
+                    )}
+                </VirtualList>
+
+                {/*{entities.map((entityInstance) => {*/}
+                {/*    return (*/}
+                {/*        <EntityView*/}
+                {/*            key={`${entitySet.id}.${entityInstance.id}`}*/}
+                {/*            entitySet={entitySet}*/}
+                {/*            entity={entityInstance}*/}
+                {/*            showEntityProperties*/}
+                {/*            showLiteralProperties*/}
+                {/*            schema={schema}*/}
+                {/*            className='mt-0 mx-2'*/}
+                {/*            expanded*/}
+                {/*        ></EntityView>*/}
+                {/*    );*/}
+                {/*})}*/}
+            </Dropdown>
         </div>
     );
 }

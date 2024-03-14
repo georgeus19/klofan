@@ -23,5 +23,5 @@ export function getAllToOneMappingProperties(
     mapping: AllToOneMapping
 ): Property[] {
     const sourceEntities = instances.entities[mapping.source.id];
-    return getAllToOneProperties(sourceEntities.count);
+    return getAllToOneProperties(sourceEntities.length);
 }

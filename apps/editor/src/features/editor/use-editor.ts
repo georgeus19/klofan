@@ -11,7 +11,7 @@ import { usePositioning } from '../diagram/layout/use-positioning';
 import { useNodeEvents } from '../diagram/node-events/use-node-events';
 import { Instances } from '@klofan/instances';
 import { useHistory } from './history/use-history';
-import { UpdateOperation } from './history/update-operation';
+import { UpdateHistoryOperation, UpdateOperation } from './history/update-history-operation.ts';
 import { RawEditor } from './history/history';
 import { reflectSchema } from '../diagram/reflect-schema/reflect-schema';
 import { SchemaDiagram } from '../diagram/schema-diagram';
@@ -22,7 +22,7 @@ import { Schema } from '@klofan/schema';
  */
 export type Editor = {
     history: {
-        operations: UpdateOperation[];
+        operations: UpdateHistoryOperation[];
         undo: () => void;
         redo: () => void;
     };
@@ -134,7 +134,7 @@ export function useEditor(): Editor {
      */
     const runOperations = async (operations: UpdateOperation[]) => {
         let editor: RawEditor = { ...history.current };
-        const operationsWithEditor: UpdateOperation[] = [];
+        const operationsWithEditor: UpdateHistoryOperation[] = [];
         for (const operation of operations) {
             switch (operation.type) {
                 case 'initial-operation':

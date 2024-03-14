@@ -1,9 +1,9 @@
 import { Entity } from '@klofan/instances';
 import { isLiteralSet, EntitySet, getProperties, isEntitySet } from '@klofan/schema/representation';
-import { useEditorContext } from '../../editor/editor-context';
-import { Dropdown } from './dropdown';
-import { ReadonlyInput } from './general-label-input/readonly-input';
-import { LabelReadonlyUriInput } from './uri/label-readonly-uri-input';
+import { useEditorContext } from '../editor/editor-context.tsx';
+import { Dropdown } from './dropdown.tsx';
+import { ReadonlyInput } from '../manual-actions-pane/utils/general-label-input/readonly-input.tsx';
+import { LabelReadonlyUriInput } from '../manual-actions-pane/utils/uri/label-readonly-uri-input.tsx';
 import { Schema } from '@klofan/schema';
 import { PropertyView } from './property-view.tsx';
 

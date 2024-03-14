@@ -1,42 +1,75 @@
 import { twMerge } from 'tailwind-merge';
 import { useEditorContext } from '../editor/editor-context';
-import { Dropdown } from '../manual-actions-pane/utils/dropdown';
-import ReactFlow, { Background, BackgroundVariant, ReactFlowProvider } from 'reactflow';
+import { Dropdown } from '../utils/dropdown.tsx';
 import { useRecommendationsContext } from './recommendations-context';
-import { edgeTypes, nodeTypes } from './use-recommendations';
-import { DiagramContextProvider } from './diagram/diagram-context';
-import { LiteralPropertySetDetail } from './detail/literal-property-set-detail.tsx';
 import { Header } from '../manual-actions-pane/utils/header';
-import { EntitySetDetail } from './detail/entity-set-detail.tsx';
+import { DiagramRecommendationDiff } from './diagram-recommendation-diff.tsx';
+import { useState } from 'react';
+import { RecommendationDescription } from './recommendation-description.tsx';
 
 export type RecommendationsPaneProps = {
     className?: string;
 };
 
+export type ShowOption = 'description' | 'diff';
+
 export function RecommendationsPane({ className }: RecommendationsPaneProps) {
-    const { manualActions } = useEditorContext();
+    const { manualActions, updateSchemaAndInstances } = useEditorContext();
     const {
         recommendations,
         showRecommendationDetail,
+        applyRecommendation,
         shownRecommendationDetail,
         getRecommendations,
         hideRecommendationDetail,
     } = useRecommendationsContext();
+    const [showOption, setShowOption] = useState<ShowOption>('diff');
 
     const recommendationsList = recommendations.map((recommendation, index) => (
-        <div key={index} className='grid grid-cols-12 rounded p-1 bg-slate-500 mx-2'>
+        <div key={index} className='grid grid-cols-12 gap-1 rounded p-1 bg-slate-500 mx-2'>
             <div className='col-span-6'>
                 Category:{' '}
                 <span className='text-white rounded p-1  '>{recommendation.category}</span>
             </div>
             <button
-                className='col-start-10 col-span-3 rounded shadow bg-blue-200 hover:bg-blue-300 p-2'
+                className={twMerge(
+                    'col-start-1 col-span-4 rounded shadow bg-blue-200 hover:bg-blue-300 p-2',
+                    shownRecommendationDetail &&
+                        shownRecommendationDetail.recommendationIndex === index &&
+                        showOption === 'description'
+                        ? 'bg-yellow-200 hover:bg-yellow-200'
+                        : ''
+                )}
                 onClick={() => {
+                    setShowOption('description');
                     showRecommendationDetail(recommendation, index);
                     manualActions.hide();
                 }}
             >
-                Detail
+                Description
+            </button>
+            <button
+                className={twMerge(
+                    'col-span-4 rounded shadow bg-blue-200 hover:bg-blue-300 p-2',
+                    shownRecommendationDetail &&
+                        shownRecommendationDetail.recommendationIndex === index &&
+                        showOption === 'diff'
+                        ? 'bg-yellow-200 hover:bg-yellow-200'
+                        : ''
+                )}
+                onClick={() => {
+                    setShowOption('diff');
+                    showRecommendationDetail(recommendation, index);
+                    manualActions.hide();
+                }}
+            >
+                Diff
+            </button>
+            <button
+                className='col-span-4 rounded shadow bg-blue-200 hover:bg-blue-300 p-2'
+                onClick={() => applyRecommendation(recommendation)}
+            >
+                Accept
             </button>
         </div>
     ));
@@ -66,60 +99,16 @@ export function RecommendationsPane({ className }: RecommendationsPaneProps) {
                     >
                         Cancel
                     </button>
-                    <DiagramContextProvider value={shownRecommendationDetail.old}>
-                        <div className='w-1/2 flex flex-col'>
-                            <EntitySetDetail height='h-60'></EntitySetDetail>
-                            <LiteralPropertySetDetail height='h-60'></LiteralPropertySetDetail>
-                            <ReactFlowProvider>
-                                <ReactFlow
-                                    nodeTypes={nodeTypes}
-                                    edgeTypes={edgeTypes}
-                                    nodes={shownRecommendationDetail.old.diagram.nodes}
-                                    edges={shownRecommendationDetail.old.diagram.edges}
-                                    onNodesChange={
-                                        shownRecommendationDetail.old.diagram.onNodesChange
-                                    }
-                                    draggable={true}
-                                    elementsSelectable={true}
-                                >
-                                    <Background
-                                        variant={BackgroundVariant.Dots}
-                                        gap={12}
-                                        size={1}
-                                    />
-                                </ReactFlow>
-                            </ReactFlowProvider>
-                        </div>
-                    </DiagramContextProvider>
-                    {/* <div className='w-96 bg-slate-300'></div> */}
-                    <div className='w-1 bg-slate-800 h-full'></div>
-                    {/* <div className='w-96 bg-slate-300'></div> */}
-                    {/* <div className='w-1/2'></div> */}
-                    <DiagramContextProvider value={shownRecommendationDetail.new}>
-                        <div className='w-1/2 flex flex-col'>
-                            <EntitySetDetail height='h-60'></EntitySetDetail>
-                            <LiteralPropertySetDetail height='h-60'></LiteralPropertySetDetail>
-                            <ReactFlowProvider>
-                                <ReactFlow
-                                    nodeTypes={nodeTypes}
-                                    edgeTypes={edgeTypes}
-                                    nodes={shownRecommendationDetail.new.diagram.nodes}
-                                    edges={shownRecommendationDetail.new.diagram.edges}
-                                    onNodesChange={
-                                        shownRecommendationDetail.new.diagram.onNodesChange
-                                    }
-                                    draggable={true}
-                                    elementsSelectable={true}
-                                >
-                                    <Background
-                                        variant={BackgroundVariant.Dots}
-                                        gap={12}
-                                        size={1}
-                                    />
-                                </ReactFlow>
-                            </ReactFlowProvider>
-                        </div>
-                    </DiagramContextProvider>
+                    {showOption === 'diff' && (
+                        <DiagramRecommendationDiff
+                            shownRecommendationDetail={shownRecommendationDetail}
+                        ></DiagramRecommendationDiff>
+                    )}
+                    {showOption === 'description' && (
+                        <RecommendationDescription
+                            recommendation={shownRecommendationDetail.recommendation}
+                        ></RecommendationDescription>
+                    )}
                 </div>
             )}
         </div>

@@ -7,18 +7,18 @@ import { useEditorContext } from '../../editor/editor-context';
 import { useEntitySetNodeSelector } from '../utils/diagram-node-selection/entity-set-selector/use-entity-set-node-selector.ts';
 import { EntitySet } from '@klofan/schema/representation';
 import { UncontrollableUriLabelInput } from '../utils/uri/uncontrollable-uri-label-input';
-import { Dropdown } from '../utils/dropdown';
+import { Dropdown } from '../../utils/dropdown.tsx';
 
 export function CreateEntity() {
-    const [entityName, setEntityName] = useState('');
+    const [entitySetName, setEntitySetName] = useState('');
     const [error, setError] = useState<string | null>(null);
-    const [entityInstances, setEntityInstances] = useState<{ uri?: string }[]>(
+    const [entities, setEntities] = useState<{ uri?: string }[]>(
         [...Array(1).keys()].map(() => ({}))
     );
 
-    const entityNodeSelector = useEntitySetNodeSelector((entity: EntitySet) => {
-        instances.entities(entity).then((entityInstances) => {
-            setEntityInstances([...Array(entityInstances.length).keys()].map(() => ({})));
+    const entityNodeSelector = useEntitySetNodeSelector((entitySet: EntitySet) => {
+        instances.entities(entitySet).then((entities) => {
+            setEntities([...Array(entities.length).keys()].map(() => ({})));
         });
 
         clearSelectedNode();
@@ -35,13 +35,13 @@ export function CreateEntity() {
         manualActions: { onActionDone },
     } = useEditorContext();
 
-    const createEntity = () => {
-        if (entityName.trim().length === 0 || entityInstances.length === 0) {
+    const createEntitySet = () => {
+        if (entitySetName.trim().length === 0 || entities.length === 0) {
             setError('Name and instance count must be set!');
         }
         const transformation = createCreateEntitySetTransformation({
-            schema: { name: entityName },
-            instances: { count: entityInstances.length, instances: entityInstances },
+            schema: { name: entitySetName },
+            instances: { count: entities.length, instances: entities },
         });
         updateSchemaAndInstances(transformation);
         onActionDone();
@@ -53,17 +53,15 @@ export function CreateEntity() {
         onActionDone();
     };
 
-    const entityInstancesInputs = entityInstances.map((entityInstance, index) => (
+    const entitiesInputs = entities.map((entity, index) => (
         <div key={index}>
             <UncontrollableUriLabelInput
                 label={`${index}.Uri`}
                 id='uri'
-                initialUri={entityInstance.uri ?? ''}
+                initialUri={entity.uri ?? ''}
                 onChangeDone={(uri: string) => {
-                    setEntityInstances(
-                        entityInstances.map((instance, i) =>
-                            index === i ? { uri: uri } : instance
-                        )
+                    setEntities(
+                        entities.map((instance, i) => (index === i ? { uri: uri } : instance))
                     );
                 }}
                 usePrefix
@@ -76,8 +74,8 @@ export function CreateEntity() {
             <Header label='Create EntitySet'></Header>
             <LabelInput
                 label='Name'
-                value={entityName}
-                updateValue={(value) => setEntityName(value)}
+                value={entitySetName}
+                updateValue={(value) => setEntitySetName(value)}
                 id='name'
             ></LabelInput>
             <div className='grid grid-cols-12 px-3 py-1'>
@@ -85,10 +83,10 @@ export function CreateEntity() {
                 <input
                     type='number'
                     className='col-span-6 rounded bg-transparent border-2 border-slate-400 px-1'
-                    value={entityInstances.length}
+                    value={entities.length}
                     onChange={(event) => {
                         const count = Number(event.target.value);
-                        setEntityInstances([...Array(count).keys()].map(() => ({})));
+                        setEntities([...Array(count).keys()].map(() => ({})));
                     }}
                 />
                 <button
@@ -99,7 +97,7 @@ export function CreateEntity() {
                 </button>
             </div>
             <Dropdown headerLabel='Optional Instance Info' showInitially>
-                {entityInstancesInputs}
+                <div className='max-h-96 overflow-auto'>{entitiesInputs}</div>
             </Dropdown>
 
             {error && (
@@ -107,7 +105,7 @@ export function CreateEntity() {
                     {error}
                 </div>
             )}
-            <ActionOkCancel onOk={createEntity} onCancel={cancel}></ActionOkCancel>
+            <ActionOkCancel onOk={createEntitySet} onCancel={cancel}></ActionOkCancel>
         </div>
     );
 }

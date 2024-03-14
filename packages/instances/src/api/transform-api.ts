@@ -43,5 +43,11 @@ export type { UpdatePropertyLiterals } from '../transform/transformations/update
 export { updatePropertyLiterals } from '../transform/transformations/update-property-literals';
 export { updateEntitiesUris } from '../transform/transformations/update-entities-uris';
 
+export type { ConvertLiteralToEntity } from '../transform/transformations/convert-literal-to-entity';
+export { convertLiteralToEntity } from '../transform/transformations/convert-literal-to-entity';
+
+export type { DeleteLiterals } from '../transform/transformations/delete-literals';
+export { deleteLiterals } from '../transform/transformations/delete-literals';
+
 export type { TransformationChanges } from '../transform/transformation-changes';
 export { transformationChanges } from '../transform/transformation-changes';

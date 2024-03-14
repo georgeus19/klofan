@@ -1,14 +1,14 @@
 import { describe, expect, test } from '@jest/globals';
 import { Property } from '../../representation/property';
-import { RawInstances, initEntityInstances } from '../../representation/raw-instances';
+import { RawInstances, initEntities } from '../../representation/raw-instances';
 import { JoinMapping, getJoinMappingProperties, getJoinedProperties } from './join-mapping';
 import { Entity } from '../../representation/entity';
 import { createEntitySet, createPropertySet, PropertySet } from '@klofan/schema/representation';
 
 describe('Transform Instances', () => {
-    describe('Instance Mappings', () => {
+    describe('Property Mappings', () => {
         describe('Join', () => {
-            test('getJoinedPropertyInstances', () => {
+            test('getJoinedProperties', () => {
                 const expectedPropertyInstances: Property[] = [
                     {
                         literals: [],
@@ -134,8 +134,8 @@ describe('Transform Instances', () => {
                 };
                 const instances: RawInstances = {
                     entities: {
-                        '0': { count: 3, instances: initEntityInstances(3) },
-                        '1': { count: 3, instances: initEntityInstances(3) },
+                        '0': initEntities(3),
+                        '1': initEntities(3),
                     },
                     properties: {
                         '0.IDREF': [

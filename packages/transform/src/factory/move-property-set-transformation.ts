@@ -12,7 +12,7 @@ export function createMovePropertySetTransformation(
         propertySet: identifier;
         newSource?: identifier;
         newTarget?: identifier;
-        instanceMapping: Mapping;
+        propertiesMapping: Mapping;
     }
 ): Transformation {
     const originalSource = schema.entitySet(data.originalSource);
@@ -37,7 +37,7 @@ export function createMovePropertySetTransformation(
             newSource: newSource,
             propertySet: propertySet,
             newTarget: newTarget,
-            propertyInstancesMapping: data.instanceMapping,
+            propertiesMapping: data.propertiesMapping,
         },
     };
 

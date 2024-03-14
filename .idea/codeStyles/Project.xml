@@ -34,6 +34,10 @@
     <codeStyleSettings language="JavaScript">
       <option name="SOFT_MARGINS" value="150" />
     </codeStyleSettings>
+    <codeStyleSettings language="Markdown">
+      <option name="RIGHT_MARGIN" value="100" />
+      <option name="WRAP_ON_TYPING" value="1" />
+    </codeStyleSettings>
     <codeStyleSettings language="TypeScript">
       <option name="SOFT_MARGINS" value="150" />
     </codeStyleSettings>

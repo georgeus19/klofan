@@ -7,6 +7,8 @@ export type { CreateLiteralSet } from '../transform/transformations/create-liter
 export { createLiteralSet } from '../transform/transformations/create-literal-set';
 export type { CreatePropertySet } from '../transform/transformations/create-property-set';
 export { createPropertySet } from '../transform/transformations/create-property-set';
+export type { DeletePropertySet } from '../transform/transformations/delete-property-set';
+export { deletePropertySet } from '../transform/transformations/delete-property-set';
 export type { MovePropertySet } from '../transform/transformations/move-property-set';
 export { movePropertySet } from '../transform/transformations/move-property-set';
 export type { UpdateEntitySet } from '../transform/transformations/update-entity-set';

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useEditorContext } from '../editor/editor-context';
 import { twMerge } from 'tailwind-merge';
 import { RawInstances } from '@klofan/instances/representation';
-import { Dropdown } from '../manual-actions-pane/utils/dropdown';
+import { Dropdown } from '../utils/dropdown.tsx';
 import { createUpdatePropertyLiteralsValueTransformation } from '@klofan/transform';
 
 export type RecommendationsProps = {

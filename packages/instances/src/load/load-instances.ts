@@ -1,12 +1,13 @@
 import { Instances } from '../instances';
 import { Property } from '../representation/property';
-import { initEntityInstances, propertyKey } from '../representation/raw-instances';
+import { initEntities, propertyKey } from '../representation/raw-instances';
 import { identifier } from '@klofan/utils';
 import { InMemoryInstances } from '../in-memory-instances';
 import { EntityTreeNode } from '@klofan/parse';
 
 import _ from 'lodash';
 import { Literal } from '../representation/literal';
+import { EntityWithoutProperties } from '../representation/entity';
 
 export function loadInstances(entityTree: EntityTreeNode): Instances {
     const entities = fillEntities({}, entityTree);
@@ -54,14 +55,11 @@ function fillProperties(
 
 function fillEntities(
     entities: {
-        [key: identifier]: { count: number; instances: { uri?: string }[] };
+        [key: identifier]: EntityWithoutProperties[];
     },
     entityTree: EntityTreeNode
-): { [key: identifier]: { count: number; instances: { uri?: string }[] } } {
-    entities[entityTree.id] = {
-        count: entityTree.instanceCount,
-        instances: initEntityInstances(entityTree.instanceCount),
-    };
+): { [key: identifier]: EntityWithoutProperties[] } {
+    entities[entityTree.id] = initEntities(entityTree.instanceCount);
     Object.values(entityTree.properties).forEach((propertyInfo) => {
         fillEntities(entities, propertyInfo.targetEntity);
     });

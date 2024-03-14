@@ -4,12 +4,12 @@ import { useEntitySetNodeSelector } from '../../utils/diagram-node-selection/ent
 import { EntitySetNodeSelector } from '../../utils/diagram-node-selection/entity-set-selector/entity-set-node-selector.tsx';
 import { Header } from '../../utils/header';
 import { ActionOkCancel } from '../../utils/action-ok-cancel';
-import { useEntities } from '../../utils/use-entities.ts';
+import { useEntities } from '../../../utils/use-entities.ts';
 import { useEditorContext } from '../../../editor/editor-context';
 import { AddUriMapping } from './add-uri-mapping';
 import { LabelReadonlyInput } from '../../utils/general-label-input/label-readonly-input';
-import { Dropdown } from '../../utils/dropdown';
-import { EntityView } from '../../utils/entity-view.tsx';
+import { Dropdown } from '../../../utils/dropdown.tsx';
+import { EntityView } from '../../../utils/entity-view.tsx';
 import { EntityUriMapping } from '@klofan/instances/transform';
 import { createUpdateEntitiesUris } from '@klofan/transform';
 import { showUpdateEntitiesUrisHelp } from '../../../help/content/show-update-entities-uris-help.tsx';
@@ -114,11 +114,13 @@ export function UpdateEntityInstancesUris() {
                 >
                     {unmappedEntityInstances.map((entity) => (
                         <EntityView
+                            schema={schema}
                             key={`${entitySet.id}.${entity.id}`}
                             entitySet={entitySet}
                             entity={entity}
                             showLiteralProperties
                             className='mt-0 mx-2'
+                            expanded={true}
                         ></EntityView>
                     ))}
                 </Dropdown>

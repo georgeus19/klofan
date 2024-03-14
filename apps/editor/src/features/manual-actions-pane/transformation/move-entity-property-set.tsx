@@ -10,7 +10,7 @@ import { ActionOkCancel } from '../utils/action-ok-cancel';
 import { Header } from '../utils/header';
 import { LabelReadonlyInput } from '../utils/general-label-input/label-readonly-input';
 import { useEditorContext } from '../../editor/editor-context';
-import { Dropdown } from '../utils/dropdown';
+import { Dropdown } from '../../utils/dropdown.tsx';
 import { usePropertySetEndsNodesSelector } from '../utils/diagram-node-selection/property-ends-selector/use-property-set-ends-nodes-selector.ts';
 import { PropertyEndsNodesSelector } from '../utils/diagram-node-selection/property-ends-selector/property-ends-nodes-selector';
 import { Mapping } from '@klofan/instances/transform';
@@ -25,18 +25,18 @@ import { OneToOneButton } from '../utils/mapping/one-to-one-button';
 import { AllToOneButton } from '../utils/mapping/all-to-one-button';
 import { ManualButton } from '../utils/mapping/manual-button';
 import { PreserveButton } from '../utils/mapping/preserve-button';
-import { useEntities } from '../utils/use-entities.ts';
+import { useEntities } from '../../utils/use-entities.ts';
 import { Connection } from 'reactflow';
 
-export interface MoveEntityPropertyProps {
-    entity: EntitySet;
-    property: PropertySet;
+export interface MoveEntityPropertySetProps {
+    entitySet: EntitySet;
+    propertySet: PropertySet;
 }
 
-export function MoveEntityProperty({
-    entity: originalSourceEntity,
-    property,
-}: MoveEntityPropertyProps) {
+export function MoveEntityPropertySet({
+    entitySet: originalSourceEntitySet,
+    propertySet,
+}: MoveEntityPropertySetProps) {
     const {
         schema,
         instances,
@@ -45,12 +45,12 @@ export function MoveEntityProperty({
         manualActions: { onActionDone },
     } = useEditorContext();
 
-    const originalTargetEntity = schema.entitySet(property.value);
+    const originalTargetEntity = schema.entitySet(propertySet.value);
 
-    const { entities: originalSourceInstances } = useEntities(originalSourceEntity, instances);
+    const { entities: originalSourceInstances } = useEntities(originalSourceEntitySet, instances);
     const { entities: originalTargetInstances } = useEntities(originalTargetEntity, instances);
 
-    const [sourceEntity, setSourceEntity] = useState<EntitySet>(originalSourceEntity);
+    const [sourceEntity, setSourceEntity] = useState<EntitySet>(originalSourceEntitySet);
     const [targetEntity, setTargetEntity] = useState<EntitySet>(originalTargetEntity);
 
     const propertyEndsSelector = usePropertySetEndsNodesSelector(
@@ -82,7 +82,7 @@ export function MoveEntityProperty({
     const target = { entitySet: targetEntity, entities: targetEntities };
 
     const { sourceNodes, targetNodes, edges, setEdges, onConnect, getPropertyInstances, layout } =
-        useEntityToEntityDiagram(source, target, property.id);
+        useEntityToEntityDiagram(source, target, propertySet.id);
 
     const {
         sourceNodes: originalSourceNodes,
@@ -90,11 +90,11 @@ export function MoveEntityProperty({
         edges: originalEdges,
         layout: originalLayout,
     } = useEntityToEntityDiagram(
-        { entitySet: originalSourceEntity, entities: originalSourceInstances },
+        { entitySet: originalSourceEntitySet, entities: originalSourceInstances },
         { entitySet: originalTargetEntity, entities: originalTargetInstances },
-        property.id
+        propertySet.id
     );
-    const [usedInstanceMapping, setUsedInstanceMapping] = useState<
+    const [usedPropertiesMapping, setUsedPropertiesMapping] = useState<
         Mapping | JoinMappingDetailMapping
     >({
         type: 'manual-mapping',
@@ -103,15 +103,15 @@ export function MoveEntityProperty({
 
     const moveProperty = () => {
         const transformation = createMovePropertySetTransformation(schema, {
-            originalSource: originalSourceEntity.id,
-            propertySet: property.id,
+            originalSource: originalSourceEntitySet.id,
+            propertySet: propertySet.id,
             newSource: sourceEntity.id,
             newTarget: targetEntity.id,
-            instanceMapping:
-                usedInstanceMapping.type === 'manual-mapping' ||
-                usedInstanceMapping.type === 'join-mapping-detail'
+            propertiesMapping:
+                usedPropertiesMapping.type === 'manual-mapping' ||
+                usedPropertiesMapping.type === 'join-mapping-detail'
                     ? { type: 'manual-mapping', properties: getPropertyInstances() }
-                    : usedInstanceMapping,
+                    : usedPropertiesMapping,
         });
         updateSchemaAndInstances(transformation);
         onActionDone();
@@ -134,10 +134,10 @@ export function MoveEntityProperty({
 
     const mappingButtonProps: ButtonProps = {
         setEdges,
-        setUsedInstanceMapping,
+        setUsedInstanceMapping: setUsedPropertiesMapping,
         source,
         target,
-        usedInstanceMapping,
+        usedInstanceMapping: usedPropertiesMapping,
     };
 
     return (
@@ -145,12 +145,12 @@ export function MoveEntityProperty({
             <Header label='Move PropertySet'></Header>
             <LabelReadonlyInput
                 label='PropertySet'
-                value={`${originalSourceEntity.name}.${property.name}`}
+                value={`${originalSourceEntitySet.name}.${propertySet.name}`}
             ></LabelReadonlyInput>
             <Dropdown headerLabel='Original Mapping' showInitially={false}>
                 <LabelReadonlyInput
                     label='Original Source'
-                    value={originalSourceEntity.name}
+                    value={originalSourceEntitySet.name}
                 ></LabelReadonlyInput>
                 <LabelReadonlyInput
                     label='Original Target'
@@ -179,31 +179,31 @@ export function MoveEntityProperty({
                         {...mappingButtonProps}
                         target={{ item: target.entitySet, entities: target.entities }}
                         originalSource={{
-                            entitySet: originalSourceEntity,
+                            entitySet: originalSourceEntitySet,
                             entities: originalSourceInstances,
                         }}
                         originalTarget={{
                             item: originalTargetEntity,
                             entities: originalTargetInstances,
                         }}
-                        propertySet={property}
+                        propertySet={propertySet}
                     ></PreserveButton>
                     <JoinButton
                         {...mappingButtonProps}
-                        setUsedInstanceMapping={setUsedInstanceMapping}
-                        usedInstanceMapping={usedInstanceMapping}
+                        setUsedInstanceMapping={setUsedPropertiesMapping}
+                        usedInstanceMapping={usedPropertiesMapping}
                     ></JoinButton>
                     <OneToAllButton {...mappingButtonProps}></OneToAllButton>
                     <OneToOneButton {...mappingButtonProps}></OneToOneButton>
                     <AllToOneButton {...mappingButtonProps}></AllToOneButton>
                     <ManualButton {...mappingButtonProps}></ManualButton>
                 </div>
-                {(usedInstanceMapping.type === 'join-mapping-detail' ||
-                    usedInstanceMapping.type === 'join-mapping') && (
+                {(usedPropertiesMapping.type === 'join-mapping-detail' ||
+                    usedPropertiesMapping.type === 'join-mapping') && (
                     <JoinMappingDetail
                         {...mappingButtonProps}
-                        setUsedInstanceMapping={setUsedInstanceMapping}
-                        usedInstanceMapping={usedInstanceMapping}
+                        setUsedInstanceMapping={setUsedPropertiesMapping}
+                        usedInstanceMapping={usedPropertiesMapping}
                     ></JoinMappingDetail>
                 )}
                 <BipartiteDiagram
@@ -214,7 +214,7 @@ export function MoveEntityProperty({
                     edgeTypes={edgeTypes}
                     layout={layout}
                     onConnect={(connection: Connection) => {
-                        setUsedInstanceMapping({ type: 'manual-mapping', properties: [] });
+                        setUsedPropertiesMapping({ type: 'manual-mapping', properties: [] });
                         onConnect(connection);
                     }}
                 ></BipartiteDiagram>

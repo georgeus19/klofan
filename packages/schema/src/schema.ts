@@ -3,10 +3,11 @@ import { Item } from './representation/item/item';
 import { PropertySet, isPropertySet } from './representation/relation/property-set';
 import { Relation } from './representation/relation/relation';
 import { RawSchema, copySchema } from './representation/raw-schema';
-import { EntitySet, isEntitySet } from './representation/item/entity-set';
+import { EntitySet, getProperties, isEntitySet } from './representation/item/entity-set';
 import { LiteralSet, isLiteralSet } from './representation/item/literal-set';
 import { Transformation } from './transform/transformations/transformation';
 import { applyTransformation } from './transform/apply-transformation';
+import { GraphPropertySet, toPropertySet } from './representation/relation/graph-property-set';
 
 export class Schema {
     constructor(private schema: RawSchema) {}
@@ -71,6 +72,14 @@ export class Schema {
         throw new Error(`Item ${id} does not reference literal set.`);
     }
 
+    hasLiteralSet(id: identifier) {
+        if (!this.hasItem(id)) {
+            return false;
+        }
+
+        return isLiteralSet(this.item(id));
+    }
+
     relation(id: identifier): Relation {
         return safeGet(this.schema.relations, id);
     }
@@ -86,6 +95,15 @@ export class Schema {
         }
 
         throw new Error(`Relation ${id} does not reference property set`);
+    }
+
+    entitySetPropertySetPairs(): { entitySet: EntitySet; propertySet: GraphPropertySet }[] {
+        return this.entitySets().flatMap((entitySet) =>
+            getProperties(this, entitySet.id).map((propertySet) => ({
+                entitySet,
+                propertySet: propertySet,
+            }))
+        );
     }
 
     transform(transformations: Transformation[]): Schema {

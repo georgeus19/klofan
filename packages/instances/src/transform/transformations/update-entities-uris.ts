@@ -1,6 +1,7 @@
 import { EntitySet, PropertySet } from '@klofan/schema/representation';
 import { RawInstances, propertyKey } from '../../representation/raw-instances';
 import { TransformationChanges } from '../transformation-changes';
+import { EntityWithoutProperties } from '../../representation/entity';
 
 export type EntityUriMapping = {
     literalProperty: PropertySet;
@@ -20,10 +21,10 @@ export function updateEntitiesUris(
     instances: RawInstances,
     transformation: UpdateEntitiesUris
 ): void {
-    instances.entities[transformation.data.entitySet.id].instances = instances.entities[
+    instances.entities[transformation.data.entitySet.id] = instances.entities[
         transformation.data.entitySet.id
-    ].instances.map((instance, index) => {
-        const newInstance = { ...instance };
+    ].map((entity, index) => {
+        const newEntity: EntityWithoutProperties = { ...entity };
         for (const mapping of transformation.data.uris) {
             const pk = propertyKey(transformation.data.entitySet.id, mapping.literalProperty.id);
             if (
@@ -31,10 +32,10 @@ export function updateEntitiesUris(
                     (literal) => literal.value === mapping.literal
                 ).length > 0
             ) {
-                newInstance.uri = mapping.uri;
+                newEntity.uri = mapping.uri;
             }
         }
-        return newInstance;
+        return newEntity;
     });
 }
 

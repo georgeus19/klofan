@@ -5,13 +5,13 @@ import {
     getAllToOneProperties,
 } from './all-to-one-mapping';
 import { Property } from '../../representation/property';
-import { RawInstances, initEntityInstances } from '../../representation/raw-instances';
+import { RawInstances, initEntities } from '../../representation/raw-instances';
 import { createEntitySet } from '@klofan/schema/representation';
 
 describe('Transform Instances', () => {
-    describe('Instance Mappings', () => {
+    describe('Property Mappings', () => {
         describe('All-To-One', () => {
-            test('getAllToOnePropertyInstances', () => {
+            test('getAllToOneProperties', () => {
                 const sourceInstances = 10;
                 const expectedPropertyInstances: Property[] = [
                     {
@@ -111,11 +111,8 @@ describe('Transform Instances', () => {
                 };
                 const instances: RawInstances = {
                     entities: {
-                        '0': {
-                            count: sourceInstances,
-                            instances: initEntityInstances(sourceInstances),
-                        },
-                        '1': { count: 1, instances: initEntityInstances(1) },
+                        '0': initEntities(sourceInstances),
+                        '1': initEntities(1),
                     },
                     properties: {},
                 };
