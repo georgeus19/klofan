@@ -72,5 +72,6 @@ module.exports = {
         '@typescript-eslint/require-await': 'off',
         '@typescript-eslint/no-floating-promises': 'off',
         '@typescript-eslint/no-base-to-string': 'off',
+        '@typescript-eslint/no-redundant-type-constituents': 'off',
     },
 };

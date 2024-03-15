@@ -1,7 +1,7 @@
 import { Property } from './representation/property';
 import { Instances } from './instances';
 import { RawInstances, copyInstances, propertyKey } from './representation/raw-instances';
-import { Entity } from './representation/entity';
+import { Entity, getEntities } from './representation/entity';
 import { applyTransformation } from './transform/apply-transformation';
 import { Transformation } from './transform/transformations/transformation';
 import { EntitySet } from '@klofan/schema/representation';
@@ -15,21 +15,7 @@ export class InMemoryInstances implements Instances {
     }
 
     entities(entitySet: EntitySet): Promise<Entity[]> {
-        const entities: Entity[] = safeGet(this.instances.entities, entitySet.id).map(
-            (entity, index) => ({
-                ...entity,
-                properties: {},
-                id: index,
-            })
-        );
-
-        entitySet.properties.forEach((propertySetId) => {
-            safeGet(this.instances.properties, propertyKey(entitySet.id, propertySetId)).forEach(
-                (property, entityIndex) => {
-                    entities[entityIndex].properties[propertySetId] = property;
-                }
-            );
-        });
+        const entities = getEntities(this.instances, entitySet);
         return Promise.resolve(entities);
     }
 

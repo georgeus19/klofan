@@ -1,42 +1,62 @@
 import { EntitySet, PropertySet } from '@klofan/schema/representation';
 import { RawInstances, propertyKey } from '../../representation/raw-instances';
 import { TransformationChanges } from '../transformation-changes';
-import { EntityWithoutProperties } from '../../representation/entity';
+import { Entity, EntityWithoutProperties, getEntities } from '../../representation/entity';
+import { InMemoryInstances } from '../../in-memory-instances';
 
-export type EntityUriMapping = {
-    literalProperty: PropertySet;
-    literal: string;
-    uri: string;
-};
+export interface UriPatternPropertyPart {
+    type: 'uri-pattern-property-part';
+    propertySet: PropertySet;
+}
+
+export interface UriPatternTextPart {
+    type: 'uri-pattern-text-part';
+    text: string;
+}
+
+export type UriPatternPart = UriPatternPropertyPart | UriPatternTextPart;
 
 export interface UpdateEntitiesUris {
     type: 'update-entities-uris';
     data: {
         entitySet: EntitySet;
-        uris: EntityUriMapping[];
+        uriPattern: UriPatternPart[];
     };
+}
+
+export function constructUri(entity: Entity, uriPattern: UriPatternPart[]) {
+    return uriPattern
+        .map((uriPatternPart) => {
+            if (uriPatternPart.type === 'uri-pattern-property-part') {
+                if (
+                    !uriPatternPart.propertySet ||
+                    !entity.properties[uriPatternPart.propertySet.id]
+                ) {
+                    return '';
+                }
+
+                return entity.properties[uriPatternPart.propertySet.id].literals
+                    .map((literal) => literal.value)
+                    .join('-');
+            } else {
+                return uriPatternPart.text;
+            }
+        })
+        .join('')
+        .replaceAll(/\s/g, '_');
 }
 
 export function updateEntitiesUris(
     instances: RawInstances,
     transformation: UpdateEntitiesUris
 ): void {
+    const entityUris = getEntities(instances, transformation.data.entitySet).map((entity) =>
+        constructUri(entity, transformation.data.uriPattern)
+    );
+
     instances.entities[transformation.data.entitySet.id] = instances.entities[
         transformation.data.entitySet.id
-    ].map((entity, index) => {
-        const newEntity: EntityWithoutProperties = { ...entity };
-        for (const mapping of transformation.data.uris) {
-            const pk = propertyKey(transformation.data.entitySet.id, mapping.literalProperty.id);
-            if (
-                instances.properties[pk][index].literals.filter(
-                    (literal) => literal.value === mapping.literal
-                ).length > 0
-            ) {
-                newEntity.uri = mapping.uri;
-            }
-        }
-        return newEntity;
-    });
+    ].map((entity, entityIndex) => ({ ...entity, uri: entityUris[entityIndex] }));
 }
 
 export function updateEntitiesUrisChanges(

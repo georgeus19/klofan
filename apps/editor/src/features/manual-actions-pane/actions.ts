@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { PrefixesShown } from './detail/prefixes/prefixes';
-import { UpdateEntityInstancesUrisShown } from './transformation/update-entity-instance-uri/update-entity-instances-uris';
+import { UpdateEntityUrisShown } from './transformation/update-entity-uri/update-entity-uris.tsx';
 import { ExportInstancesShown } from './export/export-instances/export-intances';
 import { ExportOperationsShown } from './export/export-operations';
 
@@ -13,7 +13,7 @@ export type ManualActionShown = { component: ReactNode } & (
     | MoveEntityPropertySetShown
     | MoveLiteralPropertySetShown
     | PrefixesShown
-    | UpdateEntityInstancesUrisShown
+    | UpdateEntityUrisShown
     | ExportInstancesShown
     | ExportOperationsShown
 );

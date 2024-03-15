@@ -6,20 +6,20 @@ import { Header } from '../../utils/header';
 import { ActionOkCancel } from '../../utils/action-ok-cancel';
 import { useEntities } from '../../../utils/use-entities.ts';
 import { useEditorContext } from '../../../editor/editor-context';
-import { AddUriMapping } from './add-uri-mapping';
-import { LabelReadonlyInput } from '../../utils/general-label-input/label-readonly-input';
 import { Dropdown } from '../../../utils/dropdown.tsx';
 import { EntityView } from '../../../utils/entity-view.tsx';
-import { EntityUriMapping } from '@klofan/instances/transform';
+import { constructUri, UriPatternPart } from '@klofan/instances/transform';
 import { createUpdateEntitiesUris } from '@klofan/transform';
 import { showUpdateEntitiesUrisHelp } from '../../../help/content/show-update-entities-uris-help.tsx';
 import { ErrorMessage } from '../../utils/error-message';
+import { useUriPattern } from './use-uri-pattern.ts';
+import { UriPatternView } from './uri-pattern-view.tsx';
 
-export interface UpdateEntityInstancesUrisShown {
+export interface UpdateEntityUrisShown {
     type: 'update-entity-instances-uris-shown';
 }
 
-export function UpdateEntityInstancesUris() {
+export function UpdateEntityUris() {
     const { manualActions, schema, instances, updateSchemaAndInstances, help } = useEditorContext();
     const [entitySet, setEntitySet] = useState<EntitySet | null>(null);
     const [error, setError] = useState<string | null>(null);
@@ -29,26 +29,21 @@ export function UpdateEntityInstancesUris() {
         showUpdateEntitiesUrisHelp(help);
     });
     const { entities } = useEntities(entitySet, instances);
-    const [uriMappings, setUriMappings] = useState<EntityUriMapping[]>([]);
+    const uriPattern = useUriPattern();
 
-    const unmappedEntityInstances = entities.filter(
-        (entityInstance) =>
-            uriMappings.filter(
-                (mapping) =>
-                    entityInstance.properties[mapping.literalProperty.id].literals.filter(
-                        (literal) => literal.value === mapping.literal
-                    ).length > 0
-            ).length === 0
-    );
+    const toTransformPattern = () =>
+        uriPattern.uriPattern.filter((part): part is UriPatternPart & { id: string } =>
+            part.type === 'uri-pattern-property-part' ? Object.hasOwn(part, 'propertySet') : true
+        );
 
     const updateEntityUris = () => {
-        if (!entitySet || uriMappings.length === 0) {
-            setError('Entity must be selected. Positive number of mappings1 is necessary.');
+        if (!entitySet) {
+            setError('Entity must be selected.');
             return;
         }
         const transformation = createUpdateEntitiesUris(schema, {
             entitySet: entitySet.id,
-            uris: uriMappings,
+            uriPattern: toTransformPattern(),
         });
         updateSchemaAndInstances(transformation);
         manualActions.onActionDone();
@@ -56,10 +51,6 @@ export function UpdateEntityInstancesUris() {
 
     const cancel = () => {
         manualActions.onActionDone();
-    };
-
-    const addUriMapping = (uriMapping: EntityUriMapping) => {
-        setUriMappings([uriMapping, ...uriMappings]);
     };
 
     return (
@@ -71,53 +62,24 @@ export function UpdateEntityInstancesUris() {
                 entitySet={entitySet}
                 onSelectStart={entitySetNodeSelector.onSelectStart}
             ></EntitySetNodeSelector>
-
             {entitySet && (
-                <AddUriMapping entity={entitySet} addUriMapping={addUriMapping}></AddUriMapping>
-            )}
-
-            {entitySet && (
-                <Dropdown headerLabel='Created Uri Mappings' showInitially>
-                    {uriMappings.map((mapping, index) => (
-                        <div
-                            key={`${mapping.literalProperty.id}${mapping.literal}${mapping.uri}`}
-                            className='bg-slate-100 rounded m-1'
-                        >
-                            <button
-                                onClick={() =>
-                                    setUriMappings(uriMappings.filter((m, i) => index !== i))
-                                }
-                                className='p-1 rounded shadow bg-blue-200 hover:bg-blue-300'
-                            >
-                                Delete
-                            </button>
-                            <LabelReadonlyInput
-                                label='PropertySet'
-                                value={mapping.literalProperty.name}
-                            ></LabelReadonlyInput>
-                            <LabelReadonlyInput
-                                label='LiteralSet'
-                                value={mapping.literal}
-                            ></LabelReadonlyInput>
-                            <LabelReadonlyInput
-                                label='Uri'
-                                value={mapping.uri}
-                            ></LabelReadonlyInput>
-                        </div>
-                    ))}
-                </Dropdown>
+                <UriPatternView
+                    entitySet={entitySet}
+                    uriPattern={uriPattern}
+                    schema={schema}
+                ></UriPatternView>
             )}
             {entitySet && (
                 <Dropdown
                     headerLabel='EntitySet Instances Without Uri Or Not Matched'
                     showInitially
                 >
-                    {unmappedEntityInstances.map((entity) => (
+                    {entities.map((entity) => (
                         <EntityView
                             schema={schema}
                             key={`${entitySet.id}.${entity.id}`}
                             entitySet={entitySet}
-                            entity={entity}
+                            entity={{ ...entity, uri: constructUri(entity, toTransformPattern()) }}
                             showLiteralProperties
                             className='mt-0 mx-2'
                             expanded={true}

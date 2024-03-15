@@ -1,20 +1,21 @@
-import { EntityUriMapping, UpdateEntitiesUris } from '@klofan/instances/transform';
+import { UpdateEntitiesUris } from '@klofan/instances/transform';
 import { Schema } from '@klofan/schema';
 import { identifier } from '@klofan/utils';
 import { Transformation } from '../transformation';
+import { UriPatternPart } from '@klofan/instances/transform';
 
 export function createUpdateEntitiesUris(
     schema: Schema,
     data: {
         entitySet: identifier;
-        uris: EntityUriMapping[];
+        uriPattern: UriPatternPart[];
     }
 ): Transformation {
     const updateEntitiesUrisTransformation: UpdateEntitiesUris = {
         type: 'update-entities-uris',
         data: {
             entitySet: schema.entitySet(data.entitySet),
-            uris: data.uris,
+            uriPattern: data.uriPattern,
         },
     };
 

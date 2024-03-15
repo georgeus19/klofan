@@ -36,12 +36,17 @@ export { createProperties } from '../transform/transformations/create-properties
 export type { MoveProperties } from '../transform/transformations/move-properties';
 export { moveProperties } from '../transform/transformations/move-properties';
 export type {
-    EntityUriMapping,
+    UriPatternPart,
+    UriPatternTextPart,
+    UriPatternPropertyPart,
     UpdateEntitiesUris,
+} from '../transform/transformations/update-entities-uris';
+export {
+    updateEntitiesUris,
+    constructUri,
 } from '../transform/transformations/update-entities-uris';
 export type { UpdatePropertyLiterals } from '../transform/transformations/update-property-literals';
 export { updatePropertyLiterals } from '../transform/transformations/update-property-literals';
-export { updateEntitiesUris } from '../transform/transformations/update-entities-uris';
 
 export type { ConvertLiteralToEntity } from '../transform/transformations/convert-literal-to-entity';
 export { convertLiteralToEntity } from '../transform/transformations/convert-literal-to-entity';

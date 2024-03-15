@@ -4,7 +4,12 @@ const project = resolve(process.cwd(), 'tsconfig.json');
 
 /** @type {import("eslint").Linter.Config} */
 module.exports = {
-    extends: ['eslint:recommended', 'prettier', 'eslint-config-turbo', 'plugin:@typescript-eslint/recommended-type-checked'],
+    extends: [
+        'eslint:recommended',
+        'prettier',
+        'eslint-config-turbo',
+        'plugin:@typescript-eslint/recommended-type-checked',
+    ],
     plugins: ['@typescript-eslint'],
     globals: {
         React: true,
@@ -54,5 +59,6 @@ module.exports = {
         'no-constant-condition': 'off',
         '@typescript-eslint/require-await': 'off',
         '@typescript-eslint/no-base-to-string': 'off',
+        '@typescript-eslint/no-redundant-type-constituents': 'off',
     },
 };

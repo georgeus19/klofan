@@ -10,7 +10,7 @@ import { EntityDetail } from './detail/entity-detail';
 import { CreateLiteralProperty } from './transformation/create-literal-property/create-literal-property';
 import { CreateEntityProperty } from './transformation/create-entity-property/create-entity-property';
 import { Prefixes } from './detail/prefixes/prefixes';
-import { UpdateEntityInstancesUris } from './transformation/update-entity-instance-uri/update-entity-instances-uris';
+import { UpdateEntityUris } from './transformation/update-entity-uri/update-entity-uris.tsx';
 import { Help } from '../help/use-help';
 import { ExportInstances } from './export/export-instances/export-intances';
 import { showExportInstancesHelp } from '../help/content/show-export-intances-help';
@@ -130,7 +130,7 @@ export function useManualActionsPane(
             help.hideHelp();
             setShownAction({
                 type: 'update-entity-instances-uris-shown',
-                component: <UpdateEntityInstancesUris></UpdateEntityInstancesUris>,
+                component: <UpdateEntityUris></UpdateEntityUris>,
             });
             setShownActionLocked(true);
             nodeSelection.clearSelectedNode();
