@@ -1,11 +1,11 @@
 import { Entity } from '@klofan/instances';
 import { isLiteralSet, EntitySet, getProperties, isEntitySet } from '@klofan/schema/representation';
-import { useEditorContext } from '../editor/editor-context.tsx';
 import { Dropdown } from './dropdown.tsx';
-import { ReadonlyInput } from '../manual-actions-pane/utils/general-label-input/readonly-input.tsx';
 import { LabelReadonlyUriInput } from '../manual-actions-pane/utils/uri/label-readonly-uri-input.tsx';
 import { Schema } from '@klofan/schema';
 import { PropertyView } from './property-view.tsx';
+import { usePrefixesContext } from '../prefixes/prefixes-context.tsx';
+import { toUri } from '../manual-actions-pane/utils/uri/use-uri-input.ts';
 
 export type EntityViewProps = {
     entitySet: EntitySet;
@@ -26,6 +26,7 @@ export function EntityView({
     schema,
     expanded,
 }: EntityViewProps) {
+    const { matchPrefix } = usePrefixesContext();
     const instance = getProperties(schema, entitySet.id)
         .filter((propertySet) => showEntityProperties || isLiteralSet(propertySet.value))
         .filter((propertySet) => showLiteralProperties || isEntitySet(propertySet.value))
@@ -41,39 +42,13 @@ export function EntityView({
                     propertySet={propertySet}
                 ></PropertyView>
             );
-            // return (
-            //     <div key={propertySet.id} className='grid grid-cols-2 mx-2'>
-            //         <div className='col-start-1 overflow-auto p-2 bg-slate-300 shadow text-center'>
-            //             {propertySet.name}
-            //         </div>
-            //         {entity.properties[propertySet.id].literals.map((literal, index) => (
-            //             <div
-            //                 className='col-start-2 overflow-auto p-2 bg-blue-100 text-center'
-            //                 key={`L${literal.value}${index}`}
-            //             >
-            //                 <ReadonlyInput value={literal.value} className='w-full'></ReadonlyInput>
-            //             </div>
-            //         ))}
-            //         {entity.properties[propertySet.id].targetEntities.map(
-            //             (targetEntityIndex, index) => (
-            //                 <div
-            //                     className='col-start-2 overflow-auto p-2 bg-purple-100 text-center shadow'
-            //                     key={`E${index}`}
-            //                 >
-            //                     <ReadonlyInput
-            //                         value={`${propertySet.value.name}.${targetEntityIndex}`}
-            //                         className='w-full'
-            //                     ></ReadonlyInput>
-            //                 </div>
-            //             )
-            //         )}
-            //     </div>
-            // );
         });
 
+    const entityUri = toUri(matchPrefix(entity.uri ?? ''), true);
     const header = (
-        <div>
-            {entitySet.name}.{entity.id} {entity.uri}
+        <div className='truncate hover:overflow-auto hover:text-clip'>
+            {entitySet.name}.{entity.id}
+            {entityUri && ` = <${entityUri}>`}
         </div>
     );
 

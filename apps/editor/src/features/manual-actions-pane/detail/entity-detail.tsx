@@ -106,9 +106,9 @@ export function EntityDetail({ entityId }: EntityDetailProps) {
 
     return (
         <div className='relative'>
-            <button className='rounded shadow bg-blue-200 hover:bg-blue-300 p-2 fixed z-50 top-1/2 -translate-y-1/2 -translate-x-1/2 '>
-                Detail
-            </button>
+            {/*<button className='rounded shadow bg-blue-200 hover:bg-blue-300 p-2 fixed z-50 top-1/2 -translate-y-1/2 -translate-x-1/2 '>*/}
+            {/*    Detail*/}
+            {/*</button>*/}
             <Header label='EntitySet'></Header>
             <Dropdown headerLabel='General' showInitially={true}>
                 <UncontrollableLabelInput

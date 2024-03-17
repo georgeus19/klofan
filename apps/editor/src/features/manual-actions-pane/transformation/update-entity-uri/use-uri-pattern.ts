@@ -1,4 +1,3 @@
-import { Entity } from '@klofan/instances/representation';
 import { UriPatternPropertyPart, UriPatternTextPart } from '@klofan/instances/transform';
 import { useState } from 'react';
 import { Optional } from '@klofan/utils';
@@ -70,27 +69,6 @@ export function useUriPattern(): UriPattern {
         }
     };
 
-    // const constructUri = (entity: Entity) => {
-    //     return uriPattern
-    //         .map((uriPatternPart) => {
-    //             if (uriPatternPart.type === 'uri-pattern-property-part') {
-    //                 if (
-    //                     !uriPatternPart.propertySet ||
-    //                     !entity.properties[uriPatternPart.propertySet.id]
-    //                 ) {
-    //                     return '';
-    //                 }
-    //
-    //                 return entity.properties[uriPatternPart.propertySet.id].literals
-    //                     .map((literal) => literal.value)
-    //                     .join('-');
-    //             } else {
-    //                 return uriPatternPart.text;
-    //             }
-    //         })
-    //         .join('');
-    // };
-    //
     return {
         uriPattern,
         updateUriPatternPart,

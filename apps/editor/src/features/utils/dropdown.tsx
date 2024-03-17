@@ -21,7 +21,7 @@ export function Dropdown({ className, headerLabel, children, showInitially }: De
         <>
             <div
                 className={twMerge(
-                    'flex bg-slate-500 text-white border-2 rounded p-1  border-slate-600 my-1',
+                    'flex bg-slate-500 text-white border-2 rounded p-1 border-slate-600 my-1',
                     className
                 )}
                 onClick={handleClick}

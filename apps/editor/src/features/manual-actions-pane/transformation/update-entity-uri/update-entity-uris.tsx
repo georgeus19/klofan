@@ -14,6 +14,7 @@ import { showUpdateEntitiesUrisHelp } from '../../../help/content/show-update-en
 import { ErrorMessage } from '../../utils/error-message';
 import { useUriPattern } from './use-uri-pattern.ts';
 import { UriPatternView } from './uri-pattern-view.tsx';
+import { VirtualList } from '../../../utils/virtual-list.tsx';
 
 export interface UpdateEntityUrisShown {
     type: 'update-entity-instances-uris-shown';
@@ -74,17 +75,22 @@ export function UpdateEntityUris() {
                     headerLabel='EntitySet Instances Without Uri Or Not Matched'
                     showInitially
                 >
-                    {entities.map((entity) => (
-                        <EntityView
-                            schema={schema}
-                            key={`${entitySet.id}.${entity.id}`}
-                            entitySet={entitySet}
-                            entity={{ ...entity, uri: constructUri(entity, toTransformPattern()) }}
-                            showLiteralProperties
-                            className='mt-0 mx-2'
-                            expanded={true}
-                        ></EntityView>
-                    ))}
+                    <VirtualList items={entities} height='max-h-160' className='mt-0 mx-2'>
+                        {(entity) => (
+                            <EntityView
+                                schema={schema}
+                                key={`${entitySet.id}.${entity.id}`}
+                                entitySet={entitySet}
+                                entity={{
+                                    ...entity,
+                                    uri: constructUri(entity, toTransformPattern()),
+                                }}
+                                showLiteralProperties
+                                className='mt-0 mx-2'
+                                expanded={true}
+                            ></EntityView>
+                        )}
+                    </VirtualList>
                 </Dropdown>
             )}
             <ErrorMessage error={error}></ErrorMessage>

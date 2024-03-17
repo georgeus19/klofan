@@ -1,6 +1,5 @@
-import { EntitySet, GraphPropertySet } from '@klofan/schema/representation';
+import { GraphPropertySet } from '@klofan/schema/representation';
 import { ReadonlyInput } from '../manual-actions-pane/utils/general-label-input/readonly-input.tsx';
-import { Entity } from '@klofan/instances';
 import { Property } from '@klofan/instances/representation';
 
 export interface PropertyViewProps {

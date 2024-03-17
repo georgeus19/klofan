@@ -92,7 +92,7 @@ export function RecommendationsPane({ className }: RecommendationsPaneProps) {
                 </Dropdown>
             </div>
             {shownRecommendationDetail && (
-                <div className='w-full relative flex'>
+                <div className='w-full relative grid grid-cols-2'>
                     <button
                         className='rounded shadow bg-blue-200 hover:bg-blue-300 p-2 z-50 fixed top-1/2 -translate-x-1/2  translate-y-1/2'
                         onClick={hideRecommendationDetail}

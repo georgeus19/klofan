@@ -15,7 +15,7 @@ export function DiagramRecommendationDiff({
     return (
         <>
             <DiagramContextProvider value={shownRecommendationDetail.old}>
-                <div className='w-1/2 flex flex-col'>
+                <div className='flex flex-col border-2 border-r-slate-800'>
                     <EntitySetDetail height='h-60'></EntitySetDetail>
                     <EntityPropertySetDetail height='h-60'></EntityPropertySetDetail>
                     <LiteralPropertySetDetail height='h-60'></LiteralPropertySetDetail>
@@ -34,12 +34,8 @@ export function DiagramRecommendationDiff({
                     </ReactFlowProvider>
                 </div>
             </DiagramContextProvider>
-            {/* <div className='w-96 bg-slate-300'></div> */}
-            <div className='w-1 bg-slate-800 h-full'></div>
-            {/* <div className='w-96 bg-slate-300'></div> */}
-            {/* <div className='w-1/2'></div> */}
             <DiagramContextProvider value={shownRecommendationDetail.new}>
-                <div className='w-1/2 flex flex-col'>
+                <div className='flex flex-col border-2 border-l-slate-800'>
                     <EntitySetDetail height='h-60'></EntitySetDetail>
                     <EntityPropertySetDetail height='h-60'></EntityPropertySetDetail>
                     <LiteralPropertySetDetail height='h-60'></LiteralPropertySetDetail>
