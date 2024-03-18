@@ -11,7 +11,7 @@ import {
     targetIdPrefix,
     targetNodes,
 } from '../common';
-import { Entity } from '@klofan/instances';
+import { Entity } from '@klofan/instances/representation';
 import { calculateSourceNodePosition, calculateTargetNodePosition, defaultLayout } from '../layout';
 import { min, max } from 'lodash';
 import { styleEdges } from '../../../diagram/edges/style-edges';

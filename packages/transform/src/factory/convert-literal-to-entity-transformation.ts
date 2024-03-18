@@ -38,8 +38,8 @@ export async function createConvertLiteralToNewEntitySetViaNewPropertySetTransfo
             id: targetEntitySetId,
         },
         instances: {
-            instances: data.literalMapping.map((lm) => lm.to),
-            count: data.literalMapping.length,
+            type: 'count',
+            entities: data.literalMapping.map((lm) => lm.to),
         },
     });
 

@@ -1,5 +1,5 @@
 import { Handle, NodeProps, Position } from 'reactflow';
-import { Entity } from '@klofan/instances';
+import { Entity } from '@klofan/instances/representation';
 import { EntitySet, getProperties } from '@klofan/schema/representation';
 import { EntityInstanceDetail } from '../../detail/entity-instance-detail';
 import { twMerge } from 'tailwind-merge';

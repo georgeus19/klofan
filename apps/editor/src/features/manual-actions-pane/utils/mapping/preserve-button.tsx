@@ -1,5 +1,5 @@
 import { twMerge } from 'tailwind-merge';
-import { Entity } from '@klofan/instances';
+import { Entity } from '@klofan/instances/representation';
 import { Property } from '@klofan/instances/representation';
 import {
     getPreservedProperties,

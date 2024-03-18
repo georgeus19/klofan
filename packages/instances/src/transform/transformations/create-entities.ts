@@ -7,12 +7,33 @@ export interface CreateEntities {
     type: 'create-entities';
     data: {
         entitySet: EntitySet;
-        instances: EntityWithoutProperties[];
+        entities: CreateEntitiesOptions;
     };
 }
 
+export type CreateEntitiesOptions =
+    | {
+          type: 'reference';
+          referencedEntitySet: EntitySet;
+      }
+    | {
+          type: 'count';
+          entities: EntityWithoutProperties[];
+      };
+
 export function createEntities(instances: RawInstances, transformation: CreateEntities): void {
-    instances.entities[transformation.data.entitySet.id] = transformation.data.instances;
+    if (transformation.data.entities.type === 'count') {
+        instances.entities[transformation.data.entitySet.id] =
+            transformation.data.entities.entities;
+    } else {
+        instances.entities[transformation.data.entitySet.id] = Array.from(
+            {
+                length: instances.entities[transformation.data.entities.referencedEntitySet.id]
+                    .length,
+            },
+            (): EntityWithoutProperties => ({})
+        );
+    }
 }
 
 export function createEntitiesChanges(transformation: CreateEntities): TransformationChanges {

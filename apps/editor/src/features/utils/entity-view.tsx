@@ -1,4 +1,4 @@
-import { Entity } from '@klofan/instances';
+import { Entity } from '@klofan/instances/representation';
 import { isLiteralSet, EntitySet, getProperties, isEntitySet } from '@klofan/schema/representation';
 import { Dropdown } from './dropdown.tsx';
 import { LabelReadonlyUriInput } from '../manual-actions-pane/utils/uri/label-readonly-uri-input.tsx';
@@ -38,6 +38,7 @@ export function EntityView({
         .map((propertySet) => {
             return (
                 <PropertyView
+                    key={propertySet.id}
                     property={entity.properties[propertySet.id]}
                     propertySet={propertySet}
                 ></PropertyView>

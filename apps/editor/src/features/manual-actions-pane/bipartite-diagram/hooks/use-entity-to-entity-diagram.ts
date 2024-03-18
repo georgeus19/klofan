@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { EntitySet } from '@klofan/schema/representation';
 import { identifier } from '@klofan/utils';
 import { Edge as ReactFlowEdge, addEdge, Connection } from 'reactflow';
-import { Entity } from '@klofan/instances';
+import { Entity } from '@klofan/instances/representation';
 import { Property } from '@klofan/instances/representation';
 import {
     SourceNode,

@@ -19,7 +19,6 @@ import { identifier } from '@klofan/utils';
 import { UncontrollableUriLabelInput } from '../utils/uri/uncontrollable-uri-label-input';
 import { Header } from '../utils/header';
 import { EntityView } from '../../utils/entity-view.tsx';
-import { useRef } from 'react';
 import { VirtualList } from '../../utils/virtual-list.tsx';
 
 export interface EntityDetailProps {

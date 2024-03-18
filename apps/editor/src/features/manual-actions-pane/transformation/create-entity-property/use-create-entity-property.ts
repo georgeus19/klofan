@@ -5,7 +5,7 @@ import { createCreatePropertySetTransformation } from '@klofan/transform';
 import { useEntityToEntityDiagram } from '../../bipartite-diagram/hooks/use-entity-to-entity-diagram.ts';
 import { useEditorContext } from '../../../editor/editor-context';
 import { usePropertySetEndsNodesSelector } from '../../utils/diagram-node-selection/property-ends-selector/use-property-set-ends-nodes-selector.ts';
-import { Entity } from '@klofan/instances';
+import { Entity } from '@klofan/instances/representation';
 import { EntitySet } from '@klofan/schema/representation';
 import { Mapping } from '@klofan/instances/transform';
 import { JoinMappingDetailMapping } from '../../utils/mapping/join/join-mapping-detail';

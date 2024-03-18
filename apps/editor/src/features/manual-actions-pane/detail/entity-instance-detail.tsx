@@ -1,4 +1,4 @@
-import { Entity } from '@klofan/instances';
+import { Entity } from '@klofan/instances/representation';
 import { GraphPropertySet, EntitySet } from '@klofan/schema/representation';
 
 export interface EntityInstanceDetailProps {

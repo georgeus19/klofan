@@ -10,7 +10,7 @@ import { OneToOneButton } from '../../utils/mapping/one-to-one-button';
 import { AllToOneButton } from '../../utils/mapping/all-to-one-button';
 import { ManualButton } from '../../utils/mapping/manual-button';
 import { ButtonProps } from '../../utils/mapping/button-props';
-import { Entity } from '@klofan/instances';
+import { Entity } from '@klofan/instances/representation';
 import { EntitySet } from '@klofan/schema/representation';
 import { JoinMappingDetail } from '../../utils/mapping/join/join-mapping-detail';
 import { UriLabelInput } from '../../utils/uri/uri-label-input';

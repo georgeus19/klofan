@@ -12,7 +12,7 @@ import {
     LiteralTargetNode,
     useEntityToLiteralDiagram,
 } from '../../bipartite-diagram/hooks/use-entity-to-literal-diagram.ts';
-import { Entity } from '@klofan/instances';
+import { Entity } from '@klofan/instances/representation';
 import { useEntitySetNodeSelector } from '../../utils/diagram-node-selection/entity-set-selector/use-entity-set-node-selector.ts';
 import { useUriInput } from '../../utils/uri/use-uri-input';
 import { useEntities } from '../../../utils/use-entities.ts';

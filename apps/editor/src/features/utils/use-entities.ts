@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Entity, Instances } from '@klofan/instances';
-import { useEditorContext } from '../editor/editor-context.tsx';
+import { Instances } from '@klofan/instances';
+import { Entity } from '@klofan/instances/representation';
 import { EntitySet } from '@klofan/schema/representation';
 import { identifier } from '@klofan/utils';
 

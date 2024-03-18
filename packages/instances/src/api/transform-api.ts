@@ -29,7 +29,10 @@ export {
     isPreserveMappingEligible,
 } from '../transform/mapping/preserve-mapping';
 
-export type { CreateEntities } from '../transform/transformations/create-entities';
+export type {
+    CreateEntities,
+    CreateEntitiesOptions,
+} from '../transform/transformations/create-entities';
 export { createEntities } from '../transform/transformations/create-entities';
 export type { CreateProperties } from '../transform/transformations/create-properties';
 export { createProperties } from '../transform/transformations/create-properties';

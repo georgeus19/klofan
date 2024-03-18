@@ -5,7 +5,7 @@ import { Schema } from '@klofan/schema';
 import { ManualActionShown } from './actions';
 import { MoveEntityPropertySet } from './transformation/move-entity-property-set.tsx';
 import { MoveLiteralProperty } from './transformation/move-literal-property';
-import { CreateEntity } from './transformation/create-entity';
+import { CreateEntitySet } from './transformation/create-entity-set.tsx';
 import { EntityDetail } from './detail/entity-detail';
 import { CreateLiteralProperty } from './transformation/create-literal-property/create-literal-property';
 import { CreateEntityProperty } from './transformation/create-entity-property/create-entity-property';
@@ -86,7 +86,7 @@ export function useManualActionsPane(
             help.hideHelp();
             setShownAction({
                 type: 'create-entity-set-shown',
-                component: <CreateEntity></CreateEntity>,
+                component: <CreateEntitySet></CreateEntitySet>,
             });
             setShownActionLocked(true);
             nodeSelection.disableSelectedStyle();

@@ -1,4 +1,4 @@
-import { Entity } from '@klofan/instances';
+import { Entity } from '@klofan/instances/representation';
 import { Property } from '@klofan/instances/representation';
 import { Mapping } from '@klofan/instances/transform';
 import { EntitySet } from '@klofan/schema/representation';

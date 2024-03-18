@@ -12,6 +12,15 @@ export type Entity = {
     uri?: string;
 };
 
+export type EntityWithoutProperties = Omit<Entity, 'properties' | 'id'>;
+
+export type EntityReference =
+    | {
+          id: number;
+          uri?: string;
+      }
+    | { uri: string; id?: number };
+
 export function getEntities(instances: RawInstances, entitySet: EntitySet): Entity[] {
     const entities: Entity[] = safeGet(instances.entities, entitySet.id).map((entity, index) => ({
         ...entity,
@@ -28,12 +37,3 @@ export function getEntities(instances: RawInstances, entitySet: EntitySet): Enti
     });
     return entities;
 }
-
-export type EntityWithoutProperties = Omit<Entity, 'properties' | 'id'>;
-
-export type EntityReference =
-    | {
-          id: number;
-          uri?: string;
-      }
-    | { uri: string; id?: number };
