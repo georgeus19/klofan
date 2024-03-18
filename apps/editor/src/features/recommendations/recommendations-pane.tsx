@@ -14,7 +14,7 @@ export type RecommendationsPaneProps = {
 export type ShowOption = 'description' | 'diff';
 
 export function RecommendationsPane({ className }: RecommendationsPaneProps) {
-    const { manualActions, updateSchemaAndInstances } = useEditorContext();
+    const { manualActions } = useEditorContext();
     const {
         recommendations,
         showRecommendationDetail,

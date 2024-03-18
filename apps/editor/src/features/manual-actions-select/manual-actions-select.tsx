@@ -12,8 +12,14 @@ import { UpdateHistoryOperation } from '../editor/history/update-history-operati
 import { loadSchema } from '@klofan/schema/load';
 import { loadInstances } from '@klofan/instances/load';
 import { parse as csvParse } from 'csv-parse/browser/esm/sync';
+import { twMerge } from 'tailwind-merge';
+import { useRecommendationsContext } from '../recommendations/recommendations-context.tsx';
 
-export function ManualActionsSelect() {
+export interface ManualActionsSelectProps {
+    className?: string;
+}
+
+export function ManualActionsSelect({ className }: ManualActionsSelectProps) {
     const {
         diagram: { nodePositioning },
         manualActions,
@@ -22,6 +28,8 @@ export function ManualActionsSelect() {
         addSchemaAndInstances,
         runOperations,
     } = useEditorContext();
+
+    const { shownRecommendationDetail } = useRecommendationsContext();
 
     const { addPrefix } = usePrefixesContext();
 
@@ -72,7 +80,13 @@ export function ManualActionsSelect() {
     };
 
     return (
-        <div className='flex gap-2'>
+        <div
+            className={twMerge(
+                'grid grid-cols-8 gap-2 m-auto',
+                className,
+                shownRecommendationDetail ? 'w-0' : ''
+            )}
+        >
             <div className='relative group'>
                 <div className='p-2 rounded shadow bg-blue-200'>Auto Layout</div>
                 <div className='absolute hidden group-hover:flex z-10 flex-col bg-slate-300 min-w-[10rem] shadow rounded'>

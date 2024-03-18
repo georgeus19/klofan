@@ -27,9 +27,6 @@ export function Diagram({ className }: { className?: string }) {
                 <Controls />
                 <MiniMap />
                 <Background variant={BackgroundVariant.Dots} gap={12} size={1} />
-                <Panel position='top-center'>
-                    <ManualActionsSelect></ManualActionsSelect>
-                </Panel>
             </ReactFlow>
         </div>
     );

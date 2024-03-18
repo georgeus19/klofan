@@ -28,6 +28,7 @@ export function DiagramRecommendationDiff({
                             onNodesChange={shownRecommendationDetail.old.diagram.onNodesChange}
                             draggable={true}
                             elementsSelectable={true}
+                            fitView
                         >
                             <Background variant={BackgroundVariant.Dots} gap={12} size={1} />
                         </ReactFlow>
@@ -48,6 +49,7 @@ export function DiagramRecommendationDiff({
                             onNodesChange={shownRecommendationDetail.new.diagram.onNodesChange}
                             draggable={true}
                             elementsSelectable={true}
+                            fitView
                         >
                             <Background variant={BackgroundVariant.Dots} gap={12} size={1} />
                         </ReactFlow>
