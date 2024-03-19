@@ -1,7 +1,7 @@
 import { Instances } from '../instances';
 import { Property } from '../representation/property';
 import { initEntities, propertyKey } from '../representation/raw-instances';
-import { identifier } from '@klofan/utils';
+import { identifier, XSD } from '@klofan/utils';
 import { InMemoryInstances } from '../in-memory-instances';
 import { EntityTreeNode } from '@klofan/parse';
 
@@ -36,7 +36,13 @@ function fillProperties(
                         (literal): literal is number | string | boolean | bigint | symbol =>
                             literal !== null && literal !== undefined
                     )
-                    .map((literal): Literal => createLiteral({ value: literal.toString() })),
+                    .map(
+                        (literal): Literal =>
+                            createLiteral({
+                                value: literal.toString(),
+                                type: getLiteralType(literal),
+                            })
+                    ),
             };
             targetEntityIndex += instanceInfo.instances;
 
@@ -51,6 +57,25 @@ function fillProperties(
     );
 
     return properties;
+}
+
+function getLiteralType(literal: number | string | boolean | bigint | symbol): string {
+    switch (typeof literal) {
+        case 'number':
+            if (Number.isInteger(literal)) {
+                return XSD.INTEGER;
+            } else {
+                return XSD.DOUBLE;
+            }
+        case 'string':
+            return XSD.STRING;
+        case 'boolean':
+            return XSD.BOOLEAN;
+        case 'bigint':
+            return XSD.INTEGER;
+        case 'symbol':
+            return XSD.STRING;
+    }
 }
 
 function fillEntities(

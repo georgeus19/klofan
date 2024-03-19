@@ -18,6 +18,7 @@ export interface UpdatePropertyLiterals {
                   type: 'pattern';
                   matchPattern: string;
                   replacementPattern: string;
+                  literalType?: string;
               };
     };
 }
@@ -41,6 +42,7 @@ export function updatePropertyLiterals(
                         new RegExp(transformationLiterals.matchPattern),
                         transformationLiterals.replacementPattern
                     ),
+                    type: transformationLiterals.literalType ?? literal.type,
                 };
             }
         });

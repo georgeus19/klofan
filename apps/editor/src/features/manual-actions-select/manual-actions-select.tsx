@@ -61,13 +61,6 @@ export function ManualActionsSelect({ className }: ManualActionsSelectProps) {
             manualActions.onActionDone();
             const content: { operations: UpdateHistoryOperation[]; prefixes: Prefix[] } =
                 JSON.parse(file.content);
-            // if (
-            //     content.operations.find(
-            //         (operation) => operation.type === 'import-schema-and-instances'
-            //     )
-            // ) {
-            //     resetId();
-            // }
             for (const prefix of content.prefixes) {
                 addPrefix(prefix);
             }
@@ -80,7 +73,7 @@ export function ManualActionsSelect({ className }: ManualActionsSelectProps) {
     return (
         <div
             className={twMerge(
-                'grid grid-cols-8 gap-2 m-auto',
+                'grid grid-cols-8 gap-2 m-auto text-center',
                 className,
                 shownRecommendationDetail ? 'w-0' : ''
             )}

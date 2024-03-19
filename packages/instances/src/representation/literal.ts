@@ -6,6 +6,22 @@ export interface Literal {
     language?: string;
 }
 
+export function literalView(literal: Literal): string {
+    if (literal.language) {
+        return `"${literal}"@${literal.language}`;
+    }
+
+    if (literal.type === XSD.STRING) {
+        return `"${literal.value}"`;
+    }
+
+    if (literal.type.startsWith(XSD.PREFIX)) {
+        return `"${literal.value}"^^${literal.type.replace(XSD.PREFIX, 'xsd:')}`;
+    }
+
+    return `"${literal.value}"^^${literal.type}`;
+}
+
 export function createLiteral(data: { value: string; type?: string; language?: string }): Literal {
     if (data.type) {
         return {

@@ -16,6 +16,7 @@
         "@klofan/recommender": "*",
         "@klofan/schema": "*",
         "@klofan/server-utils": "*",
+        "@klofan/utils": "*",
         "axios": "^1.6.7",
         "dayjs": "^1.11.10",
         "dotenv": "^16.4.0",

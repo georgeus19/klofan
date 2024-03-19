@@ -5,6 +5,7 @@ import { VirtualList } from '../../utils/virtual-list.tsx';
 import { toUri } from '../../manual-actions-pane/utils/uri/use-uri-input.ts';
 import { usePrefixesContext } from '../../prefixes/prefixes-context.tsx';
 import { useEntities } from '../../utils/use-entities.ts';
+import { literalView } from '@klofan/instances/representation';
 
 export type ShownDetailProps = {
     height: string;
@@ -58,7 +59,7 @@ export function LiteralPropertySetDetail({ height }: ShownDetailProps) {
                                     key={`L${literal.value}${index}`}
                                 >
                                     <ReadonlyInput
-                                        value={literal.value}
+                                        value={literalView(literal)}
                                         className='w-full'
                                     ></ReadonlyInput>
                                 </div>

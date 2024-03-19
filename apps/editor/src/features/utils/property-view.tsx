@@ -1,6 +1,6 @@
 import { GraphPropertySet } from '@klofan/schema/representation';
 import { ReadonlyInput } from '../manual-actions-pane/utils/general-label-input/readonly-input.tsx';
-import { Property } from '@klofan/instances/representation';
+import { Property, literalView } from '@klofan/instances/representation';
 
 export interface PropertyViewProps {
     property: Property;
@@ -18,7 +18,7 @@ export function PropertyView({ property, propertySet }: PropertyViewProps) {
                     className='col-start-2 overflow-auto p-2 bg-blue-100 text-center'
                     key={`L${literal.value}${index}`}
                 >
-                    <ReadonlyInput value={literal.value} className='w-full'></ReadonlyInput>
+                    <ReadonlyInput value={literalView(literal)} className='w-full'></ReadonlyInput>
                 </div>
             ))}
             {property.targetEntities.map((targetEntityIndex, index) => (

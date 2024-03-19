@@ -1,8 +1,6 @@
 import { describe, expect, test } from '@jest/globals';
-import { ConvertLiteralToEntity, convertLiteralToEntity } from './convert-literal-to-entity';
-import { copyInstances, RawInstances } from '../../representation/raw-instances';
+import { RawInstances } from '../../representation/raw-instances';
 import { createEntitySet, createPropertySet } from '@klofan/schema/representation';
-import { DeleteLiterals, deleteLiterals } from './delete-literals';
 import { updateEntitiesUris, UpdateEntitiesUris } from './update-entities-uris';
 import { createLiteral } from '../../representation/literal';
 

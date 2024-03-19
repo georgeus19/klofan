@@ -9,6 +9,7 @@ import { getProperties, isLiteralSet, toPropertySet } from '@klofan/schema/repre
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { createUpdatePropertyLiteralsPatternTransformation } from '@klofan/transform';
+import { XSD } from '@klofan/utils';
 dayjs.extend(customParseFormat);
 
 export async function recommendDate({
@@ -54,6 +55,7 @@ export async function recommendDate({
                         literals: {
                             matchPattern: czechDateRegExp.source,
                             replacementPattern: replacementPattern,
+                            literalType: XSD.DATE_TIME,
                         },
                     }),
                 ],
