@@ -40,7 +40,7 @@ export type Editor = {
     /**
      * Update editor state using given operations but with only one batch state update.
      */
-    runOperations: (operations: UpdateOperation[]) => Promise<void>;
+    runOperations: (operations: UpdateOperation[], mergeToOneUpdate?: boolean) => Promise<void>;
     /**
      * Transform schema and instances together and save their new state to history and take care
      * of any necessary changes to other data (such as updating diagram nodes, edges and positions.).
@@ -132,7 +132,7 @@ export function useEditor(): Editor {
     /**
      * Update editor state using given operations but with only one batch state update.
      */
-    const runOperations = async (operations: UpdateOperation[]) => {
+    const runOperations = async (operations: UpdateOperation[], mergeToOneUpdate?: boolean) => {
         let editor: RawEditor = { ...history.current };
         const operationsWithEditor: UpdateHistoryOperation[] = [];
         for (const operation of operations) {
@@ -170,7 +170,11 @@ export function useEditor(): Editor {
             }
             operationsWithEditor.push({ ...operation, updatedEditor: editor });
         }
-        history.batchUpdate(() => operationsWithEditor);
+        if (mergeToOneUpdate && operationsWithEditor.length > 0) {
+            history.batchUpdate(() => [operationsWithEditor[operationsWithEditor.length - 1]]);
+        } else {
+            history.batchUpdate(() => operationsWithEditor);
+        }
     };
 
     return {

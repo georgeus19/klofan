@@ -6,7 +6,7 @@ import { InMemoryInstances } from '../in-memory-instances';
 import { EntityTreeNode } from '@klofan/parse';
 
 import _ from 'lodash';
-import { Literal } from '../representation/literal';
+import { createLiteral, Literal } from '../representation/literal';
 import { EntityWithoutProperties } from '../representation/entity';
 
 export function loadInstances(entityTree: EntityTreeNode): Instances {
@@ -36,7 +36,7 @@ function fillProperties(
                         (literal): literal is number | string | boolean | bigint | symbol =>
                             literal !== null && literal !== undefined
                     )
-                    .map((literal): Literal => ({ value: literal.toString() })),
+                    .map((literal): Literal => createLiteral({ value: literal.toString() })),
             };
             targetEntityIndex += instanceInfo.instances;
 

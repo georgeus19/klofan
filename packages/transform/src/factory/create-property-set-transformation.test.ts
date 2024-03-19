@@ -9,6 +9,7 @@ import { Schema } from '@klofan/schema';
 import { RawInstances } from '@klofan/instances/representation';
 import { InMemoryInstances } from '@klofan/instances';
 import { createCreatePropertySetTransformation } from './create-property-set-transformation';
+import { createLiteral } from '@klofan/instances/representation';
 
 describe('@klofan/transform', () => {
     describe('factory', () => {
@@ -169,8 +170,8 @@ describe('@klofan/transform', () => {
                     propertiesMapping: {
                         type: 'manual-mapping',
                         properties: [
-                            { literals: [{ value: '200' }], targetEntities: [] },
-                            { literals: [{ value: '300' }], targetEntities: [] },
+                            { literals: [createLiteral({ value: '200' })], targetEntities: [] },
+                            { literals: [createLiteral({ value: '300' })], targetEntities: [] },
                         ],
                     },
                 }
@@ -211,8 +212,8 @@ describe('@klofan/transform', () => {
                 },
                 properties: {
                     [`${nutrimentsEntitySetId}.${carbohydratesPropertySetId}`]: [
-                        { literals: [{ value: '200' }], targetEntities: [] },
-                        { literals: [{ value: '300' }], targetEntities: [] },
+                        { literals: [createLiteral({ value: '200' })], targetEntities: [] },
+                        { literals: [createLiteral({ value: '300' })], targetEntities: [] },
                     ],
                 },
             };

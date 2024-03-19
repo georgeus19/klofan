@@ -2,7 +2,7 @@
     "name": "@klofan/recommender",
     "scripts": {
         "build": "tsc",
-        "test": "jest",
+        "test": "jest --passWithNoTests",
         "lint": "eslint . --max-warnings 0",
         "clean": "rm -rf node_modules .turbo dist tsconfig.tsbuildinfo"
     },

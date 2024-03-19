@@ -4,6 +4,7 @@ import { copyInstances, RawInstances } from '../../representation/raw-instances'
 import { createEntitySet, createPropertySet } from '@klofan/schema/representation';
 import { DeleteLiterals, deleteLiterals } from './delete-literals';
 import { updateEntitiesUris, UpdateEntitiesUris } from './update-entities-uris';
+import { createLiteral } from '../../representation/literal';
 
 describe('@klofan/instances', () => {
     describe('transform', () => {
@@ -30,7 +31,10 @@ describe('@klofan/instances', () => {
                     properties: {
                         [`${entitySetId}.${buildingPropertySetId}`]: [
                             {
-                                literals: [{ value: 'BANK' }, { value: 'P O S T  O F F I C E' }],
+                                literals: [
+                                    createLiteral({ value: 'BANK' }),
+                                    createLiteral({ value: 'P O S T  O F F I C E' }),
+                                ],
                                 targetEntities: [],
                             },
                             {
@@ -38,21 +42,21 @@ describe('@klofan/instances', () => {
                                 targetEntities: [],
                             },
                             {
-                                literals: [{ value: 'POLICE-STATION' }],
+                                literals: [createLiteral({ value: 'POLICE-STATION' })],
                                 targetEntities: [],
                             },
                         ],
                         [`${entitySetId}.${IDpropertySetId}`]: [
                             {
-                                literals: [{ value: '10' }],
+                                literals: [createLiteral({ value: '10' })],
                                 targetEntities: [],
                             },
                             {
-                                literals: [{ value: '20' }],
+                                literals: [createLiteral({ value: '20' })],
                                 targetEntities: [],
                             },
                             {
-                                literals: [{ value: '30' }],
+                                literals: [createLiteral({ value: '30' })],
                                 targetEntities: [],
                             },
                         ],
@@ -101,7 +105,10 @@ describe('@klofan/instances', () => {
                     properties: {
                         [`${entitySetId}.${buildingPropertySetId}`]: [
                             {
-                                literals: [{ value: 'BANK' }, { value: 'P O S T  O F F I C E' }],
+                                literals: [
+                                    createLiteral({ value: 'BANK' }),
+                                    createLiteral({ value: 'P O S T  O F F I C E' }),
+                                ],
                                 targetEntities: [],
                             },
                             {
@@ -109,21 +116,21 @@ describe('@klofan/instances', () => {
                                 targetEntities: [],
                             },
                             {
-                                literals: [{ value: 'POLICE-STATION' }],
+                                literals: [createLiteral({ value: 'POLICE-STATION' })],
                                 targetEntities: [],
                             },
                         ],
                         [`${entitySetId}.${IDpropertySetId}`]: [
                             {
-                                literals: [{ value: '10' }],
+                                literals: [createLiteral({ value: '10' })],
                                 targetEntities: [],
                             },
                             {
-                                literals: [{ value: '20' }],
+                                literals: [createLiteral({ value: '20' })],
                                 targetEntities: [],
                             },
                             {
-                                literals: [{ value: '30' }],
+                                literals: [createLiteral({ value: '30' })],
                                 targetEntities: [],
                             },
                         ],

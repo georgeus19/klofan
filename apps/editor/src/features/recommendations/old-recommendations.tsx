@@ -4,6 +4,7 @@ import { twMerge } from 'tailwind-merge';
 import { RawInstances } from '@klofan/instances/representation';
 import { Dropdown } from '../utils/dropdown.tsx';
 import { createUpdatePropertyLiteralsValueTransformation } from '@klofan/transform';
+import { createLiteral } from '@klofan/instances/representation';
 
 export type RecommendationsProps = {
     className?: string;
@@ -64,8 +65,10 @@ export function OldRecommendations({ className }: RecommendationsProps) {
                 entitySet: productEntity,
                 propertySet: countriesProperty,
                 literals: {
-                    from: { value: 'United States' },
-                    to: { value: 'http://publications.europa.eu/resource/authority/country/USA' },
+                    from: createLiteral({ value: 'United States' }),
+                    to: createLiteral({
+                        value: 'http://publications.europa.eu/resource/authority/country/USA',
+                    }),
                 },
             });
             updateSchemaAndInstances(transformation).then(() => {

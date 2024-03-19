@@ -8,6 +8,7 @@ import {
 } from './preserve-mapping';
 import { RawInstances, initEntities } from '../../representation/raw-instances';
 import { createEntitySet, createPropertySet, PropertySet } from '@klofan/schema/representation';
+import { createLiteral } from '../../representation/literal';
 
 describe('Transform Instances', () => {
     describe('Property Mappings', () => {
@@ -15,15 +16,18 @@ describe('Transform Instances', () => {
             test('getPreservedProperties', () => {
                 const expectedPropertyInstances: Property[] = [
                     {
-                        literals: [{ value: 'AAA' }, { value: 'BBB' }],
+                        literals: [
+                            createLiteral({ value: 'AAA' }),
+                            createLiteral({ value: 'BBB' }),
+                        ],
                         targetEntities: [0, 1],
                     },
                     {
-                        literals: [{ value: 'BBB' }],
+                        literals: [createLiteral({ value: 'BBB' })],
                         targetEntities: [1],
                     },
                     {
-                        literals: [{ value: 'BBB' }],
+                        literals: [createLiteral({ value: 'BBB' })],
                         targetEntities: [],
                     },
                 ];
@@ -33,7 +37,10 @@ describe('Transform Instances', () => {
                         id: 0,
                         properties: {
                             IDREF: {
-                                literals: [{ value: 'AAA' }, { value: 'BBB' }],
+                                literals: [
+                                    createLiteral({ value: 'AAA' }),
+                                    createLiteral({ value: 'BBB' }),
+                                ],
                                 targetEntities: [0, 1],
                             },
                         },
@@ -42,7 +49,7 @@ describe('Transform Instances', () => {
                         id: 1,
                         properties: {
                             IDREF: {
-                                literals: [{ value: 'BBB' }],
+                                literals: [createLiteral({ value: 'BBB' })],
                                 targetEntities: [1],
                             },
                         },
@@ -51,7 +58,7 @@ describe('Transform Instances', () => {
                         id: 2,
                         properties: {
                             IDREF: {
-                                literals: [{ value: 'BBB' }],
+                                literals: [createLiteral({ value: 'BBB' })],
                                 targetEntities: [],
                             },
                         },
@@ -73,15 +80,18 @@ describe('Transform Instances', () => {
             test('getPreserveMappingPropertyInstances', () => {
                 const expectedPropertyInstances: Property[] = [
                     {
-                        literals: [{ value: 'AAA' }, { value: 'BBB' }],
+                        literals: [
+                            createLiteral({ value: 'AAA' }),
+                            createLiteral({ value: 'BBB' }),
+                        ],
                         targetEntities: [0, 1],
                     },
                     {
-                        literals: [{ value: 'BBB' }],
+                        literals: [createLiteral({ value: 'BBB' })],
                         targetEntities: [1],
                     },
                     {
-                        literals: [{ value: 'BBB' }],
+                        literals: [createLiteral({ value: 'BBB' })],
                         targetEntities: [],
                     },
                 ];
@@ -116,11 +126,14 @@ describe('Transform Instances', () => {
                     properties: {
                         '0.IDREF': [
                             {
-                                literals: [{ value: 'AAA' }, { value: 'BBB' }],
+                                literals: [
+                                    createLiteral({ value: 'AAA' }),
+                                    createLiteral({ value: 'BBB' }),
+                                ],
                                 targetEntities: [0, 1],
                             },
-                            { literals: [{ value: 'BBB' }], targetEntities: [1] },
-                            { literals: [{ value: 'BBB' }], targetEntities: [] },
+                            { literals: [createLiteral({ value: 'BBB' })], targetEntities: [1] },
+                            { literals: [createLiteral({ value: 'BBB' })], targetEntities: [] },
                         ],
                     },
                 };

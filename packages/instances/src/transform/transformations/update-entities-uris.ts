@@ -1,8 +1,7 @@
 import { EntitySet, PropertySet } from '@klofan/schema/representation';
-import { RawInstances, propertyKey } from '../../representation/raw-instances';
+import { RawInstances } from '../../representation/raw-instances';
 import { TransformationChanges } from '../transformation-changes';
-import { Entity, EntityWithoutProperties, getEntities } from '../../representation/entity';
-import { InMemoryInstances } from '../../in-memory-instances';
+import { Entity, getEntities } from '../../representation/entity';
 
 export interface UriPatternPropertyPart {
     type: 'uri-pattern-property-part';

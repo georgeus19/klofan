@@ -17,6 +17,7 @@ import { useEntitySetNodeSelector } from '../../utils/diagram-node-selection/ent
 import { useUriInput } from '../../utils/uri/use-uri-input';
 import { useEntities } from '../../../utils/use-entities.ts';
 import { showEntityToLiteralDiagramHelp } from '../../../help/content/show-entity-to-literal-diagram-help.tsx';
+import { createLiteral } from '@klofan/instances/representation';
 
 export type LiteralNode = LiteralTargetNode & {
     data: {
@@ -118,7 +119,7 @@ export function useCreateLiteralProperty() {
                     type: 'target',
                     position: calculateTargetNodePosition(layout, id),
                     data: {
-                        literal: { value: '' },
+                        literal: createLiteral({ value: '' }),
                         id: id,
                         onLiteralValueChange: changeLiteralValue,
                         layout,

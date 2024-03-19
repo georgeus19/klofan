@@ -5,7 +5,6 @@ import { useEditorContext } from '../editor/editor-context';
 import { FileLoader } from '../file/file-loader';
 import { FileSaver } from '../file/file-saver';
 import { saveAsDataSchema } from '@klofan/schema/save';
-import { resetId } from '@klofan/utils';
 import { Prefix } from '../prefixes/use-prefixes';
 import { usePrefixesContext } from '../prefixes/prefixes-context';
 import { UpdateHistoryOperation } from '../editor/history/update-history-operation.ts';
@@ -35,7 +34,6 @@ export function ManualActionsSelect({ className }: ManualActionsSelectProps) {
 
     const onImport = (file: { content: string; type: string }) => {
         manualActions.onActionDone();
-        resetId();
         const tree =
             file.type === 'application/json'
                 ? parseJson(file.content)
@@ -63,13 +61,13 @@ export function ManualActionsSelect({ className }: ManualActionsSelectProps) {
             manualActions.onActionDone();
             const content: { operations: UpdateHistoryOperation[]; prefixes: Prefix[] } =
                 JSON.parse(file.content);
-            if (
-                content.operations.find(
-                    (operation) => operation.type === 'import-schema-and-instances'
-                )
-            ) {
-                resetId();
-            }
+            // if (
+            //     content.operations.find(
+            //         (operation) => operation.type === 'import-schema-and-instances'
+            //     )
+            // ) {
+            //     resetId();
+            // }
             for (const prefix of content.prefixes) {
                 addPrefix(prefix);
             }

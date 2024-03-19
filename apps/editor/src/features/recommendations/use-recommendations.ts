@@ -22,9 +22,7 @@ import { transformationChanges as instancesTransformationChanges } from '@klofan
 import { ENTITY_SET_NODE } from '../diagram/nodes/entity-set-node.tsx';
 import { PROPERTY_SET_EDGE } from '../diagram/edges/property-set-edge.tsx';
 import { NodeSelection, useNodeSelection } from '../diagram/use-node-selection.ts';
-import { Transformation } from '@klofan/transform';
 import { TransformSchemaAndInstances } from '../editor/update-operations/transform-schema-and-instances-operation.ts';
-import { UpdateHistoryOperation } from '../editor/history/update-history-operation.ts';
 
 export type RecommendationDiagram = {
     nodes: SchemaNode[];
@@ -81,7 +79,7 @@ export function useRecommendations(): Recommendations {
     const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
     const [selectedRecommendation, setSelectedRecommendation] =
         useState<RawRecommendationDetail | null>(null);
-    const { schema, instances, updateSchemaAndInstances, diagram, runOperations, history } =
+    const { schema, instances, updateSchemaAndInstances, diagram, runOperations } =
         useEditorContext();
     const oldPropertySetSelection = usePropertySetSelection();
     const newPropertySetSelection = usePropertySetSelection();
@@ -236,14 +234,7 @@ export function useRecommendations(): Recommendations {
                 transformation: transformation,
             })
         );
-        // const ops = operations.map((op) => {
-        //     const up: UpdateOperation = {
-        //         updatedEditor: history.operations[history.operations.length - 1].updatedEditor,
-        //         ...op,
-        //     };
-        //     return up;
-        // });
-        runOperations(operations).then(() => {
+        runOperations(operations, true).then(() => {
             setRecommendations([]);
             setSelectedRecommendation(null);
             oldPropertySetSelection.clearSelectedPropertySet();
@@ -251,9 +242,6 @@ export function useRecommendations(): Recommendations {
             newPropertySetSelection.clearSelectedPropertySet();
             newNodeSelection.clearSelectedNode();
         });
-        // for (const transformation of recommendation.transformations) {
-        //     await updateSchemaAndInstances(transformation);
-        // }
     };
 
     return {

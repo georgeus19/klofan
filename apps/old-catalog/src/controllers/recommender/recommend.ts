@@ -25,6 +25,7 @@ import { Schema } from '@klofan/schema';
 import { InMemoryInstances } from '@klofan/instances';
 import * as _ from 'lodash';
 import { alternativePath } from '../../queries/paths';
+import { createLiteral } from '@klofan/instances/representation';
 
 const requestSchema = z.object({
     body: z.object({
@@ -86,7 +87,7 @@ export const recommend = endpointErrorHandler(
                             (row: any) => row[code.value].value === literal.value
                         );
                         if (matchingRow) {
-                            return { value: matchingRow[codeEntity.value].value };
+                            return createLiteral({ value: matchingRow[codeEntity.value].value });
                         }
                         return literal;
                     });

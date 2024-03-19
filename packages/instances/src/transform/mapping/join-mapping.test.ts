@@ -4,6 +4,7 @@ import { RawInstances, initEntities } from '../../representation/raw-instances';
 import { JoinMapping, getJoinMappingProperties, getJoinedProperties } from './join-mapping';
 import { Entity } from '../../representation/entity';
 import { createEntitySet, createPropertySet, PropertySet } from '@klofan/schema/representation';
+import { createLiteral } from '../../representation/literal';
 
 describe('Transform Instances', () => {
     describe('Property Mappings', () => {
@@ -29,7 +30,10 @@ describe('Transform Instances', () => {
                         id: 0,
                         properties: {
                             IDREF: {
-                                literals: [{ value: 'AAA' }, { value: 'BBB' }],
+                                literals: [
+                                    createLiteral({ value: 'AAA' }),
+                                    createLiteral({ value: 'BBB' }),
+                                ],
                                 targetEntities: [],
                             },
                         },
@@ -38,7 +42,7 @@ describe('Transform Instances', () => {
                         id: 1,
                         properties: {
                             IDREF: {
-                                literals: [{ value: 'BBB' }],
+                                literals: [createLiteral({ value: 'BBB' })],
                                 targetEntities: [],
                             },
                         },
@@ -47,7 +51,7 @@ describe('Transform Instances', () => {
                         id: 2,
                         properties: {
                             IDREF: {
-                                literals: [{ value: 'BBB' }],
+                                literals: [createLiteral({ value: 'BBB' })],
                                 targetEntities: [],
                             },
                         },
@@ -58,19 +62,19 @@ describe('Transform Instances', () => {
                     {
                         id: 0,
                         properties: {
-                            ID: { literals: [{ value: 'AAA' }], targetEntities: [] },
+                            ID: { literals: [createLiteral({ value: 'AAA' })], targetEntities: [] },
                         },
                     },
                     {
                         id: 1,
                         properties: {
-                            ID: { literals: [{ value: 'CCC' }], targetEntities: [] },
+                            ID: { literals: [createLiteral({ value: 'CCC' })], targetEntities: [] },
                         },
                     },
                     {
                         id: 2,
                         properties: {
-                            ID: { literals: [{ value: 'BBB' }], targetEntities: [] },
+                            ID: { literals: [createLiteral({ value: 'BBB' })], targetEntities: [] },
                         },
                     },
                 ];
@@ -140,16 +144,19 @@ describe('Transform Instances', () => {
                     properties: {
                         '0.IDREF': [
                             {
-                                literals: [{ value: 'AAA' }, { value: 'BBB' }],
+                                literals: [
+                                    createLiteral({ value: 'AAA' }),
+                                    createLiteral({ value: 'BBB' }),
+                                ],
                                 targetEntities: [],
                             },
-                            { literals: [{ value: 'BBB' }], targetEntities: [] },
-                            { literals: [{ value: 'BBB' }], targetEntities: [] },
+                            { literals: [createLiteral({ value: 'BBB' })], targetEntities: [] },
+                            { literals: [createLiteral({ value: 'BBB' })], targetEntities: [] },
                         ],
                         '1.ID': [
-                            { literals: [{ value: 'AAA' }], targetEntities: [] },
-                            { literals: [{ value: 'CCC' }], targetEntities: [] },
-                            { literals: [{ value: 'BBB' }], targetEntities: [] },
+                            { literals: [createLiteral({ value: 'AAA' })], targetEntities: [] },
+                            { literals: [createLiteral({ value: 'CCC' })], targetEntities: [] },
+                            { literals: [createLiteral({ value: 'BBB' })], targetEntities: [] },
                         ],
                     },
                 };

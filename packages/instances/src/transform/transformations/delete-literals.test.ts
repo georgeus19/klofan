@@ -3,6 +3,7 @@ import { ConvertLiteralToEntity, convertLiteralToEntity } from './convert-litera
 import { copyInstances, RawInstances } from '../../representation/raw-instances';
 import { createEntitySet, createPropertySet } from '@klofan/schema/representation';
 import { DeleteLiterals, deleteLiterals } from './delete-literals';
+import { createLiteral } from '../../representation/literal';
 
 describe('@klofan/instances', () => {
     describe('transform', () => {
@@ -18,7 +19,10 @@ describe('@klofan/instances', () => {
                     properties: {
                         [`${entitySetId}.${propertySetId}`]: [
                             {
-                                literals: [{ value: 'BANK' }, { value: 'POST OFFICE' }],
+                                literals: [
+                                    createLiteral({ value: 'BANK' }),
+                                    createLiteral({ value: 'POST OFFICE' }),
+                                ],
                                 targetEntities: [],
                             },
                             {
@@ -26,7 +30,10 @@ describe('@klofan/instances', () => {
                                 targetEntities: [],
                             },
                             {
-                                literals: [{ value: 'POLICE STATION' }, { value: 'POST OFFICE' }],
+                                literals: [
+                                    createLiteral({ value: 'POLICE STATION' }),
+                                    createLiteral({ value: 'POST OFFICE' }),
+                                ],
                                 targetEntities: [],
                             },
                         ],
@@ -46,9 +53,9 @@ describe('@klofan/instances', () => {
                             value: 'literalEntitySet',
                         }),
                         literalsToDelete: [
-                            { value: 'BANK' },
-                            { value: 'POST OFFICE' },
-                            { value: 'POLICE STATION' },
+                            createLiteral({ value: 'BANK' }),
+                            createLiteral({ value: 'POST OFFICE' }),
+                            createLiteral({ value: 'POLICE STATION' }),
                         ],
                     },
                 };
@@ -75,15 +82,21 @@ describe('@klofan/instances', () => {
                     properties: {
                         [`${entitySetId}.${propertySetId}`]: [
                             {
-                                literals: [{ value: 'BANK' }, { value: 'POST OFFICE' }],
+                                literals: [
+                                    createLiteral({ value: 'BANK' }),
+                                    createLiteral({ value: 'POST OFFICE' }),
+                                ],
                                 targetEntities: [],
                             },
                             {
-                                literals: [{ value: 'HOTEL' }],
+                                literals: [createLiteral({ value: 'HOTEL' })],
                                 targetEntities: [],
                             },
                             {
-                                literals: [{ value: 'POLICE STATION' }, { value: 'POST OFFICE' }],
+                                literals: [
+                                    createLiteral({ value: 'POLICE STATION' }),
+                                    createLiteral({ value: 'POST OFFICE' }),
+                                ],
                                 targetEntities: [],
                             },
                         ],
@@ -103,9 +116,9 @@ describe('@klofan/instances', () => {
                             value: 'literalEntitySet',
                         }),
                         literalsToDelete: [
-                            { value: 'BANK' },
-                            { value: 'POST OFFICE' },
-                            { value: 'HOTEL' },
+                            createLiteral({ value: 'BANK' }),
+                            createLiteral({ value: 'POST OFFICE' }),
+                            createLiteral({ value: 'HOTEL' }),
                         ],
                     },
                 };
@@ -127,7 +140,7 @@ describe('@klofan/instances', () => {
                                 targetEntities: [],
                             },
                             {
-                                literals: [{ value: 'POLICE STATION' }],
+                                literals: [createLiteral({ value: 'POLICE STATION' })],
                                 targetEntities: [],
                             },
                         ],

@@ -5,8 +5,9 @@ import { Recommendation } from '@klofan/recommender/recommendation';
 import axios from 'axios';
 import { SERVER_ENV } from '@klofan/config/env/server';
 import { CodeListAnalysis, getCodeListAnalysisType } from '@klofan/analyzer/analysis';
-import { isLiteralSet, toPropertySet } from '@klofan/schema/representation';
+import { isLiteralSet } from '@klofan/schema/representation';
 import { createConvertLiteralToNewEntitySetViaNewPropertySetTransformation } from '@klofan/transform';
+import { createLiteral } from '@klofan/instances/representation';
 
 export async function recommendCodes({
     schema,
@@ -67,7 +68,7 @@ export async function recommendCodes({
                                     literalPropertySetId: propertySet.id,
                                     literalMapping: matchingCodes.flatMap((matchingCode) =>
                                         matchingCode.matchingValues.map((matchingValue) => ({
-                                            from: { value: matchingValue },
+                                            from: createLiteral({ value: matchingValue }),
                                             to: { uri: matchingCode.iri },
                                         }))
                                     ),

@@ -2,6 +2,7 @@ import { describe, expect, test } from '@jest/globals';
 import { ConvertLiteralToEntity, convertLiteralToEntity } from './convert-literal-to-entity';
 import { copyInstances, RawInstances } from '../../representation/raw-instances';
 import { createEntitySet, createPropertySet } from '@klofan/schema/representation';
+import { createLiteral } from '../../representation/literal';
 
 describe('@klofan/instances', () => {
     describe('transform', () => {
@@ -23,16 +24,28 @@ describe('@klofan/instances', () => {
                     },
                     properties: {
                         [`${fakturaEntitySetId}.${datumPropertySetId}`]: [
-                            { literals: [{ value: '2023-01-23' }], targetEntities: [] },
+                            {
+                                literals: [createLiteral({ value: '2023-01-23' })],
+                                targetEntities: [],
+                            },
                             { literals: [], targetEntities: [] },
                             { literals: [], targetEntities: [] },
-                            { literals: [{ value: '2023-01-22' }], targetEntities: [] },
+                            {
+                                literals: [createLiteral({ value: '2023-01-22' })],
+                                targetEntities: [],
+                            },
                         ],
                         [`${fakturaEntitySetId}.${menaPropertySetId}`]: [
-                            { literals: [{ value: 'CZK' }], targetEntities: [] },
-                            { literals: [{ value: 'EUR' }], targetEntities: [] },
-                            { literals: [{ value: 'USD' }], targetEntities: [] },
-                            { literals: [{ value: 'CZK' }, { value: 'EUR' }], targetEntities: [] },
+                            { literals: [createLiteral({ value: 'CZK' })], targetEntities: [] },
+                            { literals: [createLiteral({ value: 'EUR' })], targetEntities: [] },
+                            { literals: [createLiteral({ value: 'USD' })], targetEntities: [] },
+                            {
+                                literals: [
+                                    createLiteral({ value: 'CZK' }),
+                                    createLiteral({ value: 'EUR' }),
+                                ],
+                                targetEntities: [],
+                            },
                         ],
                         [`${fakturaEntitySetId}.${menaCodelistPropertySetId}`]: [
                             { literals: [], targetEntities: [] },
@@ -65,8 +78,8 @@ describe('@klofan/instances', () => {
                             value: codelistEntitySetId,
                         }),
                         literalMapping: [
-                            { from: { value: 'CZK' }, to: { uri: czkUri } },
-                            { from: { value: 'EUR' }, to: { id: 0 } },
+                            { from: createLiteral({ value: 'CZK' }), to: { uri: czkUri } },
+                            { from: createLiteral({ value: 'EUR' }), to: { id: 0 } },
                         ],
                     },
                 };
@@ -81,16 +94,28 @@ describe('@klofan/instances', () => {
                     },
                     properties: {
                         [`${fakturaEntitySetId}.${datumPropertySetId}`]: [
-                            { literals: [{ value: '2023-01-23' }], targetEntities: [] },
+                            {
+                                literals: [createLiteral({ value: '2023-01-23' })],
+                                targetEntities: [],
+                            },
                             { literals: [], targetEntities: [] },
                             { literals: [], targetEntities: [] },
-                            { literals: [{ value: '2023-01-22' }], targetEntities: [] },
+                            {
+                                literals: [createLiteral({ value: '2023-01-22' })],
+                                targetEntities: [],
+                            },
                         ],
                         [`${fakturaEntitySetId}.${menaPropertySetId}`]: [
-                            { literals: [{ value: 'CZK' }], targetEntities: [] },
-                            { literals: [{ value: 'EUR' }], targetEntities: [] },
-                            { literals: [{ value: 'USD' }], targetEntities: [] },
-                            { literals: [{ value: 'CZK' }, { value: 'EUR' }], targetEntities: [] },
+                            { literals: [createLiteral({ value: 'CZK' })], targetEntities: [] },
+                            { literals: [createLiteral({ value: 'EUR' })], targetEntities: [] },
+                            { literals: [createLiteral({ value: 'USD' })], targetEntities: [] },
+                            {
+                                literals: [
+                                    createLiteral({ value: 'CZK' }),
+                                    createLiteral({ value: 'EUR' }),
+                                ],
+                                targetEntities: [],
+                            },
                         ],
                         [`${fakturaEntitySetId}.${menaCodelistPropertySetId}`]: [
                             { literals: [], targetEntities: [1] },

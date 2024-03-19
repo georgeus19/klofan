@@ -9,6 +9,7 @@ import {
 import { Schema } from '@klofan/schema';
 import { RawInstances } from '@klofan/instances/representation';
 import { InMemoryInstances } from '@klofan/instances';
+import { createLiteral } from '@klofan/instances/representation';
 
 describe('@klofan/transform', () => {
     describe('factory', () => {
@@ -42,11 +43,14 @@ describe('@klofan/transform', () => {
                 properties: {
                     [`${entitySetId}.${propertySetId}`]: [
                         {
-                            literals: [{ value: 'BANK' }],
+                            literals: [createLiteral({ value: 'BANK' })],
                             targetEntities: [],
                         },
                         {
-                            literals: [{ value: 'HOTEL' }, { value: 'LIBRARY' }],
+                            literals: [
+                                createLiteral({ value: 'HOTEL' }),
+                                createLiteral({ value: 'LIBRARY' }),
+                            ],
                             targetEntities: [],
                         },
                         {
@@ -77,7 +81,7 @@ describe('@klofan/transform', () => {
                         literalPropertySetId: propertySetId,
                         literalMapping: [
                             {
-                                from: { value: 'BANK' },
+                                from: createLiteral({ value: 'BANK' }),
                                 to: { uri: 'http://example.com/buildings#BANK' },
                             },
                         ],
@@ -134,11 +138,14 @@ describe('@klofan/transform', () => {
                 properties: {
                     [`${entitySetId}.${propertySetId}`]: [
                         {
-                            literals: [{ value: 'BANK' }],
+                            literals: [createLiteral({ value: 'BANK' })],
                             targetEntities: [],
                         },
                         {
-                            literals: [{ value: 'HOTEL' }, { value: 'LIBRARY' }],
+                            literals: [
+                                createLiteral({ value: 'HOTEL' }),
+                                createLiteral({ value: 'LIBRARY' }),
+                            ],
                             targetEntities: [],
                         },
                         {
@@ -196,11 +203,14 @@ describe('@klofan/transform', () => {
                 properties: {
                     [`${entitySetId}.${propertySetId}`]: [
                         {
-                            literals: [{ value: 'BANK' }],
+                            literals: [createLiteral({ value: 'BANK' })],
                             targetEntities: [],
                         },
                         {
-                            literals: [{ value: 'HOTEL' }, { value: 'LIBRARY' }],
+                            literals: [
+                                createLiteral({ value: 'HOTEL' }),
+                                createLiteral({ value: 'LIBRARY' }),
+                            ],
                             targetEntities: [],
                         },
                         {
@@ -231,11 +241,11 @@ describe('@klofan/transform', () => {
                         literalPropertySetId: propertySetId,
                         literalMapping: [
                             {
-                                from: { value: 'HOTEL' },
+                                from: createLiteral({ value: 'HOTEL' }),
                                 to: { uri: 'http://example.com/buildings#HOTEL' },
                             },
                             {
-                                from: { value: 'BANK' },
+                                from: createLiteral({ value: 'BANK' }),
                                 to: { uri: 'http://example.com/buildings#BANK' },
                             },
                         ],
@@ -300,7 +310,7 @@ describe('@klofan/transform', () => {
                             targetEntities: [],
                         },
                         {
-                            literals: [{ value: 'LIBRARY' }],
+                            literals: [createLiteral({ value: 'LIBRARY' })],
                             targetEntities: [],
                         },
                         {
@@ -358,11 +368,14 @@ describe('@klofan/transform', () => {
                 properties: {
                     [`${entitySetId}.${propertySetId}`]: [
                         {
-                            literals: [{ value: 'BANK' }],
+                            literals: [createLiteral({ value: 'BANK' })],
                             targetEntities: [],
                         },
                         {
-                            literals: [{ value: 'HOTEL' }, { value: 'LIBRARY' }],
+                            literals: [
+                                createLiteral({ value: 'HOTEL' }),
+                                createLiteral({ value: 'LIBRARY' }),
+                            ],
                             targetEntities: [],
                         },
                         {
@@ -393,15 +406,15 @@ describe('@klofan/transform', () => {
                         literalPropertySetId: propertySetId,
                         literalMapping: [
                             {
-                                from: { value: 'HOTEL' },
+                                from: createLiteral({ value: 'HOTEL' }),
                                 to: { uri: 'http://example.com/buildings#HOTEL' },
                             },
                             {
-                                from: { value: 'BANK' },
+                                from: createLiteral({ value: 'BANK' }),
                                 to: { uri: 'http://example.com/buildings#BANK' },
                             },
                             {
-                                from: { value: 'LIBRARY' },
+                                from: createLiteral({ value: 'LIBRARY' }),
                                 to: { uri: 'http://example.com/buildings#LIBRARY' },
                             },
                         ],

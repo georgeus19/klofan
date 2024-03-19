@@ -25,7 +25,7 @@ describe('@klofan/schema', () => {
                 const schema: RawSchema = {
                     items: {
                         [entitySet.id]: entitySet,
-                        literal1: createLiteralSet({ id: 'johoho', name: 'jojo' }),
+                        johoho: createLiteralSet({ id: 'johoho', name: 'jojo' }),
                     },
                     relations: { [propertySetId]: propertySet },
                 };
@@ -46,7 +46,6 @@ describe('@klofan/schema', () => {
                             ...entitySet,
                             properties: [],
                         }),
-                        literal1: createLiteralSet({ id: 'johoho', name: 'jojo' }),
                     },
                     relations: {},
                 };
