@@ -4,16 +4,18 @@ import { useEditorContext } from '../../../editor/editor-context';
 import { Dropdown } from '../../../utils/dropdown.tsx';
 import { validUri } from '../../utils/uri/use-uri-input';
 import { UriCard } from './uri-card';
+import { useErrorBoundary } from 'react-error-boundary';
 
 export function EntityUris({ className }: { className?: string }) {
     const { schema, updateSchemaAndInstances } = useEditorContext();
+    const { showBoundary } = useErrorBoundary();
 
     const entitySets = schema.entitySets();
     const updateEntityUri = (entity: EntitySet, uri: string) => {
         const uriNotUpdated = (entity.uri === undefined && uri === '') || entity.uri === uri;
         if (!uriNotUpdated) {
             const transformation = createUpdateEntitySetUriTransformation(schema, entity.id, uri);
-            updateSchemaAndInstances(transformation);
+            updateSchemaAndInstances(transformation).catch((error) => showBoundary(error));
         }
     };
 

@@ -13,15 +13,16 @@ import { EntitySetNodeSelector } from '../utils/diagram-node-selection/entity-se
 import { showEntityToLiteralDiagramHelp } from '../../help/content/show-entity-to-literal-diagram-help.tsx';
 import { CreateEntitiesOptions } from '@klofan/instances/transform';
 import { twMerge } from 'tailwind-merge';
+import { useErrorBoundary } from 'react-error-boundary';
+
 export function CreateEntitySet() {
     const [entitySetName, setEntitySetName] = useState('');
     const [error, setError] = useState<string | null>(null);
-    // const [entities, setEntities] = useState<{ uri?: string }[]>([{}]);
+    const { showBoundary } = useErrorBoundary();
     const [entities, setEntities] = useState<CreateEntitiesOptions | null>(null);
     const [toggle, setToggle] = useState<{ type: 'count' } | { type: 'reference' }>({
         type: 'reference',
     });
-    // const [referencedEntitySet, setReferencedEntitySet] = useState<EntitySet | null>(null);
     const entityNodeSelector = useEntitySetNodeSelector((entitySet: EntitySet) => {
         if (toggle.type === 'reference') {
             setEntities({ type: 'reference', referencedEntitySet: entitySet });
@@ -62,7 +63,7 @@ export function CreateEntitySet() {
             schema: { name: entitySetName },
             instances: entities,
         });
-        updateSchemaAndInstances(transformation);
+        updateSchemaAndInstances(transformation).catch((error) => showBoundary(error));
         onActionDone();
         help.hideHelp();
     };

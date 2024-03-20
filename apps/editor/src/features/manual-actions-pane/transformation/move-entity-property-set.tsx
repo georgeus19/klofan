@@ -27,6 +27,7 @@ import { ManualButton } from '../utils/mapping/manual-button';
 import { PreserveButton } from '../utils/mapping/preserve-button';
 import { useEntities } from '../../utils/use-entities.ts';
 import { Connection } from 'reactflow';
+import { useErrorBoundary } from 'react-error-boundary';
 
 export interface MoveEntityPropertySetProps {
     entitySet: EntitySet;
@@ -44,6 +45,7 @@ export function MoveEntityPropertySet({
         help,
         manualActions: { onActionDone },
     } = useEditorContext();
+    const { showBoundary } = useErrorBoundary();
 
     const originalTargetEntity = schema.entitySet(propertySet.value);
 
@@ -113,7 +115,7 @@ export function MoveEntityPropertySet({
                     ? { type: 'manual-mapping', properties: getPropertyInstances() }
                     : usedPropertiesMapping,
         });
-        updateSchemaAndInstances(transformation);
+        updateSchemaAndInstances(transformation).catch((error) => showBoundary(error));
         onActionDone();
         help.hideHelp();
     };

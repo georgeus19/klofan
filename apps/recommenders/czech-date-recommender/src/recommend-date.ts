@@ -46,7 +46,7 @@ export async function recommendDate({
                             .length > 0
                 ).length > 0
         )
-        .map(({ entitySet, propertySet }) => {
+        .map(({ entitySet, propertySet }): Recommendation => {
             return {
                 transformations: [
                     createUpdatePropertyLiteralsPatternTransformation({
@@ -61,7 +61,7 @@ export async function recommendDate({
                 ],
                 category,
                 description,
-                recommenderType: 'expert',
+                recommenderType: 'Expert',
             };
         });
 

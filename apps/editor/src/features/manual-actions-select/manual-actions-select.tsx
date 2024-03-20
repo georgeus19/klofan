@@ -13,6 +13,7 @@ import { loadInstances } from '@klofan/instances/load';
 import { parse as csvParse } from 'csv-parse/browser/esm/sync';
 import { twMerge } from 'tailwind-merge';
 import { useRecommendationsContext } from '../recommendations/recommendations-context.tsx';
+import { useErrorBoundary } from 'react-error-boundary';
 
 export interface ManualActionsSelectProps {
     className?: string;
@@ -28,17 +29,23 @@ export function ManualActionsSelect({ className }: ManualActionsSelectProps) {
         runOperations,
     } = useEditorContext();
 
+    const { showBoundary } = useErrorBoundary();
+
     const { shownRecommendationDetail } = useRecommendationsContext();
 
     const { addPrefix } = usePrefixesContext();
 
     const onImport = (file: { content: string; type: string }) => {
-        manualActions.onActionDone();
-        const tree =
-            file.type === 'application/json'
-                ? parseJson(file.content)
-                : parseCsv(file.content, csvParse);
-        addSchemaAndInstances({ schema: loadSchema(tree), instances: loadInstances(tree) });
+        try {
+            manualActions.onActionDone();
+            const tree =
+                file.type === 'application/json'
+                    ? parseJson(file.content)
+                    : parseCsv(file.content, csvParse);
+            addSchemaAndInstances({ schema: loadSchema(tree), instances: loadInstances(tree) });
+        } catch (error) {
+            showBoundary(error);
+        }
     };
 
     const onSchemaExport = (download: (file: File) => void) => {
@@ -64,20 +71,18 @@ export function ManualActionsSelect({ className }: ManualActionsSelectProps) {
             for (const prefix of content.prefixes) {
                 addPrefix(prefix);
             }
-            runOperations(content.operations);
+            runOperations(content.operations).catch((error) => showBoundary(error));
         } catch (e) {
             console.log(e);
         }
     };
 
+    if (shownRecommendationDetail) {
+        return <></>;
+    }
+
     return (
-        <div
-            className={twMerge(
-                'grid grid-cols-8 gap-2 m-auto text-center',
-                className,
-                shownRecommendationDetail ? 'w-0' : ''
-            )}
-        >
+        <div className={twMerge('grid grid-cols-8 gap-2 m-auto text-center', className)}>
             <div className='relative group'>
                 <div className='p-2 rounded shadow bg-blue-200'>Auto Layout</div>
                 <div className='absolute hidden group-hover:flex z-10 flex-col bg-slate-300 min-w-[10rem] shadow rounded'>

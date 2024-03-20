@@ -20,6 +20,7 @@ import { UncontrollableUriLabelInput } from '../utils/uri/uncontrollable-uri-lab
 import { Header } from '../utils/header';
 import { EntityView } from '../../utils/entity-view.tsx';
 import { VirtualList } from '../../utils/virtual-list.tsx';
+import { useErrorBoundary } from 'react-error-boundary';
 
 export interface EntityDetailProps {
     entityId: identifier;
@@ -29,13 +30,14 @@ export function EntityDetail({ entityId }: EntityDetailProps) {
     const { schema, instances, updateSchemaAndInstances, manualActions } = useEditorContext();
     const entitySet = schema.entitySet(entityId);
     const { entities } = useEntities(entitySet, instances);
+    const { showBoundary } = useErrorBoundary();
 
     const propertySets = getProperties(schema, entitySet.id);
 
     const handleEntityNameChange = (name: string) => {
         if (name !== entitySet.name) {
             const transformation = createUpdateItemNameTransformation(schema, entitySet.id, name);
-            updateSchemaAndInstances(transformation);
+            updateSchemaAndInstances(transformation).catch((error) => showBoundary(error));
         }
     };
 
@@ -47,7 +49,7 @@ export function EntityDetail({ entityId }: EntityDetailProps) {
                 entitySet.id,
                 uri
             );
-            updateSchemaAndInstances(transformation);
+            updateSchemaAndInstances(transformation).catch((error) => showBoundary(error));
         }
     };
 
@@ -78,7 +80,9 @@ export function EntityDetail({ entityId }: EntityDetailProps) {
                             property.id,
                             name
                         );
-                        updateSchemaAndInstances(transformation);
+                        updateSchemaAndInstances(transformation).catch((error) =>
+                            showBoundary(error)
+                        );
                     }
                 }}
             ></UncontrollableLabelInput>
@@ -96,7 +100,9 @@ export function EntityDetail({ entityId }: EntityDetailProps) {
                             property.id,
                             uri
                         );
-                        updateSchemaAndInstances(transformation);
+                        updateSchemaAndInstances(transformation).catch((error) =>
+                            showBoundary(error)
+                        );
                     }
                 }}
             ></UncontrollableUriLabelInput>

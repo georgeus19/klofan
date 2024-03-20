@@ -5,6 +5,7 @@ import { Dropdown } from '../../../utils/dropdown.tsx';
 import { UriLabelInput } from '../../utils/uri/uri-label-input';
 import { Uri, validUri } from '../../utils/uri/use-uri-input';
 import { UriCard } from './uri-card';
+import { useErrorBoundary } from 'react-error-boundary';
 
 export function PropertyUris({
     className,
@@ -15,6 +16,7 @@ export function PropertyUris({
 }) {
     const { schema, updateSchemaAndInstances } = useEditorContext();
     const entitySets = schema.entitySets();
+    const { showBoundary } = useErrorBoundary();
     const updatePropertySetUri = (propertySet: PropertySet, uri: string) => {
         const uriNotUpdated =
             (propertySet.uri === undefined && uri === '') || propertySet.uri === uri;
@@ -24,7 +26,7 @@ export function PropertyUris({
                 propertySet.id,
                 uri
             );
-            updateSchemaAndInstances(transformation);
+            updateSchemaAndInstances(transformation).catch((error) => showBoundary(error));
         }
     };
 

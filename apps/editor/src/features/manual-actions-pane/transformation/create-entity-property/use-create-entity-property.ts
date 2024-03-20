@@ -12,10 +12,12 @@ import { JoinMappingDetailMapping } from '../../utils/mapping/join/join-mapping-
 import { useEntities } from '../../../utils/use-entities.ts';
 import { Connection } from 'reactflow';
 import { useUriInput } from '../../utils/uri/use-uri-input';
+import { useErrorBoundary } from 'react-error-boundary';
 
 export function useCreateEntityProperty() {
     const [propertySetName, setPropertySetName] = useState('');
     const uri = useUriInput('');
+    const { showBoundary } = useErrorBoundary();
 
     const [sourceEntitySet, setSourceEntitySet] = useState<EntitySet | null>(null);
     const [targetEntitySet, setTargetEntitySet] = useState<EntitySet | null>(null);
@@ -113,7 +115,7 @@ export function useCreateEntityProperty() {
                         : usedPropertiesMapping,
             }
         );
-        updateSchemaAndInstances(transformation);
+        updateSchemaAndInstances(transformation).catch((error) => showBoundary(error));
         onActionDone();
         help.hideHelp();
     };

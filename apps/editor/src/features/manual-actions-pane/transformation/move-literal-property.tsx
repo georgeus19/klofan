@@ -18,6 +18,7 @@ import { ManualButton } from '../utils/mapping/manual-button';
 import { useEntities } from '../../utils/use-entities.ts';
 import { Connection } from 'reactflow';
 import { showEntityToLiteralDiagramHelp } from '../../help/content/show-entity-to-literal-diagram-help.tsx';
+import { useErrorBoundary } from 'react-error-boundary';
 
 export interface MoveLiteralPropertyProps {
     entity: EntitySet;
@@ -35,6 +36,8 @@ export function MoveLiteralProperty({
         help,
         manualActions: { onActionDone },
     } = useEditorContext();
+
+    const { showBoundary } = useErrorBoundary();
 
     const [sourceEntity, setSourceEntity] = useState<EntitySet>(originalSourceEntity);
     const sourceEntitySelector = useEntitySetNodeSelector((entity: EntitySet) => {
@@ -72,7 +75,7 @@ export function MoveLiteralProperty({
                     ? { type: 'manual-mapping', properties: getPropertyInstances() }
                     : usedPropertiesMapping,
         });
-        updateSchemaAndInstances(transformation);
+        updateSchemaAndInstances(transformation).catch((error) => showBoundary(error));
         onActionDone();
         help.hideHelp();
     };

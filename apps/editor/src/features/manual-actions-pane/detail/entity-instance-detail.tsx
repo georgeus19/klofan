@@ -31,9 +31,7 @@ export function EntityInstanceDetail({
                                 key={`${entity.id}${property.id}${index}`}
                                 className='grid grid-cols-2 items-center border-b-2 border-slate-300'
                             >
-                                <div className='overflow-auto p-0 text-center '>
-                                    {property.name}
-                                </div>
+                                <div className='overflow-auto p-0 text-center'>{property.name}</div>
                                 <div className='overflow-auto p-0 text-center'>
                                     "{literal.value}"
                                 </div>

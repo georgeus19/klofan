@@ -10,6 +10,7 @@ import { useUriInput } from '../../utils/uri/use-uri-input';
 import { BlankNodeBuilder, NamedNodeBuilder } from '@klofan/instances/save';
 import { EntitySet } from '@klofan/schema/representation';
 import { download } from '../download';
+import { useErrorBoundary } from 'react-error-boundary';
 
 export type ExportInstancesShown = {
     type: 'export-instances-shown';
@@ -18,6 +19,7 @@ export type ExportInstancesShown = {
 export function ExportInstances() {
     const { schema, instances, manualActions } = useEditorContext();
     const defaultPropertyUri = useUriInput('https://example.com/property');
+    const { showBoundary } = useErrorBoundary();
 
     const exportInstances = () => {
         const writer = new Writer();
@@ -39,12 +41,14 @@ export function ExportInstances() {
                 entityRepresentationBuilders: entityRepresentationBuilders,
             },
             writer
-        ).then(() => {
-            writer.end((error, result: string) => {
-                download(new File([result], 'instances.ttl', { type: 'text/turtle' }));
-            });
-            manualActions.onActionDone();
-        });
+        )
+            .then(() => {
+                writer.end((error, result: string) => {
+                    download(new File([result], 'instances.ttl', { type: 'text/turtle' }));
+                });
+                manualActions.onActionDone();
+            })
+            .catch((error) => showBoundary(error));
     };
 
     const cancel = () => {

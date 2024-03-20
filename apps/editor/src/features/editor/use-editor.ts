@@ -194,7 +194,7 @@ export function useEditor(): Editor {
         diagram: diagram,
         manualActions: manualActions,
         help: help,
-        runOperations,
+        runOperations: runOperations,
         updateSchemaAndInstances: updateSchemaAndInstances,
         addSchemaAndInstances: addSchemaAndInstances,
     };

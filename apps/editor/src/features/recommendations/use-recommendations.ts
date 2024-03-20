@@ -34,8 +34,9 @@ export type RecommendationDiagram = {
 
 export type Recommendations = {
     recommendations: Recommendation[];
-    getRecommendations: () => void;
-    applyRecommendation: (recommendation: Recommendation) => void;
+    getRecommendations: () => Promise<void>;
+    deleteRecommendations: () => void;
+    applyRecommendation: (recommendation: Recommendation) => Promise<void>;
     showRecommendationDetail: (recommendation: Recommendation, index: number) => Promise<void>;
     hideRecommendationDetail: () => void;
     shownRecommendationDetail?: {
@@ -86,7 +87,7 @@ export function useRecommendations(): Recommendations {
     const oldNodeSelection = useNodeSelection();
     const newNodeSelection = useNodeSelection();
 
-    function getRecommendations() {
+    const getRecommendations = (): Promise<void> => {
         const url = 'http://localhost:5000/api/v1/recommend';
         const fetchOptions: RequestInit = {
             method: 'POST',
@@ -98,16 +99,23 @@ export function useRecommendations(): Recommendations {
                 instances: instances.raw(),
             }),
         };
-        // console.log(fetchOptions);
 
-        fetch(url, fetchOptions)
+        return fetch(url, fetchOptions)
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);
                 setRecommendations(data);
-            })
-            .catch(() => setRecommendations([]));
-    }
+            });
+    };
+
+    const deleteRecommendations = () => {
+        setRecommendations([]);
+        setSelectedRecommendation(null);
+        oldPropertySetSelection.clearSelectedPropertySet();
+        oldNodeSelection.clearSelectedNode();
+        newPropertySetSelection.clearSelectedPropertySet();
+        newNodeSelection.clearSelectedNode();
+    };
 
     const showRecommendationDetail = async (recommendation: Recommendation, index: number) => {
         const old = {
@@ -234,19 +242,15 @@ export function useRecommendations(): Recommendations {
                 transformation: transformation,
             })
         );
-        runOperations(operations, true).then(() => {
-            setRecommendations([]);
-            setSelectedRecommendation(null);
-            oldPropertySetSelection.clearSelectedPropertySet();
-            oldNodeSelection.clearSelectedNode();
-            newPropertySetSelection.clearSelectedPropertySet();
-            newNodeSelection.clearSelectedNode();
+        await runOperations(operations, true).then(() => {
+            deleteRecommendations();
         });
     };
 
     return {
         recommendations,
         getRecommendations,
+        deleteRecommendations,
         applyRecommendation,
         showRecommendationDetail,
         hideRecommendationDetail,

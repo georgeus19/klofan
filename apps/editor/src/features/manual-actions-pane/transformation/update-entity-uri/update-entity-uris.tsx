@@ -15,6 +15,7 @@ import { ErrorMessage } from '../../utils/error-message';
 import { useUriPattern } from './use-uri-pattern.ts';
 import { UriPatternView } from './uri-pattern-view.tsx';
 import { VirtualList } from '../../../utils/virtual-list.tsx';
+import { useErrorBoundary } from 'react-error-boundary';
 
 export interface UpdateEntityUrisShown {
     type: 'update-entity-instances-uris-shown';
@@ -24,6 +25,7 @@ export function UpdateEntityUris() {
     const { manualActions, schema, instances, updateSchemaAndInstances, help } = useEditorContext();
     const [entitySet, setEntitySet] = useState<EntitySet | null>(null);
     const [error, setError] = useState<string | null>(null);
+    const { showBoundary } = useErrorBoundary();
 
     const entitySetNodeSelector = useEntitySetNodeSelector((entitySet: EntitySet) => {
         setEntitySet(entitySet);
@@ -46,7 +48,7 @@ export function UpdateEntityUris() {
             entitySet: entitySet.id,
             uriPattern: toTransformPattern(),
         });
-        updateSchemaAndInstances(transformation);
+        updateSchemaAndInstances(transformation).catch((error) => showBoundary(error));
         manualActions.onActionDone();
     };
 

@@ -76,7 +76,7 @@ export async function recommendCodes({
                                 { deleteOriginalLiterals: true }
                             ),
                         category: 'Code List',
-                        recommenderType: 'expert',
+                        recommenderType: 'Expert',
                         description: 'Recommend code list values based on matched literals',
                     };
                 });

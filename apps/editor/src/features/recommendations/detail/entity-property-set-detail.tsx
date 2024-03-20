@@ -37,7 +37,6 @@ export function EntityPropertySetDetail({ height }: ShownDetailProps) {
     if (!targetIsEntitySet) {
         return <></>;
     }
-
     return (
         <div className={'bg-slate-200'}>
             <Header
@@ -47,6 +46,7 @@ export function EntityPropertySetDetail({ height }: ShownDetailProps) {
             <VirtualList items={sourceEntities} height={height}>
                 {(entity) => {
                     const sourceEntityUri = toUri(matchPrefix(entity.uri ?? ''), true);
+
                     return (
                         <div key={entity.id} className='grid grid-cols-2 mx-2'>
                             <div className='col-start-1 p-2 bg-slate-300 shadow text-center truncate hover:overflow-auto hover:text-clip'>

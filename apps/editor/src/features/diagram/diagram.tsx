@@ -2,6 +2,7 @@ import ReactFlow, { Background, BackgroundVariant, Controls, MiniMap, Panel } fr
 import { edgeTypes, nodeTypes } from './layout/use-positioning';
 import { useEditorContext } from '../editor/editor-context';
 import { ManualActionsSelect } from '../manual-actions-select/manual-actions-select';
+import { useRecommendationsContext } from '../recommendations/recommendations-context.tsx';
 
 /**
  * Main schema diagram component which wraps reactflow diagram and passes to it all important data and event handlers.
@@ -11,6 +12,11 @@ export function Diagram({ className }: { className?: string }) {
     const {
         diagram: { nodes, edges, nodePositioning },
     } = useEditorContext();
+    const { shownRecommendationDetail } = useRecommendationsContext();
+
+    if (shownRecommendationDetail) {
+        return <></>;
+    }
 
     return (
         <div className={className}>

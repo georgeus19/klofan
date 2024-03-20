@@ -6,6 +6,7 @@ import { Header } from '../manual-actions-pane/utils/header';
 import { DiagramRecommendationDiff } from './diagram-recommendation-diff.tsx';
 import { useState } from 'react';
 import { RecommendationDescription } from './recommendation-description.tsx';
+import { useErrorBoundary } from 'react-error-boundary';
 
 export type RecommendationsPaneProps = {
     className?: string;
@@ -24,6 +25,7 @@ export function RecommendationsPane({ className }: RecommendationsPaneProps) {
         hideRecommendationDetail,
     } = useRecommendationsContext();
     const [showOption, setShowOption] = useState<ShowOption>('diff');
+    const { showBoundary } = useErrorBoundary();
 
     const recommendationsList = recommendations.map((recommendation, index) => (
         <div key={index} className='grid grid-cols-12 gap-1 rounded p-1 bg-slate-500 mx-2'>
@@ -42,7 +44,9 @@ export function RecommendationsPane({ className }: RecommendationsPaneProps) {
                 )}
                 onClick={() => {
                     setShowOption('description');
-                    showRecommendationDetail(recommendation, index);
+                    showRecommendationDetail(recommendation, index).catch((error) =>
+                        showBoundary(error)
+                    );
                     manualActions.hide();
                 }}
             >
@@ -59,7 +63,9 @@ export function RecommendationsPane({ className }: RecommendationsPaneProps) {
                 )}
                 onClick={() => {
                     setShowOption('diff');
-                    showRecommendationDetail(recommendation, index);
+                    showRecommendationDetail(recommendation, index).catch((error) =>
+                        showBoundary(error)
+                    );
                     manualActions.hide();
                 }}
             >
@@ -67,7 +73,9 @@ export function RecommendationsPane({ className }: RecommendationsPaneProps) {
             </button>
             <button
                 className='col-span-4 rounded shadow bg-blue-200 hover:bg-blue-300 p-2'
-                onClick={() => applyRecommendation(recommendation)}
+                onClick={() =>
+                    applyRecommendation(recommendation).catch((error) => showBoundary(error))
+                }
             >
                 Accept
             </button>
@@ -80,7 +88,7 @@ export function RecommendationsPane({ className }: RecommendationsPaneProps) {
                 <Header label='Recommendations'></Header>
                 <button
                     className='rounded shadow bg-blue-200 hover:bg-blue-300 p-2 w-96'
-                    onClick={getRecommendations}
+                    onClick={() => getRecommendations().catch((error) => showBoundary(error))}
                 >
                     Get Recommendations
                 </button>

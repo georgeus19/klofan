@@ -18,6 +18,7 @@ import { useUriInput } from '../../utils/uri/use-uri-input';
 import { useEntities } from '../../../utils/use-entities.ts';
 import { showEntityToLiteralDiagramHelp } from '../../../help/content/show-entity-to-literal-diagram-help.tsx';
 import { createLiteral } from '@klofan/instances/representation';
+import { useErrorBoundary } from 'react-error-boundary';
 
 export type LiteralNode = LiteralTargetNode & {
     data: {
@@ -31,6 +32,7 @@ export type TargetLiteralEdge = ReactFlowEdge<never>;
 export function useCreateLiteralProperty() {
     const [propertyName, setPropertyName] = useState('');
     const uri = useUriInput('');
+    const { showBoundary } = useErrorBoundary();
 
     const [error, setError] = useState<string | null>(null);
     const {
@@ -85,7 +87,7 @@ export function useCreateLiteralProperty() {
                 propertiesMapping: { type: 'manual-mapping', properties: getPropertyInstances() },
             }
         );
-        updateSchemaAndInstances(transformation);
+        updateSchemaAndInstances(transformation).catch((error) => showBoundary(error));
         onActionDone();
         help.hideHelp();
     };
