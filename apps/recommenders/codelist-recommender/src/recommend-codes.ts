@@ -77,7 +77,15 @@ export async function recommendCodes({
                             ),
                         category: 'Code List',
                         recommenderType: 'Expert',
-                        description: 'Recommend code list values based on matched literals',
+                        description: 'Recommend code list values based on matched literals.',
+                        recommendedTerms: matchingCodes.map((code) => code.iri),
+                        related: [
+                            { name: 'Code List', link: analysis.internal.codeListIri },
+                            {
+                                name: 'Dataset',
+                                link: analysis.provenance.analysis.wasGeneratedBy.usedDataset.iri,
+                            },
+                        ],
                     };
                 });
             })

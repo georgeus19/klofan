@@ -6,7 +6,7 @@ import { ManualActionShown } from './actions';
 import { MoveEntityPropertySet } from './transformation/move-entity-property-set.tsx';
 import { MoveLiteralProperty } from './transformation/move-literal-property';
 import { CreateEntitySet } from './transformation/create-entity-set.tsx';
-import { EntityDetail } from './detail/entity-detail';
+import { EntitySetDetail } from './detail/entity-set-detail.tsx';
 import { CreateLiteralProperty } from './transformation/create-literal-property/create-literal-property';
 import { CreateEntityProperty } from './transformation/create-entity-property/create-entity-property';
 import { Prefixes } from './detail/prefixes/prefixes';
@@ -112,12 +112,12 @@ export function useManualActionsPane(
             nodeSelection.disableSelectedStyle();
             nodeSelection.clearSelectedNode();
         },
-        showEntitySetDetail: (entity: EntitySet) => {
+        showEntitySetDetail: (entitySet: EntitySet) => {
             help.hideHelp();
             if (!shownActionLocked) {
                 setShownAction({
                     type: 'entity-set-detail-shown',
-                    component: <EntityDetail entityId={entity.id}></EntityDetail>,
+                    component: <EntitySetDetail entitySetId={entitySet.id}></EntitySetDetail>,
                 });
             }
         },

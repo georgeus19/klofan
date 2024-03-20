@@ -22,13 +22,13 @@ import { EntityView } from '../../utils/entity-view.tsx';
 import { VirtualList } from '../../utils/virtual-list.tsx';
 import { useErrorBoundary } from 'react-error-boundary';
 
-export interface EntityDetailProps {
-    entityId: identifier;
+export interface EntitySetDetailProps {
+    entitySetId: identifier;
 }
 
-export function EntityDetail({ entityId }: EntityDetailProps) {
+export function EntitySetDetail({ entitySetId }: EntitySetDetailProps) {
     const { schema, instances, updateSchemaAndInstances, manualActions } = useEditorContext();
-    const entitySet = schema.entitySet(entityId);
+    const entitySet = schema.entitySet(entitySetId);
     const { entities } = useEntities(entitySet, instances);
     const { showBoundary } = useErrorBoundary();
 
