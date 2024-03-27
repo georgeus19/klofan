@@ -1,8 +1,0 @@
-{
-    "extends": "@klofan/typescript-config/base.json",
-    "compilerOptions": {
-        "rootDir": "./src",
-        "outDir": "./dist",
-    },
-    "include": ["src/**/*"],
-}
