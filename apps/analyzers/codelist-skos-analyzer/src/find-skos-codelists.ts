@@ -1,24 +1,15 @@
 import { Parser, Store } from 'n3';
-import axios from 'axios';
 import * as _ from 'lodash';
 import * as RDF from '@rdfjs/types';
 
-import { DcatDataset } from '@klofan/analyzer/dataset';
+import { DcatDataset, fetchRdfData } from '@klofan/analyzer/dataset';
 import { InternalAnalysis, InternalCodeListAnalysis } from '@klofan/analyzer/analysis';
 import { QueryEngine } from '@comunica/query-sparql';
+import { logger } from './main';
 
 export async function findSkosCodelists(dataset: DcatDataset): Promise<InternalAnalysis[]> {
-    const turtleDistribution = dataset.distributions.find((d) => d.mimeType === 'text/turtle');
-    if (!turtleDistribution) {
-        throw new Error('No turtle distribution');
-    }
-    const { data } = await axios.get(turtleDistribution.downloadUrl);
-    if (typeof data !== 'string') {
-        throw new Error('Downloaded data in incorrect format');
-    }
+    const quads = await fetchRdfData(dataset);
 
-    const parser = new Parser();
-    const quads = parser.parse(data);
     const store = new Store(quads);
     const engine = new QueryEngine();
 
@@ -71,8 +62,10 @@ export async function findSkosCodelists(dataset: DcatDataset): Promise<InternalA
                 ]),
             };
         });
+        const codeListIri = (codeListBindings[0].get(codeListVar) as RDF.NamedNode).value;
+        logger.info(`Found code list ${codeListIri} in dataset ${dataset.iri}.`);
         return {
-            codeListIri: (codeListBindings[0].get(codeListVar) as RDF.NamedNode).value,
+            codeListIri: codeListIri,
             codes: codes,
         };
     });

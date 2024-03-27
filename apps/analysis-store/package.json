@@ -1,5 +1,5 @@
 {
-    "name": "@klofan/adapter",
+    "name": "@klofan/analysis-store",
     "main": "src/main.ts",
     "scripts": {
         "dev": "tsc  && node dist/main.js",

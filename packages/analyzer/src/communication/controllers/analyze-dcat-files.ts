@@ -9,8 +9,9 @@ import { z } from 'zod';
 import { Analysis, InternalAnalysis } from '../../analysis/analysis';
 import { DcatDataset, getDcatDatasets } from '../../dataset/dcat';
 import { v4 as uuidv4 } from 'uuid';
-import { AnalysisProvenance, baseAnalysisProvenance } from '../../analysis/provenance';
+import { baseAnalysisProvenance } from '../../analysis/provenance';
 import { SERVER_ENV } from '@klofan/config/env/server';
+import winston from 'winston';
 
 const bodySchema = z.object({
     files: z.array(rdfFileSchema()).min(1),
@@ -18,7 +19,8 @@ const bodySchema = z.object({
 
 export const analyzeDcatFiles = (
     analyze: (dataset: DcatDataset) => Promise<InternalAnalysis[]>,
-    analyzerIri: string
+    analyzerIri: string,
+    logger: winston.Logger
 ) =>
     endpointErrorHandler(async (request: Request, response: Response, next: NextFunction) => {
         const body = await parseMultipartRequest(request);
@@ -30,8 +32,12 @@ export const analyzeDcatFiles = (
 
         const analyses: Analysis[] = [];
         for (const dataset of datasets) {
+            logger.info(`Analyzing dataset ${dataset.iri}`);
+
             const a = await analyze(dataset);
             const analysisId = uuidv4();
+
+            logger.info(`Created analysis ${analysisId} for dataset ${dataset.iri}`);
             analyses.push(
                 ...a.map((analysis) => ({
                     ...analysis,
@@ -39,7 +45,7 @@ export const analyzeDcatFiles = (
                     provenance: baseAnalysisProvenance({
                         analyzerIri,
                         baseIri: SERVER_ENV.BASE_IRI,
-                        analysisIri: `${SERVER_ENV.ADAPTER_URL}/api/v1/analyses/${analysisId}`,
+                        analysisIri: `${SERVER_ENV.ANALYSIS_STORE_URL}/api/v1/analyses/${analysisId}`,
                         datasetIri: dataset.iri,
                         analysis,
                     }),

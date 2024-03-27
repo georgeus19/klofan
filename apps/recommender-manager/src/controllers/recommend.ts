@@ -13,22 +13,24 @@ const requestSchema = z.object({
     }),
 });
 
-export const recommend = endpointErrorHandler(async (request: Request, response: Response, next: NextFunction) => {
-    const { body } = await parseRequest(requestSchema, request);
+export const recommend = endpointErrorHandler(
+    async (request: Request, response: Response, next: NextFunction) => {
+        const { body } = await parseRequest(requestSchema, request);
 
-    let noError = false;
-    const recommendations: Recommendation[] = await Promise.allSettled(
-        SERVER_ENV.recommenderUrls.map((url) => axios.post(`${url}/api/v1/recommend`, body)),
-    ).then((results) =>
-        results.flatMap((result) => {
-            if (result.status === 'fulfilled') {
-                noError = true;
-                return result.value.data;
-            }
-            logAxiosError(logger, result.reason, 'Recommender failed.');
-            return [];
-        }),
-    );
-    logger.info(recommendations);
-    response.status(200).send(recommendations);
-});
+        let noError = false;
+        const recommendations: Recommendation[] = await Promise.allSettled(
+            SERVER_ENV.recommenderUrls.map((url) => axios.post(`${url}/api/v1/recommend`, body))
+        ).then((results) =>
+            results.flatMap((result) => {
+                if (result.status === 'fulfilled') {
+                    noError = true;
+                    return result.value.data;
+                }
+                logAxiosError(logger, result.reason, 'Recommender failed.');
+                return [];
+            })
+        );
+        // logger.info(recommendations);
+        response.status(200).send(recommendations);
+    }
+);

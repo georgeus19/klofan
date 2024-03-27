@@ -4,16 +4,20 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import { SERVER_ENV } from '@klofan/config/env/server';
 import { createLogger } from '@klofan/config/logger';
-import { BlockingQueue, DatasetAnalysisJob, RedisBlockingQueue } from '@klofan/analyzer/communication';
+import {
+    BlockingQueue,
+    DatasetAnalysisJob,
+    RedisBlockingQueue,
+} from '@klofan/analyzer/communication';
 
 // dotenv.config();
 
 const redisOptions = { port: SERVER_ENV.REDIS_PORT, host: SERVER_ENV.REDIS_HOST };
 
-export const datasetAnalysisJobQueue: BlockingQueue<DatasetAnalysisJob> = new RedisBlockingQueue<DatasetAnalysisJob>(
-    redisOptions,
-    SERVER_ENV.ANALYZERS_SKOS_CODELIST_ANALYZER_QUEUE as string
+export const analyzerQueues = SERVER_ENV.analyzerQueues.map(
+    (queue) => new RedisBlockingQueue<DatasetAnalysisJob>(redisOptions, queue)
 );
+
 export const logger = createLogger();
 const app: Express = express();
 app.use(cors());

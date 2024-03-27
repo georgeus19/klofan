@@ -24,6 +24,6 @@ app.post('/api/v1/analyses', uploadAnalyses);
 app.get('/api/v1/analyses', getAnalysesByType);
 app.get('/api/v1/analyses/:analysisId', getAnalysisById);
 
-app.listen(SERVER_ENV.ADAPTER_PORT, () => {
-    console.log(`Adapter started on port ${SERVER_ENV.ADAPTER_PORT}`);
+app.listen(SERVER_ENV.ANALYSIS_STORE_PORT, () => {
+    console.log(`Analysis store started on port ${SERVER_ENV.ANALYSIS_STORE_PORT}`);
 });

@@ -1,0 +1,24 @@
+{
+    "name": "@klofan/elasticsearch-triple-analyzer",
+    "main": "src/main.ts",
+    "scripts": {
+        "dev": "tsc  && node dist/main.js",
+        "build": "tsc",
+        "lint": "eslint . --max-warnings 0",
+        "test": "",
+        "clean": "rm -rf node_modules .turbo dist tsconfig.tsbuildinfo"
+    },
+    "dependencies": {
+        "@elastic/elasticsearch": "^8.12.2",
+        "@klofan/analyzer": "*",
+        "@klofan/config": "*",
+        "@klofan/server-utils": "*",
+        "url": "^0.11.3"
+    },
+    "devDependencies": {
+        "@klofan/eslint-config": "*",
+        "@klofan/typescript-config": "*",
+        "@rdfjs/types": "^1.1.0",
+        "typescript": "^5.0.2"
+    }
+}

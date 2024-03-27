@@ -12,7 +12,7 @@ import {
     isAnalysisDoneProvoNotification,
     sendAnalysisNotification,
 } from './notification';
-import { AnalysisProvenance, baseAnalysisProvenance } from '../analysis/provenance';
+import { baseAnalysisProvenance } from '../analysis/provenance';
 
 /**
  * Retrieve jobs from `jobQueue` and `analyze` them.
@@ -48,40 +48,44 @@ export async function consumeAnalysisJobs({
                     provenance: baseAnalysisProvenance({
                         analyzerIri,
                         baseIri: SERVER_ENV.BASE_IRI,
-                        analysisIri: `${SERVER_ENV.ADAPTER_URL}/api/v1/analyses/${analysisId}`,
+                        analysisIri: `${SERVER_ENV.ANALYSIS_STORE_URL}/api/v1/analyses/${analysisId}`,
                         datasetIri: analysisJob.dataset.iri,
                         analysis,
                     }),
                     id: analysisId,
                 };
             });
-            // console.log(analyses);
-            console.log(JSON.stringify(analyses, null, 4));
-            const result = await postAnalysesToAdapter({
-                dataset: analysisJob.dataset,
-                analyses: analyses,
-                observability: { logger },
-            });
-            if (result) {
-                const insertedIds = Object.fromEntries(result.insertedIds.map((id) => [id, id]));
-                analyses
-                    .filter((analysis) => Object.hasOwn(insertedIds, analysis.id))
-                    .map((analysis) => {
-                        void analysisJob.notifications
-                            .filter((notification) => isAnalysisDoneProvoNotification(notification))
-                            .map((notification: AnalysisDoneProvoNotification) =>
-                                sendAnalysisNotification(
-                                    notification,
-                                    analysis.provenance.analysis,
-                                    {
-                                        logger,
-                                    }
+            if (analyses.length > 0) {
+                const result = await postAnalysesToAdapter({
+                    dataset: analysisJob.dataset,
+                    analyses: analyses,
+                    observability: { logger },
+                });
+                if (result) {
+                    const insertedIds = Object.fromEntries(
+                        result.insertedIds.map((id) => [id, id])
+                    );
+                    analyses
+                        .filter((analysis) => Object.hasOwn(insertedIds, analysis.id))
+                        .map((analysis) => {
+                            void analysisJob.notifications
+                                .filter((notification) =>
+                                    isAnalysisDoneProvoNotification(notification)
                                 )
-                            );
-                    });
+                                .map((notification: AnalysisDoneProvoNotification) =>
+                                    sendAnalysisNotification(
+                                        notification,
+                                        analysis.provenance.analysis,
+                                        {
+                                            logger,
+                                        }
+                                    )
+                                );
+                        });
+                }
             }
         } catch (e) {
-            logger.error('Unknown error occurred in analyzer manager worker', e);
+            logger.error('Unknown error occurred in analyzer.', e);
         }
     }
 }
@@ -96,7 +100,7 @@ async function postAnalysesToAdapter({
     observability: ObservabilityTools;
 }): Promise<{ insertedIds: string[] } | null> {
     return axios
-        .post(`${SERVER_ENV.ADAPTER_URL}/api/v1/analyses`, analyses)
+        .post(`${SERVER_ENV.ANALYSIS_STORE_URL}/api/v1/analyses`, analyses)
         .then(({ data }) => {
             const result: { insertedCount?: number; insertedIds: string[] } = data;
             if (!result.insertedCount) {

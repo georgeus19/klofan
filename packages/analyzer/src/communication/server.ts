@@ -8,27 +8,28 @@ import { createLogger } from '@klofan/config/logger';
 import { consumeAnalysisJobs } from './consume-analysis-jobs';
 import { InternalAnalysis } from '../analysis/analysis';
 import z from 'zod';
+import winston from 'winston';
 
 export type AnalyzerServerOptions = {
     port: number;
     jobQueue: string;
     analyzerIri: string;
+    logger: winston.Logger;
 };
 
 export function runAnalyzerServer(
     analyze: (dataset: DcatDataset) => Promise<InternalAnalysis[]>,
-    { port, jobQueue, analyzerIri }: AnalyzerServerOptions
+    { port, jobQueue, analyzerIri, logger }: AnalyzerServerOptions
 ) {
     z.string().url(`AnalyzerIri ${analyzerIri} must be iri.`).parse(analyzerIri);
     const app: Express = express();
-    const logger = createLogger();
 
     const redisOptions = { port: SERVER_ENV.REDIS_PORT, host: SERVER_ENV.REDIS_HOST };
 
     app.use(cors());
     app.use(bodyParser.json());
 
-    app.post('/api/v1/file/dataset/dcat', analyzeDcatFiles(analyze, analyzerIri));
+    app.post('/api/v1/file/dataset/dcat', analyzeDcatFiles(analyze, analyzerIri, logger));
 
     app.listen(port, () => {
         logger.info(`Analyzer consuming ${jobQueue} started on port ${port}`);

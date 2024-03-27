@@ -1,0 +1,8 @@
+version: "3.8"
+include:
+  - apps/elastic/compose.yaml
+#services:
+#  serviceA:
+#    build: .
+#    depends_on:
+#      - serviceB #use serviceB directly as if it was declared in this Compose file

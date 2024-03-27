@@ -11,11 +11,14 @@ const envSchema = z
         CATALOG_REQUEST_LIMIT: z.string(),
         ANALYZER_MANAGER_PORT: port(),
         ANALYZER_MANAGER_URL: url(),
+        ANALYZER_GET_DATASET_DATA_TIMEOUT: z.coerce.number().nonnegative(),
+        ELASTICSEARCH_PORT: port(),
+        ELASTICSEARCH_URL: url(),
         REDIS_PORT: port(),
         REDIS_HOST: z.string(),
         REDIS_DATASET_QUEUE: z.string().min(3),
-        ADAPTER_PORT: port(),
-        ADAPTER_URL: url(),
+        ANALYSIS_STORE_PORT: port(),
+        ANALYSIS_STORE_URL: url(),
         MONGO_URL: url(),
         NOTIFICATION_TIMEOUT: z.coerce.number().nonnegative(),
         RECOMMENDER_MANAGER_PORT: port(),
@@ -33,6 +36,45 @@ const envSchema = z
                 z.object({
                     ANALYZERS_SKOS_CODELIST_ANALYZER_PORT: z.undefined(),
                     ANALYZERS_SKOS_CODELIST_ANALYZER_QUEUE: z.undefined(),
+                })
+            )
+    )
+    .and(
+        z
+            .object({
+                ANALYZERS_TYPE_MAP_ANALYZER_PORT: port(),
+                ANALYZERS_TYPE_MAP_ANALYZER_QUEUE: z.string(),
+            })
+            .or(
+                z.object({
+                    ANALYZERS_TYPE_MAP_ANALYZER_PORT: z.undefined(),
+                    ANALYZERS_TYPE_MAP_ANALYZER_QUEUE: z.undefined(),
+                })
+            )
+    )
+    .and(
+        z
+            .object({
+                ANALYZERS_RDFS_VOCABULARY_ANALYZER_PORT: port(),
+                ANALYZERS_RDFS_VOCABULARY_ANALYZER_QUEUE: z.string(),
+            })
+            .or(
+                z.object({
+                    ANALYZERS_RDFS_VOCABULARY_ANALYZER_PORT: z.undefined(),
+                    ANALYZERS_RDFS_VOCABULARY_ANALYZER_QUEUE: z.undefined(),
+                })
+            )
+    )
+    .and(
+        z
+            .object({
+                ANALYZERS_ELASTICSEARCH_TRIPLE_ANALYZER_PORT: port(),
+                ANALYZERS_ELASTICSEARCH_TRIPLE_ANALYZER_QUEUE: z.string(),
+            })
+            .or(
+                z.object({
+                    ANALYZERS_ELASTICSEARCH_TRIPLE_ANALYZER_PORT: z.undefined(),
+                    ANALYZERS_ELASTICSEARCH_TRIPLE_ANALYZER_QUEUE: z.undefined(),
                 })
             )
     )
@@ -59,6 +101,19 @@ const envSchema = z
                 z.object({
                     RECOMMENDERS_CZECH_DATE_RECOMMENDER_PORT: z.undefined(),
                     RECOMMENDERS_CZECH_DATE_RECOMMENDER_URL: z.undefined(),
+                })
+            )
+    )
+    .and(
+        z
+            .object({
+                RECOMMENDERS_ELASTIC_INDEX_PAPER_RECOMMENDER_PORT: port(),
+                RECOMMENDERS_ELASTIC_INDEX_PAPER_RECOMMENDER_URL: url(),
+            })
+            .or(
+                z.object({
+                    RECOMMENDERS_ELASTIC_INDEX_PAPER_RECOMMENDER_PORT: z.undefined(),
+                    RECOMMENDERS_ELASTIC_INDEX_PAPER_RECOMMENDER_URL: z.undefined(),
                 })
             )
     );

@@ -10,6 +10,11 @@
         "dist/**"
     ],
     "exports": {
+        "./analysis": {
+            "types": "./src/api/analysis.ts",
+            "require": "./dist/api/analysis.js",
+            "import": "./src/api/analysis.ts"
+        },
         "./recommendation": {
             "types": "./src/api/recommendation.ts",
             "require": "./dist/api/recommendation.js",
@@ -22,31 +27,33 @@
         }
     },
     "dependencies": {
-        "@klofan/utils": "*",
-        "@klofan/server-utils": "*",
-        "@klofan/schema": "*",
+        "@klofan/analyzer": "*",
         "@klofan/instances": "*",
+        "@klofan/schema": "*",
+        "@klofan/server-utils": "*",
         "@klofan/transform": "*",
-        "express": "^4.18.2",
-        "lodash": "^4.17.21",
+        "@klofan/utils": "*",
         "axios": "^1.6.7",
         "body-parser": "^1.20.2",
         "cors": "^2.8.5",
         "dotenv": "^16.4.0",
+        "express": "^4.18.2",
+        "lodash": "^4.17.21",
         "uuid": "^9.0.1",
+        "winston": "^3.13.0",
         "zod": "^3.22.4"
     },
     "devDependencies": {
+        "@jest/globals": "^29.7.0",
         "@klofan/eslint-config": "*",
         "@klofan/typescript-config": "*",
         "@rdfjs/types": "^1.1.0",
         "@types/body-parser": "^1.19.5",
         "@types/cors": "^2.8.17",
-        "@types/lodash": "^4.14.202",
-        "@types/uuid": "^9.0.8",
-        "@jest/globals": "^29.7.0",
         "@types/express": "^4.17.21",
+        "@types/lodash": "^4.14.202",
         "@types/n3": "^1.16.4",
+        "@types/uuid": "^9.0.8",
         "@typescript-eslint/eslint-plugin": "^6.19.1",
         "@typescript-eslint/parser": "^6.19.1",
         "eslint": "^8.45.0",

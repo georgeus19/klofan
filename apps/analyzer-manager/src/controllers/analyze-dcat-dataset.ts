@@ -7,7 +7,7 @@ import {
 import { Request, Response, NextFunction } from 'express';
 import { z } from 'zod';
 import { getDcatDatasets, DcatDataset } from '@klofan/analyzer/dataset';
-import { datasetAnalysisJobQueue, logger } from '../main';
+import { analyzerQueues, logger } from '../main';
 import { analysisDoneProvoNotificationSchema } from '@klofan/analyzer/communication';
 
 const bodySchema = z.object({
@@ -23,11 +23,15 @@ export const analyzeDcatDataset = endpointErrorHandler(
         logger.info('Uploaded files to Analyzer Manager.', files);
         const [datasets, filesSubmittedForAnalysis] = await getFilesWithDcat(files);
         if (datasets.length > 0) {
-            await datasetAnalysisJobQueue.push(
-                datasets.map((dataset) => ({
-                    dataset: dataset,
-                    notifications: notifications ?? [],
-                }))
+            await Promise.all(
+                analyzerQueues.map((queue) =>
+                    queue.push(
+                        datasets.map((dataset) => ({
+                            dataset: dataset,
+                            notifications: notifications ?? [],
+                        }))
+                    )
+                )
             );
         }
         response.status(200).send({ filesSubmittedForAnalysis: filesSubmittedForAnalysis });

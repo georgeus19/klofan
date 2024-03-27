@@ -8,6 +8,8 @@ import { CodeListAnalysis, getCodeListAnalysisType } from '@klofan/analyzer/anal
 import { isLiteralSet } from '@klofan/schema/representation';
 import { createConvertLiteralToNewEntitySetViaNewPropertySetTransformation } from '@klofan/transform';
 import { createLiteral } from '@klofan/instances/representation';
+import { getAnalyses } from '@klofan/recommender/analysis';
+import { logger } from './main';
 
 export async function recommendCodes({
     schema,
@@ -16,10 +18,7 @@ export async function recommendCodes({
     schema: Schema;
     instances: Instances;
 }): Promise<Recommendation[]> {
-    const { data } = await axios.get(
-        `${SERVER_ENV.ADAPTER_URL}/api/v1/analyses?types=${getCodeListAnalysisType()}`
-    );
-    const analyses: CodeListAnalysis[] = data;
+    const analyses: CodeListAnalysis[] = await getAnalyses([getCodeListAnalysisType()], { logger });
     const literalSetProperties = await Promise.all(
         schema
             .entitySetPropertySetPairs()

@@ -5,15 +5,17 @@ import { recommendEndpoint } from './controllers/recommend';
 import { Recommendation } from '../recommendation/recommendation';
 import { Schema } from '@klofan/schema';
 import { Instances } from '@klofan/instances';
+import winston from 'winston';
 
 export type RecommenderServerOptions = {
     port: number;
     requestLimit: string;
+    logger: winston.Logger;
 };
 
 export function runRecommenderServer(
     recommend: (editorData: { schema: Schema; instances: Instances }) => Promise<Recommendation[]>,
-    { port, requestLimit }: RecommenderServerOptions
+    { port, requestLimit, logger }: RecommenderServerOptions
 ) {
     const app: Express = express();
     app.use(cors());
@@ -22,6 +24,6 @@ export function runRecommenderServer(
     app.post('/api/v1/recommend', recommendEndpoint(recommend));
 
     app.listen(port, () => {
-        console.log(`Recommender started on port ${port}`);
+        logger.info(`Recommender started on port ${port}`);
     });
 }

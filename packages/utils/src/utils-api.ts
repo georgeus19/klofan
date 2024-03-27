@@ -7,3 +7,4 @@ export type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
 export * as RDF from './vocabularies/rdf';
 export * as DCAT from './vocabularies/dcat';
 export * as XSD from './vocabularies/xsd';
+export * as RDFS from './vocabularies/rdfs';
