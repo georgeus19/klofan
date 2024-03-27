@@ -1,0 +1,119 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix gr: <http://purl.org/goodrelations/v1#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://purl.org/foodontology#carbohydratesPer100g>
+  a owl:ObjectProperty ;
+  rdfs:domain <http://purl.org/foodontology#Food> ;
+  rdfs:range gr:QuantitativeValueFloat ;
+  rdfs:subPropertyOf gr:quantitativeProductOrServiceProperty .
+
+<http://purl.org/foodontology#containsIngredient>
+  a owl:ObjectProperty ;
+  rdfs:comment "contains ingredient"@en, "содержит ингредиент"@ru ;
+  rdfs:domain <http://purl.org/foodontology#Food> ;
+  rdfs:range <http://purl.org/foodontology#Ingredient> .
+
+<http://purl.org/foodontology#energyPer100g>
+  a owl:ObjectProperty ;
+  rdfs:domain <http://purl.org/foodontology#Food> ;
+  rdfs:range gr:QuantitativeValueFloat ;
+  rdfs:subPropertyOf gr:quantitativeProductOrServiceProperty .
+
+<http://purl.org/foodontology#fatPer100g>
+  a owl:ObjectProperty ;
+  rdfs:domain <http://purl.org/foodontology#Food> ;
+  rdfs:range gr:QuantitativeValueFloat ;
+  rdfs:subPropertyOf gr:quantitativeProductOrServiceProperty .
+
+<http://purl.org/foodontology#proteinsPer100g>
+  a owl:ObjectProperty ;
+  rdfs:domain <http://purl.org/foodontology#Food> ;
+  rdfs:range gr:QuantitativeValueFloat ;
+  rdfs:subPropertyOf gr:quantitativeProductOrServiceProperty .
+
+gr:quantitativeProductOrServiceProperty a owl:ObjectProperty .
+<http://purl.org/foodontology#carbohydratesPer100gAsDouble>
+  a owl:DatatypeProperty ;
+  rdfs:label "carbohydrates per 100 g"@en, "углеводов в 100 г"@ru ;
+  rdfs:domain <http://purl.org/foodontology#Food> ;
+  rdfs:seeAlso <http://purl.org/foodontology#carbohydratesPer100g> ;
+  rdfs:subPropertyOf gr:datatypeProductOrServiceProperty ;
+  rdfs:range xsd:double .
+
+<http://purl.org/foodontology#containsGMO>
+  a owl:DatatypeProperty, owl:FunctionalProperty ;
+  rdfs:label "contains a GMO"@en, "содержит ГМО"@ru ;
+  rdfs:seeAlso "http://en.wikipedia.org/wiki/Genetically_modified_organism"^^xsd:anyURI ;
+  rdfs:domain <http://purl.org/foodontology#Food> ;
+  rdfs:subPropertyOf gr:datatypeProductOrServiceProperty ;
+  rdfs:range xsd:boolean .
+
+<http://purl.org/foodontology#energyPer100gAsDouble>
+  a owl:DatatypeProperty ;
+  rdfs:label "energy per 100 g"@en, "энергетическая ценность в 100 г"@ru ;
+  rdfs:domain <http://purl.org/foodontology#Food> ;
+  rdfs:seeAlso <http://purl.org/foodontology#energyPer100g> ;
+  rdfs:subPropertyOf gr:datatypeProductOrServiceProperty ;
+  rdfs:range xsd:double .
+
+<http://purl.org/foodontology#fatPer100gAsDouble>
+  a owl:DatatypeProperty ;
+  rdfs:label "fat per 100 g"@en, "жира в 100 г"@ru ;
+  rdfs:domain <http://purl.org/foodontology#Food> ;
+  rdfs:seeAlso <http://purl.org/foodontology#fatPer100g> ;
+  rdfs:subPropertyOf gr:datatypeProductOrServiceProperty ;
+  rdfs:range xsd:double .
+
+<http://purl.org/foodontology#ingredientsListAsText>
+  a owl:DatatypeProperty ;
+  rdfs:domain <http://purl.org/foodontology#Food> ;
+  rdfs:range rdfs:Literal .
+
+<http://purl.org/foodontology#proteinsPer100gAsDouble>
+  a owl:DatatypeProperty ;
+  rdfs:label "proteins per 100 g"@en, "белков в 100 г"@ru ;
+  rdfs:domain <http://purl.org/foodontology#Food> ;
+  rdfs:seeAlso <http://purl.org/foodontology#proteinsPer100g> ;
+  rdfs:subPropertyOf gr:datatypeProductOrServiceProperty ;
+  rdfs:range xsd:double .
+
+gr:datatypeProductOrServiceProperty a owl:DatatypeProperty .
+<http://purl.org/foodontology#Food>
+  a owl:Class ;
+  rdfs:label "Food"@en, "Продукт пищевой"@ru ;
+  rdfs:subClassOf gr:ProductOrService ;
+  rdfs:seeAlso "http://en.wikipedia.org/wiki/Food"^^xsd:anyURI .
+
+<http://purl.org/foodontology#FoodAdditive>
+  a owl:Class ;
+  rdfs:label "Food additive"@en, "Пищевая добавка"@ru ;
+  rdfs:subClassOf <http://purl.org/foodontology#Ingredient> ;
+  rdfs:seeAlso "http://en.wikipedia.org/wiki/Food_additive"^^xsd:anyURI .
+
+<http://purl.org/foodontology#Ingredient>
+  a owl:Class ;
+  rdfs:label "Ingredient"@en, "Ингредиент"@ru ;
+  rdfs:seeAlso "http://en.wikipedia.org/wiki/Ingredient"^^xsd:anyURI .
+
+gr:ProductOrService a owl:Class .
+gr:QuantitativeValueFloat a owl:Class .
+[]
+  a owl:AllDisjointProperties ;
+  owl:members (
+   <http://purl.org/foodontology#carbohydratesPer100gAsDouble>
+   <http://purl.org/foodontology#energyPer100gAsDouble>
+   <http://purl.org/foodontology#fatPer100gAsDouble>
+   <http://purl.org/foodontology#proteinsPer100gAsDouble>
+ ) .
+
+[]
+  a owl:AllDisjointProperties ;
+  owl:members (
+   <http://purl.org/foodontology#carbohydratesPer100g>
+   <http://purl.org/foodontology#energyPer100g>
+   <http://purl.org/foodontology#fatPer100g>
+   <http://purl.org/foodontology#proteinsPer100g>
+ ) .
+
