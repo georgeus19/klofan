@@ -68,6 +68,19 @@ const envSchema = z
     .and(
         z
             .object({
+                ANALYZERS_SIMPLE_OWL_VOCABULARY_ANALYZER_PORT: port(),
+                ANALYZERS_SIMPLE_OWL_VOCABULARY_ANALYZER_QUEUE: z.string(),
+            })
+            .or(
+                z.object({
+                    ANALYZERS_SIMPLE_OWL_VOCABULARY_ANALYZER_PORT: z.undefined(),
+                    ANALYZERS_SIMPLE_OWL_VOCABULARY_ANALYZER_QUEUE: z.undefined(),
+                })
+            )
+    )
+    .and(
+        z
+            .object({
                 ANALYZERS_ELASTICSEARCH_TRIPLE_ANALYZER_PORT: port(),
                 ANALYZERS_ELASTICSEARCH_TRIPLE_ANALYZER_QUEUE: z.string(),
             })

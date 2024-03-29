@@ -17,20 +17,24 @@ export class PropertySetSearchSource implements SearchSource {
     createRecomemndations({
         hit,
         triple,
-        subjectTypes,
         predicateTypes,
-        objectTypes,
     }: CreateRecommendationsInput): Recommendation[] {
         return predicateTypes.map((predicateType) => {
             const description = `
-                            Based on triple:
-                                <${triple.subject.value}>
-                                <${triple.predicate.value}>
-                                ${triple.object.termType === 'NamedNode' ? `<${triple.object.value}>` : `"${triple.object.value}"`} 
-                            `;
+Recommendation for adding a uri for properties in an property set. It is based on the following already existing triple (links are in related section). 
+|
+<${triple.subject.value}> <${triple.predicate.value}>${triple.object.termType === 'NamedNode' ? `<${triple.object.value}>` : `"${triple.object.value}"`} 
+|
+The recommended type is taken from the predicate if it is a property (rdfs:Property) in an ontology or it is one of the properties (rdfs:Property) associated with the subject.                          
+        `;
 
-            console.log(predicateType, this.propertySet.id);
-
+            const related = [
+                { name: 'Subject', link: triple.subject.value },
+                { name: 'Predicate', link: triple.predicate.value },
+            ];
+            if (triple.object.termType === 'NamedNode') {
+                related.push({ name: 'Object', link: triple.object.value });
+            }
             return {
                 transformations: [
                     createUpdatePropertySetUriTransformation(
@@ -39,16 +43,13 @@ export class PropertySetSearchSource implements SearchSource {
                         predicateType
                     ),
                 ],
-                category: 'Type',
+                category: 'Uri',
                 recommenderType: 'General',
                 recommendedTerms: [predicateType],
+                mainSchemaMatch: this.propertySet.id,
                 score: hit._score ?? undefined,
                 description: description,
-                related: [
-                    { name: 'Subject', link: triple.subject.value },
-                    { name: 'Predicate', link: triple.predicate.value },
-                    { name: 'Object', link: triple.object.value },
-                ],
+                related: related,
             };
         });
     }

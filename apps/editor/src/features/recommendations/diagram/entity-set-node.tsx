@@ -78,6 +78,10 @@ export default function EntitySetNode({
         }
     };
 
+    const selectedEntity = entitySet.id === diagram.nodeSelection.selectedNode?.id;
+    const changedEntity = shownRecommendationDetail.changes.items.find(
+        (item) => item === entitySet.id
+    );
     const diagramSelectedStyle = selected ? 'border border-black' : '';
     return (
         <>
@@ -85,8 +89,10 @@ export default function EntitySetNode({
                 className={twMerge(
                     'bg-slate-200 p-2 rounded shadow',
                     diagramSelectedStyle,
-                    id === diagram.nodeSelection.selectedNode?.id
-                        ? diagram.nodeSelection.selectedStyle
+                    selectedEntity ? diagram.nodeSelection.selectedStyle : '',
+                    changedEntity ? 'bg-rose-300' : '',
+                    selectedEntity && changedEntity
+                        ? 'bg-gradient-to-r from-yellow-200 to-rose-300'
                         : ''
                 )}
                 onClick={onNodeClick}

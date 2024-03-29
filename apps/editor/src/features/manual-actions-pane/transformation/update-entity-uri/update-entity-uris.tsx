@@ -58,10 +58,10 @@ export function UpdateEntityUris() {
 
     return (
         <div>
-            <Header label='Update EntitySet Instances Uris'></Header>
+            <Header label='Update Entity Uris'></Header>
 
             <EntitySetNodeSelector
-                label='EntitySet'
+                label='Entity Set'
                 entitySet={entitySet}
                 onSelectStart={entitySetNodeSelector.onSelectStart}
             ></EntitySetNodeSelector>
@@ -73,10 +73,7 @@ export function UpdateEntityUris() {
                 ></UriPatternView>
             )}
             {entitySet && (
-                <Dropdown
-                    headerLabel='EntitySet Instances Without Uri Or Not Matched'
-                    showInitially
-                >
+                <Dropdown headerLabel='Entities' showInitially>
                     <VirtualList items={entities} height='max-h-160' className='mt-0 mx-2'>
                         {(entity) => (
                             <EntityView

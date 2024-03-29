@@ -5,6 +5,7 @@ import { safeGet } from '@klofan/utils';
 import { getProperties, isEntitySet, isLiteralSet } from '@klofan/schema/representation';
 import { Schema } from '@klofan/schema';
 import { EntityRepresentationBuilder } from './uri-builders/entity-representation-builder';
+import { RDF } from '@klofan/utils';
 const { namedNode, literal } = DataFactory;
 
 export async function save(
@@ -23,6 +24,12 @@ export async function save(
             const subjectRepresentation = subjectEntity.uri
                 ? namedNode(subjectEntity.uri)
                 : subjectRepresentationBuilder.getRepresentation(subjectEntity.id);
+
+            // Add types to entity.
+            subjectEntitySet.types.map((type) =>
+                outputWriter.addQuad(subjectRepresentation, namedNode(RDF.tYPE), namedNode(type))
+            );
+
             for (const propertySet of properties) {
                 const objectItem = schema.item(propertySet.value.id);
                 const propertyUri = propertySet.uri

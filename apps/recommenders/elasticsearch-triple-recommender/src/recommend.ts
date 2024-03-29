@@ -13,7 +13,7 @@ import {
     VocabularyAnalysis,
 } from '@klofan/analyzer/analysis';
 import { getAnalyses } from '@klofan/recommender/analysis';
-import { logger } from './main';
+import { logger, RECOMMENDATIONS_MAX } from './main';
 import {
     MsearchMultiSearchItem,
     MsearchRequestItem,
@@ -25,6 +25,7 @@ import { SearchSource } from './search-sources/search-source';
 import { PropertySetSearchSource } from './search-sources/property-set-search-source';
 import { getTypes } from './get-types';
 import { generateSearchObjects } from './generate-search-objects';
+import * as _ from 'lodash';
 
 export async function recommend({
     schema,
@@ -32,7 +33,6 @@ export async function recommend({
     schema: Schema;
     instances: Instances;
 }): Promise<Recommendation[]> {
-    console.log('XXX');
     const analyses: ElasticsearchTripleAnalysis[] = await getAnalyses(
         [getElasticsearchTripleAnalysisType()],
         { logger: logger }
@@ -45,13 +45,9 @@ export async function recommend({
         internal: { indexName },
     } = analyses[0];
 
-    console.log(indexName);
     const elasticClient = new Client({
         node: SERVER_ENV.ELASTICSEARCH_URL,
     });
-    // Get entity names, property names (when no uri), literals (maybe only text ones? and only some of them?) and run them through index
-    // Get TOP K triples and find PropertyClass, Class for them
-    // Return such property classes and classes as recommendations
 
     const searchSources: SearchSource[] = [
         ...schema.entitySets().map((entitySet) => new EntitySetSearchSource(schema, entitySet)),
@@ -92,7 +88,7 @@ export async function recommend({
 
     const recommendations = searchSourcesHits.flatMap((searchSourceHits, index) => {
         const searchSource = searchSources[index];
-        return searchSourceHits
+        const searchSourceRecommendations = searchSourceHits
             .filter((hit) => {
                 const hasSourceData = hit._source && (hit._source as any).data;
                 if (hasSourceData) {
@@ -120,41 +116,30 @@ export async function recommend({
                     objectTypes,
                 });
             });
+        return _.uniqWith(searchSourceRecommendations, (r1, r2) =>
+            _.isEqual(_.sortBy(r1.recommendedTerms ?? []), _.sortBy(r2.recommendedTerms ?? []))
+        );
     });
 
-    return recommendations;
-}
+    const maxScore =
+        (_.maxBy(recommendations, (recommendation) => recommendation.score)?.score ?? 1) + 0.1;
 
-// if (searchSource.type === 'entity-set') {
-//     return subjectTypes.map((subjectType) => {
-//         const description = `
-//             Based on triple:
-//                 <${triple.subject.value}>
-//                 <${triple.predicate.value}>
-//                 ${triple.object.termType === 'NamedNode' ? `<${triple.object.value}>` : `"${triple.object.value}"`}
-//             `;
-//
-//         console.log(subjectType, searchSource.id);
-//
-//         return {
-//             transformations: [
-//                 createUpdateEntitySetUriTransformation(
-//                     schema,
-//                     searchSource.id,
-//                     subjectType
-//                 ),
-//             ],
-//             category: 'Type',
-//             recommendedTerms: [subjectType],
-//             recommenderType: 'General',
-//             score: h._score ?? undefined,
-//             description: description,
-//             related: [
-//                 { name: 'Subject', link: triple.subject.value },
-//                 { name: 'Predicate', link: triple.predicate.value },
-//                 { name: 'Object', link: triple.object.value },
-//             ],
-//         };
-//     });
-// } else {
-// }
+    const finalRecommendations = _.take(
+        _.reverse(_.sortBy(recommendations, (recommendation) => recommendation.score)),
+        RECOMMENDATIONS_MAX
+    ).map((recommendation) => ({
+        ...recommendation,
+        score: ((recommendation.score ?? 0) / maxScore) * 100,
+    }));
+
+    // finalRecommendations.map((r) => {
+    //     console.log(
+    //         r.recommendedTerms,
+    //         r.score,
+    //         r.transformations[0].schemaTransformations.map((t) => transformationChanges(t))
+    //     );
+    //     return r;
+    // });
+
+    return finalRecommendations;
+}

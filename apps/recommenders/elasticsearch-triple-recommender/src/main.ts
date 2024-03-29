@@ -4,6 +4,7 @@ import { runRecommenderServer } from '@klofan/recommender/server';
 import { createLogger } from '@klofan/config/logger';
 
 export const OBJECT_WEIGHT = 2;
+export const RECOMMENDATIONS_MAX = 20;
 
 export const logger = createLogger();
 

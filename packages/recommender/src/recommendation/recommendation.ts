@@ -6,9 +6,7 @@ export interface Recommendation {
     score?: number;
     recommenderType: 'Expert' | 'General';
     category: string;
+    mainSchemaMatch?: string;
     recommendedTerms?: string[];
-    // relatedTerms?: string[];
-    // relatedVocabularies?: string[];
-    // relatedDocumentation?: string[];
     related?: { name: string; link: string }[];
 }

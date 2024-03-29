@@ -9,5 +9,6 @@ export { createUpdateRelationNameTransformation } from './factory/update-relatio
 export { createUpdatePropertyLiteralsValueTransformation } from './factory/update-property-literals-value-transformation';
 export { createUpdatePropertyLiteralsPatternTransformation } from './factory/update-property-literals-pattern-transformation';
 export { createConvertLiteralToNewEntitySetViaNewPropertySetTransformation } from './factory/convert-literal-to-entity-transformation';
+export { createUpdateEntitySetTypesTransformation } from './factory/create-update-entity-set-types-transformation';
 
 export type { Transformation } from './transformation';

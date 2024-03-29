@@ -1,0 +1,26 @@
+{
+    "name": "@klofan/simple-owl-vocabulary-analyzer",
+    "main": "src/main.ts",
+    "scripts": {
+        "dev": "tsc  && node dist/main.js",
+        "build": "tsc",
+        "lint": "eslint . --max-warnings 0",
+        "test": "",
+        "clean": "rm -rf node_modules .turbo dist tsconfig.tsbuildinfo"
+    },
+    "dependencies": {
+        "@klofan/analyzer": "*",
+        "@klofan/config": "*",
+        "@klofan/server-utils": "*",
+        "lodash": "^4.17.21",
+        "@comunica/query-sparql": "^2.10.2",
+        "n3": "^1.17.1"
+    },
+    "devDependencies": {
+        "@klofan/eslint-config": "*",
+        "@klofan/typescript-config": "*",
+        "@rdfjs/types": "^1.1.0",
+        "@types/lodash": "^4.17.0",
+        "typescript": "^5.0.2"
+    }
+}

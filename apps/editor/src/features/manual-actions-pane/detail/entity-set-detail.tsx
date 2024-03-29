@@ -10,6 +10,7 @@ import {
     createUpdatePropertySetUriTransformation,
     createUpdateRelationNameTransformation,
     createUpdateItemNameTransformation,
+    createUpdateEntitySetTypesTransformation,
 } from '@klofan/transform';
 import { UncontrollableLabelInput } from '../utils/general-label-input/uncontrollable-label-input';
 import { Dropdown } from '../../utils/dropdown.tsx';
@@ -21,6 +22,8 @@ import { Header } from '../utils/header';
 import { EntityView } from '../../utils/entity-view.tsx';
 import { VirtualList } from '../../utils/virtual-list.tsx';
 import { useErrorBoundary } from 'react-error-boundary';
+import * as _ from 'lodash';
+import { EntitySetTypesUpdate } from '../utils/entity-set-types-update.tsx';
 
 export interface EntitySetDetailProps {
     entitySetId: identifier;
@@ -48,6 +51,17 @@ export function EntitySetDetail({ entitySetId }: EntitySetDetailProps) {
                 schema,
                 entitySet.id,
                 uri
+            );
+            updateSchemaAndInstances(transformation).catch((error) => showBoundary(error));
+        }
+    };
+
+    const handleEntityTypesChange = (newTypes: string[]) => {
+        const typesNotUpdated = _.isEqual(_.sortBy(entitySet.types), _.sortBy(newTypes));
+        if (!typesNotUpdated) {
+            const transformation = createUpdateEntitySetTypesTransformation(
+                { schema },
+                { entitySetId: entitySet.id, types: newTypes }
             );
             updateSchemaAndInstances(transformation).catch((error) => showBoundary(error));
         }
@@ -129,6 +143,12 @@ export function EntitySetDetail({ entitySetId }: EntitySetDetailProps) {
                     label='Uri'
                     usePrefix
                 ></UncontrollableUriLabelInput>
+            </Dropdown>
+            <Dropdown headerLabel='Types' showInitially={true}>
+                <EntitySetTypesUpdate
+                    entitySet={entitySet}
+                    onTypesChange={handleEntityTypesChange}
+                ></EntitySetTypesUpdate>
             </Dropdown>
 
             <Dropdown headerLabel='Properties' showInitially={true}>

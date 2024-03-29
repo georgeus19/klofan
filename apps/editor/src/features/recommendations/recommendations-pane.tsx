@@ -19,7 +19,7 @@ export type RecommendationsPaneProps = {
 export type ShowOption = 'description' | 'diff';
 
 export function RecommendationsPane({ className }: RecommendationsPaneProps) {
-    const { manualActions } = useEditorContext();
+    const { manualActions, schema } = useEditorContext();
     const [toggle, setToggle] = useState<{ type: 'Expert' } | { type: 'General' }>({
         type: 'Expert',
     });
@@ -40,15 +40,38 @@ export function RecommendationsPane({ className }: RecommendationsPaneProps) {
             return <></>;
         }
         return (
-            <div key={index} className='grid grid-cols-12 gap-1 rounded p-1 bg-slate-500 mx-2 my-1'>
-                <div className='col-span-6'>
-                    Category:{' '}
-                    <span className='text-white rounded p-1  '>{recommendation.category}</span>
-                    {recommendation.score && <span>Score: {recommendation.score.toFixed(2)}</span>}
+            <div
+                key={index}
+                className='grid grid-cols-12 gap-1 rounded p-1 bg-slate-400 mx-2 my-1 text-lg'
+            >
+                <div className='col-span-12 row-span-2 grid grid-cols-2'>
+                    {schema.hasItem(recommendation.mainSchemaMatch ?? '') ? (
+                        <>
+                            <div>About Entity</div>
+                            <div>{schema.item(recommendation.mainSchemaMatch ?? '').name}</div>
+                        </>
+                    ) : (
+                        <></>
+                    )}
+                    {schema.hasRelation(recommendation.mainSchemaMatch ?? '') ? (
+                        <>
+                            <div>About Property</div>
+                            <div>{schema.relation(recommendation.mainSchemaMatch ?? '').name}</div>
+                        </>
+                    ) : (
+                        <></>
+                    )}
+                    <div>Category</div>
+                    <div>{recommendation.category}</div>
+                    {recommendation.score && (
+                        <>
+                            <div>Score</div> <div>{recommendation.score.toFixed(0)}</div>
+                        </>
+                    )}
                 </div>
                 <button
                     className={twMerge(
-                        'col-start-1 col-span-4 rounded shadow bg-blue-200 hover:bg-blue-300 p-2',
+                        'col-start-1 col-span-4 rounded shadow bg-blue-200 hover:bg-blue-300 p-1',
                         shownRecommendationDetail &&
                             shownRecommendationDetail.recommendationIndex === index &&
                             showOption === 'description'
@@ -67,7 +90,7 @@ export function RecommendationsPane({ className }: RecommendationsPaneProps) {
                 </button>
                 <button
                     className={twMerge(
-                        'col-span-4 rounded shadow bg-blue-200 hover:bg-blue-300 p-2',
+                        'col-span-4 rounded shadow bg-blue-200 hover:bg-blue-300 p-1',
                         shownRecommendationDetail &&
                             shownRecommendationDetail.recommendationIndex === index &&
                             showOption === 'diff'
@@ -85,7 +108,7 @@ export function RecommendationsPane({ className }: RecommendationsPaneProps) {
                     Diff
                 </button>
                 <button
-                    className='col-span-4 rounded shadow bg-blue-200 hover:bg-blue-300 p-2'
+                    className='col-span-4 rounded shadow bg-blue-200 hover:bg-blue-300 p-1'
                     onClick={() =>
                         applyRecommendation(recommendation).catch((error) => showBoundary(error))
                     }
@@ -126,36 +149,11 @@ export function RecommendationsPane({ className }: RecommendationsPaneProps) {
                         General
                     </button>
                 </div>
-                {/*<Dropdown headerLabel='Expert' className='my-0' showInitially>*/}
-                {/*    {recommendations.filter(*/}
-                {/*        (recommendation) => recommendation.recommenderType === 'Expert'*/}
-                {/*    ).length < 10 ? (*/}
-                {/*        recommendations.map((recommendation, index) =>*/}
-                {/*            recommendationsList(recommendation, index)*/}
-                {/*        )*/}
-                {/*    ) : (*/}
-                {/*    )}*/}
-                {/*</Dropdown>*/}
                 <VirtualList items={recommendations} height='max-h-160'>
                     {(recommendation: Recommendation, index) =>
                         recommendationsList(recommendation, index)
                     }
                 </VirtualList>
-                {/*<Dropdown headerLabel='General' className='my-0' showInitially>*/}
-                {/*    {recommendations.filter(*/}
-                {/*        (recommendation) => recommendation.recommenderType === 'General'*/}
-                {/*    ).length < 20 ? (*/}
-                {/*        recommendations.map((recommendation, index) =>*/}
-                {/*            recommendationsList(recommendation, index)*/}
-                {/*        )*/}
-                {/*    ) : (*/}
-                {/*        <VirtualList items={recommendations} height='max-h-128'>*/}
-                {/*            {(recommendation: Recommendation, index) =>*/}
-                {/*                recommendationsList(recommendation, index)*/}
-                {/*            }*/}
-                {/*        </VirtualList>*/}
-                {/*    )}*/}
-                {/*</Dropdown>*/}
             </div>
             {shownRecommendationDetail && (
                 <div className='grow relative grid grid-cols-1'>

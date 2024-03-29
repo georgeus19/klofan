@@ -5,6 +5,7 @@ import { VirtualList } from '../../utils/virtual-list.tsx';
 import { usePrefixesContext } from '../../prefixes/prefixes-context.tsx';
 import { useEntities } from '../../utils/use-entities.ts';
 import { toUri } from '../../manual-actions-pane/utils/uri/use-uri-input.ts';
+import { LabelReadonlyUriInput } from '../../manual-actions-pane/utils/uri/label-readonly-uri-input.tsx';
 
 export type ShownDetailProps = {
     height: string;
@@ -43,6 +44,11 @@ export function EntityPropertySetDetail({ height }: ShownDetailProps) {
                 className='text-lg bg-opacity-70'
                 label={`${propertySetSelection.selectedPropertySet.entitySet.name}.${propertySetSelection.selectedPropertySet.propertySet.name}`}
             ></Header>
+            <LabelReadonlyUriInput
+                label='Uri'
+                key={`uri`}
+                uri={propertySetSelection.selectedPropertySet.propertySet.uri ?? ''}
+            ></LabelReadonlyUriInput>
             <VirtualList items={sourceEntities} height={height}>
                 {(entity) => {
                     const sourceEntityUri = toUri(matchPrefix(entity.uri ?? ''), true);

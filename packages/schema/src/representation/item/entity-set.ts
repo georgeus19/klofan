@@ -7,10 +7,14 @@ export interface EntitySet extends Item {
     type: 'entity-set';
     uri?: string;
     properties: identifier[];
+    types: string[];
 }
 
-export function createEntitySet(entitySet: Omit<EntitySet, 'type'>): EntitySet {
+export function createEntitySet(
+    entitySet: Omit<EntitySet, 'type' | 'types'> & { types?: string[] }
+): EntitySet {
     return {
+        types: [],
         ...entitySet,
         type: 'entity-set',
     };
