@@ -9,7 +9,16 @@ export type UriInputProps = Uri & {
     onChangeDone: (value: string) => void;
 };
 
-export function UriInput({ asIri, uriWithPrefix, uriWithoutPrefix, updateUri, className, onChangeDone, usePrefix, id }: UriInputProps) {
+export function UriInput({
+    asIri,
+    uriWithPrefix,
+    uriWithoutPrefix,
+    updateUri,
+    className,
+    onChangeDone,
+    usePrefix,
+    id,
+}: UriInputProps) {
     const { availablePrefixes } = usePrefixesContext();
 
     const prefixes = availablePrefixes(uriWithPrefix).map((prefix) => (
@@ -36,9 +45,10 @@ export function UriInput({ asIri, uriWithPrefix, uriWithoutPrefix, updateUri, cl
                     // If a prefix is selected, then it results in double update.
                     // This makes that double update not happen but it also means
                     // that when having the prefixes visible, the update is not saved!
-                    if (prefixes.length === 0) {
-                        onChangeDone(iri);
-                    }
+                    // COMMENT NOTE: there is a problem when deleting the input and saving it.
+                    // if (prefixes.length === 0) {
+                    // }
+                    onChangeDone(iri);
                 }}
                 onChange={updateUri}
                 value={usePrefix ? uriWithPrefix : uriWithoutPrefix}
