@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:at="http://publications.europa.eu/ontology/authority/"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+         xmlns:atold="http://publications.europa.eu/resource/authority/"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xml:base="http://publications.europa.eu/resource/authority/country">
+   <skos:ConceptScheme rdf:about="http://publications.europa.eu/resource/authority/country"
+                       at:table.id="country"
+                       at:table.version.number="20240321-0">
+      <at:prefLabel xml:lang="en">Countries and territories</at:prefLabel>
+      <rdfs:label xml:lang="en">Countries and territories</rdfs:label>
+      <owl:versionInfo>20240321-0</owl:versionInfo>
+      <skos:prefLabel xml:lang="en">Countries and territories</skos:prefLabel>
+      <skos:hasTopConcept rdf:resource="http://publications.europa.eu/resource/authority/country/BOL"/>
+      <skos:hasTopConcept rdf:resource="http://publications.europa.eu/resource/authority/country/BRA"/>
+      <skos:hasTopConcept rdf:resource="http://publications.europa.eu/resource/authority/country/BRB"/>
+      <skos:hasTopConcept rdf:resource="http://publications.europa.eu/resource/authority/country/BRN"/>
+      <skos:hasTopConcept rdf:resource="http://publications.europa.eu/resource/authority/country/BTN"/>
+      <skos:hasTopConcept rdf:resource="http://publications.europa.eu/resource/authority/country/BUR"/>
+      <skos:hasTopConcept rdf:resource="http://publications.europa.eu/resource/authority/country/BWA"/>
+      <skos:hasTopConcept rdf:resource="http://publications.europa.eu/resource/authority/country/BYS"/>
+      <skos:hasTopConcept rdf:resource="http://publications.europa.eu/resource/authority/country/CAF"/>
+      <skos:hasTopConcept rdf:resource="http://publications.europa.eu/resource/authority/country/CAN"/>
+      <skos:hasTopConcept rdf:resource="http://publications.europa.eu/resource/authority/country/CHE"/>
+      <skos:hasTopConcept rdf:resource="http://publications.europa.eu/resource/authority/country/CHL"/>
+      <skos:hasTopConcept rdf:resource="http://publications.europa.eu/resource/authority/country/CHN"/>
+      <skos:hasTopConcept rdf:resource="http://publications.europa.eu/resource/authority/country/CIV"/>
+      <skos:hasTopConcept rdf:resource="http://publications.europa.eu/resource/authority/country/CMR"/>
+      <skos:hasTopConcept rdf:resource="http://publications.europa.eu/resource/authority/country/COD"/>
+      <skos:hasTopConcept rdf:resource="http://publications.europa.eu/resource/authority/country/COG"/>
+      <skos:hasTopConcept rdf:resource="http://publications.europa.eu/resource/authority/country/NZL"/>
+      <skos:hasTopConcept rdf:resource="http://publications.europa.eu/resource/authority/country/COL"/>
+      <skos:hasTopConcept rdf:resource="http://publications.europa.eu/resource/authority/country/COM"/>
+      <skos:hasTopConcept rdf:resource="http://publications.europa.eu/resource/authority/country/CPV"/>
+      <skos:hasTopConcept rdf:resource="http://publications.europa.eu/resource/authority/country/CRI"/>
+      <skos:hasTopConcept rdf:resource="http://publications.europa.eu/resource/authority/country/GGY"/>
+      <skos:hasTopConcept rdf:resource="http://publications.europa.eu/resource/authority/country/CSK"/>
+      <skos:hasTopConcept rdf:resource="http://publications.europa.eu/resource/authority/country/CTE"/>
+      <skos:hasTopConcept rdf:resource="http://publications.europa.eu/resource/authority/country/CUB"/>
+      <skos:hasTopConcept rdf:resource="http://publications.europa.eu/resource/authority/country/CYP"/>
+      <skos:hasTopConcept rdf:resource="http://publications.europa.eu/resource/authority/country/CZE"/>
+      <skos:hasTopConcept rdf:resource="http://publications.europa.eu/resource/authority/country/DDR"/>
+   </skos:ConceptScheme>
+
+<skos:Concept rdf:about="http://publications.europa.eu/resource/authority/country/CZE"
+                 at:deprecated="false"
+                 at:protocol.ordering="EU-03">
+      <skos:prefLabel xml:lang="et">Tšehhi</skos:prefLabel>
+      <skos:prefLabel xml:lang="ar">التشيك</skos:prefLabel>
+      <skos:prefLabel xml:lang="be">Чэхія</skos:prefLabel>
+      <skos:prefLabel xml:lang="bg">Чехия</skos:prefLabel>
+      <skos:prefLabel xml:lang="bs">Češka</skos:prefLabel>
+      <skos:prefLabel xml:lang="ca">Txèquia</skos:prefLabel>
+      <skos:prefLabel xml:lang="cs">Česko</skos:prefLabel>
+      <skos:prefLabel xml:lang="da">Tjekkiet</skos:prefLabel>
+      <skos:prefLabel xml:lang="de">Tschechien</skos:prefLabel>
+      <skos:prefLabel xml:lang="el">Τσεχία</skos:prefLabel>
+      <skos:prefLabel xml:lang="en">Czechia</skos:prefLabel>
+      <skos:prefLabel xml:lang="es">Chequia</skos:prefLabel>
+      <skos:prefLabel xml:lang="eu">Txekia</skos:prefLabel>
+      <skos:prefLabel xml:lang="fi">Tšekki</skos:prefLabel>
+      <skos:prefLabel xml:lang="fo">Kekkia</skos:prefLabel>
+      <skos:prefLabel xml:lang="fr">Tchéquie</skos:prefLabel>
+      <skos:prefLabel xml:lang="ga">An tSeicia</skos:prefLabel>
+      <skos:prefLabel xml:lang="gl">Chequia</skos:prefLabel>
+      <skos:prefLabel xml:lang="hr">Češka</skos:prefLabel>
+      <skos:prefLabel xml:lang="hu">Csehország</skos:prefLabel>
+      <skos:prefLabel xml:lang="is">Tékkland</skos:prefLabel>
+      <skos:prefLabel xml:lang="it">Cechia</skos:prefLabel>
+      <skos:prefLabel xml:lang="ja">チェコ</skos:prefLabel>
+      <skos:prefLabel xml:lang="lb">Tschechesch Republik</skos:prefLabel>
+      <skos:prefLabel xml:lang="lt">Čekija</skos:prefLabel>
+      <skos:prefLabel xml:lang="lv">Čehija</skos:prefLabel>
+      <skos:prefLabel xml:lang="mk">Чешка</skos:prefLabel>
+      <skos:prefLabel xml:lang="mt">Iċ-Ċekja</skos:prefLabel>
+      <skos:prefLabel xml:lang="nl">Tsjechië</skos:prefLabel>
+      <skos:prefLabel xml:lang="no">Tsjekkia</skos:prefLabel>
+      <skos:prefLabel xml:lang="pl">Czechy</skos:prefLabel>
+      <skos:prefLabel xml:lang="pt">Chéquia</skos:prefLabel>
+      <skos:prefLabel xml:lang="rm">Tschechia</skos:prefLabel>
+      <skos:prefLabel xml:lang="ro">Cehia</skos:prefLabel>
+      <skos:prefLabel xml:lang="ru">Чехия</skos:prefLabel>
+      <skos:prefLabel xml:lang="sk">Česko</skos:prefLabel>
+      <skos:prefLabel xml:lang="sl">Češka</skos:prefLabel>
+      <skos:prefLabel xml:lang="sq">Çekia</skos:prefLabel>
+      <skos:prefLabel xml:lang="sr">Чешка</skos:prefLabel>
+      <skos:prefLabel xml:lang="sv">Tjeckien</skos:prefLabel>
+      <skos:prefLabel xml:lang="tr">Çekya</skos:prefLabel>
+      <skos:prefLabel xml:lang="uk">Чехія</skos:prefLabel>
+      <skos:prefLabel xml:lang="zh">捷克</skos:prefLabel>
+      <at:authority-code>CZE</at:authority-code>
+      <at:op-code>CZE</at:op-code>
+      <at:op-mapped-code>
+         <at:MappedCode>
+            <dc:source>PUB</dc:source>
+            <at:affected-table>PUB_LOC</at:affected-table>
+            <at:legacy-code>CZ</at:legacy-code>
+         </at:MappedCode>
+      </at:op-mapped-code>
+      <at:op-mapped-code>
+         <at:MappedCode>
+            <dc:source>EurLex</dc:source>
+            <at:affected-table>FD_361</at:affected-table>
+            <at:legacy-code>CZ</at:legacy-code>
+         </at:MappedCode>
+      </at:op-mapped-code>
+      <at:op-mapped-code>
+         <at:MappedCode>
+            <dc:source>EurLex</dc:source>
+            <at:affected-table>FD_140</at:affected-table>
+            <at:legacy-code>CZ</at:legacy-code>
+         </at:MappedCode>
+      </at:op-mapped-code>
+      <at:op-mapped-code>
+         <at:MappedCode>
+            <dc:source>EurLex</dc:source>
+            <at:affected-table>FD_110</at:affected-table>
+            <at:legacy-code>CZ</at:legacy-code>
+         </at:MappedCode>
+      </at:op-mapped-code>
+      <at:op-mapped-code>
+         <at:MappedCode>
+            <dc:source>EurLex</dc:source>
+            <at:affected-table>FD_160</at:affected-table>
+            <at:legacy-code>CZ</at:legacy-code>
+         </at:MappedCode>
+      </at:op-mapped-code>
+      <at:op-mapped-code>
+         <at:MappedCode>
+            <dc:source>PUB</dc:source>
+            <at:affected-table>PUB_LOC</at:affected-table>
+            <at:legacy-code>{CZE}</at:legacy-code>
+         </at:MappedCode>
+      </at:op-mapped-code>
+      <at:op-mapped-code>
+         <at:MappedCode>
+            <dc:source>EurLex</dc:source>
+            <at:affected-table>FD_380</at:affected-table>
+            <at:legacy-code>CZ</at:legacy-code>
+         </at:MappedCode>
+      </at:op-mapped-code>
+      <at:op-mapped-code>
+         <at:MappedCode>
+            <dc:source>TED_SCHEMA</dc:source>
+            <at:legacy-code>CZ</at:legacy-code>
+         </at:MappedCode>
+      </at:op-mapped-code>
+      <at:op-mapped-code>
+         <at:MappedCode>
+            <dc:source>EurLex</dc:source>
+            <at:affected-table>FD_010</at:affected-table>
+            <at:legacy-code>CZ</at:legacy-code>
+         </at:MappedCode>
+      </at:op-mapped-code>
+      <at:op-mapped-code>
+         <at:MappedCode>
+            <dc:source>EurLex</dc:source>
+            <at:affected-table>FD_290</at:affected-table>
+            <at:legacy-code>CZE_N</at:legacy-code>
+         </at:MappedCode>
+      </at:op-mapped-code>
+      <at:op-mapped-code>
+         <at:MappedCode>
+            <dc:source>TED</dc:source>
+            <at:legacy-code>CZ</at:legacy-code>
+         </at:MappedCode>
+      </at:op-mapped-code>
+      <at:op-mapped-code>
+         <at:MappedCode>
+            <dc:source>PROCAT</dc:source>
+            <at:affected-table>VOLET_MNE</at:affected-table>
+            <at:legacy-code>CZ</at:legacy-code>
+         </at:MappedCode>
+      </at:op-mapped-code>
+      <at:op-mapped-code>
+         <at:MappedCode>
+            <dc:source>EurLex</dc:source>
+            <at:affected-table>FD_375</at:affected-table>
+            <at:legacy-code>CZ</at:legacy-code>
+         </at:MappedCode>
+      </at:op-mapped-code>
+      <at:op-mapped-code>
+         <at:MappedCode>
+            <dc:source>EurLex</dc:source>
+            <at:affected-table>FD_050</at:affected-table>
+            <at:legacy-code>CZ</at:legacy-code>
+         </at:MappedCode>
+      </at:op-mapped-code>
+      <at:start.use>1993-01-01</at:start.use>
+      <atold:op-code>CZE</atold:op-code>
+      <dc:identifier>CZE</dc:identifier>
+      <skos:altLabel xml:lang="ar">جمهورية التشيك</skos:altLabel>
+      <skos:altLabel xml:lang="be">Чэшская рэспубліка</skos:altLabel>
+      <skos:altLabel xml:lang="bg">Чешка република</skos:altLabel>
+      <skos:altLabel xml:lang="bs">Češka republika</skos:altLabel>
+      <skos:altLabel xml:lang="ca">República Txeca</skos:altLabel>
+      <skos:altLabel xml:lang="cs">Česká republika</skos:altLabel>
+      <skos:altLabel xml:lang="da">Den Tjekkiske Republik</skos:altLabel>
+      <skos:altLabel xml:lang="de">Tschechische Republik</skos:altLabel>
+      <skos:altLabel xml:lang="el">Τσεχική Δημοκρατία</skos:altLabel>
+      <skos:altLabel xml:lang="en">Czech Republic</skos:altLabel>
+      <skos:altLabel xml:lang="es">República Checa</skos:altLabel>
+      <skos:altLabel xml:lang="et">Tšehhi Vabariik</skos:altLabel>
+      <skos:altLabel xml:lang="eu">Txekiar Errepublika</skos:altLabel>
+      <skos:altLabel xml:lang="fi">Tšekin tasavalta</skos:altLabel>
+      <skos:altLabel xml:lang="fo">Lýðveldið Kekkia</skos:altLabel>
+      <skos:altLabel xml:lang="fr">République tchèque</skos:altLabel>
+      <skos:altLabel xml:lang="ga">Poblacht na Seice</skos:altLabel>
+      <skos:altLabel xml:lang="gl">República Checa</skos:altLabel>
+      <skos:altLabel xml:lang="hr">Češka Republika</skos:altLabel>
+      <skos:altLabel xml:lang="hu">Cseh Köztársaság</skos:altLabel>
+      <skos:altLabel xml:lang="is">Tékkneska lýðveldið</skos:altLabel>
+      <skos:altLabel xml:lang="it">Repubblica ceca</skos:altLabel>
+      <skos:altLabel xml:lang="ja">チェコ共和国</skos:altLabel>
+      <skos:altLabel xml:lang="lt">Čekijos Respublika</skos:altLabel>
+      <skos:altLabel xml:lang="lv">Čehijas Republika</skos:altLabel>
+      <skos:altLabel xml:lang="mk">Чешка Република</skos:altLabel>
+      <skos:altLabel xml:lang="mt">Ir-Repubblika Ċeka</skos:altLabel>
+      <skos:altLabel xml:lang="nl">Tsjechische Republiek</skos:altLabel>
+      <skos:altLabel xml:lang="no">Den tsjekkiske republikk</skos:altLabel>
+      <skos:altLabel xml:lang="pl">Republika Czeska</skos:altLabel>
+      <skos:altLabel xml:lang="pt">República Checa</skos:altLabel>
+      <skos:altLabel xml:lang="rm">Republica da la Tschechia</skos:altLabel>
+      <skos:altLabel xml:lang="ro">Republica Cehă</skos:altLabel>
+      <skos:altLabel xml:lang="ru">Чешская Республика</skos:altLabel>
+      <skos:altLabel xml:lang="sk">Česká republika</skos:altLabel>
+      <skos:altLabel xml:lang="sl">Češka republika</skos:altLabel>
+      <skos:altLabel xml:lang="sq">Republika Çeke</skos:altLabel>
+      <skos:altLabel xml:lang="sr">Чешка Република</skos:altLabel>
+      <skos:altLabel xml:lang="sv">Republiken Tjeckien</skos:altLabel>
+      <skos:altLabel xml:lang="tr">Çek Cumhuriyeti</skos:altLabel>
+      <skos:altLabel xml:lang="zh">捷克共和国</skos:altLabel>
+      <skos:inScheme rdf:resource="http://publications.europa.eu/resource/authority/country"/>
+      <skos:inScheme rdf:resource="http://publications.europa.eu/resource/authority/country/0001"/>
+      <skos:inScheme rdf:resource="http://publications.europa.eu/resource/authority/country/0005"/>
+      <skos:notation rdf:datatype="http://publications.europa.eu/ontology/euvoc#UNSD_GEOSCHEME">Eastern Europe</skos:notation>
+      <skos:notation rdf:datatype="http://publications.europa.eu/ontology/euvoc#EP">217</skos:notation>
+      <skos:notation rdf:datatype="http://publications.europa.eu/ontology/euvoc#FD_010">CZ</skos:notation>
+      <skos:notation rdf:datatype="http://publications.europa.eu/ontology/euvoc#FD_050">CZ</skos:notation>
+      <skos:notation rdf:datatype="http://publications.europa.eu/ontology/euvoc#FD_110">CZ</skos:notation>
+      <skos:notation rdf:datatype="http://publications.europa.eu/ontology/euvoc#FD_140">CZ</skos:notation>
+      <skos:notation rdf:datatype="http://publications.europa.eu/ontology/euvoc#FD_160">CZ</skos:notation>
+      <skos:notation rdf:datatype="http://publications.europa.eu/ontology/euvoc#FD_290">CZE_N</skos:notation>
+      <skos:notation rdf:datatype="http://publications.europa.eu/ontology/euvoc#FD_361">CZ</skos:notation>
+      <skos:notation rdf:datatype="http://publications.europa.eu/ontology/euvoc#FD_375">CZ</skos:notation>
+      <skos:notation rdf:datatype="http://publications.europa.eu/ontology/euvoc#FD_380">CZ</skos:notation>
+      <skos:notation rdf:datatype="http://publications.europa.eu/ontology/euvoc#IANA_DOMAIN">.cz</skos:notation>
+      <skos:notation rdf:datatype="http://publications.europa.eu/ontology/euvoc#IBAN_COU">CZ</skos:notation>
+      <skos:notation rdf:datatype="http://publications.europa.eu/ontology/euvoc#ISG_COU">CZ</skos:notation>
+      <skos:notation rdf:datatype="http://publications.europa.eu/ontology/euvoc#ISO_3166_1_ALPHA_2">CZ</skos:notation>
+      <skos:notation rdf:datatype="http://publications.europa.eu/ontology/euvoc#ISO_3166_1_ALPHA_3">CZE</skos:notation>
+      <skos:notation rdf:datatype="http://publications.europa.eu/ontology/euvoc#ISO_3166_1_NUM">203</skos:notation>
+      <skos:notation rdf:datatype="http://publications.europa.eu/ontology/euvoc#MNE">CZ</skos:notation>
+      <skos:notation rdf:datatype="http://publications.europa.eu/ontology/euvoc#NAC">CZE</skos:notation>
+      <skos:notation rdf:datatype="http://publications.europa.eu/ontology/euvoc#PHONE_PREFIX">420</skos:notation>
+      <skos:notation rdf:datatype="http://publications.europa.eu/ontology/euvoc#PUB_LOC">CZ</skos:notation>
+      <skos:notation rdf:datatype="http://publications.europa.eu/ontology/euvoc#PUB_LOC">{CZE}</skos:notation>
+      <skos:notation rdf:datatype="http://publications.europa.eu/ontology/euvoc#TED">CZ</skos:notation>
+      <skos:notation rdf:datatype="http://publications.europa.eu/ontology/euvoc#TED_SCHEMA">CZ</skos:notation>
+      <skos:notation rdf:datatype="http://publications.europa.eu/ontology/euvoc#TIR">CZ</skos:notation>
+      <skos:notation rdf:datatype="http://publications.europa.eu/ontology/euvoc#UNSD_M49">203</skos:notation>
+      <skos:topConceptOf rdf:resource="http://publications.europa.eu/resource/authority/country"/>
+      <skos:topConceptOf rdf:resource="http://publications.europa.eu/resource/authority/country/0001"/>
+      <skos:topConceptOf rdf:resource="http://publications.europa.eu/resource/authority/country/0005"/>
+      <skos:changeNote xml:lang="en">Ares(2018)4992941</skos:changeNote>
+      <skos:changeNote xml:lang="en">Opening event: Splitting of Czechoslovakia into Czech Republic and Slovaki. Long name change. Predecessor ‘Czech and Slovak Federative Republic’ COU0063.</skos:changeNote>
+      <skos:changeNote xml:lang="es">Libro de estilo interinstitucional: Chequia: Empieza a utilizarse en España el topónimo neológico «Chequia» por analogía con «Eslovaquia» para designar comúnmente a la República Checa. Hay que señalar que en checo existe un nombre común para este país, formado por Bohemia y Moravia; la forma española «Chequia» no tiene la connotación negativa que, por razones históricas, pueden tener sus equivalentes en otras lenguas el alemán, por ejemplo, que han motivado las suspicacias del Gobierno checo ante el uso de un nombre común. No obstante, en contextos protocolarios debe utilizarse exclusivamente «República Checa».</skos:changeNote>
+      <skos:hiddenLabel xml:lang="ga">an tSeicia</skos:hiddenLabel>
+      <skos:hiddenLabel xml:lang="lt">Čekijos</skos:hiddenLabel>
+      <skos:hiddenLabel xml:lang="lv">Čehijas</skos:hiddenLabel>
+      <skos:hiddenLabel xml:lang="mt">ir-Repubblika Ċeka</skos:hiddenLabel>
+      <skos:hiddenLabel xml:lang="mt">iċ-Ċekja</skos:hiddenLabel>
+      <skos:hiddenLabel xml:lang="sl">češko</skos:hiddenLabel>
+      <at:protocol-order>EU-03</at:protocol-order>
+      <at:protocol.order>EU-03</at:protocol.order>
+   </skos:Concept>
+   

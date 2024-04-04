@@ -1,6 +1,7 @@
 [
     {
         "product": {
+            "_id": "0737628064502",
             "product_name": "Thai peanut noodle kit",
             "countries": ["United States"],
             "nutriments": {

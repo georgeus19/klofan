@@ -1,12 +1,14 @@
 @prefix gr: <http://purl.org/goodrelations/v1#> .
 @prefix food: <http://purl.org/foodontology#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix schema: <http://schema.org/> .
 
 @prefix ex: <http://example.org/> .
 
 ex:noodles a food:Food ;
-    gr:name "Thai peanut noodle kit" ;
-    ex:countryOfOrigin <http://publications.europa.eu/resource/authority/country/USA> ;
+    schema:productID "0737628064502"^^xsd:string ;
+    gr:name "Thai peanut noodle kit"@en ;
+    ex:soldInCountries <http://publications.europa.eu/resource/authority/country/USA> ;
     food:carbohydratesPer100g [ 
         a gr:QuantitativeValueFloat;
         gr:hasUnitOfMeasurement "GRM"^^xsd:string;

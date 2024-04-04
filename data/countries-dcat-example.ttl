@@ -1,0 +1,15 @@
+@prefix ex: <http://example.org/> .
+@prefix ex-metadata: <http://example.org/opendata/czech/births/metadata/> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+ex:countries a dcat:Dataset ;
+dcterms:title "Europe Countries concept scheme."@en ;
+dcterms:description "Europe Countries concept scheme."@en ;
+dcat:distribution ex-metadata:xml-distribution .
+
+ex-metadata:xml-distribution a dcat:Distribution ;
+dcat:mediaType <https://www.iana.org/assignments/media-types/application/rdf+xml> ;
+dcterms:title "countries concept scheme."@en ;
+dcat:accessURL <https://raw.githubusercontent.com/georgeus19/MastersThesis/main/data/countries-dcat-example.rdf> ;
+dcat:downloadURL <https://raw.githubusercontent.com/georgeus19/MastersThesis/main/data/countries-dcat-example.rdf> .
