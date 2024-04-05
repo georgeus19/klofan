@@ -2,6 +2,7 @@ import { Analysis, InternalAnalysis } from './analysis';
 
 interface InternalCodeListAnalysisData {
     codeListIri: string;
+    codeListLabel: string;
     codes: { iri: string; label: string; code: string; values: string[] }[];
 }
 

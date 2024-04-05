@@ -1,0 +1,16 @@
+@prefix ex: <http://example.org/> .
+@prefix ex-metadata: <http://example.org/opendata/czech/births/metadata/> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+ex:foodOntology a dcat:Dataset ;
+dcterms:title "food ontology."@en ;
+dcterms:description "Food ontology based on good relations product."@en ;
+dcat:distribution ex-metadata:xml-distribution .
+
+ex-metadata:xml-distribution a dcat:Distribution ;
+dcterms:format <http://publications.europa.eu/resource/authority/file-type/RDF_TURTLE> ;
+dcat:mediaType <https://www.iana.org/assignments/media-types/text/turtle> ;
+dcterms:title "food ontology."@en ;
+dcat:accessURL <https://raw.githubusercontent.com/georgeus19/MastersThesis/main/data/foodOntology.ttl> ;
+dcat:downloadURL <https://raw.githubusercontent.com/georgeus19/MastersThesis/main/data/foodOntology.ttl> .

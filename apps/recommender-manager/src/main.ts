@@ -5,9 +5,6 @@ import { recommend } from './controllers/recommend';
 import { SERVER_ENV } from '@klofan/config/env/server';
 import { createLogger } from '@klofan/config/logger';
 
-export const ANALYSIS_DB = 'analysis-ab';
-export const ANALYSIS_COLLECTION = 'analysis-collection';
-
 const app: Express = express();
 export const logger = createLogger();
 app.use(cors());

@@ -11,4 +11,6 @@ export { createUpdatePropertyLiteralsPatternTransformation } from './factory/upd
 export { createConvertLiteralToNewEntitySetViaNewPropertySetTransformation } from './factory/convert-literal-to-entity-transformation';
 export { createUpdateEntitySetTypesTransformation } from './factory/create-update-entity-set-types-transformation';
 
+export { Transformer } from './transformer';
+
 export type { Transformation } from './transformation';

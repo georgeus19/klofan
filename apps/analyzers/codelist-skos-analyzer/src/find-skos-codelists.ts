@@ -52,20 +52,40 @@ export async function findSkosCodelists(dataset: DcatDataset): Promise<InternalA
                 (bindings: RDF.Bindings) => bindings.get(codedEntityVar)?.value
             )
         ).map((codeBindings: RDF.Bindings[]) => {
+            const enLabelBindings =
+                codeBindings.find((b) => (b.get(labelVar) as RDF.Literal).language === 'en') ??
+                codeBindings[0];
+
+            const shortestCodeBindings =
+                _.minBy(codeBindings, (b) => (b.get(codeVar) as RDF.Literal).value.length) ??
+                codeBindings[0];
+
             return {
                 iri: (codeBindings[0].get(codedEntityVar) as RDF.NamedNode).value,
-                label: (codeBindings[0].get(labelVar) as RDF.Literal).value,
-                code: (codeBindings[0].get(codeVar) as RDF.NamedNode).value,
-                values: codeBindings.flatMap((row) => [
-                    (row.get(labelVar) as RDF.Literal).value,
-                    (row.get(codeVar) as RDF.NamedNode).value,
+                label: (enLabelBindings.get(labelVar) as RDF.Literal).value,
+                code: (shortestCodeBindings.get(codeVar) as RDF.Literal).value,
+                values: _.uniq([
+                    ...codeBindings.map((row) => (row.get(labelVar) as RDF.Literal).value),
+                    ...codeBindings
+                        .filter((row) =>
+                            Number.isNaN(Number.parseFloat((row.get(codeVar) as RDF.Literal).value))
+                        )
+                        .map((row) => (row.get(codeVar) as RDF.Literal).value),
                 ]),
             };
         });
         const codeListIri = (codeListBindings[0].get(codeListVar) as RDF.NamedNode).value;
+        const enCodeListLabelBindings =
+            codeListBindings.find(
+                (b) => (b.get(codeListLabelVar) as RDF.Literal).language === 'en'
+            ) ?? codeListBindings[0];
+        const codeListLabel = (enCodeListLabelBindings.get(codeListLabelVar) as RDF.NamedNode)
+            .value;
+
         logger.info(`Found code list ${codeListIri} in dataset ${dataset.iri}.`);
         return {
             codeListIri: codeListIri,
+            codeListLabel: codeListLabel,
             codes: codes,
         };
     });

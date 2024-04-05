@@ -20,7 +20,7 @@ export const getAnalysisCollection = (): Collection => {
 export const logger = createLogger();
 const app: Express = express();
 app.use(cors());
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: SERVER_ENV.ANALYSIS_STORE_REQUEST_LIMIT }));
 
 app.post('/api/v1/analyses', uploadAnalyses);
 app.get('/api/v1/analyses', getAnalysesByType);

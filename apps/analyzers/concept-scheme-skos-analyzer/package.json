@@ -1,0 +1,27 @@
+{
+    "name": "@klofan/skos-concept-scheme-analyzer",
+    "main": "src/main.ts",
+    "scripts": {
+        "dev": "tsc  && node dist/main.js",
+        "build": "tsc",
+        "lint": "eslint . --max-warnings 0",
+        "test": "",
+        "clean": "rm -rf node_modules .turbo dist tsconfig.tsbuildinfo"
+    },
+    "dependencies": {
+        "@comunica/query-sparql": "^2.10.2",
+        "@klofan/analyzer": "*",
+        "@klofan/server-utils": "*",
+        "@klofan/config": "*",
+        "lodash": "^4.17.21",
+        "n3": "^1.17.1"
+    },
+    "devDependencies": {
+        "@klofan/eslint-config": "*",
+        "@klofan/typescript-config": "*",
+        "@rdfjs/types": "^1.1.0",
+        "@types/lodash": "^4.14.202",
+        "@types/n3": "^1.16.3",
+        "typescript": "^5.0.2"
+    }
+}

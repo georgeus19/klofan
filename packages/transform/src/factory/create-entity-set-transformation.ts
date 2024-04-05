@@ -5,16 +5,17 @@ import { getNewId } from '@klofan/utils';
 import { Transformation } from '../transformation';
 
 export function createCreateEntitySetTransformation({
-    schema: { name, id },
+    schema: { name, id, types },
     instances,
 }: {
-    schema: { name: string; id?: string };
+    schema: { name: string; id?: string; types?: string[] };
     instances: CreateEntitiesOptions;
 }): Transformation {
     const entitySet: EntitySet = createEntitySet({
         id: id ? id : getNewId(),
         name: name,
         properties: [],
+        types: types ?? [],
     });
     const createEntitySetTransformation: CreateEntitySet = {
         type: 'create-entity-set',

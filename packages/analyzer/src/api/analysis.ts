@@ -6,6 +6,17 @@ export type { CodeListAnalysis, InternalCodeListAnalysis } from '../analysis/cod
 export { isCodeListAnalysis, getCodeListAnalysisType } from '../analysis/code-list-analysis';
 
 export type {
+    ConceptSchemeAnalysis,
+    InternalConceptSchemeAnalysis,
+    ConceptSchemeConcept,
+} from '../analysis/concept-scheme-analysis';
+export {
+    createConceptSchemeConcept,
+    getConceptSchemeAnalysisType,
+    isConceptSchemeAnalysis,
+} from '../analysis/concept-scheme-analysis';
+
+export type {
     InternalElasticsearchTripleAnalysis,
     ElasticsearchTripleAnalysis,
 } from '../analysis/elasticsearch-triple-analysis';

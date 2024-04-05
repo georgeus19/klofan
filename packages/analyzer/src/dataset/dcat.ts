@@ -2,20 +2,23 @@ import { QueryEngine } from '@comunica/query-sparql-file';
 import * as RDF from '@rdfjs/types';
 import * as _ from 'lodash';
 import { DCAT } from '@klofan/utils';
-import { z } from 'zod';
 import { Quad } from '@rdfjs/types';
 import axios from 'axios';
-import { Parser } from 'n3';
 import { SERVER_ENV } from '@klofan/config/env/server';
 import { logAxiosError, processAxiosError } from '@klofan/server-utils';
-import winston, { error } from 'winston';
+import rdfParser from 'rdf-parse';
+import { Readable } from 'stream';
 
 export type DcatDataset = {
     iri: string;
     distributions: [DcatDistribution, ...DcatDistribution[]];
 };
 
-export type DcatDistributionMimeType = 'application/ld+json' | 'text/turtle' | 'text/csv';
+export type DcatDistributionMimeType =
+    | 'application/ld+json'
+    | 'text/turtle'
+    | 'text/csv'
+    | 'application/rdf+xml';
 
 export type DcatDistribution = {
     mimeType: DcatDistributionMimeType;
@@ -28,10 +31,14 @@ export async function fetchRdfData(dataset: DcatDataset): Promise<Quad[]> {
     const suitableDistribution = retrieveDistribution(dataset, [
         'application/ld+json',
         'text/turtle',
+        'application/rdf+xml',
     ]);
     if (!suitableDistribution) {
         throw new Error(`No suitable rdf distrubution for ${dataset.iri}`);
     }
+    console.log('suitableDistribution.mediaType', suitableDistribution.mediaType);
+    console.log('suitableDistribution.mimeType', suitableDistribution.mimeType);
+    console.log('suitableDistribution.downloadURL', suitableDistribution.downloadUrl);
 
     const response: { data?: any; error?: any } = await axios
         .get(suitableDistribution.downloadUrl, {
@@ -48,8 +55,26 @@ export async function fetchRdfData(dataset: DcatDataset): Promise<Quad[]> {
             `Fetched data for dataset ${dataset.iri} for distribution ${suitableDistribution.iri} are not string.`
         );
     }
-    const parser = new Parser({ format: 'application/' });
-    return parser.parse(response.data);
+    return parseQuads(response.data, suitableDistribution);
+}
+
+function parseQuads(data: string, suitableDistribution: DcatDistribution): Promise<Quad[]> {
+    return new Promise((resolve, reject) => {
+        const quads: Quad[] = [];
+        const dataStream = new Readable();
+        dataStream.push(data);
+        dataStream.push(null); // end-of-file - the end of the stream
+
+        rdfParser
+            .parse(dataStream, { contentType: suitableDistribution.mimeType })
+            .on('data', (quad) => quads.push(quad))
+            .on('error', (error) => {
+                reject(error);
+            })
+            .on('end', () => {
+                resolve(quads);
+            });
+    });
 }
 
 function retrieveDistribution(dataset: DcatDataset, suitableMimeTypes: DcatDistributionMimeType[]) {
@@ -99,7 +124,8 @@ export async function getDcatDatasets(
             VALUES (?${mediaTypeVar} ?${mimeTypeVar}) {
                 (<https://www.iana.org/assignments/media-types/application/ld+json> "application/ld+json")
                 (<https://www.iana.org/assignments/media-types/text/turtle> "text/turtle")
-                (<http://www.iana.org/assignments/media-types/text/csv> "text/csv")
+                (<https://www.iana.org/assignments/media-types/application/rdf+xml> "application/rdf+xml")
+                (<https://www.iana.org/assignments/media-types/text/csv> "text/csv")
             }
 
             FILTER(isIRI(?${datasetVar}))

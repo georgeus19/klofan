@@ -38,12 +38,14 @@
         "formidable": "^3.5.1",
         "lodash": "^4.17.21",
         "n3": "^1.17.2",
+        "rdf-parse": "^2.3.3",
         "uuid": "^9.0.1",
         "winston": "^3.11.0",
         "workerpool": "^9.1.0",
         "zod": "^3.22.4"
     },
     "devDependencies": {
+        "@jest/globals": "^29.7.0",
         "@klofan/eslint-config": "*",
         "@klofan/typescript-config": "*",
         "@rdfjs/types": "^1.1.0",
@@ -54,13 +56,12 @@
         "@types/lodash": "^4.14.202",
         "@types/n3": "^1.16.4",
         "@types/uuid": "^9.0.8",
-        "@jest/globals": "^29.7.0",
-        "jest": "^29.7.0",
-        "jest-environment-jsdom": "^29.7.0",
-        "ts-jest": "^29.1.1",
         "@typescript-eslint/eslint-plugin": "^6.19.1",
         "@typescript-eslint/parser": "^6.19.1",
         "eslint": "^8.45.0",
+        "jest": "^29.7.0",
+        "jest-environment-jsdom": "^29.7.0",
+        "ts-jest": "^29.1.1",
         "typescript": "^5.0.2"
     }
 }
