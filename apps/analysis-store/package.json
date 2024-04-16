@@ -2,7 +2,7 @@
     "name": "@klofan/analysis-store",
     "main": "src/main.ts",
     "scripts": {
-        "dev": "tsc  && node dist/main.js",
+        "dev": "tsc && node dist/main.js",
         "build": "tsc",
         "lint": "eslint . --max-warnings 0",
         "test": "",
@@ -10,11 +10,10 @@
     },
     "dependencies": {
         "@klofan/analyzer": "*",
-        "@klofan/server-utils": "*",
         "@klofan/config": "*",
+        "@klofan/server-utils": "*",
         "body-parser": "^1.20.2",
         "cors": "^2.8.5",
-        "dotenv": "^16.4.1",
         "express": "^4.18.2",
         "mongodb": "^6.3.0",
         "zod": "^3.22.4"

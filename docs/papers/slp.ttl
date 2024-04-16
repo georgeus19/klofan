@@ -1,0 +1,10 @@
+@prefix dbo: <http://dbpedia.org/ontology/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix ex: <http://example.com/> .
+
+ex:sports1
+    a foaf:Person, dbo:ChessPlayer ;
+    foaf:knows ex:sports2 .
+
+ex:sports2
+    a foaf:Person, dbo:Coach .

@@ -89,7 +89,7 @@ export function useRecommendations(): Recommendations {
 
     const getRecommendations = (): Promise<void> => {
         deleteRecommendations();
-        const url = 'http://localhost:5000/api/v1/recommend';
+        const url = '/api/v1/recommend';
         const fetchOptions: RequestInit = {
             method: 'POST',
             headers: {

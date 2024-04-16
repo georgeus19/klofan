@@ -1,0 +1,5 @@
+include:
+  - databases/elastic/compose.yaml
+  - databases/mongo/compose.yaml
+  - databases/redis/compose.yaml
+  - databases/virtuoso/compose.yaml

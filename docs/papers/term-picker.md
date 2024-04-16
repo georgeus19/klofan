@@ -11,7 +11,7 @@ K tomu pouzivaji tzv. Schema Level Paterns (SLP), coz je trojice mnozin - {subje
 ```turtle
 ex:sports1
     a foaf:Person, dbo:ChessPlayer ;
-    foaf:knows ex:2 .
+    foaf:knows ex:sports2 .
 
 ex:sports2
     a foaf:Person, dbo:Coach .

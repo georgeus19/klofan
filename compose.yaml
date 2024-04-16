@@ -1,8 +1,182 @@
-version: "3.8"
 include:
-  - apps/elastic/compose.yaml
-#services:
-#  serviceA:
-#    build: .
-#    depends_on:
-#      - serviceB #use serviceB directly as if it was declared in this Compose file
+  - databases/elastic/compose.yaml
+  - databases/mongo/compose.yaml
+  - databases/redis/compose.yaml
+  - databases/virtuoso/compose.yaml
+services:
+  editor:
+    build:
+      context: ./
+      dockerfile: frontend-dockerfile.dockerfile
+    restart: always
+    environment:
+      APP_PROJECT_NAME: editor
+    env_file: .docker-env
+    ports:
+      - "80:80"
+  analysis-store:
+    build:
+      context: ./
+      dockerfile: backend-dockerfile.dockerfile
+    restart: always
+    environment:
+      APP_PROJECT_NAME: analysis-store
+      APP_DIRECTORY: analysis-store
+    env_file: .docker-env
+    depends_on:
+      - mongo
+    ports:
+      - "${ANALYSIS_STORE_PORT}:${ANALYSIS_STORE_PORT}"
+  analyzer-manager:
+    build:
+      context: ./
+      dockerfile: backend-dockerfile.dockerfile
+    restart: always
+    environment:
+      APP_PROJECT_NAME: analyzer-manager
+      APP_DIRECTORY: analyzer-manager
+    env_file: .docker-env
+    depends_on:
+      - redis-stack
+    ports:
+      - "${ANALYZER_MANAGER_PORT}:${ANALYZER_MANAGER_PORT}"
+  catalog:
+    build:
+      context: ./
+      dockerfile: backend-dockerfile.dockerfile
+    restart: always
+    environment:
+      APP_PROJECT_NAME: catalog
+      APP_DIRECTORY: catalog
+    env_file: .docker-env
+    depends_on:
+      - klofan-virtuoso
+    ports:
+      - "${CATALOG_PORT}:${CATALOG_PORT}"
+  recommender-manager:
+    build:
+      context: ./
+      dockerfile: backend-dockerfile.dockerfile
+    restart: always
+    environment:
+      APP_PROJECT_NAME: recommender-manager
+      APP_DIRECTORY: recommender-manager
+    env_file: .docker-env
+    ports:
+      - "${RECOMMENDER_MANAGER_PORT}:${RECOMMENDER_MANAGER_PORT}"
+  codelist-skos-analyzer:
+    build:
+      context: ./
+      dockerfile: backend-dockerfile.dockerfile
+    restart: always
+    environment:
+      APP_PROJECT_NAME: skos-codelist-analyzer
+      APP_DIRECTORY: analyzers/codelist-skos-analyzer
+    env_file: .docker-env
+    depends_on:
+      - redis-stack
+    ports:
+      - "${ANALYZERS_SKOS_CODELIST_ANALYZER_PORT:-50001}:${ANALYZERS_SKOS_CODELIST_ANALYZER_PORT:-50001}"
+  concept-scheme-skos-analyzer:
+    build:
+      context: ./
+      dockerfile: backend-dockerfile.dockerfile
+    restart: always
+    environment:
+      APP_PROJECT_NAME: skos-concept-scheme-analyzer
+      APP_DIRECTORY: analyzers/concept-scheme-skos-analyzer
+    env_file: .docker-env
+    depends_on:
+      - redis-stack
+    ports:
+      - "${ANALYZERS_SKOS_CONCEPT_SCHEME_ANALYZER_PORT:-50002}:${ANALYZERS_SKOS_CONCEPT_SCHEME_ANALYZER_PORT:-50002}"
+  elasticsearch-triple-analyzer:
+    build:
+      context: ./
+      dockerfile: backend-dockerfile.dockerfile
+    restart: always
+    environment:
+      APP_PROJECT_NAME: elasticsearch-triple-analyzer
+      APP_DIRECTORY: analyzers/elasticsearch-triple-analyzer
+    env_file: .docker-env
+    depends_on:
+      - elasticsearch
+    ports:
+      - "${ANALYZERS_ELASTICSEARCH_TRIPLE_ANALYZER_PORT:-50003}:${ANALYZERS_ELASTICSEARCH_TRIPLE_ANALYZER_PORT:-50003}"
+  type-map-analyzer:
+    build:
+      context: ./
+      dockerfile: backend-dockerfile.dockerfile
+    restart: always
+    environment:
+      APP_PROJECT_NAME: type-map-analyzer
+      APP_DIRECTORY: analyzers/type-map-analyzer
+    env_file: .docker-env
+    ports:
+      - "${ANALYZERS_TYPE_MAP_ANALYZER_PORT:-50004}:${ANALYZERS_TYPE_MAP_ANALYZER_PORT:-50004}"
+  rdfs-vocabulary-analyzer:
+    build:
+      context: ./
+      dockerfile: backend-dockerfile.dockerfile
+    restart: always
+    environment:
+      APP_PROJECT_NAME: rdfs-vocabulary-analyzer
+      APP_DIRECTORY: analyzers/vocabulary-rdfs-analyzer
+    env_file: .docker-env
+    ports:
+      - "${ANALYZERS_RDFS_VOCABULARY_ANALYZER_PORT:-50005}:${ANALYZERS_RDFS_VOCABULARY_ANALYZER_PORT:-50005}"
+  simple-owl-vocabulary-analyzer:
+    build:
+      context: ./
+      dockerfile: backend-dockerfile.dockerfile
+    restart: always
+    environment:
+      APP_PROJECT_NAME: simple-owl-vocabulary-analyzer
+      APP_DIRECTORY: analyzers/vocabulary-simple-owl-analyzer
+    env_file: .docker-env
+    ports:
+      - "${ANALYZERS_SIMPLE_OWL_VOCABULARY_ANALYZER_PORT:-50006}:${ANALYZERS_SIMPLE_OWL_VOCABULARY_ANALYZER_PORT:-50006}"
+  codelist-recommender:
+    build:
+      context: ./
+      dockerfile: backend-dockerfile.dockerfile
+    restart: always
+    environment:
+      APP_PROJECT_NAME: codelist-recommender
+      APP_DIRECTORY: recommenders/codelist-recommender
+    env_file: .docker-env
+    ports:
+      - "${RECOMMENDERS_CODELIST_RECOMMENDER_PORT:-51001}:${RECOMMENDERS_CODELIST_RECOMMENDER_PORT:-51001}"
+  czech-date-recommender:
+    build:
+      context: ./
+      dockerfile: backend-dockerfile.dockerfile
+    restart: always
+    environment:
+      APP_PROJECT_NAME: czech-date-recommender
+      APP_DIRECTORY: recommenders/czech-date-recommender
+    env_file: .docker-env
+    ports:
+      - "${RECOMMENDERS_CZECH_DATE_RECOMMENDER_PORT:-51002}:${RECOMMENDERS_CZECH_DATE_RECOMMENDER_PORT:-51002}"
+  elasticsearch-triple-recommender:
+    build:
+      context: ./
+      dockerfile: backend-dockerfile.dockerfile
+    restart: always
+    environment:
+      APP_PROJECT_NAME: elasticsearch-triple-recommender
+      APP_DIRECTORY: recommenders/elasticsearch-triple-recommender
+    env_file: .docker-env
+    ports:
+      - "${RECOMMENDERS_ELASTICSEARCH_TRIPLE_RECOMMENDER_PORT:-51003}:${RECOMMENDERS_ELASTICSEARCH_TRIPLE_RECOMMENDER_PORT:-51003}"
+  food-ontology-recommender:
+    build:
+      context: ./
+      dockerfile: backend-dockerfile.dockerfile
+    restart: always
+    environment:
+      APP_PROJECT_NAME: food-ontology-recommender
+      APP_DIRECTORY: recommenders/food-ontology-recommender
+    env_file: .docker-env
+    ports:
+      - "${RECOMMENDERS_FOOD_ONTOLOGY_RECOMMENDER_PORT:-51004}:${RECOMMENDERS_FOOD_ONTOLOGY_RECOMMENDER_PORT:-51004}"

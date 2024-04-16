@@ -1,0 +1,27 @@
+services:
+  klofan-virtuoso:
+    image: openlink/virtuoso-opensource-7:7.2.10
+    restart: always
+    environment:
+      DBA_PASSWORD: mysecret
+    ports:
+      - "1111:1111"
+      - "8890:8890"
+    deploy:
+      resources:
+        limits:
+          memory: 1gb
+        reservations:
+          memory: 128mb
+    volumes:
+      - "virtuoso-data:/database"
+  virtuoso-setup:
+    image: openlink/virtuoso-opensource-7:7.2.10
+    depends_on:
+      - klofan-virtuoso
+    volumes:
+      - "./grant-permissions.sh:/grant-permissions.sh"
+    entrypoint: sh -c "sleep 10s && sh /grant-permissions.sh"
+volumes:
+  virtuoso-data:
+    driver: local
