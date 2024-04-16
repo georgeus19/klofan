@@ -16,7 +16,9 @@ export function inferSchemaTree(input: Tree): SchemaTreeNode {
     } else if (Array.isArray(input)) {
         return inferSchemaTree(eraseArray(input));
     } else {
-        return Object.fromEntries(Object.entries(input).map(([key, value]) => [key, inferSchemaTree(value)]));
+        return Object.fromEntries(
+            Object.entries(input).map(([key, value]) => [key, inferSchemaTree(value)])
+        );
     }
 }
 
@@ -32,7 +34,7 @@ function eraseArray(array: Array<object | primitiveType>): object | null {
 function merge(array: Array<object>): Record<string, unknown> {
     const entity: Record<string, unknown> = {};
     const counts: Record<string, number> = {};
-    array = array.flat();
+    array = array.flat(Infinity);
     array
         .flatMap((e) => Object.getOwnPropertyNames(e))
         .forEach((p) => {
@@ -51,10 +53,19 @@ function merge(array: Array<object>): Record<string, unknown> {
         Object.getOwnPropertyNames(e)
             .filter((p) => counts[p] > 1)
             .forEach((p) => {
+                const value: any = e[p as keyof typeof e];
                 if (Object.hasOwn(entity, p)) {
-                    (entity[p] as Array<object>).push(e[p as keyof typeof e]);
+                    if (Array.isArray(value)) {
+                        (entity[p] as Array<object>).push(...value.flat(Infinity));
+                    } else {
+                        (entity[p] as Array<object>).push(value);
+                    }
                 } else {
-                    entity[p] = [e[p as keyof typeof e]];
+                    if (Array.isArray(value)) {
+                        entity[p] = value.flat(Infinity);
+                    } else {
+                        entity[p] = [value];
+                    }
                 }
             });
     });

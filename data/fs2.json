@@ -1,0 +1,28 @@
+[
+  {
+    "product": {
+      "_id": "0737628064502",
+      "product_name": "Thai peanut noodle kit",
+      "countries": ["United States"],
+      "nutriments": {
+        "carbohydrates_100g": 71.15,
+        "carbohydrates_unit": "g",
+        "energy-kcal_100g": 385,
+        "energy-kcal_unit": "kcal"
+      }
+    }
+  },
+  {
+    "product": {
+      "_id": "2",
+      "product_name": "Snitzel",
+      "countries": ["Czech Republic"],
+      "nutriments": {
+        "carbohydrates_100g": 72.15,
+        "carbohydrates_unit": "g",
+        "energy-kcal_100g": 383,
+        "energy-kcal_unit": "kcal"
+      }
+    }
+  }
+]

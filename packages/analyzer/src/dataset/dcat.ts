@@ -29,8 +29,8 @@ export type DcatDistribution = {
 
 export async function fetchRdfData(dataset: DcatDataset): Promise<Quad[]> {
     const suitableDistribution = retrieveDistribution(dataset, [
-        'application/ld+json',
         'text/turtle',
+        'application/ld+json',
         'application/rdf+xml',
     ]);
     if (!suitableDistribution) {

@@ -71,6 +71,25 @@ describe('Parse Tests', () => {
 
             expect(inferSchemaTree(inputData)).toEqual(expectedData);
         });
+        test('Entities with literal arrays', () => {
+            const inputData = [
+                {
+                    name: 'Salad',
+                    countries: ['United States'],
+                },
+                {
+                    name: 'Snitzel',
+                    countries: ['Czech Republic'],
+                },
+            ];
+
+            const expectedData = {
+                name: null,
+                countries: null,
+            };
+
+            expect(inferSchemaTree(inputData)).toEqual(expectedData);
+        });
         test('Nested arrays', () => {
             const inputData = {
                 name: 'Salad',
