@@ -180,3 +180,14 @@ services:
     env_file: .docker-env
     ports:
       - "${RECOMMENDERS_FOOD_ONTOLOGY_RECOMMENDER_PORT:-51004}:${RECOMMENDERS_FOOD_ONTOLOGY_RECOMMENDER_PORT:-51004}"
+  uncefact-unit-recommender:
+    build:
+      context: ./
+      dockerfile: backend-dockerfile.dockerfile
+    restart: always
+    environment:
+      APP_PROJECT_NAME: uncefact-unit-recommender
+      APP_DIRECTORY: recommenders/uncefact-unit-recommender
+    env_file: .docker-env
+    ports:
+      - "${RECOMMENDERS_UNCEFACT_UNIT_RECOMMENDER_PORT:-51005}:${RECOMMENDERS_UNCEFACT_UNIT_RECOMMENDER_PORT:-51005}"

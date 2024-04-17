@@ -50,7 +50,7 @@ export async function recommendCodes({
                     if (matchingCodes.length === 0) {
                         return null;
                     }
-                    console.log(matchingCodes);
+                    // console.log(matchingCodes);
                     // For each matching code create literal to iri transformation - or maybe just one together for all codes.
                     return {
                         transformations:

@@ -1,0 +1,30 @@
+{
+    "name": "@klofan/uncefact-unit-recommender",
+    "main": "src/main.ts",
+    "scripts": {
+        "dev": "tsc && node dist/main.js",
+        "build": "tsc",
+        "lint": "eslint . --max-warnings 0",
+        "test": "",
+        "clean": "rm -rf node_modules .turbo dist tsconfig.tsbuildinfo"
+    },
+    "dependencies": {
+        "@klofan/analyzer": "*",
+        "@klofan/config": "*",
+        "@klofan/instances": "*",
+        "@klofan/recommender": "*",
+        "@klofan/schema": "*",
+        "@klofan/server-utils": "*",
+        "@klofan/transform": "*",
+        "@klofan/utils": "*",
+        "axios": "^1.6.7",
+        "lodash": "^4.17.21"
+    },
+    "devDependencies": {
+        "@klofan/eslint-config": "*",
+        "@klofan/typescript-config": "*",
+        "@rdfjs/types": "^1.1.0",
+        "@types/lodash": "^4.14.202",
+        "typescript": "^5.0.2"
+    }
+}

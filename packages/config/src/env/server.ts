@@ -169,6 +169,19 @@ const envSchema = z
                     RECOMMENDERS_FOOD_ONTOLOGY_RECOMMENDER_URL: z.undefined(),
                 })
             )
+    )
+    .and(
+        z
+            .object({
+                RECOMMENDERS_UNCEFACT_UNIT_RECOMMENDER_PORT: port(),
+                RECOMMENDERS_UNCEFACT_UNIT_RECOMMENDER_URL: url(),
+            })
+            .or(
+                z.object({
+                    RECOMMENDERS_UNCEFACT_UNIT_RECOMMENDER_PORT: z.undefined(),
+                    RECOMMENDERS_UNCEFACT_UNIT_RECOMMENDER_URL: z.undefined(),
+                })
+            )
     );
 
 const result = envSchema.safeParse(process.env);
@@ -247,6 +260,9 @@ export type ServerEnvType = {
 
     RECOMMENDERS_FOOD_ONTOLOGY_RECOMMENDER_PORT: number;
     RECOMMENDERS_FOOD_ONTOLOGY_RECOMMENDER_URL: string;
+
+    RECOMMENDERS_UNCEFACT_UNIT_RECOMMENDER_PORT: number;
+    RECOMMENDERS_UNCEFACT_UNIT_RECOMMENDER_URL: string;
 };
 export const SERVER_ENV: ServerEnvType = {
     ...result.data,
