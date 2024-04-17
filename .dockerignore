@@ -1,9 +1,4 @@
 .DS_Store
 node_modules
-*.log
-dist
-dist-ssr
-*.local
 .cache
 .vscode
-tsconfig.tsbuildinfo
