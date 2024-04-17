@@ -11,9 +11,9 @@ cp ./data/example/docker-env ./.docker-env
 
 # Build images - needs to download a lot of packages.
 # It can happen that network is slow and npm install seems to never end - run the command again.
-sudo docker compose build --no-cache
+ sudo docker compose --env-file .docker-env build --no-cache
 
-sudo docker compose up
+sudo docker --env-file .docker-env compose up
 ```
 
 ## Dev Run
@@ -23,7 +23,7 @@ sudo docker compose up
 cp ./data/example/dev-env ./.env
 
 # Run databases in docker.
-sudo docker compose -f db-compose.yaml up
+sudo docker compose -f db-compose.yaml --env-file .env up
 
 # Wait until databases are running.
 # Install dependencies and run services in dev mode.
