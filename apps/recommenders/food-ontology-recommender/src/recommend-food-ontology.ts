@@ -140,7 +140,7 @@ export async function recommendFoodOntology({
                         .addTransformStep(() => {
                             return createCreateEntitySetTransformation({
                                 schema: {
-                                    name: `_:${name}`,
+                                    name: `_${name}`,
                                     id: blankId,
                                     types: [
                                         'http://purl.org/goodrelations/v1#QuantitativeValueFloat',

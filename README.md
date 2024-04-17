@@ -36,6 +36,10 @@ Upload `data/example/catalog.ttl` to catalog service. It should be to
 `http://localhost:7000/rdf-graph-store?default` if no changes were made. The endpoint supports 
 the sparql endpoint protocol and serves as proxy for Virtuoso. 
 
+```bash
+curl --verbose --url "http://localhost:7000/rdf-graph-store?default" -X POST -T data/example/catalog.ttl
+```
+
 Any datasets are analysed by all enabled analyzers and analyses saved using analysis-store.
 
 When all analyzers are done, open localhost/index.html and import `data/example/food.json`. It 

@@ -6,9 +6,9 @@
 ex:foodOntology a dcat:Dataset ;
     dcterms:title "food ontology."@en ;
     dcterms:description "Food ontology based on good relations product."@en ;
-    dcat:distribution ex:foodOntology/xml-distribution .
+    dcat:distribution ex:foodOntology-xml-distribution .
 
-ex:foodOntology/xml-distribution a dcat:Distribution ;
+ex:foodOntology-xml-distribution a dcat:Distribution ;
     dcterms:format <http://publications.europa.eu/resource/authority/file-type/RDF_TURTLE> ;
     dcat:mediaType <https://www.iana.org/assignments/media-types/text/turtle> ;
     dcterms:title "food ontology in ttl."@en ;
@@ -18,35 +18,32 @@ ex:foodOntology/xml-distribution a dcat:Distribution ;
 ex:countries a dcat:Dataset ;
     dcterms:title "Europe Countries concept scheme."@en ;
     dcterms:description "Europe Countries concept scheme."@en ;
-    dcat:distribution ex:countries/xml-distribution .
+    dcat:distribution ex:countries-xml-distribution .
 
-ex:countries/xml-distribution a dcat:Distribution ;
+ex:countries-xml-distribution a dcat:Distribution ;
     dcat:mediaType <https://www.iana.org/assignments/media-types/application/rdf+xml> ;
     dcterms:title "countries concept scheme."@en ;
     dcat:accessURL <https://op.europa.eu/o/opportal-service/euvoc-download-handler?cellarURI=http%3A%2F%2Fpublications.europa.eu%2Fresource%2Fcellar%2F2f079c00-e77d-11ee-9ea8-01aa75ed71a1.0001.05%2FDOC_1&fileName=countries-skos.rdf> ;
     dcat:downloadURL <https://op.europa.eu/o/opportal-service/euvoc-download-handler?cellarURI=http%3A%2F%2Fpublications.europa.eu%2Fresource%2Fcellar%2F2f079c00-e77d-11ee-9ea8-01aa75ed71a1.0001.05%2FDOC_1&fileName=countries-skos.rdf> .
 
-ex:czech-birth-regions a dcat:Dataset ;
-    dcterms:title "Live births values for regions in the Czech Republic."@en ;
-    dcterms:description "Live births values for regions in the Czech Republic."@en ;
+ex:type-drevin a dcat:Dataset ;
+    dcterms:title "types of wood."@en ;
     dcat:theme <http://publications.europa.eu/resource/authority/data-theme/SOCI> ;
     dcterms:spatial <http://publications.europa.eu/resource/authority/country/CZE> ;
     dcterms:language <http://publications.europa.eu/resource/authority/language/CES> ;
     dcterms:accrualPeriodicity <http://publications.europa.eu/resource/authority/frequency/ANNUAL> ;
     dcterms:publisher <https://www.czso.cz/> ;
-    dcat:distribution ex:czech-birth-regions/csv-distribution, ex:czech-birth-regions/ttl-distribution ;
+    dcat:distribution ex:type-drevin-csv-distribution, ex:type-drevin-ttl-distribution ;
     dcat:landingPage <https://www.czso.cz/csu/czso/pohyb-obyvatel-za-cr-kraje-okresy-so-orp-a-obce> .
 
-ex:czech-birth-regions/csv-distribution a dcat:Distribution ;
-    dcterms:title "Live births values for regions in the Czech Republic in csv."@en ;
+ex:type-drevin-csv-distribution a dcat:Distribution ;
     dcterms:format <http://publications.europa.eu/resource/authority/file-type/CSV> ;
     dcat:mediaType <http://www.iana.org/assignments/media-types/text/csv> ;
     dcat:accessURL <https://www.czso.cz/documents/10180/184344914/130141-22data2021.csv/a835923a-9dcc-4b23-a609-cad06188e4b4?version=1.1> ;
     dcat:downloadURL <https://www.czso.cz/documents/10180/184344914/130141-22data2021.csv/a835923a-9dcc-4b23-a609-cad06188e4b4?version=1.1> .
 
-ex:czech-birth-regions/ttl-distribution a dcat:Distribution ;
+ex:type-drevin-ttl-distribution a dcat:Distribution ;
     dcterms:format <http://publications.europa.eu/resource/authority/file-type/RDF_TURTLE> ;
     dcat:mediaType <https://www.iana.org/assignments/media-types/text/turtle> ;
-    dcterms:title "Live births values for regions in the Czech Republic in turtle."@en ;
     dcat:accessURL <https://data.dia.gov.cz/soubory/%C4%8D%C3%ADseln%C3%ADky/typy-d%C5%99evin.ttl> ;
     dcat:downloadURL <https://data.dia.gov.cz/soubory/%C4%8D%C3%ADseln%C3%ADky/typy-d%C5%99evin.ttl> .

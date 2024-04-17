@@ -41,7 +41,7 @@ export async function save(
                         outputWriter.addQuad(
                             subjectRepresentation,
                             namedNode(propertyUri),
-                            literal(l.value)
+                            literal(l.value, l.language ?? namedNode(l.type))
                         );
                     });
                 }
