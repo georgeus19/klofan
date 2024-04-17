@@ -15,7 +15,7 @@ import {
     createUpdatePropertySetUriTransformation,
     Transformer,
 } from '@klofan/transform';
-import { getNewId } from '@klofan/utils';
+import { getNewId, XSD } from '@klofan/utils';
 import { createLiteral, Property } from '@klofan/instances/representation';
 import { UNCEFACT_UNIT_CODES } from './unit-codes';
 
@@ -133,7 +133,10 @@ export async function recommendFoodOntology({
                                 entitySet: schema.entitySet(entitySet.id),
                                 literals: {
                                     from: createLiteral({ value: matchingUnits[0].unit }),
-                                    to: createLiteral({ value: matchingUnits[0].code }),
+                                    to: createLiteral({
+                                        value: matchingUnits[0].code,
+                                        type: XSD.STRING,
+                                    }),
                                 },
                             });
                         })

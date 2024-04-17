@@ -13,7 +13,7 @@ cp ./data/example/docker-env ./.docker-env
 # It can happen that network is slow and npm install seems to never end - run the command again.
  sudo docker compose --env-file .docker-env build --no-cache
 
-sudo docker --env-file .docker-env compose up
+sudo docker compose --env-file .docker-env  up
 ```
 
 ## Dev Run
