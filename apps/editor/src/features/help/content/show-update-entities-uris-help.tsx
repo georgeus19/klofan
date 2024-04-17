@@ -4,9 +4,15 @@ import { TextContent } from './text-content';
 export function showUpdateEntitiesUrisHelp(help: Help) {
     help.showHelp(
         <TextContent>
-            Create rules/mappings for assigning uris to instances of chosen entity.
+            Create pattern for computing URIs of entities. The values in input are concatenated from
+            top to bottom to create final URIs. The inputs can be dragged to change ordering.
             <br></br>
-            Below can be seen instances which did not match any rule/mapping.
+            <br></br>
+            Pattern consists of either literal values or string provided by user. If a property has
+            multiple literals they are joined by '-'. Spaces in literal are joined by '_'.
+            <br></br>
+            <br></br>
+            Below, you can the final URIs.
         </TextContent>
     );
 }

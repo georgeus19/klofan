@@ -9,6 +9,7 @@ export function createUpdatePropertyLiteralsPatternTransformation(data: {
         matchPattern: string;
         replacementPattern: string;
         literalType?: string;
+        literalLanguage?: string;
     };
 }): Transformation {
     const updatePropertyLiteralsTransformation: UpdatePropertyLiterals = {

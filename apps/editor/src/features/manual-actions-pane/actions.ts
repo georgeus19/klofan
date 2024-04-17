@@ -3,6 +3,7 @@ import { PrefixesShown } from './detail/prefixes/prefixes';
 import { UpdateEntityUrisShown } from './transformation/update-entity-uri/update-entity-uris.tsx';
 import { ExportInstancesShown } from './export/export-instances/export-intances';
 import { ExportOperationsShown } from './export/export-operations';
+import { UpdateLiteralsShown } from './transformation/update-literals.tsx';
 
 export type ManualActionShown = { component: ReactNode } & (
     | EntitySetDetailShown
@@ -16,6 +17,7 @@ export type ManualActionShown = { component: ReactNode } & (
     | UpdateEntityUrisShown
     | ExportInstancesShown
     | ExportOperationsShown
+    | UpdateLiteralsShown
 );
 
 export interface EntitySetDetailShown {

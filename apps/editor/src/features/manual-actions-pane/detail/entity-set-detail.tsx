@@ -11,6 +11,8 @@ import {
     createUpdateRelationNameTransformation,
     createUpdateItemNameTransformation,
     createUpdateEntitySetTypesTransformation,
+    createDeletePropertySetTransformation,
+    createDeleteEntitySetTransformation,
 } from '@klofan/transform';
 import { UncontrollableLabelInput } from '../utils/general-label-input/uncontrollable-label-input';
 import { Dropdown } from '../../utils/dropdown.tsx';
@@ -68,20 +70,49 @@ export function EntitySetDetail({ entitySetId }: EntitySetDetailProps) {
     };
 
     const generatePropertyDetail = (property: GraphPropertySet) => (
-        <li
+        <div
             className='border border-slate-300 rounded shadow decoration-double my-1'
             key={property.id}
         >
-            <div className='bg-slate-500 rounded flex'>
-                <div className='grow text-white p-1'>{property.name}</div>
-                <button
-                    className='self-end p-1 rounded shadow bg-blue-200 hover:bg-blue-300'
-                    onClick={() =>
-                        manualActions.showMoveProperty(entitySet, toPropertySet(property))
-                    }
-                >
-                    Move
-                </button>
+            <div className='bg-slate-500 rounded flex gap-1'>
+                <div className='grow text-white p-1 m-1'>{property.name}</div>
+                <div className='self-end grid grid-cols-3 gap-1 m-1'>
+                    {isLiteralSet(property.value) && (
+                        <button
+                            className='p-1 rounded shadow bg-blue-200 hover:bg-blue-300'
+                            onClick={() => {
+                                manualActions.showUpdateLiterals(
+                                    entitySet,
+                                    toPropertySet(property)
+                                );
+                            }}
+                        >
+                            Update
+                        </button>
+                    )}
+                    <button
+                        className='p-1 rounded shadow bg-blue-200 hover:bg-blue-300 col-start-2'
+                        onClick={() =>
+                            manualActions.showMoveProperty(entitySet, toPropertySet(property))
+                        }
+                    >
+                        Move
+                    </button>
+                    <button
+                        className='p-1 rounded shadow bg-blue-200 hover:bg-blue-300 col-start-3'
+                        onClick={() => {
+                            const transformation = createDeletePropertySetTransformation(
+                                { schema, instances },
+                                { entitySetId: entitySet.id, propertySetId: property.id }
+                            );
+                            updateSchemaAndInstances(transformation).catch((error) =>
+                                showBoundary(error)
+                            );
+                        }}
+                    >
+                        Delete
+                    </button>
+                </div>
             </div>
             <UncontrollableLabelInput
                 id={`${property.id}name`}
@@ -120,7 +151,7 @@ export function EntitySetDetail({ entitySetId }: EntitySetDetailProps) {
                     }
                 }}
             ></UncontrollableUriLabelInput>
-        </li>
+        </div>
     );
 
     return (
@@ -149,6 +180,25 @@ export function EntitySetDetail({ entitySetId }: EntitySetDetailProps) {
                     entitySet={entitySet}
                     onTypesChange={handleEntityTypesChange}
                 ></EntitySetTypesUpdate>
+            </Dropdown>
+            <Dropdown headerLabel='Operations' showInitially={false}>
+                <div className='grid grid-cols-1'>
+                    <button
+                        className='self-end p-1 rounded shadow bg-blue-200 hover:bg-blue-300'
+                        onClick={() => {
+                            const transformation = createDeleteEntitySetTransformation(
+                                { schema, instances },
+                                { entitySetId: entitySet.id }
+                            );
+                            manualActions.hide();
+                            updateSchemaAndInstances(transformation).catch((error) =>
+                                showBoundary(error)
+                            );
+                        }}
+                    >
+                        Delete
+                    </button>
+                </div>
             </Dropdown>
 
             <Dropdown headerLabel='Properties' showInitially={true}>

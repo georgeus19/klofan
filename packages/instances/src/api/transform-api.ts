@@ -57,5 +57,11 @@ export { convertLiteralToEntity } from '../transform/transformations/convert-lit
 export type { DeleteLiterals } from '../transform/transformations/delete-literals';
 export { deleteLiterals } from '../transform/transformations/delete-literals';
 
+export type { DeleteEntities } from '../transform/transformations/delete-entities';
+export { deleteEntities } from '../transform/transformations/delete-entities';
+
+export type { DeleteProperties } from '../transform/transformations/delete-properties';
+export { deleteProperties } from '../transform/transformations/delete-properties';
+
 export type { TransformationChanges } from '../transform/transformation-changes';
 export { transformationChanges } from '../transform/transformation-changes';

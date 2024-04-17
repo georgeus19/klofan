@@ -133,7 +133,9 @@ export function RecommendationsPane({ className }: RecommendationsPaneProps) {
                     <button
                         className={twMerge(
                             'mx-1 rounded shadow bg-blue-200 hover:bg-blue-300 p-1',
-                            toggle.type === 'Expert' ? 'bg-blue-400 hover:bg-blue-400' : ''
+                            toggle.type === 'Expert'
+                                ? 'bg-blue-600 hover:bg-blue-600 text-white'
+                                : ''
                         )}
                         onClick={() => setToggle({ type: 'Expert' })}
                     >
@@ -142,7 +144,9 @@ export function RecommendationsPane({ className }: RecommendationsPaneProps) {
                     <button
                         className={twMerge(
                             'mx-1 rounded shadow bg-blue-200 hover:bg-blue-300 p-1',
-                            toggle.type === 'General' ? 'bg-blue-400 hover:bg-blue-400' : ''
+                            toggle.type === 'General'
+                                ? 'bg-blue-600 hover:bg-blue-600 text-white'
+                                : ''
                         )}
                         onClick={() => setToggle({ type: 'General' })}
                     >

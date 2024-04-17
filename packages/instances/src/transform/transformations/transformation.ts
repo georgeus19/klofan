@@ -5,6 +5,8 @@ import { UpdateEntitiesUris } from './update-entities-uris';
 import { UpdatePropertyLiterals } from './update-property-literals';
 import { ConvertLiteralToEntity } from './convert-literal-to-entity';
 import { DeleteLiterals } from './delete-literals';
+import { DeleteEntities } from './delete-entities';
+import { DeleteProperties } from './delete-properties';
 
 export type Transformation =
     | CreateEntities
@@ -13,4 +15,6 @@ export type Transformation =
     | UpdateEntitiesUris
     | UpdatePropertyLiterals
     | ConvertLiteralToEntity
-    | DeleteLiterals;
+    | DeleteLiterals
+    | DeleteEntities
+    | DeleteProperties;

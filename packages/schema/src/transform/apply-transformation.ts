@@ -8,6 +8,7 @@ import { updateEntitySet } from './transformations/update-entity-set';
 import { updateItem } from './transformations/update-item';
 import { updateRelation } from './transformations/update-relation';
 import { deletePropertySet } from './transformations/delete-property-set';
+import { deleteEntitySet } from './transformations/delete-entity-set';
 
 export function applyTransformation(schema: RawSchema, transformation: Transformation) {
     switch (transformation.type) {
@@ -34,6 +35,9 @@ export function applyTransformation(schema: RawSchema, transformation: Transform
             break;
         case 'delete-property-set':
             deletePropertySet(schema, transformation);
+            break;
+        case 'delete-entity-set':
+            deleteEntitySet(schema, transformation);
             break;
     }
 }

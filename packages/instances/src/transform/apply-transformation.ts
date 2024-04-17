@@ -7,6 +7,8 @@ import { updateEntitiesUris } from './transformations/update-entities-uris';
 import { updatePropertyLiterals } from './transformations/update-property-literals';
 import { convertLiteralToEntity } from './transformations/convert-literal-to-entity';
 import { deleteLiterals } from './transformations/delete-literals';
+import { deleteEntities } from './transformations/delete-entities';
+import { deleteProperties } from './transformations/delete-properties';
 
 export function applyTransformation(instances: RawInstances, transformation: Transformation) {
     switch (transformation.type) {
@@ -30,6 +32,12 @@ export function applyTransformation(instances: RawInstances, transformation: Tra
             break;
         case 'delete-literals':
             deleteLiterals(instances, transformation);
+            break;
+        case 'delete-entities':
+            deleteEntities(instances, transformation);
+            break;
+        case 'delete-properties':
+            deleteProperties(instances, transformation);
             break;
     }
 }

@@ -19,6 +19,7 @@ export interface UpdatePropertyLiterals {
                   matchPattern: string;
                   replacementPattern: string;
                   literalType?: string;
+                  literalLanguage?: string;
               };
     };
 }
@@ -36,14 +37,19 @@ export function updatePropertyLiterals(
                     ? { ...transformationLiterals.to }
                     : literal;
             } else {
-                return {
-                    ...literal,
-                    value: literal.value.replace(
-                        new RegExp(transformationLiterals.matchPattern),
-                        transformationLiterals.replacementPattern
-                    ),
-                    type: transformationLiterals.literalType ?? literal.type,
-                };
+                if (literal.value.match(transformationLiterals.matchPattern)) {
+                    return {
+                        ...literal,
+                        value: literal.value.replace(
+                            new RegExp(transformationLiterals.matchPattern),
+                            transformationLiterals.replacementPattern
+                        ),
+                        type: transformationLiterals.literalType ?? literal.type,
+                        language: transformationLiterals.literalLanguage ?? literal.language,
+                    };
+                } else {
+                    return literal;
+                }
             }
         });
         return {

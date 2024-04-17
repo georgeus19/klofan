@@ -8,7 +8,7 @@ export interface Literal {
 
 export function literalView(literal: Literal): string {
     if (literal.language) {
-        return `"${literal}"@${literal.language}`;
+        return `"${literal.value}"@${literal.language}`;
     }
 
     if (literal.type === XSD.STRING) {

@@ -16,6 +16,8 @@ import { ExportInstances } from './export/export-instances/export-intances';
 import { showExportInstancesHelp } from '../help/content/show-export-intances-help';
 import { ExportOperations } from './export/export-operations';
 import { showExportOperationsHelp } from '../help/content/show-export-operations-help';
+import { UpdateLiterals } from './transformation/update-literals.tsx';
+import { showUpdateLiteralsHelp } from '../help/content/show-update-literals-help.tsx';
 
 export type ManualActionsPane = {
     shownAction: ManualActionShown;
@@ -27,6 +29,7 @@ export type ManualActionsPane = {
     showEntitySetDetail: (entitySet: EntitySet) => void;
     showPrefixes: () => void;
     showUpdateEntitiesUris: () => void;
+    showUpdateLiterals: (entitySet: EntitySet, propertySet: PropertySet) => void;
     showExportInstances: () => void;
     showExportOperations: () => void;
     hide: () => void;
@@ -133,6 +136,22 @@ export function useManualActionsPane(
                 component: <UpdateEntityUris></UpdateEntityUris>,
             });
             setShownActionLocked(true);
+            nodeSelection.disableSelectedStyle();
+            nodeSelection.clearSelectedNode();
+        },
+        showUpdateLiterals: (entitySet: EntitySet, propertySet: PropertySet) => {
+            showUpdateLiteralsHelp(help);
+            setShownAction({
+                type: 'update-literals-shown',
+                component: (
+                    <UpdateLiterals
+                        entitySet={entitySet}
+                        propertySet={propertySet}
+                    ></UpdateLiterals>
+                ),
+            });
+            setShownActionLocked(true);
+            nodeSelection.disableSelectedStyle();
             nodeSelection.clearSelectedNode();
         },
         showExportInstances: () => {

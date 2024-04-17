@@ -8,6 +8,7 @@ import { createLiteralSetChanges } from './transformations/create-literal-set';
 import { createPropertySetChanges } from './transformations/create-property-set';
 import { movePropertySetChanges } from './transformations/move-property-set';
 import { deletePropertySetChanges } from './transformations/delete-property-set';
+import { deleteEntitySetChanges } from './transformations/delete-entity-set';
 
 export type TransformationChanges = {
     items: identifier[];
@@ -32,5 +33,7 @@ export function transformationChanges(transformation: Transformation): Transform
             return movePropertySetChanges(transformation);
         case 'delete-property-set':
             return deletePropertySetChanges(transformation);
+        case 'delete-entity-set':
+            return deleteEntitySetChanges(transformation);
     }
 }

@@ -6,6 +6,7 @@ import { UpdateEntitySet } from './update-entity-set';
 import { UpdateItem } from './update-item';
 import { UpdateRelation } from './update-relation';
 import { DeletePropertySet } from './delete-property-set';
+import { DeleteEntitySet } from './delete-entity-set';
 
 export type Transformation =
     | UpdateEntitySet
@@ -15,4 +16,5 @@ export type Transformation =
     | CreatePropertySet
     | CreateLiteralSet
     | MovePropertySet
-    | DeletePropertySet;
+    | DeletePropertySet
+    | DeleteEntitySet;

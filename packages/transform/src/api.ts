@@ -10,6 +10,8 @@ export { createUpdatePropertyLiteralsValueTransformation } from './factory/updat
 export { createUpdatePropertyLiteralsPatternTransformation } from './factory/update-property-literals-pattern-transformation';
 export { createConvertLiteralToNewEntitySetViaNewPropertySetTransformation } from './factory/convert-literal-to-entity-transformation';
 export { createUpdateEntitySetTypesTransformation } from './factory/create-update-entity-set-types-transformation';
+export { createDeleteEntitySetTransformation } from './factory/delete-entity-set-transformation';
+export { createDeletePropertySetTransformation } from './factory/delete-property-set-transformation';
 
 export { Transformer } from './transformer';
 

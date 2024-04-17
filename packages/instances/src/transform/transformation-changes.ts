@@ -10,6 +10,8 @@ import {
     convertLiteralToEntityChanges,
 } from './transformations/convert-literal-to-entity';
 import { deleteLiteralsChanges } from './transformations/delete-literals';
+import { deleteEntitiesChanges } from './transformations/delete-entities';
+import { deletePropertiesChanges } from './transformations/delete-properties';
 
 export type TransformationChanges = { entities: identifier[]; properties: identifier[] };
 
@@ -29,5 +31,9 @@ export function transformationChanges(transformation: Transformation): Transform
             return convertLiteralToEntityChanges(transformation);
         case 'delete-literals':
             return deleteLiteralsChanges(transformation);
+        case 'delete-entities':
+            return deleteEntitiesChanges(transformation);
+        case 'delete-properties':
+            return deletePropertiesChanges(transformation);
     }
 }

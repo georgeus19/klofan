@@ -17,6 +17,8 @@ export type { UpdateItem } from '../transform/transformations/update-item';
 export { updateItem } from '../transform/transformations/update-item';
 export type { UpdateRelation } from '../transform/transformations/update-relation';
 export { updateRelation } from '../transform/transformations/update-relation';
+export type { DeleteEntitySet } from '../transform/transformations/delete-entity-set';
+export { deleteEntitySet } from '../transform/transformations/delete-entity-set';
 
 export type { TransformationChanges } from '../transform/transformation-changes';
 export { transformationChanges } from '../transform/transformation-changes';
