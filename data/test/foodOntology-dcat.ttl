@@ -12,5 +12,5 @@ ex-metadata:xml-distribution a dcat:Distribution ;
 dcterms:format <http://publications.europa.eu/resource/authority/file-type/RDF_TURTLE> ;
 dcat:mediaType <https://www.iana.org/assignments/media-types/text/turtle> ;
 dcterms:title "food ontology."@en ;
-dcat:accessURL <https://raw.githubusercontent.com/georgeus19/MastersThesis/main/data/foodOntology.ttl> ;
-dcat:downloadURL <https://raw.githubusercontent.com/georgeus19/MastersThesis/main/data/foodOntology.ttl> .
+dcat:accessURL <https://raw.githubusercontent.com/georgeus19/MastersThesis/main/data/test/foodOntology.ttl> ;
+dcat:downloadURL <https://raw.githubusercontent.com/georgeus19/MastersThesis/main/data/test/foodOntology.ttl> .
