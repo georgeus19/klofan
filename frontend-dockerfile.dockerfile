@@ -8,7 +8,7 @@ COPY .docker-env ./.docker-env
 
 RUN npm ci
 
-RUN npx turbo build --filter @klofan/${APP_PROJECT_NAME}
+RUN npm run build
 
 FROM nginx:1.25.4
 

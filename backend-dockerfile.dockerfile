@@ -8,6 +8,6 @@ COPY .docker-env ./.docker-env
 
 RUN npm ci
 
-RUN npx turbo build --filter @klofan/${APP_PROJECT_NAME}
+RUN npm run build
 
 ENTRYPOINT node --env-file /project/.docker-env /project/apps/${APP_DIRECTORY}/dist/main.js
