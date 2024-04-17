@@ -1,4 +1,3 @@
-import * as _ from 'lodash';
 import { Schema } from '@klofan/schema';
 import { Instances } from '@klofan/instances';
 import { Recommendation } from '@klofan/recommender/recommendation';
@@ -7,49 +6,25 @@ import {
     getProperties,
     GraphPropertySet,
     isLiteralSet,
-    toPropertySet,
 } from '@klofan/schema/representation';
 import {
     createCreateEntitySetTransformation,
     createCreatePropertySetTransformation,
     createMovePropertySetTransformation,
-    createUpdatePropertyLiteralsPatternTransformation,
+    createUpdatePropertyLiteralsValueTransformation,
     createUpdatePropertySetUriTransformation,
-    Transformation,
     Transformer,
 } from '@klofan/transform';
-import { getNewId, XSD } from '@klofan/utils';
-import natural from 'natural';
-import { createEntitySet } from '@klofan/schema/transform';
-import { Property } from '@klofan/instances/representation';
-//
-// type D = { schema: Schema; instances: Instances; transformations: Transformation[] };
-// type SchemaAndInstances = { schema: Schema; instances: Instances };
-
-// export class M {
-//     constructor(
-//         private schema: Schema,
-//         private instances: Promise<Instances>,
-//         public transformations: Transformation[]
-//     ) {}
-//     bind(f: (data: SchemaAndInstances) => Transformation): M {
-//         this.instances.then((instances) =>
-//
-//         )
-//
-//         const transformation = f({ schema: this.schema, instances: this.instances });
-//         return new M(
-//             this.schema.transform(transformation.schemaTransformations),
-//             await this.instances.transform(transformation.instanceTransformations),
-//             [...this.transformations, transformation]
-//         );
-//     }
-// }
+import { getNewId } from '@klofan/utils';
+import { createLiteral, Property } from '@klofan/instances/representation';
+import { UNCEFACT_UNIT_CODES } from './unit-codes';
 
 type NutrientMatch = {
     entitySet: EntitySet;
     nutrientValuePropertySet: { propertySet: GraphPropertySet; properties: Property[] };
     nutrientUnitPropertySet?: { propertySet: GraphPropertySet; properties: Property[] };
+    name: string;
+    uri: string;
 };
 export async function recommendFoodOntology({
     schema,
@@ -58,33 +33,20 @@ export async function recommendFoodOntology({
     schema: Schema;
     instances: Instances;
 }): Promise<Recommendation[]> {
-    const literalProperties = await Promise.all(
-        schema
-            .entitySetPropertySetPairs()
-            .filter(({ propertySet }) => isLiteralSet(propertySet.value))
-            .map(async ({ entitySet, propertySet }) => {
-                const properties = await instances.properties(entitySet.id, propertySet.id);
-                return {
-                    entitySet,
-                    propertySet,
-                    properties,
-                };
-            })
-    );
-
-    /*
-        Go through all literals and match carbohydrates etc.. and provide recommendations using QuantitativeValueFloat
-
-     */
     const nutrientProperties = [
-        { value: 'carbohydrates', uri: 'http://purl.org/foodontology#carbohydratesPer100g' },
-        { value: 'energy', uri: 'http://purl.org/foodontology#energyPer100g' },
+        {
+            name: 'carbohydrates',
+            values: ['carbohydrates', 'carbohydrate', 'carbs', 'carb'],
+            uri: 'http://purl.org/foodontology#carbohydratesPer100g',
+        },
+        { name: 'energy', values: ['energy'], uri: 'http://purl.org/foodontology#energyPer100g' },
+        { name: 'fat', values: ['fat', 'fats'], uri: 'http://purl.org/foodontology#fatPer100g' },
+        {
+            name: 'proteins',
+            values: ['protein', 'proteins'],
+            uri: 'http://purl.org/foodontology#proteinsPer100g',
+        },
     ];
-    // const czechDateRegExp = new RegExp(/^(\d\d)\.(\d\d)\.(\d\d\d\d)$/);
-    // const replacementPattern = '$3-$2-$1';
-
-    // const description = `Proposing to change czech date format DD.MM.YYYY to standard xsd:dateTime YYYY-MM-DD.`;
-    // const category = 'Date';
 
     const nutrientMatches: (NutrientMatch | null)[] = await Promise.all(
         schema.entitySets().flatMap((entitySet) => {
@@ -92,9 +54,13 @@ export async function recommendFoodOntology({
             return nutrientProperties.map(async (nutrientProperty) => {
                 const nutrientPropertySets = await Promise.all(
                     propertySets
-                        .filter(
-                            (propertySet) => propertySet.name.indexOf(nutrientProperty.value) !== -1
-                        )
+                        .filter((propertySet) => isLiteralSet(propertySet.value))
+                        .filter((propertySet) => {
+                            const matches = nutrientProperty.values.filter(
+                                (v) => propertySet.name.indexOf(v) !== -1
+                            );
+                            return matches.length > 0;
+                        })
                         .map(async (propertySet) => ({
                             propertySet,
                             properties: await instances.properties(entitySet.id, propertySet.id),
@@ -124,6 +90,8 @@ export async function recommendFoodOntology({
                     entitySet,
                     nutrientValuePropertySet,
                     nutrientUnitPropertySet,
+                    name: nutrientProperty.name,
+                    uri: nutrientProperty.uri,
                 };
             });
         })
@@ -136,17 +104,43 @@ export async function recommendFoodOntology({
                     entitySet,
                     nutrientValuePropertySet,
                     nutrientUnitPropertySet,
+                    name,
+                    uri,
                 }): Promise<Recommendation> => {
                     const blankId = getNewId();
 
                     const transformations = await new Transformer(
                         Promise.resolve({ schema, instances, transformations: [] })
                     )
+                        .addTransformStep(({ schema }) => {
+                            if (!nutrientUnitPropertySet) {
+                                return null;
+                            }
+                            const matchingUnits = nutrientUnitPropertySet.properties
+                                .flatMap((property) => property.literals)
+                                .map((literal) => ({
+                                    unit: literal.value,
+                                    code: UNCEFACT_UNIT_CODES[literal.value],
+                                }))
+                                .filter(({ code }) => code);
+                            if (matchingUnits.length === 0) {
+                                return null;
+                            }
+                            return createUpdatePropertyLiteralsValueTransformation({
+                                propertySet: schema.propertySet(
+                                    nutrientUnitPropertySet.propertySet.id
+                                ),
+                                entitySet: schema.entitySet(entitySet.id),
+                                literals: {
+                                    from: createLiteral({ value: matchingUnits[0].unit }),
+                                    to: createLiteral({ value: matchingUnits[0].code }),
+                                },
+                            });
+                        })
                         .addTransformStep(() => {
-                            console.log('createCreateEntitySetTransformation');
                             return createCreateEntitySetTransformation({
                                 schema: {
-                                    name: '__blank',
+                                    name: `_:${name}`,
                                     id: blankId,
                                     types: [
                                         'http://purl.org/goodrelations/v1#QuantitativeValueFloat',
@@ -156,7 +150,6 @@ export async function recommendFoodOntology({
                             });
                         })
                         .addTransformStep(({ schema, instances }) => {
-                            console.log('createMovePropertySetTransformation1');
                             return createMovePropertySetTransformation(schema, {
                                 propertySet: nutrientValuePropertySet.propertySet.id,
                                 originalSource: entitySet.id,
@@ -178,7 +171,6 @@ export async function recommendFoodOntology({
                             });
                         })
                         .addTransformStep(({ schema, instances }) => {
-                            console.log('createMovePropertySetTransformation2');
                             if (!nutrientUnitPropertySet) {
                                 return null;
                             }
@@ -202,6 +194,24 @@ export async function recommendFoodOntology({
                                 },
                             });
                         })
+                        .addTransformStep(({ schema, instances }) =>
+                            createCreatePropertySetTransformation(
+                                { schema, instances },
+                                {
+                                    propertySet: {
+                                        value: { type: 'entity-set', entitySetId: blankId },
+                                        uri: uri,
+                                        name: name,
+                                    },
+                                    propertiesMapping: {
+                                        type: 'one-to-one-mapping',
+                                        source: schema.entitySet(entitySet.id),
+                                        target: schema.entitySet(blankId),
+                                    },
+                                    sourceEntitySetId: entitySet.id,
+                                }
+                            )
+                        )
                         .addTransformStep(({ schema }) =>
                             createUpdatePropertySetUriTransformation(
                                 schema,
@@ -219,228 +229,49 @@ export async function recommendFoodOntology({
                                 'http://purl.org/goodrelations/v1#hasUnitOfMeasurement'
                             );
                         })
+
                         .transformations();
                     return {
                         transformations: transformations,
                         category: 'Nutrients',
-                        description: 'Represent nutrients properties',
+                        description: `
+                            Found ${name} nutritional information in data. Recommending nutrition properties from Food Ontology. 
+                            |
+                            Food Ontology is built on top of Good Relations. It extends gr:Product with food:Food which
+                            has nutrition properties such as food:carbohydratesPer100g extending gr:quantitativeProductOrServiceProperty.
+                            `,
                         recommenderType: 'Expert',
+                        recommendedTerms: [
+                            uri,
+                            'http://purl.org/goodrelations/v1#hasValueFloat',
+                            'http://purl.org/goodrelations/v1#hasUnitOfMeasurement',
+                        ],
+                        related: [
+                            {
+                                name: 'Food Ontology Vocabulary',
+                                link: 'http://purl.org/foodontology',
+                            },
+                            {
+                                name: 'Good Relations Vocabulary',
+                                link: 'http://purl.org/goodrelations/v1',
+                            },
+                            {
+                                name: 'Food',
+                                link: 'http://purl.org/foodontology#Food',
+                            },
+                            {
+                                name: 'Product',
+                                link: 'http://purl.org/goodrelations/v1#ProductOrService',
+                            },
+                            {
+                                name: 'QuantitativeProductOrServiceProperty',
+                                link: 'http://purl.org/goodrelations/v1#quantitativeProductOrServiceProperty',
+                            },
+                        ],
                     };
                 }
             )
     );
-    // const recommendations: Recommendation[] = await Promise.all(
-    //     nutrientMatches
-    //         // .filter(
-    //         //     ({ propertySet }) =>
-    //         //         nutrientProperties.filter((p) => propertySet.name.indexOf(p.value) !== -1)
-    //         //             .length > 0
-    //         // )
-    //         .map(async ({ entitySet, propertySet }): Promise<Recommendation> => {
-    //             const blankId = getNewId();
-    //
-    //             const unitPropertySet = getProperties(schema, entitySet.id).find(
-    //                 (unitProp) =>
-    //                     nutrientProperties.filter((p) => unitProp.name.indexOf(p.value) !== -1)
-    //                         .length > 0
-    //             );
-    //             console.log(unitPropertySet);
-    //             const transformations = await new Transformer(
-    //                 Promise.resolve({ schema, instances, transformations: [] })
-    //             )
-    //                 .addTransformStep(() => {
-    //                     console.log('createCreateEntitySetTransformation');
-    //                     return createCreateEntitySetTransformation({
-    //                         schema: {
-    //                             name: '__blank',
-    //                             id: blankId,
-    //                             types: ['http://purl.org/goodrelations/v1#QuantitativeValueFloat'],
-    //                         },
-    //                         instances: { type: 'reference', referencedEntitySet: entitySet },
-    //                     });
-    //                 })
-    //                 .addTransformStep(({ schema, instances }) => {
-    //                     console.log('createMovePropertySetTransformation1');
-    //                     return createMovePropertySetTransformation(schema, {
-    //                         propertySet: propertySet.id,
-    //                         originalSource: entitySet.id,
-    //                         newSource: blankId,
-    //                         propertiesMapping: {
-    //                             type: 'preserve-mapping',
-    //                             propertySet: schema.propertySet(propertySet.id),
-    //                             originalSource: schema.entitySet(entitySet.id),
-    //                             originalTarget: schema.literalSet(propertySet.value.id),
-    //                             newSource: schema.entitySet(blankId),
-    //                             newTarget: schema.literalSet(propertySet.value.id),
-    //                         },
-    //                     });
-    //                 })
-    //                 .addTransformStep(({ schema, instances }) => {
-    //                     console.log('createMovePropertySetTransformation2');
-    //                     return createMovePropertySetTransformation(schema, {
-    //                         propertySet: unitPropertySet!.id,
-    //                         originalSource: entitySet.id,
-    //                         newSource: blankId,
-    //                         propertiesMapping: {
-    //                             type: 'preserve-mapping',
-    //                             propertySet: schema.propertySet(unitPropertySet!.id),
-    //                             originalSource: schema.entitySet(entitySet.id),
-    //                             originalTarget: schema.literalSet(unitPropertySet!.value.id),
-    //                             newSource: schema.entitySet(blankId),
-    //                             newTarget: schema.literalSet(unitPropertySet!.value.id),
-    //                         },
-    //                     });
-    //                 })
-    //                 .addTransformStep(({ schema }) =>
-    //                     createUpdatePropertySetUriTransformation(
-    //                         schema,
-    //                         propertySet.id,
-    //                         'http://purl.org/goodrelations/v1#hasValueFloat'
-    //                     )
-    //                 )
-    //                 .addTransformStep(({ schema }) =>
-    //                     createUpdatePropertySetUriTransformation(
-    //                         schema,
-    //                         unitPropertySet!.id,
-    //                         'http://purl.org/goodrelations/v1#hasUnitOfMeasurement'
-    //                     )
-    //                 )
-    //                 .transformations();
-    //             // const createEntitySetTransformation = createCreateEntitySetTransformation({
-    //             //     schema: {
-    //             //         name: '__blank',
-    //             //         id: blankId,
-    //             //         types: ['http://purl.org/goodrelations/v1#QuantitativeValueFloat'],
-    //             //     },
-    //             //     instances: { type: 'reference', referencedEntitySet: entitySet },
-    //             // });
-    //             // const afterCreateEntitySetSchema = schema.transform(
-    //             //     createEntitySetTransformation.schemaTransformations
-    //             // );
-    //             // const afterCreateEntitySetInstances = await instances.transform(
-    //             //     createEntitySetTransformation.instanceTransformations
-    //             // );
-    //             // const moveNutrientsValuePropertyTransformation =
-    //             //     createMovePropertySetTransformation(afterCreateEntitySetSchema, {
-    //             //         propertySet: propertySet.id,
-    //             //         originalSource: entitySet.id,
-    //             //         newSource: blankId,
-    //             //         propertiesMapping: {
-    //             //             type: 'preserve-mapping',
-    //             //             propertySet: afterCreateEntitySetSchema.propertySet(propertySet.id),
-    //             //             originalSource: afterCreateEntitySetSchema.entitySet(entitySet.id),
-    //             //             originalTarget: afterCreateEntitySetSchema.literalSet(
-    //             //                 propertySet.value.id
-    //             //             ),
-    //             //             newSource: afterCreateEntitySetSchema.entitySet(blankId),
-    //             //             newTarget: afterCreateEntitySetSchema.literalSet(propertySet.value.id),
-    //             //         },
-    //             //     });
-    //             //
-    //             // const afterMoveNutrientsValuePropertySchema = afterCreateEntitySetSchema.transform(
-    //             //     moveNutrientsValuePropertyTransformation.schemaTransformations
-    //             // );
-    //             //
-    //             // const afterMoveNutrientsValuePropertyInstances =
-    //             //     await afterCreateEntitySetInstances.transform(
-    //             //         moveNutrientsValuePropertyTransformation.instanceTransformations
-    //             //     );
-    //             //
-    //             // const moveUnitPropertyTransformation = createMovePropertySetTransformation(
-    //             //     afterMoveNutrientsValuePropertySchema,
-    //             //     {
-    //             //         propertySet: unitPropertySet!.id,
-    //             //         originalSource: entitySet.id,
-    //             //         newSource: blankId,
-    //             //         propertiesMapping: {
-    //             //             type: 'preserve-mapping',
-    //             //             propertySet: afterCreateEntitySetSchema.propertySet(
-    //             //                 unitPropertySet!.id
-    //             //             ),
-    //             //             originalSource: afterCreateEntitySetSchema.entitySet(entitySet.id),
-    //             //             originalTarget: afterCreateEntitySetSchema.literalSet(
-    //             //                 unitPropertySet!.value.id
-    //             //             ),
-    //             //             newSource: afterCreateEntitySetSchema.entitySet(blankId),
-    //             //             newTarget: afterCreateEntitySetSchema.literalSet(
-    //             //                 unitPropertySet!.value.id
-    //             //             ),
-    //             //         },
-    //             //     }
-    //             // );
-    //             //
-    //             // const afterMoveUnitValuePropertySchema =
-    //             //     afterMoveNutrientsValuePropertySchema.transform(
-    //             //         moveUnitPropertyTransformation.schemaTransformations
-    //             //     );
-    //             //
-    //             // const afterMoveUnitValuePropertyInstances =
-    //             //     await afterMoveNutrientsValuePropertyInstances.transform(
-    //             //         moveUnitPropertyTransformation.instanceTransformations
-    //             //     );
-    //             //
-    //             // const nutrientsPropertySetTransformation = createCreatePropertySetTransformation(
-    //             //     {
-    //             //         schema: afterMoveUnitValuePropertySchema,
-    //             //         instances: afterMoveUnitValuePropertyInstances,
-    //             //     },
-    //             //     {
-    //             //         propertySet: {
-    //             //             name: 'carbohydrates',
-    //             //             uri: 'http://purl.org/foodontology#carbohydratesPer100g',
-    //             //             value: { type: 'entity-set', entitySetId: blankId },
-    //             //         },
-    //             //         sourceEntitySetId: entitySet.id,
-    //             //         propertiesMapping: {
-    //             //             type: 'one-to-one-mapping',
-    //             //             source: afterMoveUnitValuePropertySchema.entitySet(entitySet.id),
-    //             //             target: afterMoveUnitValuePropertySchema.entitySet(blankId),
-    //             //         },
-    //             //     }
-    //             // );
-    //             //
-    //             // const afterNutrientsPropertySetTransformationSchema =
-    //             //     afterMoveUnitValuePropertySchema.transform(
-    //             //         nutrientsPropertySetTransformation.schemaTransformations
-    //             //     );
-    //             //
-    //             // const afterNutrientsPropertySetTransformationInstances =
-    //             //     await afterMoveUnitValuePropertyInstances.transform(
-    //             //         nutrientsPropertySetTransformation.instanceTransformations
-    //             //     );
-    //             //
-    //             // const updateUriOfNutrientValueTransformation =
-    //             //     createUpdatePropertySetUriTransformation(
-    //             //         afterNutrientsPropertySetTransformationSchema,
-    //             //         propertySet.id,
-    //             //         'http://purl.org/goodrelations/v1#hasValueFloat'
-    //             //     );
-    //             //
-    //             // const afterUriOfValueNutrientPropertySetTransformationSchema =
-    //             //     afterNutrientsPropertySetTransformationSchema.transform(
-    //             //         updateUriOfNutrientValueTransformation.schemaTransformations
-    //             //     );
-    //             //
-    //             // const afterUriOfValueNutrientPropertySetTransformationInstances =
-    //             //     await afterNutrientsPropertySetTransformationInstances.transform(
-    //             //         updateUriOfNutrientValueTransformation.instanceTransformations
-    //             //     );
-    //             //
-    //             // const updateUriOfNutrientUnitTransformation =
-    //             //     createUpdatePropertySetUriTransformation(
-    //             //         afterUriOfValueNutrientPropertySetTransformationSchema,
-    //             //         unitPropertySet!.id,
-    //             //         'http://purl.org/goodrelations/v1#hasUnitOfMeasurement'
-    //             //     );
-    //
-    //             return {
-    //                 transformations: transformations,
-    //                 category: 'Nutrients',
-    //                 description: 'Represent nutrients properties',
-    //                 recommenderType: 'Expert',
-    //             };
-    //         })
-    // );
 
     return recommendations;
 }

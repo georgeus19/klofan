@@ -1,6 +1,5 @@
 import { twMerge } from 'tailwind-merge';
 import { useEditorContext } from '../editor/editor-context';
-import { Dropdown } from '../utils/dropdown.tsx';
 import { useRecommendationsContext } from './recommendations-context';
 import { Header } from '../manual-actions-pane/utils/header';
 import { DiagramRecommendationDiff } from './diagram-recommendation-diff.tsx';
@@ -8,8 +7,6 @@ import { useState } from 'react';
 import { RecommendationDescription } from './recommendation-description.tsx';
 import { useErrorBoundary } from 'react-error-boundary';
 import { Recommendation } from '@klofan/recommender/recommendation';
-import { toUri } from '../manual-actions-pane/utils/uri/use-uri-input.ts';
-import { ReadonlyInput } from '../manual-actions-pane/utils/general-label-input/readonly-input.tsx';
 import { VirtualList } from '../utils/virtual-list.tsx';
 
 export type RecommendationsPaneProps = {
@@ -37,7 +34,7 @@ export function RecommendationsPane({ className }: RecommendationsPaneProps) {
 
     const recommendationsList = (recommendation: Recommendation, index: number) => {
         if (recommendation.recommenderType !== toggle.type) {
-            return <></>;
+            return <div key={index}></div>;
         }
         return (
             <div
