@@ -1,0 +1,16 @@
+{
+    "products": [          
+        {
+            "product_name": "Thai peanut noodle",
+            "countries": "United States",
+            "nutriments": { "carbohydrates_100g": 71.15, "carbohydrates_unit": "g" }
+        },
+        {
+            "product_name": "Pasta",
+            "countries": [ "United States", "Canada" ],
+            "vegan": true,
+            "nutriments": { "energy-kcal_100g": 300.0, "energy-kcal_unit": "kcal" }
+        }
+    ]
+}
+

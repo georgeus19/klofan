@@ -13,6 +13,7 @@
         "@klofan/recommender": "*",
         "@klofan/analyzer": "*",
         "@klofan/schema": "*",
+        "@klofan/transform": "*",
         "@klofan/server-utils": "*",
         "@klofan/config": "*",
         "axios": "^1.6.7",

@@ -1,0 +1,14 @@
+{
+    "products": {
+        "product_name": <LITERAL>,
+        "countries": <LITERAL>,
+        "vegan": <LITERAL>,
+        "nutriments": {
+            "carbohydrates_100g": <LITERAL>,
+            "carbohydrates_unit": <LITERAL>,
+            "energy-kcal_100g": <LITERAL>,
+            "energy-kcal_unit": <LITERAL>
+        }
+    }
+}
+

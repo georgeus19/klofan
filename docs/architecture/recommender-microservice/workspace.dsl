@@ -1,35 +1,38 @@
 workspace {
 
     model {
-        softwareSystem = softwareSystem "Software System" "My software system." {
+        user = person "User" "Wants to transform data to RDF"
+        admin = person "Administrator"
+        softwareSystem = softwareSystem "Klofan" "My software system." {
 
+            catalogContainer = container "Catalog" "Manages datasets and notifies analyzers."
+            uploadRecordsStore = container "Dataset Triplestore" "Stores Datasets (metadata)." "Virtuoso"
 
-            catalogUIContainer = container "Catalog UI" "Application for storing data to catalog and viewing them."
-
-            catalogContainer = container "Catalog" "Server for storing RDF data."
-            fsStoreContainer = container "RDF FS Store" "Stores uploaded rdf files." "FileSystem"
-            uploadRecordsStore = container "Upload Records Store" "Stores records about the uploaded rdf files." "MongoDB"
-
-            recommendersContainer = container "Recommenders" "Provides recommendations for users data in editor." {
-                analyzersComponent = component "Analyzers" "Analyzes RDF data uploaded and stores metadata/index about them."
-                recommendersComponent = component "Recommenders" "Provides recommendations for users data in editor."
+            group Recommenders {
+                recommendersContainer = container "Recommender" "Provides recommendations based on editor data and analyses." {
+                    recommendersComponent = component "Recommender" "Provides recommendations based on editor data and analyses."
+                    analyzersComponent = component "Analyzer" "Performs analysis on dataset data to create analyses."
+                }
             }
 
-            recommendationsIndexStoreContainer = container "Recommendations Index Store" "Store any data for doing recommendations" "MongoDB"
+            group "Analyses Stores" {
+                recommendationsIndexStoreContainer = container "Recommendation Analyses Store" "Stores analyses." "MongoDB"
+            }
 
-            editorContainer = container "Editor" "Editor application which helps use transform their data to RDF with suitable vocabularies."
+            editorContainer = container "Editor" "Provides transformation environment to transform structured data to RDF."
 
         }
 
-        catalogUIContainer -> catalogContainer "Upload RDF and view uploads"
+        user -> editorContainer "Transform data to RDF"
+        admin -> catalogContainer "Upload datasets"
 
-        catalogContainer -> fsStoreContainer "Store uploaded files"
-        catalogContainer -> uploadRecordsStore "Store upload records"
-        catalogContainer -> analyzersComponent "Forward uploaded rdf files"
+        catalogContainer -> uploadRecordsStore "Store uploaded datasets"
+        catalogContainer -> analyzersComponent "Send datasets to analyze"
 
-        analyzersComponent -> recommendationsIndexStoreContainer "Store analyzed recommendation index"
+        analyzersComponent -> recommendationsIndexStoreContainer "Store analyses"
+        analyzersComponent -> catalogContainer "Send analysis provenance"
 
-        recommendersComponent -> recommendationsIndexStoreContainer "Access index"
+        recommendersComponent -> recommendationsIndexStoreContainer "Access analyses"
 
         editorContainer -> recommendersComponent "Get recommendations"
     }

@@ -1,31 +1,25 @@
 workspace {
 
     model {
-        user = person "User" "A user of my software system."
-        softwareSystem = softwareSystem "Software System" "My software system." {
+        softwareSystem = softwareSystem "Klofan" "My software system." {
 
-            frontendContainer = container "Frontend" "Frontend" {
-                uiComponent = component "UI" "User Interface"
-                parseComponent = component "Parse" "Parses files to schema and entitySets"
-                transformComponent = component "Transform" "Provides transformation option"
-                schemaComponent = component "Schema" "Any schema manipulation"
-                instancesComponent = component "Instances" "Any schema instance manipulation"
+
+            userContainer = container "Editor/Recommender"
+            
+            frontendContainer = container "Data Representation"{
+                parseComponent = component "Parse" "Parses structured data."
+                transformComponent = component "Transform" "Provides factories for transformations on schema and instances."
+                schemaComponent = component "Schema" "Encapsulates schema logic."
+                instancesComponent = component "Instances" "Encapsulates instances logic."
             }
         }
 
-
-        uiComponent -> parseComponent "Parse input files"
-        uiComponent -> schemaComponent "Query and transform schema"
-        uiComponent -> instancesComponent "Query and transform schema entitySets"
-        uiComponent -> transformComponent "Create transformations"
-
-        parseComponent -> schemaComponent "Load schema"
-        parseComponent -> instancesComponent "Load entitySets"
+        schemaComponent -> parseComponent "Can load from"
+        instancesComponent -> parseComponent "Can load from"
+   
         transformComponent -> schemaComponent "Access schema"
-        transformComponent -> instancesComponent "Access entitySets"
+        transformComponent -> instancesComponent "Access instances"
 
-
-        user -> softwareSystem "Uses"
     }
 
     views {

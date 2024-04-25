@@ -2,141 +2,98 @@
   "id" : 1,
   "name" : "Name",
   "description" : "Description",
-  "lastModifiedDate" : "2023-12-05T23:39:41Z",
+  "lastModifiedDate" : "2024-04-23T09:04:38Z",
   "lastModifiedAgent" : "structurizr-javascript",
   "properties" : {
-    "structurizr.dsl" : "d29ya3NwYWNlIHsKCiAgICBtb2RlbCB7CiAgICAgICAgdXNlciA9IHBlcnNvbiAiVXNlciIgIkEgdXNlciBvZiBteSBzb2Z0d2FyZSBzeXN0ZW0uIgogICAgICAgIHNvZnR3YXJlU3lzdGVtID0gc29mdHdhcmVTeXN0ZW0gIlNvZnR3YXJlIFN5c3RlbSIgIk15IHNvZnR3YXJlIHN5c3RlbS4iIHsKCiAgICAgICAgICAgIGZyb250ZW5kQ29udGFpbmVyID0gY29udGFpbmVyICJGcm9udGVuZCIgIkZyb250ZW5kIiB7CiAgICAgICAgICAgICAgICB1aUNvbXBvbmVudCA9IGNvbXBvbmVudCAiVUkiICJVc2VyIEludGVyZmFjZSIKICAgICAgICAgICAgICAgIHBhcnNlQ29tcG9uZW50ID0gY29tcG9uZW50ICJQYXJzZSIgIlBhcnNlcyBmaWxlcyB0byBzY2hlbWEgYW5kIGluc3RhbmNlcyIKICAgICAgICAgICAgICAgIHRyYW5zZm9ybUNvbXBvbmVudCA9IGNvbXBvbmVudCAiVHJhbnNmb3JtIiAiUHJvdmlkZXMgdHJhbnNmb3JtYXRpb24gb3B0aW9uIgogICAgICAgICAgICAgICAgc2NoZW1hQ29tcG9uZW50ID0gY29tcG9uZW50ICJTY2hlbWEiICJBbnkgc2NoZW1hIG1hbmlwdWxhdGlvbiIKICAgICAgICAgICAgICAgIGluc3RhbmNlc0NvbXBvbmVudCA9IGNvbXBvbmVudCAiSW5zdGFuY2VzIiAiQW55IHNjaGVtYSBpbnN0YW5jZSBtYW5pcHVsYXRpb24iCiAgICAgICAgICAgIH0KICAgICAgICB9CgoKICAgICAgICB1aUNvbXBvbmVudCAtPiBwYXJzZUNvbXBvbmVudCAiUGFyc2UgaW5wdXQgZmlsZXMiCiAgICAgICAgdWlDb21wb25lbnQgLT4gc2NoZW1hQ29tcG9uZW50ICJRdWVyeSBhbmQgdHJhbnNmb3JtIHNjaGVtYSIKICAgICAgICB1aUNvbXBvbmVudCAtPiBpbnN0YW5jZXNDb21wb25lbnQgIlF1ZXJ5IGFuZCB0cmFuc2Zvcm0gc2NoZW1hIGluc3RhbmNlcyIKICAgICAgICB1aUNvbXBvbmVudCAtPiB0cmFuc2Zvcm1Db21wb25lbnQgIkNyZWF0ZSB0cmFuc2Zvcm1hdGlvbnMiCgogICAgICAgIHBhcnNlQ29tcG9uZW50IC0+IHNjaGVtYUNvbXBvbmVudCAiTG9hZCBzY2hlbWEiCiAgICAgICAgcGFyc2VDb21wb25lbnQgLT4gaW5zdGFuY2VzQ29tcG9uZW50ICJMb2FkIGluc3RhbmNlcyIKICAgICAgICB0cmFuc2Zvcm1Db21wb25lbnQgLT4gc2NoZW1hQ29tcG9uZW50ICJBY2Nlc3Mgc2NoZW1hIgogICAgICAgIHRyYW5zZm9ybUNvbXBvbmVudCAtPiBpbnN0YW5jZXNDb21wb25lbnQgIkFjY2VzcyBpbnN0YW5jZXMiCgoKICAgICAgICB1c2VyIC0+IHNvZnR3YXJlU3lzdGVtICJVc2VzIgogICAgfQoKICAgIHZpZXdzIHsKCiAgICAgICAgY29udGFpbmVyIHNvZnR3YXJlU3lzdGVtICJTeXN0ZW1Db250YWluZXJWaWV3IiB7CiAgICAgICAgICAgIGluY2x1ZGUgKgogICAgICAgIH0KCiAgICAgICAgY29tcG9uZW50IGZyb250ZW5kQ29udGFpbmVyICJGcm9udGVuZENvbXBvbmVudFZpZXciIHsKICAgICAgICAgICAgaW5jbHVkZSAqCiAgICAgICAgfQoKICAgICAgICAKCiAgICAgc3R5bGVzIHsKICAgICAgICBlbGVtZW50ICJFbGVtZW50IiB7CiAgICAgICAgICAgIGZvbnRTaXplIDMyCiAgICAgICAgfQoKICAgICAgICByZWxhdGlvbnNoaXAgIlJlbGF0aW9uc2hpcCIgewogICAgICAgICAgICBmb250U2l6ZSAzMAogICAgICAgIH0KCiAgICAgICAgZWxlbWVudCAiR3JvdXAiIHsKICAgICAgICAgICAgZm9udFNpemUgMzAKICAgICAgICB9CgogICAgICAgICAgIGVsZW1lbnQgIkV4aXN0aW5nIFN5c3RlbSIgewogICAgICAgICAgICAgICAgYmFja2dyb3VuZCAjOTk5OTk5CiAgICAgICAgICAgIH0KCiAgICB9CgogICAgICAgIAoKICAgIHRoZW1lIGRlZmF1bHQKCiAgICB9CiAgICAKfQo="
+    "structurizr.dsl" : "d29ya3NwYWNlIHsKCiAgICBtb2RlbCB7CiAgICAgICAgc29mdHdhcmVTeXN0ZW0gPSBzb2Z0d2FyZVN5c3RlbSAiS2xvZmFuIiAiTXkgc29mdHdhcmUgc3lzdGVtLiIgewoKCiAgICAgICAgICAgIHVzZXJDb250YWluZXIgPSBjb250YWluZXIgIkVkaXRvci9SZWNvbW1lbmRlciIKICAgICAgICAgICAgCiAgICAgICAgICAgIGZyb250ZW5kQ29udGFpbmVyID0gY29udGFpbmVyICJEYXRhIFJlcHJlc2VudGF0aW9uInsKICAgICAgICAgICAgICAgIHBhcnNlQ29tcG9uZW50ID0gY29tcG9uZW50ICJQYXJzZSIgIlBhcnNlcyBzdHJ1Y3R1cmVkIGRhdGEuIgogICAgICAgICAgICAgICAgdHJhbnNmb3JtQ29tcG9uZW50ID0gY29tcG9uZW50ICJUcmFuc2Zvcm0iICJQcm92aWRlcyBmYWN0b3JpZXMgZm9yIHRyYW5zZm9ybWF0aW9ucyBvbiBzY2hlbWEgYW5kIGluc3RhbmNlcy4iCiAgICAgICAgICAgICAgICBzY2hlbWFDb21wb25lbnQgPSBjb21wb25lbnQgIlNjaGVtYSIgIkVuY2Fwc3VsYXRlcyBzY2hlbWEgbG9naWMuIgogICAgICAgICAgICAgICAgaW5zdGFuY2VzQ29tcG9uZW50ID0gY29tcG9uZW50ICJJbnN0YW5jZXMiICJFbmNhcHN1bGF0ZXMgaW5zdGFuY2VzIGxvZ2ljLiIKICAgICAgICAgICAgfQogICAgICAgIH0KCiAgICAgICAgc2NoZW1hQ29tcG9uZW50IC0+IHBhcnNlQ29tcG9uZW50ICJDYW4gbG9hZCBmcm9tIgogICAgICAgIGluc3RhbmNlc0NvbXBvbmVudCAtPiBwYXJzZUNvbXBvbmVudCAiQ2FuIGxvYWQgZnJvbSIKICAgCiAgICAgICAgdHJhbnNmb3JtQ29tcG9uZW50IC0+IHNjaGVtYUNvbXBvbmVudCAiQWNjZXNzIHNjaGVtYSIKICAgICAgICB0cmFuc2Zvcm1Db21wb25lbnQgLT4gaW5zdGFuY2VzQ29tcG9uZW50ICJBY2Nlc3MgaW5zdGFuY2VzIgoKICAgIH0KCiAgICB2aWV3cyB7CgogICAgICAgIGNvbnRhaW5lciBzb2Z0d2FyZVN5c3RlbSAiU3lzdGVtQ29udGFpbmVyVmlldyIgewogICAgICAgICAgICBpbmNsdWRlICoKICAgICAgICB9CgogICAgICAgIGNvbXBvbmVudCBmcm9udGVuZENvbnRhaW5lciAiRnJvbnRlbmRDb21wb25lbnRWaWV3IiB7CiAgICAgICAgICAgIGluY2x1ZGUgKgogICAgICAgIH0KCiAgICAgICAgCgogICAgIHN0eWxlcyB7CiAgICAgICAgZWxlbWVudCAiRWxlbWVudCIgewogICAgICAgICAgICBmb250U2l6ZSAzMgogICAgICAgIH0KCiAgICAgICAgcmVsYXRpb25zaGlwICJSZWxhdGlvbnNoaXAiIHsKICAgICAgICAgICAgZm9udFNpemUgMzAKICAgICAgICB9CgogICAgICAgIGVsZW1lbnQgIkdyb3VwIiB7CiAgICAgICAgICAgIGZvbnRTaXplIDMwCiAgICAgICAgfQoKICAgICAgICAgICBlbGVtZW50ICJFeGlzdGluZyBTeXN0ZW0iIHsKICAgICAgICAgICAgICAgIGJhY2tncm91bmQgIzk5OTk5OQogICAgICAgICAgICB9CgogICAgfQoKICAgICAgICAKCiAgICB0aGVtZSBkZWZhdWx0CgogICAgfQogICAgCn0K"
   },
   "configuration" : { },
   "model" : {
-    "people" : [ {
-      "id" : "1",
-      "tags" : "Element,Person",
-      "properties" : {
-        "structurizr.dsl.identifier" : "user"
-      },
-      "name" : "User",
-      "description" : "A user of my software system.",
-      "relationships" : [ {
-        "id" : "17",
-        "tags" : "Relationship",
-        "sourceId" : "1",
-        "destinationId" : "2",
-        "description" : "Uses"
-      } ],
-      "location" : "Unspecified"
-    } ],
     "softwareSystems" : [ {
-      "id" : "2",
+      "id" : "1",
       "tags" : "Element,Software System",
       "properties" : {
         "structurizr.dsl.identifier" : "softwaresystem"
       },
-      "name" : "Software System",
+      "name" : "Klofan",
       "description" : "My software system.",
       "location" : "Unspecified",
       "containers" : [ {
+        "id" : "2",
+        "tags" : "Element,Container",
+        "properties" : {
+          "structurizr.dsl.identifier" : "usercontainer"
+        },
+        "name" : "Editor/Recommender",
+        "documentation" : { }
+      }, {
         "id" : "3",
         "tags" : "Element,Container",
         "properties" : {
           "structurizr.dsl.identifier" : "frontendcontainer"
         },
-        "name" : "Frontend",
-        "description" : "Frontend",
+        "name" : "Data Representation",
         "components" : [ {
           "id" : "4",
           "tags" : "Element,Component",
           "properties" : {
-            "structurizr.dsl.identifier" : "uicomponent"
+            "structurizr.dsl.identifier" : "parsecomponent"
           },
-          "name" : "UI",
-          "description" : "User Interface",
-          "relationships" : [ {
-            "id" : "10",
-            "tags" : "Relationship",
-            "sourceId" : "4",
-            "destinationId" : "7",
-            "description" : "Query and transform schema"
-          }, {
-            "id" : "12",
-            "tags" : "Relationship",
-            "sourceId" : "4",
-            "destinationId" : "6",
-            "description" : "Create transformations"
-          }, {
-            "id" : "11",
-            "tags" : "Relationship",
-            "sourceId" : "4",
-            "destinationId" : "8",
-            "description" : "Query and transform schema instances"
-          }, {
-            "id" : "9",
-            "tags" : "Relationship",
-            "sourceId" : "4",
-            "destinationId" : "5",
-            "description" : "Parse input files"
-          } ],
+          "name" : "Parse",
+          "description" : "Parses structured data.",
           "documentation" : { }
         }, {
           "id" : "6",
           "tags" : "Element,Component",
           "properties" : {
+            "structurizr.dsl.identifier" : "schemacomponent"
+          },
+          "name" : "Schema",
+          "description" : "Encapsulates schema logic.",
+          "relationships" : [ {
+            "id" : "8",
+            "tags" : "Relationship",
+            "sourceId" : "6",
+            "destinationId" : "4",
+            "description" : "Can load from"
+          } ],
+          "documentation" : { }
+        }, {
+          "id" : "5",
+          "tags" : "Element,Component",
+          "properties" : {
             "structurizr.dsl.identifier" : "transformcomponent"
           },
           "name" : "Transform",
-          "description" : "Provides transformation option",
+          "description" : "Provides factories for transformations on schema and instances.",
           "relationships" : [ {
-            "id" : "16",
+            "id" : "10",
             "tags" : "Relationship",
-            "sourceId" : "6",
-            "destinationId" : "8",
-            "description" : "Access instances"
-          }, {
-            "id" : "15",
-            "tags" : "Relationship",
-            "sourceId" : "6",
-            "destinationId" : "7",
+            "sourceId" : "5",
+            "destinationId" : "6",
             "description" : "Access schema"
+          }, {
+            "id" : "11",
+            "tags" : "Relationship",
+            "sourceId" : "5",
+            "destinationId" : "7",
+            "description" : "Access instances"
           } ],
           "documentation" : { }
         }, {
           "id" : "7",
           "tags" : "Element,Component",
           "properties" : {
-            "structurizr.dsl.identifier" : "schemacomponent"
-          },
-          "name" : "Schema",
-          "description" : "Any schema manipulation",
-          "documentation" : { }
-        }, {
-          "id" : "8",
-          "tags" : "Element,Component",
-          "properties" : {
             "structurizr.dsl.identifier" : "instancescomponent"
           },
           "name" : "Instances",
-          "description" : "Any schema instance manipulation",
-          "documentation" : { }
-        }, {
-          "id" : "5",
-          "tags" : "Element,Component",
-          "properties" : {
-            "structurizr.dsl.identifier" : "parsecomponent"
-          },
-          "name" : "Parse",
-          "description" : "Parses files to schema and instances",
+          "description" : "Encapsulates instances logic.",
           "relationships" : [ {
-            "id" : "13",
+            "id" : "9",
             "tags" : "Relationship",
-            "sourceId" : "5",
-            "destinationId" : "7",
-            "description" : "Load schema"
-          }, {
-            "id" : "14",
-            "tags" : "Relationship",
-            "sourceId" : "5",
-            "destinationId" : "8",
-            "description" : "Load instances"
+            "sourceId" : "7",
+            "destinationId" : "4",
+            "description" : "Can load from"
           } ],
           "documentation" : { }
         } ],
@@ -150,7 +107,7 @@
     "containerViews" : [ {
       "key" : "SystemContainerView",
       "order" : 1,
-      "softwareSystemId" : "2",
+      "softwareSystemId" : "1",
       "paperSize" : "A5_Landscape",
       "dimensions" : {
         "width" : 2480,
@@ -158,6 +115,10 @@
       },
       "externalSoftwareSystemBoundariesVisible" : true,
       "elements" : [ {
+        "id" : "2",
+        "x" : 935,
+        "y" : 670
+      }, {
         "id" : "3",
         "x" : 935,
         "y" : 670
@@ -175,41 +136,29 @@
       "externalContainerBoundariesVisible" : true,
       "elements" : [ {
         "id" : "4",
-        "x" : 770,
-        "y" : 640
+        "x" : 1745,
+        "y" : 700
       }, {
         "id" : "5",
-        "x" : 1140,
-        "y" : 140
+        "x" : 290,
+        "y" : 695
       }, {
         "id" : "6",
-        "x" : 340,
-        "y" : 1130
+        "x" : 1015,
+        "y" : 510
       }, {
         "id" : "7",
-        "x" : 80,
-        "y" : 250
-      }, {
-        "id" : "8",
-        "x" : 1625,
-        "y" : 790
+        "x" : 1015,
+        "y" : 875
       } ],
       "relationships" : [ {
-        "id" : "16"
-      }, {
-        "id" : "15"
-      }, {
-        "id" : "14"
-      }, {
-        "id" : "13"
-      }, {
-        "id" : "12"
-      }, {
         "id" : "11"
       }, {
-        "id" : "10"
+        "id" : "8"
       }, {
         "id" : "9"
+      }, {
+        "id" : "10"
       } ]
     } ],
     "configuration" : {

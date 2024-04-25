@@ -1,43 +1,51 @@
 workspace {
 
     model {
+
+        user = person "User" "Wants to transform data to RDF"
+        admin = person "Administrator"
+
         softwareSystem = softwareSystem "Klofan" "Klofan software system." {
 
-            catalogUIContainer = container "Catalog UI" "Application for storing data to catalog and viewing them."
-
-            catalogContainer = container "Catalog" "Server for storing RDF data."
-            catalogStore = container "Catalog Store" "Stores catalog - dcat datasets (metadata) and analyses metadata" "Virtuoso"
+            catalogContainer = container "Catalog" "Manages datasets and notifies analyzers."
+            catalogStore = container "Dataset Triplestore" "Stores datasets (metadata)." "Virtuoso"
 
             analyzerManagerContainer = container "Analyzer Manager" "Manages analyzers and saves their analyses and their metadata."
-            dcatDatasetQueue = container "Dcat Queue" "Stores dcats submitted for analyses." "Redis"
-            group Analyzers {
-                analyzerContainer = container "Analyzer" "Analyses dcat datasets."
+
+            group "Analysis Job Queues" {
+                analyzerQueueContainer = container "Analysis Job Queue" "Queues jobs to analyze datasets." "Redis"
             }
 
-            adapterContainer = container "Adapter" "Store analyses and Provide access to analyses."
-            analysesStoreContainer = container "Analyses Store" "Stores analyses." "MongoDB"
+            group Analyzers {
+                analyzerContainer = container "Analyzer" "Performs analysis on dataset data to create analyses."
+            }
+
+            analysisStoreContainer = container "Analyses Store" "Stores analyses and provides access to them."
+            analysesDatabaseContainer = container "Analyses Database" "Stores analyses." "MongoDB"
  
             recommenderManagerContainer = container "Recommender Manager" "Manage recommenders for recommending in editor."
             group Recommenders {
-                recommenderContainer = container "Recommender" "Recommends transformations for editor."
+                recommenderContainer = container "Recommender" "Provides recommendations based on editor data and analyses."
             }
 
-            editorContainer = container "Editor" "Editor application which helps use transform their data to RDF with suitable vocabularies."
+            editorContainer = container "Editor" "Provides transformation environment to transform structured data to RDF."
         }
 
-        catalogUIContainer -> catalogContainer "Upload dcat datasets"
-        catalogContainer -> catalogStore "Stores dcat datasets"
-        catalogContainer -> analyzerManagerContainer "Sends dcat datasets"
+        user -> editorContainer "Transform data to RDF"
+        admin -> catalogContainer "Upload datasets"
 
-        analyzerManagerContainer -> analyzerContainer "Sends dcat datasets for analysis"
-        analyzerManagerContainer -> dcatDatasetQueue "Push and pop dcat datasets"
-        analyzerManagerContainer -> adapterContainer "Saves analyses"
-        analyzerManagerContainer -> catalogContainer "Saves dcat analyses metadata"
-        adapterContainer -> analysesStoreContainer "Stores analyses"
+        catalogContainer -> catalogStore "Store uploaded datasets"
+        catalogContainer -> analyzerManagerContainer "Send datasets to analyze"
+
+        analyzerManagerContainer -> analyzerQueueContainer "Send analysis jobs to every queue"
+        analyzerContainer -> analyzerQueueContainer "Get Analysis Jobs"
+        analyzerContainer -> analysisStoreContainer  "Store analyses"
+        analysisStoreContainer -> analysesDatabaseContainer "Store analyses"
 
         editorContainer -> recommenderManagerContainer "Gets recommendations"
-        recommenderManagerContainer -> recommenderContainer "Gets recommendations"
-        recommenderContainer -> adapterContainer "Gets analyses"
+        recommenderManagerContainer -> recommenderContainer "Get recommendations"
+        recommenderContainer -> analysisStoreContainer "Get analyses"
+
     }
 
     views {

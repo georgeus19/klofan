@@ -1,34 +1,39 @@
 workspace {
 
     model {
-        softwareSystem = softwareSystem "Software System" "My software system." {
+        user = person "User" "Wants to transform data to RDF"
+        admin = person "Administrator"
+        softwareSystem = softwareSystem "Klofan" "My software system." {
 
+            catalogContainer = container "Catalog" "Manages datasets and notifies analyzers."
+            uploadRecordsStore = container "Dataset Triplestore" "Stores datasets (metadata)." "Virtuoso"
 
-            catalogUIContainer = container "Catalog UI" "Application for storing data to catalog and viewing them."
+            group Analyzers {
+                analyzersContainer = container "Analyzer" "Performs analysis on dataset data to create analyses."
+            }
 
-            catalogContainer = container "Catalog" "Server for storing RDF data."
-            fsStoreContainer = container "RDF FS Store" "Stores uploaded rdf files." "FileSystem"
-            uploadRecordsStore = container "Upload Records Store" "Stores records about the uploaded rdf files." "MongoDB"
+            group Recommenders {
+                recommendersContainer = container "Recommender" "Provides recommendations based on editor data and analyses."
+            }
 
-            analyzersContainer = container "Analyzers" "Analyzes RDF data uploaded and stores metadata/index about them."
+            group "Analyses Stores" {
+                analyzerMetadataStoreContainer = container "Analyses Store" "Stores analyses." "MongoDB"
+            }
 
-            analyzerMetadataStoreContainer = container "Analyzer (Meta)Data Store" "Store any inferred data structures from catalog." "MongoDB"
-
-            recommendersContainer = container "Recommenders" "Provides recommendations for users data in editor."
-            
-            editorContainer = container "Editor" "Editor application which helps use transform their data to RDF with suitable vocabularies."
-
+            editorContainer = container "Editor" "Provides transformation environment to transform structured data to RDF."
         }
 
-        catalogUIContainer -> catalogContainer "Upload RDF and view uploads"
+        user -> editorContainer "Transform data to RDF"
+        admin -> catalogContainer "Upload datasets"
 
-        catalogContainer -> fsStoreContainer "Store uploaded files"
-        catalogContainer -> uploadRecordsStore "Store upload records"
-        catalogContainer -> analyzersContainer "Forward uploaded rdf files"
+        catalogContainer -> uploadRecordsStore "Store uploaded datasets"
+        catalogContainer -> analyzersContainer "Send datasets to analyze"
 
-        analyzersContainer -> analyzerMetadataStoreContainer "Store analyzed (meta)data"
 
-        recommendersContainer -> analyzersContainer "Get data for recommendations"
+        analyzersContainer -> analyzerMetadataStoreContainer "Store analyses"
+        analyzersContainer -> catalogContainer "Send analysis provenance"
+
+        recommendersContainer -> analyzerMetadataStoreContainer "Get analyses"
 
         editorContainer -> recommendersContainer "Get recommendations"
     }

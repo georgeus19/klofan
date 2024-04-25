@@ -2,15 +2,58 @@
   "id" : 1,
   "name" : "Name",
   "description" : "Description",
-  "lastModifiedDate" : "2024-03-12T11:51:52Z",
-  "lastModifiedAgent" : "structurizr-javascript",
+  "lastModifiedDate" : "2024-04-21T08:40:42Z",
   "properties" : {
-    "structurizr.dsl" : "d29ya3NwYWNlIHsKCiAgICBtb2RlbCB7CiAgICAgICAgc29mdHdhcmVTeXN0ZW0gPSBzb2Z0d2FyZVN5c3RlbSAiS2xvZmFuIiAiS2xvZmFuIHNvZnR3YXJlIHN5c3RlbS4iIHsKCiAgICAgICAgICAgIGNhdGFsb2dVSUNvbnRhaW5lciA9IGNvbnRhaW5lciAiQ2F0YWxvZyBVSSIgIkFwcGxpY2F0aW9uIGZvciBzdG9yaW5nIGRhdGEgdG8gY2F0YWxvZyBhbmQgdmlld2luZyB0aGVtLiIKCiAgICAgICAgICAgIGNhdGFsb2dDb250YWluZXIgPSBjb250YWluZXIgIkNhdGFsb2ciICJTZXJ2ZXIgZm9yIHN0b3JpbmcgUkRGIGRhdGEuIgogICAgICAgICAgICBjYXRhbG9nU3RvcmUgPSBjb250YWluZXIgIkNhdGFsb2cgU3RvcmUiICJTdG9yZXMgY2F0YWxvZyAtIGRjYXQgZGF0YXNldHMgKG1ldGFkYXRhKSBhbmQgYW5hbHlzZXMgbWV0YWRhdGEiICJWaXJ0dW9zbyIKCiAgICAgICAgICAgIGFuYWx5emVyTWFuYWdlckNvbnRhaW5lciA9IGNvbnRhaW5lciAiQW5hbHl6ZXIgTWFuYWdlciIgIk1hbmFnZXMgYW5hbHl6ZXJzIGFuZCBzYXZlcyB0aGVpciBhbmFseXNlcyBhbmQgdGhlaXIgbWV0YWRhdGEuIgogICAgICAgICAgICBkY2F0RGF0YXNldFF1ZXVlID0gY29udGFpbmVyICJEY2F0IFF1ZXVlIiAiU3RvcmVzIGRjYXRzIHN1Ym1pdHRlZCBmb3IgYW5hbHlzZXMuIiAiUmVkaXMiCiAgICAgICAgICAgIGdyb3VwIEFuYWx5emVycyB7CiAgICAgICAgICAgICAgICBhbmFseXplckNvbnRhaW5lciA9IGNvbnRhaW5lciAiQW5hbHl6ZXIiICJBbmFseXNlcyBkY2F0IGRhdGFzZXRzLiIKICAgICAgICAgICAgfQoKICAgICAgICAgICAgYWRhcHRlckNvbnRhaW5lciA9IGNvbnRhaW5lciAiQWRhcHRlciIgIlN0b3JlIGFuYWx5c2VzIGFuZCBQcm92aWRlIGFjY2VzcyB0byBhbmFseXNlcy4iCiAgICAgICAgICAgIGFuYWx5c2VzU3RvcmVDb250YWluZXIgPSBjb250YWluZXIgIkFuYWx5c2VzIFN0b3JlIiAiU3RvcmVzIGFuYWx5c2VzLiIgIk1vbmdvREIiCiAKICAgICAgICAgICAgcmVjb21tZW5kZXJNYW5hZ2VyQ29udGFpbmVyID0gY29udGFpbmVyICJSZWNvbW1lbmRlciBNYW5hZ2VyIiAiTWFuYWdlIHJlY29tbWVuZGVycyBmb3IgcmVjb21tZW5kaW5nIGluIGVkaXRvci4iCiAgICAgICAgICAgIGdyb3VwIFJlY29tbWVuZGVycyB7CiAgICAgICAgICAgICAgICByZWNvbW1lbmRlckNvbnRhaW5lciA9IGNvbnRhaW5lciAiUmVjb21tZW5kZXIiICJSZWNvbW1lbmRzIHRyYW5zZm9ybWF0aW9ucyBmb3IgZWRpdG9yLiIKICAgICAgICAgICAgfQoKICAgICAgICAgICAgZWRpdG9yQ29udGFpbmVyID0gY29udGFpbmVyICJFZGl0b3IiICJFZGl0b3IgYXBwbGljYXRpb24gd2hpY2ggaGVscHMgdXNlIHRyYW5zZm9ybSB0aGVpciBkYXRhIHRvIFJERiB3aXRoIHN1aXRhYmxlIHZvY2FidWxhcmllcy4iCiAgICAgICAgfQoKICAgICAgICBjYXRhbG9nVUlDb250YWluZXIgLT4gY2F0YWxvZ0NvbnRhaW5lciAiVXBsb2FkIGRjYXQgZGF0YXNldHMiCiAgICAgICAgY2F0YWxvZ0NvbnRhaW5lciAtPiBjYXRhbG9nU3RvcmUgIlN0b3JlcyBkY2F0IGRhdGFzZXRzIgogICAgICAgIGNhdGFsb2dDb250YWluZXIgLT4gYW5hbHl6ZXJNYW5hZ2VyQ29udGFpbmVyICJTZW5kcyBkY2F0IGRhdGFzZXRzIgoKICAgICAgICBhbmFseXplck1hbmFnZXJDb250YWluZXIgLT4gYW5hbHl6ZXJDb250YWluZXIgIlNlbmRzIGRjYXQgZGF0YXNldHMgZm9yIGFuYWx5c2lzIgogICAgICAgIGFuYWx5emVyTWFuYWdlckNvbnRhaW5lciAtPiBkY2F0RGF0YXNldFF1ZXVlICJQdXNoIGFuZCBwb3AgZGNhdCBkYXRhc2V0cyIKICAgICAgICBhbmFseXplck1hbmFnZXJDb250YWluZXIgLT4gYWRhcHRlckNvbnRhaW5lciAiU2F2ZXMgYW5hbHlzZXMiCiAgICAgICAgYW5hbHl6ZXJNYW5hZ2VyQ29udGFpbmVyIC0+IGNhdGFsb2dDb250YWluZXIgIlNhdmVzIGRjYXQgYW5hbHlzZXMgbWV0YWRhdGEiCiAgICAgICAgYWRhcHRlckNvbnRhaW5lciAtPiBhbmFseXNlc1N0b3JlQ29udGFpbmVyICJTdG9yZXMgYW5hbHlzZXMiCgogICAgICAgIGVkaXRvckNvbnRhaW5lciAtPiByZWNvbW1lbmRlck1hbmFnZXJDb250YWluZXIgIkdldHMgcmVjb21tZW5kYXRpb25zIgogICAgICAgIHJlY29tbWVuZGVyTWFuYWdlckNvbnRhaW5lciAtPiByZWNvbW1lbmRlckNvbnRhaW5lciAiR2V0cyByZWNvbW1lbmRhdGlvbnMiCiAgICAgICAgcmVjb21tZW5kZXJDb250YWluZXIgLT4gYWRhcHRlckNvbnRhaW5lciAiR2V0cyBhbmFseXNlcyIKICAgIH0KCiAgICB2aWV3cyB7CgogICAgICAgIGNvbnRhaW5lciBzb2Z0d2FyZVN5c3RlbSAiU3lzdGVtQ29udGFpbmVyVmlldyIgewogICAgICAgICAgICBpbmNsdWRlICoKICAgICAgICB9CgogICAgICAgIAoKICAgICBzdHlsZXMgewogICAgICAgIGVsZW1lbnQgIkVsZW1lbnQiIHsKICAgICAgICAgICAgZm9udFNpemUgMzIKICAgICAgICB9CgogICAgICAgIHJlbGF0aW9uc2hpcCAiUmVsYXRpb25zaGlwIiB7CiAgICAgICAgICAgIGZvbnRTaXplIDMwCiAgICAgICAgfQoKICAgICAgICBlbGVtZW50ICJHcm91cCIgewogICAgICAgICAgICBmb250U2l6ZSAzMAogICAgICAgIH0KCiAgICAgICAgICAgZWxlbWVudCAiRXhpc3RpbmcgU3lzdGVtIiB7CiAgICAgICAgICAgICAgICBiYWNrZ3JvdW5kICM5OTk5OTkKICAgICAgICAgICAgfQoKICAgIH0KCiAgICAgICAgCgogICAgdGhlbWUgZGVmYXVsdAoKICAgIH0KICAgIAp9Cg=="
+    "structurizr.dsl" : "d29ya3NwYWNlIHsKCiAgICBtb2RlbCB7CgogICAgICAgIHVzZXIgPSBwZXJzb24gIlVzZXIiICJXYW50cyB0byB0cmFuc2Zvcm0gZGF0YSB0byBSREYiCiAgICAgICAgYWRtaW4gPSBwZXJzb24gIkFkbWluaXN0cmF0b3IiCgogICAgICAgIHNvZnR3YXJlU3lzdGVtID0gc29mdHdhcmVTeXN0ZW0gIktsb2ZhbiIgIktsb2ZhbiBzb2Z0d2FyZSBzeXN0ZW0uIiB7CgogICAgICAgICAgICBjYXRhbG9nQ29udGFpbmVyID0gY29udGFpbmVyICJDYXRhbG9nIiAiTWFuYWdlcyBkYXRhc2V0cyBhbmQgbm90aWZpZXMgYW5hbHl6ZXJzLiIKICAgICAgICAgICAgY2F0YWxvZ1N0b3JlID0gY29udGFpbmVyICJEYXRhc2V0IFRyaXBsZXN0b3JlIiAiU3RvcmVzIGRhdGFzZXRzIChtZXRhZGF0YSkuIiAiVmlydHVvc28iCgogICAgICAgICAgICBhbmFseXplck1hbmFnZXJDb250YWluZXIgPSBjb250YWluZXIgIkFuYWx5emVyIE1hbmFnZXIiICJNYW5hZ2VzIGFuYWx5emVycyBhbmQgc2F2ZXMgdGhlaXIgYW5hbHlzZXMgYW5kIHRoZWlyIG1ldGFkYXRhLiIKCiAgICAgICAgICAgIGdyb3VwICJBbmFseXNpcyBKb2IgUXVldWVzIiB7CiAgICAgICAgICAgICAgICBhbmFseXplclF1ZXVlQ29udGFpbmVyID0gY29udGFpbmVyICJBbmFseXNpcyBKb2IgUXVldWUiICJRdWV1ZXMgam9icyB0byBhbmFseXplIGRhdGFzZXRzLiIgIlJlZGlzIgogICAgICAgICAgICB9CgogICAgICAgICAgICBncm91cCBBbmFseXplcnMgewogICAgICAgICAgICAgICAgYW5hbHl6ZXJDb250YWluZXIgPSBjb250YWluZXIgIkFuYWx5emVyIiAiUGVyZm9ybXMgYW5hbHlzaXMgb24gZGF0YXNldCBkYXRhIHRvIGNyZWF0ZSBhbmFseXNlcy4iCiAgICAgICAgICAgIH0KCiAgICAgICAgICAgIGFuYWx5c2lzU3RvcmVDb250YWluZXIgPSBjb250YWluZXIgIkFuYWx5c2VzIFN0b3JlIiAiU3RvcmVzIGFuYWx5c2VzIGFuZCBwcm92aWRlcyBhY2Nlc3MgdG8gdGhlbS4iCiAgICAgICAgICAgIGFuYWx5c2VzRGF0YWJhc2VDb250YWluZXIgPSBjb250YWluZXIgIkFuYWx5c2VzIERhdGFiYXNlIiAiU3RvcmVzIGFuYWx5c2VzLiIgIk1vbmdvREIiCiAKICAgICAgICAgICAgcmVjb21tZW5kZXJNYW5hZ2VyQ29udGFpbmVyID0gY29udGFpbmVyICJSZWNvbW1lbmRlciBNYW5hZ2VyIiAiTWFuYWdlIHJlY29tbWVuZGVycyBmb3IgcmVjb21tZW5kaW5nIGluIGVkaXRvci4iCiAgICAgICAgICAgIGdyb3VwIFJlY29tbWVuZGVycyB7CiAgICAgICAgICAgICAgICByZWNvbW1lbmRlckNvbnRhaW5lciA9IGNvbnRhaW5lciAiUmVjb21tZW5kZXIiICJQcm92aWRlcyByZWNvbW1lbmRhdGlvbnMgYmFzZWQgb24gZWRpdG9yIGRhdGEgYW5kIGFuYWx5c2VzLiIKICAgICAgICAgICAgfQoKICAgICAgICAgICAgZWRpdG9yQ29udGFpbmVyID0gY29udGFpbmVyICJFZGl0b3IiICJQcm92aWRlcyB0cmFuc2Zvcm1hdGlvbiBlbnZpcm9ubWVudCB0byB0cmFuc2Zvcm0gc3RydWN0dXJlZCBkYXRhIHRvIFJERi4iCiAgICAgICAgfQoKICAgICAgICB1c2VyIC0+IGVkaXRvckNvbnRhaW5lciAiVHJhbnNmb3JtIGRhdGEgdG8gUkRGIgogICAgICAgIGFkbWluIC0+IGNhdGFsb2dDb250YWluZXIgIlVwbG9hZCBkYXRhc2V0cyIKCiAgICAgICAgY2F0YWxvZ0NvbnRhaW5lciAtPiBjYXRhbG9nU3RvcmUgIlN0b3JlIHVwbG9hZGVkIGRhdGFzZXRzIgogICAgICAgIGNhdGFsb2dDb250YWluZXIgLT4gYW5hbHl6ZXJNYW5hZ2VyQ29udGFpbmVyICJTZW5kIGRhdGFzZXRzIHRvIGFuYWx5emUiCgogICAgICAgIGFuYWx5emVyTWFuYWdlckNvbnRhaW5lciAtPiBhbmFseXplclF1ZXVlQ29udGFpbmVyICJTZW5kIGFuYWx5c2lzIGpvYnMgdG8gZXZlcnkgcXVldWUiCiAgICAgICAgYW5hbHl6ZXJDb250YWluZXIgLT4gYW5hbHl6ZXJRdWV1ZUNvbnRhaW5lciAiR2V0IEFuYWx5c2lzIEpvYnMiCiAgICAgICAgYW5hbHl6ZXJDb250YWluZXIgLT4gYW5hbHlzaXNTdG9yZUNvbnRhaW5lciAgIlN0b3JlIGFuYWx5c2VzIgogICAgICAgIGFuYWx5c2lzU3RvcmVDb250YWluZXIgLT4gYW5hbHlzZXNEYXRhYmFzZUNvbnRhaW5lciAiU3RvcmUgYW5hbHlzZXMiCgogICAgICAgIGVkaXRvckNvbnRhaW5lciAtPiByZWNvbW1lbmRlck1hbmFnZXJDb250YWluZXIgIkdldHMgcmVjb21tZW5kYXRpb25zIgogICAgICAgIHJlY29tbWVuZGVyTWFuYWdlckNvbnRhaW5lciAtPiByZWNvbW1lbmRlckNvbnRhaW5lciAiR2V0IHJlY29tbWVuZGF0aW9ucyIKICAgICAgICByZWNvbW1lbmRlckNvbnRhaW5lciAtPiBhbmFseXNpc1N0b3JlQ29udGFpbmVyICJHZXQgYW5hbHlzZXMiCgogICAgfQoKICAgIHZpZXdzIHsKCiAgICAgICAgY29udGFpbmVyIHNvZnR3YXJlU3lzdGVtICJTeXN0ZW1Db250YWluZXJWaWV3IiB7CiAgICAgICAgICAgIGluY2x1ZGUgKgogICAgICAgIH0KCiAgICAgICAgCgogICAgIHN0eWxlcyB7CiAgICAgICAgZWxlbWVudCAiRWxlbWVudCIgewogICAgICAgICAgICBmb250U2l6ZSAzMgogICAgICAgIH0KCiAgICAgICAgcmVsYXRpb25zaGlwICJSZWxhdGlvbnNoaXAiIHsKICAgICAgICAgICAgZm9udFNpemUgMzAKICAgICAgICB9CgogICAgICAgIGVsZW1lbnQgIkdyb3VwIiB7CiAgICAgICAgICAgIGZvbnRTaXplIDMwCiAgICAgICAgfQoKICAgICAgICAgICBlbGVtZW50ICJFeGlzdGluZyBTeXN0ZW0iIHsKICAgICAgICAgICAgICAgIGJhY2tncm91bmQgIzk5OTk5OQogICAgICAgICAgICB9CgogICAgfQoKICAgICAgICAKCiAgICB0aGVtZSBkZWZhdWx0CgogICAgfQogICAgCn0K"
   },
   "configuration" : { },
   "model" : {
-    "softwareSystems" : [ {
+    "people" : [ {
       "id" : "1",
+      "tags" : "Element,Person",
+      "properties" : {
+        "structurizr.dsl.identifier" : "user"
+      },
+      "name" : "User",
+      "description" : "Wants to transform data to RDF",
+      "relationships" : [ {
+        "id" : "14",
+        "tags" : "Relationship",
+        "sourceId" : "1",
+        "destinationId" : "13",
+        "description" : "Transform data to RDF"
+      }, {
+        "id" : "15",
+        "sourceId" : "1",
+        "destinationId" : "3",
+        "description" : "Transform data to RDF",
+        "linkedRelationshipId" : "14"
+      } ],
+      "location" : "Unspecified"
+    }, {
+      "id" : "2",
+      "tags" : "Element,Person",
+      "properties" : {
+        "structurizr.dsl.identifier" : "admin"
+      },
+      "name" : "Administrator",
+      "relationships" : [ {
+        "id" : "16",
+        "tags" : "Relationship",
+        "sourceId" : "2",
+        "destinationId" : "4",
+        "description" : "Upload datasets"
+      }, {
+        "id" : "17",
+        "sourceId" : "2",
+        "destinationId" : "3",
+        "description" : "Upload datasets",
+        "linkedRelationshipId" : "16"
+      } ],
+      "location" : "Unspecified"
+    } ],
+    "softwareSystems" : [ {
+      "id" : "3",
       "tags" : "Element,Software System",
       "properties" : {
         "structurizr.dsl.identifier" : "softwaresystem"
@@ -19,158 +62,72 @@
       "description" : "Klofan software system.",
       "location" : "Unspecified",
       "containers" : [ {
-        "id" : "7",
+        "id" : "13",
         "tags" : "Element,Container",
         "properties" : {
-          "structurizr.dsl.identifier" : "analyzercontainer"
+          "structurizr.dsl.identifier" : "editorcontainer"
         },
-        "name" : "Analyzer",
-        "description" : "Analyses dcat datasets.",
-        "group" : "Analyzers",
-        "documentation" : { }
-      }, {
-        "id" : "2",
-        "tags" : "Element,Container",
-        "properties" : {
-          "structurizr.dsl.identifier" : "cataloguicontainer"
-        },
-        "name" : "Catalog UI",
-        "description" : "Application for storing data to catalog and viewing them.",
+        "name" : "Editor",
+        "description" : "Provides transformation environment to transform structured data to RDF.",
         "relationships" : [ {
-          "id" : "13",
+          "id" : "24",
           "tags" : "Relationship",
-          "sourceId" : "2",
-          "destinationId" : "3",
-          "description" : "Upload dcat datasets"
-        } ],
-        "documentation" : { }
-      }, {
-        "id" : "5",
-        "tags" : "Element,Container",
-        "properties" : {
-          "structurizr.dsl.identifier" : "analyzermanagercontainer"
-        },
-        "name" : "Analyzer Manager",
-        "description" : "Manages analyzers and saves their analyses and their metadata.",
-        "relationships" : [ {
-          "id" : "16",
-          "tags" : "Relationship",
-          "sourceId" : "5",
-          "destinationId" : "7",
-          "description" : "Sends dcat datasets for analysis"
-        }, {
-          "id" : "19",
-          "tags" : "Relationship",
-          "sourceId" : "5",
-          "destinationId" : "3",
-          "description" : "Saves dcat analyses metadata"
-        }, {
-          "id" : "17",
-          "tags" : "Relationship",
-          "sourceId" : "5",
-          "destinationId" : "6",
-          "description" : "Push and pop dcat datasets"
-        }, {
-          "id" : "18",
-          "tags" : "Relationship",
-          "sourceId" : "5",
-          "destinationId" : "8",
-          "description" : "Saves analyses"
-        } ],
-        "documentation" : { }
-      }, {
-        "id" : "8",
-        "tags" : "Element,Container",
-        "properties" : {
-          "structurizr.dsl.identifier" : "adaptercontainer"
-        },
-        "name" : "Adapter",
-        "description" : "Store analyses and Provide access to analyses.",
-        "relationships" : [ {
-          "id" : "20",
-          "tags" : "Relationship",
-          "sourceId" : "8",
-          "destinationId" : "9",
-          "description" : "Stores analyses"
+          "sourceId" : "13",
+          "destinationId" : "11",
+          "description" : "Gets recommendations"
         } ],
         "documentation" : { }
       }, {
         "id" : "4",
         "tags" : "Element,Container",
         "properties" : {
-          "structurizr.dsl.identifier" : "catalogstore"
+          "structurizr.dsl.identifier" : "catalogcontainer"
         },
-        "name" : "Catalog Store",
-        "description" : "Stores catalog - dcat datasets (metadata) and analyses metadata",
-        "technology" : "Virtuoso",
+        "name" : "Catalog",
+        "description" : "Manages datasets and notifies analyzers.",
+        "relationships" : [ {
+          "id" : "18",
+          "tags" : "Relationship",
+          "sourceId" : "4",
+          "destinationId" : "5",
+          "description" : "Store uploaded datasets"
+        }, {
+          "id" : "19",
+          "tags" : "Relationship",
+          "sourceId" : "4",
+          "destinationId" : "6",
+          "description" : "Send datasets to analyze"
+        } ],
         "documentation" : { }
       }, {
-        "id" : "12",
+        "id" : "7",
         "tags" : "Element,Container",
         "properties" : {
-          "structurizr.dsl.identifier" : "editorcontainer"
+          "structurizr.dsl.identifier" : "analyzerqueuecontainer"
         },
-        "name" : "Editor",
-        "description" : "Editor application which helps use transform their data to RDF with suitable vocabularies.",
+        "name" : "Analysis Job Queue",
+        "description" : "Queues jobs to analyze datasets.",
+        "group" : "Analysis Job Queues",
+        "technology" : "Redis",
+        "documentation" : { }
+      }, {
+        "id" : "9",
+        "tags" : "Element,Container",
+        "properties" : {
+          "structurizr.dsl.identifier" : "analysisstorecontainer"
+        },
+        "name" : "Analyses Store",
+        "description" : "Stores analyses and provides access to them.",
         "relationships" : [ {
-          "id" : "21",
+          "id" : "23",
           "tags" : "Relationship",
-          "sourceId" : "12",
+          "sourceId" : "9",
           "destinationId" : "10",
-          "description" : "Gets recommendations"
+          "description" : "Store analyses"
         } ],
         "documentation" : { }
       }, {
         "id" : "11",
-        "tags" : "Element,Container",
-        "properties" : {
-          "structurizr.dsl.identifier" : "recommendercontainer"
-        },
-        "name" : "Recommender",
-        "description" : "Recommends transformations for editor.",
-        "relationships" : [ {
-          "id" : "23",
-          "tags" : "Relationship",
-          "sourceId" : "11",
-          "destinationId" : "8",
-          "description" : "Gets analyses"
-        } ],
-        "group" : "Recommenders",
-        "documentation" : { }
-      }, {
-        "id" : "3",
-        "tags" : "Element,Container",
-        "properties" : {
-          "structurizr.dsl.identifier" : "catalogcontainer"
-        },
-        "name" : "Catalog",
-        "description" : "Server for storing RDF data.",
-        "relationships" : [ {
-          "id" : "15",
-          "tags" : "Relationship",
-          "sourceId" : "3",
-          "destinationId" : "5",
-          "description" : "Sends dcat datasets"
-        }, {
-          "id" : "14",
-          "tags" : "Relationship",
-          "sourceId" : "3",
-          "destinationId" : "4",
-          "description" : "Stores dcat datasets"
-        } ],
-        "documentation" : { }
-      }, {
-        "id" : "6",
-        "tags" : "Element,Container",
-        "properties" : {
-          "structurizr.dsl.identifier" : "dcatdatasetqueue"
-        },
-        "name" : "Dcat Queue",
-        "description" : "Stores dcats submitted for analyses.",
-        "technology" : "Redis",
-        "documentation" : { }
-      }, {
-        "id" : "10",
         "tags" : "Element,Container",
         "properties" : {
           "structurizr.dsl.identifier" : "recommendermanagercontainer"
@@ -178,22 +135,88 @@
         "name" : "Recommender Manager",
         "description" : "Manage recommenders for recommending in editor.",
         "relationships" : [ {
-          "id" : "22",
+          "id" : "25",
           "tags" : "Relationship",
-          "sourceId" : "10",
-          "destinationId" : "11",
-          "description" : "Gets recommendations"
+          "sourceId" : "11",
+          "destinationId" : "12",
+          "description" : "Get recommendations"
         } ],
         "documentation" : { }
       }, {
-        "id" : "9",
+        "id" : "10",
         "tags" : "Element,Container",
         "properties" : {
-          "structurizr.dsl.identifier" : "analysesstorecontainer"
+          "structurizr.dsl.identifier" : "analysesdatabasecontainer"
         },
-        "name" : "Analyses Store",
+        "name" : "Analyses Database",
         "description" : "Stores analyses.",
         "technology" : "MongoDB",
+        "documentation" : { }
+      }, {
+        "id" : "5",
+        "tags" : "Element,Container",
+        "properties" : {
+          "structurizr.dsl.identifier" : "catalogstore"
+        },
+        "name" : "Dataset Triplestore",
+        "description" : "Stores datasets (metadata).",
+        "technology" : "Virtuoso",
+        "documentation" : { }
+      }, {
+        "id" : "6",
+        "tags" : "Element,Container",
+        "properties" : {
+          "structurizr.dsl.identifier" : "analyzermanagercontainer"
+        },
+        "name" : "Analyzer Manager",
+        "description" : "Manages analyzers and saves their analyses and their metadata.",
+        "relationships" : [ {
+          "id" : "20",
+          "tags" : "Relationship",
+          "sourceId" : "6",
+          "destinationId" : "7",
+          "description" : "Send analysis jobs to every queue"
+        } ],
+        "documentation" : { }
+      }, {
+        "id" : "8",
+        "tags" : "Element,Container",
+        "properties" : {
+          "structurizr.dsl.identifier" : "analyzercontainer"
+        },
+        "name" : "Analyzer",
+        "description" : "Performs analysis on dataset data to create analyses.",
+        "relationships" : [ {
+          "id" : "21",
+          "tags" : "Relationship",
+          "sourceId" : "8",
+          "destinationId" : "7",
+          "description" : "Get Analysis Jobs"
+        }, {
+          "id" : "22",
+          "tags" : "Relationship",
+          "sourceId" : "8",
+          "destinationId" : "9",
+          "description" : "Store analyses"
+        } ],
+        "group" : "Analyzers",
+        "documentation" : { }
+      }, {
+        "id" : "12",
+        "tags" : "Element,Container",
+        "properties" : {
+          "structurizr.dsl.identifier" : "recommendercontainer"
+        },
+        "name" : "Recommender",
+        "description" : "Provides recommendations based on editor data and analyses.",
+        "relationships" : [ {
+          "id" : "26",
+          "tags" : "Relationship",
+          "sourceId" : "12",
+          "destinationId" : "9",
+          "description" : "Get analyses"
+        } ],
+        "group" : "Recommenders",
         "documentation" : { }
       } ],
       "documentation" : { }
@@ -204,73 +227,73 @@
     "containerViews" : [ {
       "key" : "SystemContainerView",
       "order" : 1,
-      "softwareSystemId" : "1",
+      "softwareSystemId" : "3",
       "dimensions" : {
-        "width" : 2940,
-        "height" : 2781
+        "width" : 3100,
+        "height" : 2251
       },
       "externalSoftwareSystemBoundariesVisible" : true,
       "elements" : [ {
         "id" : "11",
-        "x" : 1965,
-        "y" : 1645
+        "x" : 1625,
+        "y" : 1634
       }, {
         "id" : "12",
-        "x" : 330,
-        "y" : 2005
+        "x" : 2410,
+        "y" : 1369
+      }, {
+        "id" : "13",
+        "x" : 885,
+        "y" : 1659
+      }, {
+        "id" : "1",
+        "x" : 205,
+        "y" : 1610
       }, {
         "id" : "2",
-        "x" : 495,
-        "y" : 285
-      }, {
-        "id" : "3",
-        "x" : 1405,
-        "y" : 340
+        "x" : 210,
+        "y" : 205
       }, {
         "id" : "4",
-        "x" : 2290,
-        "y" : 405
+        "x" : 1470,
+        "y" : 244
       }, {
         "id" : "5",
-        "x" : 505,
-        "y" : 775
+        "x" : 2245,
+        "y" : 300
       }, {
         "id" : "6",
-        "x" : 1335,
-        "y" : 910
+        "x" : 760,
+        "y" : 624
       }, {
         "id" : "7",
-        "x" : 2220,
-        "y" : 1085
+        "x" : 1495,
+        "y" : 694
       }, {
         "id" : "8",
-        "x" : 1115,
-        "y" : 1475
+        "x" : 2320,
+        "y" : 794
       }, {
         "id" : "9",
-        "x" : 290,
-        "y" : 1485
+        "x" : 1520,
+        "y" : 1164
       }, {
         "id" : "10",
-        "x" : 1220,
-        "y" : 1980
+        "x" : 820,
+        "y" : 1169
       } ],
       "relationships" : [ {
         "id" : "18"
       }, {
-        "id" : "17"
-      }, {
         "id" : "16"
       }, {
-        "id" : "15",
-        "vertices" : [ {
-          "x" : 1226,
-          "y" : 800
-        } ]
+        "id" : "26"
       }, {
         "id" : "14"
       }, {
-        "id" : "13"
+        "id" : "25"
+      }, {
+        "id" : "24"
       }, {
         "id" : "23"
       }, {
@@ -280,11 +303,7 @@
       }, {
         "id" : "20"
       }, {
-        "id" : "19",
-        "vertices" : [ {
-          "x" : 1460,
-          "y" : 825
-        } ]
+        "id" : "19"
       } ]
     } ],
     "configuration" : {
@@ -307,7 +326,6 @@
       },
       "themes" : [ "https://static.structurizr.com/themes/default/theme.json" ],
       "terminology" : { },
-      "metadataSymbols" : "SquareBrackets",
       "lastSavedView" : "SystemContainerView"
     }
   }

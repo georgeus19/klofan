@@ -1,31 +1,36 @@
 workspace {
 
     model {
-        softwareSystem = softwareSystem "Software System" "My software system." {
 
+        user = person "User" "Wants to transform data to RDF"
+        admin = person "Administrator"
 
-            catalogUIContainer = container "Catalog UI" "Application for storing data to catalog and viewing them."
+        softwareSystem = softwareSystem "Klofan" "My software system." {
 
-            catalogContainer = container "Catalog" "Server for storing RDF data and providing recommendations." {
-                catalogComponent = component "Data Uploader" "Uploads RDF data to database along with any analyzed metadata."
-                recommendersComponent = component "Recommenders" "Provides recommendations for users data in editor."
-                analyzersComponent = component "Analyzers" "Analyzes RDF data uploaded and stores metadata/index about them."
+            catalogContainer = container "Catalog" "Manages RDF data and provides recommendations to editor." {
+                catalogComponent = component "Dataset Manager" "Manages datasets (and their data) and notifies analyzers."
+                group Recommenders {
+                    recommendersComponent = component "Recommender" "Provides recommendations based on editor data and analyses."
+                }
+                group Analyzers {
+                    analyzersComponent = component "Analyzer" "Performs analysis on dataset data to create analyses."
+                }
             }
 
-            rdfStoreContainer = container "Uploaded RDF & Metadata Triplestore" "Store original uploaded rdf data and any metadata from analyzers." "Virtuoso"
+            rdfStoreContainer = container "RDF Triplestore" "Stores datasets, dataset data and analyses." "Virtuoso"
 
-            editorContainer = container "Editor" "Editor application which helps use transform their data to RDF with suitable vocabularies."
+            editorContainer = container "Editor" "Provides transformation environment to transform structured data to RDF."
 
         }
 
-        catalogUIContainer -> catalogComponent "Upload RDF and view uploads"
+        user -> editorContainer "Transform data to RDF"
+        admin -> catalogComponent "Upload datasets"
 
         catalogComponent -> analyzersComponent "Analyze uploaded data"
-        recommendersComponent -> analyzersComponent "Get metadata queries"
 
-        catalogComponent -> rdfStoreContainer "Upload and fetch RDF data and its metadata"
+        catalogComponent -> rdfStoreContainer "Store and fetch datasets, dataset data, analyses"
         analyzersComponent -> rdfStoreContainer "Access uploaded data for analysis"
-        recommendersComponent -> rdfStoreContainer "Access uploaded data for recommendations"
+        recommendersComponent -> rdfStoreContainer "Get analyses for recommendations"
 
         editorContainer -> recommendersComponent "Get recommendations"
 
