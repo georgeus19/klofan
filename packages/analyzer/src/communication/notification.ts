@@ -1,6 +1,7 @@
 import z from 'zod';
 import axios from 'axios';
 import { logAxiosError, ObservabilityTools } from '@klofan/server-utils';
+import { SERVER_ENV } from '@klofan/config/env/server';
 
 export type AnalysisNotification = AnalysisDoneProvoNotification;
 
@@ -11,6 +12,8 @@ export async function sendAnalysisNotification(
 ): Promise<void> {
     return axios
         .post(notification.url, data, {
+            timeout: SERVER_ENV.NOTIFICATION_TIMEOUT,
+            timeoutErrorMessage: `Timed out when sending notification to ${notification.url}`,
             headers: {
                 'Content-Type': 'application/ld+json',
             },
