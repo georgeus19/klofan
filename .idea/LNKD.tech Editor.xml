@@ -175,4 +175,25 @@
       </map>
     </option>
   </component>
+  <component name="http://lnkd.tech/editor#GraphVisibilityConfig">
+    <option name="visibility">
+      <map>
+        <entry key="GENERAL">
+          <value>
+            <Visibility />
+          </value>
+        </entry>
+        <entry key="SHACL_DATA">
+          <value>
+            <Visibility />
+          </value>
+        </entry>
+        <entry key="SHACL_SHAPES">
+          <value>
+            <Visibility />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
 </project>

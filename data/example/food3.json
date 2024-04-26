@@ -1,0 +1,41 @@
+[
+    {
+        "product": {
+            "_id": "0737628064502",
+            "product_name": "Thai peanut noodle kit",
+            "countries": ["United States"],
+            "nutriments": {
+                "carbohydrates_100g": 71.15,
+                "carbohydrates_unit": "g",
+                "energy-kcal_100g": 385.0,
+                "energy-kcal_unit": "kcal"
+            }
+        }
+    },
+       {
+        "product": {
+            "_id": "0737628064503",
+            "product_name": "Snickers bar",
+            "countries": ["Canada", "Czechia"],
+            "nutriments": {
+                "carbohydrates_100g": 90.15,
+                "carbohydrates_unit": "g",
+                "energy-kcal_100g": 383.0,
+                "energy-kcal_unit": "kcal"
+            }
+        }
+    },
+       {
+        "product": {
+            "_id": "0737628064504",
+            "product_name": "Milka chocolate",
+            "countries": ["Canada", "Czechia"],
+            "nutriments": {
+                "carbohydrates_100g": 52.15,
+                "carbohydrates_unit": "g",
+                "energy-kcal_100g": 343.0,
+                "energy-kcal_unit": "kcal"
+            }
+        }
+    }
+]
