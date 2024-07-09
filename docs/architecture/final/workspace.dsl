@@ -7,28 +7,44 @@ workspace {
 
         softwareSystem = softwareSystem "Klofan" "Klofan software system." {
 
-            catalogContainer = container "Catalog" "Manages datasets and notifies analyzers."
-            catalogStore = container "Dataset Triplestore" "Stores datasets (metadata)." "Virtuoso"
+            catalogContainer = container "Catalog" "Manages datasets and notifies analyzers." {
+                tags "Catalog" "NodejsServer"
+            }
+            catalogStore = container "Dataset Triplestore" "Stores datasets (metadata)." "Virtuoso" 
 
-            analyzerManagerContainer = container "Analyzer Manager" "Manages analyzers and saves their analyses and their metadata."
+            analyzerManagerContainer = container "Analyzer Manager" "Manages analyzers and saves their analyses and their metadata." {
+                tags "NodejsServer"
+            }
 
             group "Analysis Job Queues" {
-                analyzerQueueContainer = container "Analysis Job Queue" "Queues jobs to analyze datasets." "Redis"
+                analyzerQueueContainer = container "Analysis Job Queue" "Queues jobs to analyze datasets." "Redis" 
             }
 
             group Analyzers {
-                analyzerContainer = container "Analyzer" "Performs analysis on dataset data to create analyses."
+                analyzerContainer = container "Analyzer" "Performs analysis on dataset data to create analyses." {
+                    tags "Analyzer" "NodejsServer"
+                }
             }
 
-            analysisStoreContainer = container "Analyses Store" "Stores analyses and provides access to them."
-            analysesDatabaseContainer = container "Analyses Database" "Stores analyses." "MongoDB"
+            analysisStoreContainer = container "Analyses Store" "Stores analyses and provides access to them." {
+                tags "AnalysisStore" "NodejsServer"
+            }
+            analysesDatabaseContainer = container "Analyses Database" "Stores analyses." "MongoDB" {
+                tags "AnalysisStore" 
+            }
  
-            recommenderManagerContainer = container "Recommender Manager" "Manage recommenders for recommending in editor."
+            recommenderManagerContainer = container "Recommender Manager" "Manage recommenders for recommending in editor." {
+                tags "NodejsServer"
+            }
             group Recommenders {
-                recommenderContainer = container "Recommender" "Provides recommendations based on editor data and analyses."
+                recommenderContainer = container "Recommender" "Provides recommendations based on editor data and analyses." {
+                    tags "Recommenders" "NodejsServer"
+                }
             }
 
-            editorContainer = container "Editor" "Provides transformation environment to transform structured data to RDF."
+            editorContainer = container "Editor" "Provides transformation environment to transform structured data to RDF." {
+                tags "Editor" 
+            }
         }
 
         user -> editorContainer "Transform data to RDF"
@@ -59,6 +75,8 @@ workspace {
      styles {
         element "Element" {
             fontSize 32
+            color #01204E
+            background #999999
         }
 
         relationship "Relationship" {
@@ -69,13 +87,11 @@ workspace {
             fontSize 30
         }
 
-           element "Existing System" {
-                background #999999
-            }
+        element "Analyzer" {
+            background #DC5F00
 
+        }
     }
-
-        
 
     theme default
 

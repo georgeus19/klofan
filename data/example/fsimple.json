@@ -1,0 +1,20 @@
+[
+    {
+        "id": "01",
+        "product_name": "Thai peanut noodles",
+        "countries": ["United States"],
+        "nutrients": {
+            "carbohydrates_100g": 71.15,
+            "carbohydrates_unit": "g"
+        }
+    },
+    {
+        "id": "02",
+        "product_name": "Snickers bar",
+        "countries": ["Canada", "Czechia"],
+        "nutrients": {
+            "carbohydrates_100g": 90.15,
+            "carbohydrates_unit": "g"
+        }
+    }
+]

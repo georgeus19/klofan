@@ -14,9 +14,11 @@ workspace {
             }
         }
 
-        schemaComponent -> parseComponent "Can load from"
-        instancesComponent -> parseComponent "Can load from"
-   
+        schemaComponent -> parseComponent "Load from"
+        
+        instancesComponent -> parseComponent "Load from"
+        instancesComponent -> schemaComponent "Access schema"
+
         transformComponent -> schemaComponent "Access schema"
         transformComponent -> instancesComponent "Access instances"
 

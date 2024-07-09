@@ -2,9 +2,9 @@
   "id" : 1,
   "name" : "Name",
   "description" : "Description",
-  "lastModifiedDate" : "2024-04-21T08:40:42Z",
+  "lastModifiedDate" : "2024-06-10T23:16:11Z",
   "properties" : {
-    "structurizr.dsl" : "d29ya3NwYWNlIHsKCiAgICBtb2RlbCB7CgogICAgICAgIHVzZXIgPSBwZXJzb24gIlVzZXIiICJXYW50cyB0byB0cmFuc2Zvcm0gZGF0YSB0byBSREYiCiAgICAgICAgYWRtaW4gPSBwZXJzb24gIkFkbWluaXN0cmF0b3IiCgogICAgICAgIHNvZnR3YXJlU3lzdGVtID0gc29mdHdhcmVTeXN0ZW0gIktsb2ZhbiIgIktsb2ZhbiBzb2Z0d2FyZSBzeXN0ZW0uIiB7CgogICAgICAgICAgICBjYXRhbG9nQ29udGFpbmVyID0gY29udGFpbmVyICJDYXRhbG9nIiAiTWFuYWdlcyBkYXRhc2V0cyBhbmQgbm90aWZpZXMgYW5hbHl6ZXJzLiIKICAgICAgICAgICAgY2F0YWxvZ1N0b3JlID0gY29udGFpbmVyICJEYXRhc2V0IFRyaXBsZXN0b3JlIiAiU3RvcmVzIGRhdGFzZXRzIChtZXRhZGF0YSkuIiAiVmlydHVvc28iCgogICAgICAgICAgICBhbmFseXplck1hbmFnZXJDb250YWluZXIgPSBjb250YWluZXIgIkFuYWx5emVyIE1hbmFnZXIiICJNYW5hZ2VzIGFuYWx5emVycyBhbmQgc2F2ZXMgdGhlaXIgYW5hbHlzZXMgYW5kIHRoZWlyIG1ldGFkYXRhLiIKCiAgICAgICAgICAgIGdyb3VwICJBbmFseXNpcyBKb2IgUXVldWVzIiB7CiAgICAgICAgICAgICAgICBhbmFseXplclF1ZXVlQ29udGFpbmVyID0gY29udGFpbmVyICJBbmFseXNpcyBKb2IgUXVldWUiICJRdWV1ZXMgam9icyB0byBhbmFseXplIGRhdGFzZXRzLiIgIlJlZGlzIgogICAgICAgICAgICB9CgogICAgICAgICAgICBncm91cCBBbmFseXplcnMgewogICAgICAgICAgICAgICAgYW5hbHl6ZXJDb250YWluZXIgPSBjb250YWluZXIgIkFuYWx5emVyIiAiUGVyZm9ybXMgYW5hbHlzaXMgb24gZGF0YXNldCBkYXRhIHRvIGNyZWF0ZSBhbmFseXNlcy4iCiAgICAgICAgICAgIH0KCiAgICAgICAgICAgIGFuYWx5c2lzU3RvcmVDb250YWluZXIgPSBjb250YWluZXIgIkFuYWx5c2VzIFN0b3JlIiAiU3RvcmVzIGFuYWx5c2VzIGFuZCBwcm92aWRlcyBhY2Nlc3MgdG8gdGhlbS4iCiAgICAgICAgICAgIGFuYWx5c2VzRGF0YWJhc2VDb250YWluZXIgPSBjb250YWluZXIgIkFuYWx5c2VzIERhdGFiYXNlIiAiU3RvcmVzIGFuYWx5c2VzLiIgIk1vbmdvREIiCiAKICAgICAgICAgICAgcmVjb21tZW5kZXJNYW5hZ2VyQ29udGFpbmVyID0gY29udGFpbmVyICJSZWNvbW1lbmRlciBNYW5hZ2VyIiAiTWFuYWdlIHJlY29tbWVuZGVycyBmb3IgcmVjb21tZW5kaW5nIGluIGVkaXRvci4iCiAgICAgICAgICAgIGdyb3VwIFJlY29tbWVuZGVycyB7CiAgICAgICAgICAgICAgICByZWNvbW1lbmRlckNvbnRhaW5lciA9IGNvbnRhaW5lciAiUmVjb21tZW5kZXIiICJQcm92aWRlcyByZWNvbW1lbmRhdGlvbnMgYmFzZWQgb24gZWRpdG9yIGRhdGEgYW5kIGFuYWx5c2VzLiIKICAgICAgICAgICAgfQoKICAgICAgICAgICAgZWRpdG9yQ29udGFpbmVyID0gY29udGFpbmVyICJFZGl0b3IiICJQcm92aWRlcyB0cmFuc2Zvcm1hdGlvbiBlbnZpcm9ubWVudCB0byB0cmFuc2Zvcm0gc3RydWN0dXJlZCBkYXRhIHRvIFJERi4iCiAgICAgICAgfQoKICAgICAgICB1c2VyIC0+IGVkaXRvckNvbnRhaW5lciAiVHJhbnNmb3JtIGRhdGEgdG8gUkRGIgogICAgICAgIGFkbWluIC0+IGNhdGFsb2dDb250YWluZXIgIlVwbG9hZCBkYXRhc2V0cyIKCiAgICAgICAgY2F0YWxvZ0NvbnRhaW5lciAtPiBjYXRhbG9nU3RvcmUgIlN0b3JlIHVwbG9hZGVkIGRhdGFzZXRzIgogICAgICAgIGNhdGFsb2dDb250YWluZXIgLT4gYW5hbHl6ZXJNYW5hZ2VyQ29udGFpbmVyICJTZW5kIGRhdGFzZXRzIHRvIGFuYWx5emUiCgogICAgICAgIGFuYWx5emVyTWFuYWdlckNvbnRhaW5lciAtPiBhbmFseXplclF1ZXVlQ29udGFpbmVyICJTZW5kIGFuYWx5c2lzIGpvYnMgdG8gZXZlcnkgcXVldWUiCiAgICAgICAgYW5hbHl6ZXJDb250YWluZXIgLT4gYW5hbHl6ZXJRdWV1ZUNvbnRhaW5lciAiR2V0IEFuYWx5c2lzIEpvYnMiCiAgICAgICAgYW5hbHl6ZXJDb250YWluZXIgLT4gYW5hbHlzaXNTdG9yZUNvbnRhaW5lciAgIlN0b3JlIGFuYWx5c2VzIgogICAgICAgIGFuYWx5c2lzU3RvcmVDb250YWluZXIgLT4gYW5hbHlzZXNEYXRhYmFzZUNvbnRhaW5lciAiU3RvcmUgYW5hbHlzZXMiCgogICAgICAgIGVkaXRvckNvbnRhaW5lciAtPiByZWNvbW1lbmRlck1hbmFnZXJDb250YWluZXIgIkdldHMgcmVjb21tZW5kYXRpb25zIgogICAgICAgIHJlY29tbWVuZGVyTWFuYWdlckNvbnRhaW5lciAtPiByZWNvbW1lbmRlckNvbnRhaW5lciAiR2V0IHJlY29tbWVuZGF0aW9ucyIKICAgICAgICByZWNvbW1lbmRlckNvbnRhaW5lciAtPiBhbmFseXNpc1N0b3JlQ29udGFpbmVyICJHZXQgYW5hbHlzZXMiCgogICAgfQoKICAgIHZpZXdzIHsKCiAgICAgICAgY29udGFpbmVyIHNvZnR3YXJlU3lzdGVtICJTeXN0ZW1Db250YWluZXJWaWV3IiB7CiAgICAgICAgICAgIGluY2x1ZGUgKgogICAgICAgIH0KCiAgICAgICAgCgogICAgIHN0eWxlcyB7CiAgICAgICAgZWxlbWVudCAiRWxlbWVudCIgewogICAgICAgICAgICBmb250U2l6ZSAzMgogICAgICAgIH0KCiAgICAgICAgcmVsYXRpb25zaGlwICJSZWxhdGlvbnNoaXAiIHsKICAgICAgICAgICAgZm9udFNpemUgMzAKICAgICAgICB9CgogICAgICAgIGVsZW1lbnQgIkdyb3VwIiB7CiAgICAgICAgICAgIGZvbnRTaXplIDMwCiAgICAgICAgfQoKICAgICAgICAgICBlbGVtZW50ICJFeGlzdGluZyBTeXN0ZW0iIHsKICAgICAgICAgICAgICAgIGJhY2tncm91bmQgIzk5OTk5OQogICAgICAgICAgICB9CgogICAgfQoKICAgICAgICAKCiAgICB0aGVtZSBkZWZhdWx0CgogICAgfQogICAgCn0K"
+    "structurizr.dsl" : "d29ya3NwYWNlIHsKCiAgICBtb2RlbCB7CgogICAgICAgIHVzZXIgPSBwZXJzb24gIlVzZXIiICJXYW50cyB0byB0cmFuc2Zvcm0gZGF0YSB0byBSREYiCiAgICAgICAgYWRtaW4gPSBwZXJzb24gIkFkbWluaXN0cmF0b3IiCgogICAgICAgIHNvZnR3YXJlU3lzdGVtID0gc29mdHdhcmVTeXN0ZW0gIktsb2ZhbiIgIktsb2ZhbiBzb2Z0d2FyZSBzeXN0ZW0uIiB7CgogICAgICAgICAgICBjYXRhbG9nQ29udGFpbmVyID0gY29udGFpbmVyICJDYXRhbG9nIiAiTWFuYWdlcyBkYXRhc2V0cyBhbmQgbm90aWZpZXMgYW5hbHl6ZXJzLiIgewogICAgICAgICAgICAgICAgdGFncyAiQ2F0YWxvZyIgIk5vZGVqc1NlcnZlciIKICAgICAgICAgICAgfQogICAgICAgICAgICBjYXRhbG9nU3RvcmUgPSBjb250YWluZXIgIkRhdGFzZXQgVHJpcGxlc3RvcmUiICJTdG9yZXMgZGF0YXNldHMgKG1ldGFkYXRhKS4iICJWaXJ0dW9zbyIgCgogICAgICAgICAgICBhbmFseXplck1hbmFnZXJDb250YWluZXIgPSBjb250YWluZXIgIkFuYWx5emVyIE1hbmFnZXIiICJNYW5hZ2VzIGFuYWx5emVycyBhbmQgc2F2ZXMgdGhlaXIgYW5hbHlzZXMgYW5kIHRoZWlyIG1ldGFkYXRhLiIgewogICAgICAgICAgICAgICAgdGFncyAiTm9kZWpzU2VydmVyIgogICAgICAgICAgICB9CgogICAgICAgICAgICBncm91cCAiQW5hbHlzaXMgSm9iIFF1ZXVlcyIgewogICAgICAgICAgICAgICAgYW5hbHl6ZXJRdWV1ZUNvbnRhaW5lciA9IGNvbnRhaW5lciAiQW5hbHlzaXMgSm9iIFF1ZXVlIiAiUXVldWVzIGpvYnMgdG8gYW5hbHl6ZSBkYXRhc2V0cy4iICJSZWRpcyIgCiAgICAgICAgICAgIH0KCiAgICAgICAgICAgIGdyb3VwIEFuYWx5emVycyB7CiAgICAgICAgICAgICAgICBhbmFseXplckNvbnRhaW5lciA9IGNvbnRhaW5lciAiQW5hbHl6ZXIiICJQZXJmb3JtcyBhbmFseXNpcyBvbiBkYXRhc2V0IGRhdGEgdG8gY3JlYXRlIGFuYWx5c2VzLiIgewogICAgICAgICAgICAgICAgICAgIHRhZ3MgIkFuYWx5emVyIiAiTm9kZWpzU2VydmVyIgogICAgICAgICAgICAgICAgfQogICAgICAgICAgICB9CgogICAgICAgICAgICBhbmFseXNpc1N0b3JlQ29udGFpbmVyID0gY29udGFpbmVyICJBbmFseXNlcyBTdG9yZSIgIlN0b3JlcyBhbmFseXNlcyBhbmQgcHJvdmlkZXMgYWNjZXNzIHRvIHRoZW0uIiB7CiAgICAgICAgICAgICAgICB0YWdzICJBbmFseXNpc1N0b3JlIiAiTm9kZWpzU2VydmVyIgogICAgICAgICAgICB9CiAgICAgICAgICAgIGFuYWx5c2VzRGF0YWJhc2VDb250YWluZXIgPSBjb250YWluZXIgIkFuYWx5c2VzIERhdGFiYXNlIiAiU3RvcmVzIGFuYWx5c2VzLiIgIk1vbmdvREIiIHsKICAgICAgICAgICAgICAgIHRhZ3MgIkFuYWx5c2lzU3RvcmUiIAogICAgICAgICAgICB9CiAKICAgICAgICAgICAgcmVjb21tZW5kZXJNYW5hZ2VyQ29udGFpbmVyID0gY29udGFpbmVyICJSZWNvbW1lbmRlciBNYW5hZ2VyIiAiTWFuYWdlIHJlY29tbWVuZGVycyBmb3IgcmVjb21tZW5kaW5nIGluIGVkaXRvci4iIHsKICAgICAgICAgICAgICAgIHRhZ3MgIk5vZGVqc1NlcnZlciIKICAgICAgICAgICAgfQogICAgICAgICAgICBncm91cCBSZWNvbW1lbmRlcnMgewogICAgICAgICAgICAgICAgcmVjb21tZW5kZXJDb250YWluZXIgPSBjb250YWluZXIgIlJlY29tbWVuZGVyIiAiUHJvdmlkZXMgcmVjb21tZW5kYXRpb25zIGJhc2VkIG9uIGVkaXRvciBkYXRhIGFuZCBhbmFseXNlcy4iIHsKICAgICAgICAgICAgICAgICAgICB0YWdzICJSZWNvbW1lbmRlcnMiICJOb2RlanNTZXJ2ZXIiCiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgIH0KCiAgICAgICAgICAgIGVkaXRvckNvbnRhaW5lciA9IGNvbnRhaW5lciAiRWRpdG9yIiAiUHJvdmlkZXMgdHJhbnNmb3JtYXRpb24gZW52aXJvbm1lbnQgdG8gdHJhbnNmb3JtIHN0cnVjdHVyZWQgZGF0YSB0byBSREYuIiB7CiAgICAgICAgICAgICAgICB0YWdzICJFZGl0b3IiIAogICAgICAgICAgICB9CiAgICAgICAgfQoKICAgICAgICB1c2VyIC0+IGVkaXRvckNvbnRhaW5lciAiVHJhbnNmb3JtIGRhdGEgdG8gUkRGIgogICAgICAgIGFkbWluIC0+IGNhdGFsb2dDb250YWluZXIgIlVwbG9hZCBkYXRhc2V0cyIKCiAgICAgICAgY2F0YWxvZ0NvbnRhaW5lciAtPiBjYXRhbG9nU3RvcmUgIlN0b3JlIHVwbG9hZGVkIGRhdGFzZXRzIgogICAgICAgIGNhdGFsb2dDb250YWluZXIgLT4gYW5hbHl6ZXJNYW5hZ2VyQ29udGFpbmVyICJTZW5kIGRhdGFzZXRzIHRvIGFuYWx5emUiCgogICAgICAgIGFuYWx5emVyTWFuYWdlckNvbnRhaW5lciAtPiBhbmFseXplclF1ZXVlQ29udGFpbmVyICJTZW5kIGFuYWx5c2lzIGpvYnMgdG8gZXZlcnkgcXVldWUiCiAgICAgICAgYW5hbHl6ZXJDb250YWluZXIgLT4gYW5hbHl6ZXJRdWV1ZUNvbnRhaW5lciAiR2V0IEFuYWx5c2lzIEpvYnMiCiAgICAgICAgYW5hbHl6ZXJDb250YWluZXIgLT4gYW5hbHlzaXNTdG9yZUNvbnRhaW5lciAgIlN0b3JlIGFuYWx5c2VzIgogICAgICAgIGFuYWx5c2lzU3RvcmVDb250YWluZXIgLT4gYW5hbHlzZXNEYXRhYmFzZUNvbnRhaW5lciAiU3RvcmUgYW5hbHlzZXMiCgogICAgICAgIGVkaXRvckNvbnRhaW5lciAtPiByZWNvbW1lbmRlck1hbmFnZXJDb250YWluZXIgIkdldHMgcmVjb21tZW5kYXRpb25zIgogICAgICAgIHJlY29tbWVuZGVyTWFuYWdlckNvbnRhaW5lciAtPiByZWNvbW1lbmRlckNvbnRhaW5lciAiR2V0IHJlY29tbWVuZGF0aW9ucyIKICAgICAgICByZWNvbW1lbmRlckNvbnRhaW5lciAtPiBhbmFseXNpc1N0b3JlQ29udGFpbmVyICJHZXQgYW5hbHlzZXMiCgogICAgfQoKICAgIHZpZXdzIHsKCiAgICAgICAgY29udGFpbmVyIHNvZnR3YXJlU3lzdGVtICJTeXN0ZW1Db250YWluZXJWaWV3IiB7CiAgICAgICAgICAgIGluY2x1ZGUgKgogICAgICAgIH0KCiAgICAgICAgCgogICAgIHN0eWxlcyB7CiAgICAgICAgZWxlbWVudCAiRWxlbWVudCIgewogICAgICAgICAgICBmb250U2l6ZSAzMgogICAgICAgICAgICBjb2xvciAjMDEyMDRFCiAgICAgICAgICAgIGJhY2tncm91bmQgIzk5OTk5OQogICAgICAgIH0KCiAgICAgICAgcmVsYXRpb25zaGlwICJSZWxhdGlvbnNoaXAiIHsKICAgICAgICAgICAgZm9udFNpemUgMzAKICAgICAgICB9CgogICAgICAgIGVsZW1lbnQgIkdyb3VwIiB7CiAgICAgICAgICAgIGZvbnRTaXplIDMwCiAgICAgICAgfQoKICAgICAgICBlbGVtZW50ICJBbmFseXplciIgewogICAgICAgICAgICBiYWNrZ3JvdW5kICNEQzVGMDAKCiAgICAgICAgfQogICAgfQoKICAgIHRoZW1lIGRlZmF1bHQKCiAgICB9CiAgICAKfQo="
   },
   "configuration" : { },
   "model" : {
@@ -62,125 +62,8 @@
       "description" : "Klofan software system.",
       "location" : "Unspecified",
       "containers" : [ {
-        "id" : "13",
-        "tags" : "Element,Container",
-        "properties" : {
-          "structurizr.dsl.identifier" : "editorcontainer"
-        },
-        "name" : "Editor",
-        "description" : "Provides transformation environment to transform structured data to RDF.",
-        "relationships" : [ {
-          "id" : "24",
-          "tags" : "Relationship",
-          "sourceId" : "13",
-          "destinationId" : "11",
-          "description" : "Gets recommendations"
-        } ],
-        "documentation" : { }
-      }, {
-        "id" : "4",
-        "tags" : "Element,Container",
-        "properties" : {
-          "structurizr.dsl.identifier" : "catalogcontainer"
-        },
-        "name" : "Catalog",
-        "description" : "Manages datasets and notifies analyzers.",
-        "relationships" : [ {
-          "id" : "18",
-          "tags" : "Relationship",
-          "sourceId" : "4",
-          "destinationId" : "5",
-          "description" : "Store uploaded datasets"
-        }, {
-          "id" : "19",
-          "tags" : "Relationship",
-          "sourceId" : "4",
-          "destinationId" : "6",
-          "description" : "Send datasets to analyze"
-        } ],
-        "documentation" : { }
-      }, {
-        "id" : "7",
-        "tags" : "Element,Container",
-        "properties" : {
-          "structurizr.dsl.identifier" : "analyzerqueuecontainer"
-        },
-        "name" : "Analysis Job Queue",
-        "description" : "Queues jobs to analyze datasets.",
-        "group" : "Analysis Job Queues",
-        "technology" : "Redis",
-        "documentation" : { }
-      }, {
-        "id" : "9",
-        "tags" : "Element,Container",
-        "properties" : {
-          "structurizr.dsl.identifier" : "analysisstorecontainer"
-        },
-        "name" : "Analyses Store",
-        "description" : "Stores analyses and provides access to them.",
-        "relationships" : [ {
-          "id" : "23",
-          "tags" : "Relationship",
-          "sourceId" : "9",
-          "destinationId" : "10",
-          "description" : "Store analyses"
-        } ],
-        "documentation" : { }
-      }, {
-        "id" : "11",
-        "tags" : "Element,Container",
-        "properties" : {
-          "structurizr.dsl.identifier" : "recommendermanagercontainer"
-        },
-        "name" : "Recommender Manager",
-        "description" : "Manage recommenders for recommending in editor.",
-        "relationships" : [ {
-          "id" : "25",
-          "tags" : "Relationship",
-          "sourceId" : "11",
-          "destinationId" : "12",
-          "description" : "Get recommendations"
-        } ],
-        "documentation" : { }
-      }, {
-        "id" : "10",
-        "tags" : "Element,Container",
-        "properties" : {
-          "structurizr.dsl.identifier" : "analysesdatabasecontainer"
-        },
-        "name" : "Analyses Database",
-        "description" : "Stores analyses.",
-        "technology" : "MongoDB",
-        "documentation" : { }
-      }, {
-        "id" : "5",
-        "tags" : "Element,Container",
-        "properties" : {
-          "structurizr.dsl.identifier" : "catalogstore"
-        },
-        "name" : "Dataset Triplestore",
-        "description" : "Stores datasets (metadata).",
-        "technology" : "Virtuoso",
-        "documentation" : { }
-      }, {
-        "id" : "6",
-        "tags" : "Element,Container",
-        "properties" : {
-          "structurizr.dsl.identifier" : "analyzermanagercontainer"
-        },
-        "name" : "Analyzer Manager",
-        "description" : "Manages analyzers and saves their analyses and their metadata.",
-        "relationships" : [ {
-          "id" : "20",
-          "tags" : "Relationship",
-          "sourceId" : "6",
-          "destinationId" : "7",
-          "description" : "Send analysis jobs to every queue"
-        } ],
-        "documentation" : { }
-      }, {
         "id" : "8",
-        "tags" : "Element,Container",
+        "tags" : "Element,Container,Analyzer,NodejsServer",
         "properties" : {
           "structurizr.dsl.identifier" : "analyzercontainer"
         },
@@ -203,7 +86,7 @@
         "documentation" : { }
       }, {
         "id" : "12",
-        "tags" : "Element,Container",
+        "tags" : "Element,Container,Recommenders,NodejsServer",
         "properties" : {
           "structurizr.dsl.identifier" : "recommendercontainer"
         },
@@ -217,6 +100,123 @@
           "description" : "Get analyses"
         } ],
         "group" : "Recommenders",
+        "documentation" : { }
+      }, {
+        "id" : "7",
+        "tags" : "Element,Container",
+        "properties" : {
+          "structurizr.dsl.identifier" : "analyzerqueuecontainer"
+        },
+        "name" : "Analysis Job Queue",
+        "description" : "Queues jobs to analyze datasets.",
+        "group" : "Analysis Job Queues",
+        "technology" : "Redis",
+        "documentation" : { }
+      }, {
+        "id" : "13",
+        "tags" : "Element,Container,Editor",
+        "properties" : {
+          "structurizr.dsl.identifier" : "editorcontainer"
+        },
+        "name" : "Editor",
+        "description" : "Provides transformation environment to transform structured data to RDF.",
+        "relationships" : [ {
+          "id" : "24",
+          "tags" : "Relationship",
+          "sourceId" : "13",
+          "destinationId" : "11",
+          "description" : "Gets recommendations"
+        } ],
+        "documentation" : { }
+      }, {
+        "id" : "9",
+        "tags" : "Element,Container,AnalysisStore,NodejsServer",
+        "properties" : {
+          "structurizr.dsl.identifier" : "analysisstorecontainer"
+        },
+        "name" : "Analyses Store",
+        "description" : "Stores analyses and provides access to them.",
+        "relationships" : [ {
+          "id" : "23",
+          "tags" : "Relationship",
+          "sourceId" : "9",
+          "destinationId" : "10",
+          "description" : "Store analyses"
+        } ],
+        "documentation" : { }
+      }, {
+        "id" : "5",
+        "tags" : "Element,Container",
+        "properties" : {
+          "structurizr.dsl.identifier" : "catalogstore"
+        },
+        "name" : "Dataset Triplestore",
+        "description" : "Stores datasets (metadata).",
+        "technology" : "Virtuoso",
+        "documentation" : { }
+      }, {
+        "id" : "6",
+        "tags" : "Element,Container,NodejsServer",
+        "properties" : {
+          "structurizr.dsl.identifier" : "analyzermanagercontainer"
+        },
+        "name" : "Analyzer Manager",
+        "description" : "Manages analyzers and saves their analyses and their metadata.",
+        "relationships" : [ {
+          "id" : "20",
+          "tags" : "Relationship",
+          "sourceId" : "6",
+          "destinationId" : "7",
+          "description" : "Send analysis jobs to every queue"
+        } ],
+        "documentation" : { }
+      }, {
+        "id" : "4",
+        "tags" : "Element,Container,Catalog,NodejsServer",
+        "properties" : {
+          "structurizr.dsl.identifier" : "catalogcontainer"
+        },
+        "name" : "Catalog",
+        "description" : "Manages datasets and notifies analyzers.",
+        "relationships" : [ {
+          "id" : "18",
+          "tags" : "Relationship",
+          "sourceId" : "4",
+          "destinationId" : "5",
+          "description" : "Store uploaded datasets"
+        }, {
+          "id" : "19",
+          "tags" : "Relationship",
+          "sourceId" : "4",
+          "destinationId" : "6",
+          "description" : "Send datasets to analyze"
+        } ],
+        "documentation" : { }
+      }, {
+        "id" : "10",
+        "tags" : "Element,Container,AnalysisStore",
+        "properties" : {
+          "structurizr.dsl.identifier" : "analysesdatabasecontainer"
+        },
+        "name" : "Analyses Database",
+        "description" : "Stores analyses.",
+        "technology" : "MongoDB",
+        "documentation" : { }
+      }, {
+        "id" : "11",
+        "tags" : "Element,Container,NodejsServer",
+        "properties" : {
+          "structurizr.dsl.identifier" : "recommendermanagercontainer"
+        },
+        "name" : "Recommender Manager",
+        "description" : "Manage recommenders for recommending in editor.",
+        "relationships" : [ {
+          "id" : "25",
+          "tags" : "Relationship",
+          "sourceId" : "11",
+          "destinationId" : "12",
+          "description" : "Get recommendations"
+        } ],
         "documentation" : { }
       } ],
       "documentation" : { }
@@ -311,13 +311,15 @@
       "styles" : {
         "elements" : [ {
           "tag" : "Element",
+          "background" : "#999999",
+          "color" : "#01204e",
           "fontSize" : 32
         }, {
           "tag" : "Group",
           "fontSize" : 30
         }, {
-          "tag" : "Existing System",
-          "background" : "#999999"
+          "tag" : "Analyzer",
+          "background" : "#dc5f00"
         } ],
         "relationships" : [ {
           "tag" : "Relationship",

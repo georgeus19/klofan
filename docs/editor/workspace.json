@@ -2,10 +2,10 @@
   "id" : 1,
   "name" : "Name",
   "description" : "Description",
-  "lastModifiedDate" : "2024-04-23T09:04:38Z",
+  "lastModifiedDate" : "2024-05-01T18:41:08Z",
   "lastModifiedAgent" : "structurizr-javascript",
   "properties" : {
-    "structurizr.dsl" : "d29ya3NwYWNlIHsKCiAgICBtb2RlbCB7CiAgICAgICAgc29mdHdhcmVTeXN0ZW0gPSBzb2Z0d2FyZVN5c3RlbSAiS2xvZmFuIiAiTXkgc29mdHdhcmUgc3lzdGVtLiIgewoKCiAgICAgICAgICAgIHVzZXJDb250YWluZXIgPSBjb250YWluZXIgIkVkaXRvci9SZWNvbW1lbmRlciIKICAgICAgICAgICAgCiAgICAgICAgICAgIGZyb250ZW5kQ29udGFpbmVyID0gY29udGFpbmVyICJEYXRhIFJlcHJlc2VudGF0aW9uInsKICAgICAgICAgICAgICAgIHBhcnNlQ29tcG9uZW50ID0gY29tcG9uZW50ICJQYXJzZSIgIlBhcnNlcyBzdHJ1Y3R1cmVkIGRhdGEuIgogICAgICAgICAgICAgICAgdHJhbnNmb3JtQ29tcG9uZW50ID0gY29tcG9uZW50ICJUcmFuc2Zvcm0iICJQcm92aWRlcyBmYWN0b3JpZXMgZm9yIHRyYW5zZm9ybWF0aW9ucyBvbiBzY2hlbWEgYW5kIGluc3RhbmNlcy4iCiAgICAgICAgICAgICAgICBzY2hlbWFDb21wb25lbnQgPSBjb21wb25lbnQgIlNjaGVtYSIgIkVuY2Fwc3VsYXRlcyBzY2hlbWEgbG9naWMuIgogICAgICAgICAgICAgICAgaW5zdGFuY2VzQ29tcG9uZW50ID0gY29tcG9uZW50ICJJbnN0YW5jZXMiICJFbmNhcHN1bGF0ZXMgaW5zdGFuY2VzIGxvZ2ljLiIKICAgICAgICAgICAgfQogICAgICAgIH0KCiAgICAgICAgc2NoZW1hQ29tcG9uZW50IC0+IHBhcnNlQ29tcG9uZW50ICJDYW4gbG9hZCBmcm9tIgogICAgICAgIGluc3RhbmNlc0NvbXBvbmVudCAtPiBwYXJzZUNvbXBvbmVudCAiQ2FuIGxvYWQgZnJvbSIKICAgCiAgICAgICAgdHJhbnNmb3JtQ29tcG9uZW50IC0+IHNjaGVtYUNvbXBvbmVudCAiQWNjZXNzIHNjaGVtYSIKICAgICAgICB0cmFuc2Zvcm1Db21wb25lbnQgLT4gaW5zdGFuY2VzQ29tcG9uZW50ICJBY2Nlc3MgaW5zdGFuY2VzIgoKICAgIH0KCiAgICB2aWV3cyB7CgogICAgICAgIGNvbnRhaW5lciBzb2Z0d2FyZVN5c3RlbSAiU3lzdGVtQ29udGFpbmVyVmlldyIgewogICAgICAgICAgICBpbmNsdWRlICoKICAgICAgICB9CgogICAgICAgIGNvbXBvbmVudCBmcm9udGVuZENvbnRhaW5lciAiRnJvbnRlbmRDb21wb25lbnRWaWV3IiB7CiAgICAgICAgICAgIGluY2x1ZGUgKgogICAgICAgIH0KCiAgICAgICAgCgogICAgIHN0eWxlcyB7CiAgICAgICAgZWxlbWVudCAiRWxlbWVudCIgewogICAgICAgICAgICBmb250U2l6ZSAzMgogICAgICAgIH0KCiAgICAgICAgcmVsYXRpb25zaGlwICJSZWxhdGlvbnNoaXAiIHsKICAgICAgICAgICAgZm9udFNpemUgMzAKICAgICAgICB9CgogICAgICAgIGVsZW1lbnQgIkdyb3VwIiB7CiAgICAgICAgICAgIGZvbnRTaXplIDMwCiAgICAgICAgfQoKICAgICAgICAgICBlbGVtZW50ICJFeGlzdGluZyBTeXN0ZW0iIHsKICAgICAgICAgICAgICAgIGJhY2tncm91bmQgIzk5OTk5OQogICAgICAgICAgICB9CgogICAgfQoKICAgICAgICAKCiAgICB0aGVtZSBkZWZhdWx0CgogICAgfQogICAgCn0K"
+    "structurizr.dsl" : "d29ya3NwYWNlIHsKCiAgICBtb2RlbCB7CiAgICAgICAgc29mdHdhcmVTeXN0ZW0gPSBzb2Z0d2FyZVN5c3RlbSAiS2xvZmFuIiAiTXkgc29mdHdhcmUgc3lzdGVtLiIgewoKCiAgICAgICAgICAgIHVzZXJDb250YWluZXIgPSBjb250YWluZXIgIkVkaXRvci9SZWNvbW1lbmRlciIKICAgICAgICAgICAgCiAgICAgICAgICAgIGZyb250ZW5kQ29udGFpbmVyID0gY29udGFpbmVyICJEYXRhIFJlcHJlc2VudGF0aW9uInsKICAgICAgICAgICAgICAgIHBhcnNlQ29tcG9uZW50ID0gY29tcG9uZW50ICJQYXJzZSIgIlBhcnNlcyBzdHJ1Y3R1cmVkIGRhdGEuIgogICAgICAgICAgICAgICAgdHJhbnNmb3JtQ29tcG9uZW50ID0gY29tcG9uZW50ICJUcmFuc2Zvcm0iICJQcm92aWRlcyBmYWN0b3JpZXMgZm9yIHRyYW5zZm9ybWF0aW9ucyBvbiBzY2hlbWEgYW5kIGluc3RhbmNlcy4iCiAgICAgICAgICAgICAgICBzY2hlbWFDb21wb25lbnQgPSBjb21wb25lbnQgIlNjaGVtYSIgIkVuY2Fwc3VsYXRlcyBzY2hlbWEgbG9naWMuIgogICAgICAgICAgICAgICAgaW5zdGFuY2VzQ29tcG9uZW50ID0gY29tcG9uZW50ICJJbnN0YW5jZXMiICJFbmNhcHN1bGF0ZXMgaW5zdGFuY2VzIGxvZ2ljLiIKICAgICAgICAgICAgfQogICAgICAgIH0KCiAgICAgICAgc2NoZW1hQ29tcG9uZW50IC0+IHBhcnNlQ29tcG9uZW50ICJDYW4gbG9hZCBmcm9tIgogICAgICAgIGluc3RhbmNlc0NvbXBvbmVudCAtPiBwYXJzZUNvbXBvbmVudCAiQ2FuIGxvYWQgZnJvbSIKICAgICAgICBpbnN0YW5jZXNDb21wb25lbnQgLT4gc2NoZW1hQ29tcG9uZW50ICJBY2Nlc3Mgc2NoZW1hIgogICAgICAgIHRyYW5zZm9ybUNvbXBvbmVudCAtPiBzY2hlbWFDb21wb25lbnQgIkFjY2VzcyBzY2hlbWEiCiAgICAgICAgdHJhbnNmb3JtQ29tcG9uZW50IC0+IGluc3RhbmNlc0NvbXBvbmVudCAiQWNjZXNzIGluc3RhbmNlcyIKCiAgICB9CgogICAgdmlld3MgewoKICAgICAgICBjb250YWluZXIgc29mdHdhcmVTeXN0ZW0gIlN5c3RlbUNvbnRhaW5lclZpZXciIHsKICAgICAgICAgICAgaW5jbHVkZSAqCiAgICAgICAgfQoKICAgICAgICBjb21wb25lbnQgZnJvbnRlbmRDb250YWluZXIgIkZyb250ZW5kQ29tcG9uZW50VmlldyIgewogICAgICAgICAgICBpbmNsdWRlICoKICAgICAgICB9CgogICAgICAgIAoKICAgICBzdHlsZXMgewogICAgICAgIGVsZW1lbnQgIkVsZW1lbnQiIHsKICAgICAgICAgICAgZm9udFNpemUgMzIKICAgICAgICB9CgogICAgICAgIHJlbGF0aW9uc2hpcCAiUmVsYXRpb25zaGlwIiB7CiAgICAgICAgICAgIGZvbnRTaXplIDMwCiAgICAgICAgfQoKICAgICAgICBlbGVtZW50ICJHcm91cCIgewogICAgICAgICAgICBmb250U2l6ZSAzMAogICAgICAgIH0KCiAgICAgICAgICAgZWxlbWVudCAiRXhpc3RpbmcgU3lzdGVtIiB7CiAgICAgICAgICAgICAgICBiYWNrZ3JvdW5kICM5OTk5OTkKICAgICAgICAgICAgfQoKICAgIH0KCiAgICAgICAgCgogICAgdGhlbWUgZGVmYXVsdAoKICAgIH0KICAgIAp9Cg=="
   },
   "configuration" : { },
   "model" : {
@@ -19,14 +19,6 @@
       "description" : "My software system.",
       "location" : "Unspecified",
       "containers" : [ {
-        "id" : "2",
-        "tags" : "Element,Container",
-        "properties" : {
-          "structurizr.dsl.identifier" : "usercontainer"
-        },
-        "name" : "Editor/Recommender",
-        "documentation" : { }
-      }, {
         "id" : "3",
         "tags" : "Element,Container",
         "properties" : {
@@ -34,6 +26,28 @@
         },
         "name" : "Data Representation",
         "components" : [ {
+          "id" : "5",
+          "tags" : "Element,Component",
+          "properties" : {
+            "structurizr.dsl.identifier" : "transformcomponent"
+          },
+          "name" : "Transform",
+          "description" : "Provides factories for transformations on schema and instances.",
+          "relationships" : [ {
+            "id" : "11",
+            "tags" : "Relationship",
+            "sourceId" : "5",
+            "destinationId" : "6",
+            "description" : "Access schema"
+          }, {
+            "id" : "12",
+            "tags" : "Relationship",
+            "sourceId" : "5",
+            "destinationId" : "7",
+            "description" : "Access instances"
+          } ],
+          "documentation" : { }
+        }, {
           "id" : "4",
           "tags" : "Element,Component",
           "properties" : {
@@ -59,28 +73,6 @@
           } ],
           "documentation" : { }
         }, {
-          "id" : "5",
-          "tags" : "Element,Component",
-          "properties" : {
-            "structurizr.dsl.identifier" : "transformcomponent"
-          },
-          "name" : "Transform",
-          "description" : "Provides factories for transformations on schema and instances.",
-          "relationships" : [ {
-            "id" : "10",
-            "tags" : "Relationship",
-            "sourceId" : "5",
-            "destinationId" : "6",
-            "description" : "Access schema"
-          }, {
-            "id" : "11",
-            "tags" : "Relationship",
-            "sourceId" : "5",
-            "destinationId" : "7",
-            "description" : "Access instances"
-          } ],
-          "documentation" : { }
-        }, {
           "id" : "7",
           "tags" : "Element,Component",
           "properties" : {
@@ -89,6 +81,12 @@
           "name" : "Instances",
           "description" : "Encapsulates instances logic.",
           "relationships" : [ {
+            "id" : "10",
+            "tags" : "Relationship",
+            "sourceId" : "7",
+            "destinationId" : "6",
+            "description" : "Access schema"
+          }, {
             "id" : "9",
             "tags" : "Relationship",
             "sourceId" : "7",
@@ -97,6 +95,14 @@
           } ],
           "documentation" : { }
         } ],
+        "documentation" : { }
+      }, {
+        "id" : "2",
+        "tags" : "Element,Container",
+        "properties" : {
+          "structurizr.dsl.identifier" : "usercontainer"
+        },
+        "name" : "Editor/Recommender",
         "documentation" : { }
       } ],
       "documentation" : { }
@@ -144,15 +150,17 @@
         "y" : 695
       }, {
         "id" : "6",
-        "x" : 1015,
-        "y" : 510
+        "x" : 1025,
+        "y" : 500
       }, {
         "id" : "7",
-        "x" : 1015,
-        "y" : 875
+        "x" : 1025,
+        "y" : 990
       } ],
       "relationships" : [ {
         "id" : "11"
+      }, {
+        "id" : "12"
       }, {
         "id" : "8"
       }, {
