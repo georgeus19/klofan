@@ -1,10 +1,10 @@
 import { useCallback } from 'react';
 import { BaseEdge, EdgeLabelRenderer, EdgeProps, getBezierPath, useStore } from 'reactflow';
-import { usePrefixesContext } from '../../prefixes/prefixes-context';
+import { usePrefixesContext } from '../../../prefixes/prefixes-context.tsx';
 import { PropertySet, toPropertySet } from '@klofan/schema/representation';
-import { getEdgeParams } from '../../diagram/utils';
+import { getEdgeParams } from '../../../diagram/utils.ts';
 import { useDiagramContext } from './diagram-context.tsx';
-import { useRecommendationsContext } from '../recommendations-context.tsx';
+import { useRecommendationsContext } from '../../recommendations-context.tsx';
 import { twMerge } from 'tailwind-merge';
 
 export default function PropertySetEdge({

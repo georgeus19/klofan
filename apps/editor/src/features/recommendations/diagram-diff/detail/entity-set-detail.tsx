@@ -1,9 +1,9 @@
-import { useDiagramContext } from '../diagram/diagram-context';
-import { Header } from '../../manual-actions-pane/utils/header';
-import { EntityView } from '../../utils/entity-view.tsx';
-import { VirtualList } from '../../utils/virtual-list.tsx';
-import { useEntities } from '../../utils/use-entities.ts';
-import { LabelReadonlyUriInput } from '../../manual-actions-pane/utils/uri/label-readonly-uri-input.tsx';
+import { useDiagramContext } from '../diagram/diagram-context.tsx';
+import { Header } from '../../../manual-actions-pane/utils/header.tsx';
+import { EntityView } from '../../../utils/entity-view.tsx';
+import { VirtualList } from '../../../utils/virtual-list.tsx';
+import { useEntities } from '../../../utils/use-entities.ts';
+import { LabelReadonlyUriInput } from '../../../manual-actions-pane/utils/uri/label-readonly-uri-input.tsx';
 import { twMerge } from 'tailwind-merge';
 
 export type ShownDetailProps = {

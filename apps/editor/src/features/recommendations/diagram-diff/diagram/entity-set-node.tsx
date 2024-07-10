@@ -7,9 +7,9 @@ import {
     toPropertySet,
 } from '@klofan/schema/representation';
 import { twMerge } from 'tailwind-merge';
-import { usePrefixesContext } from '../../prefixes/prefixes-context';
-import { useDiagramContext } from './diagram-context';
-import { useRecommendationsContext } from '../recommendations-context';
+import { usePrefixesContext } from '../../../prefixes/prefixes-context.tsx';
+import { useDiagramContext } from './diagram-context.tsx';
+import { useRecommendationsContext } from '../../recommendations-context.tsx';
 
 export default function EntitySetNode({
     id,

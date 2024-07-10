@@ -1,9 +1,9 @@
 import { RawInstances } from '@klofan/instances/representation';
-import { Recommendation } from '@klofan/recommender/recommendation';
+import { IdentifiableRecommendation } from '@klofan/recommender/recommendation';
 import { RawSchema } from '@klofan/schema/representation';
 import { RawDiagram, SchemaEdge, SchemaNode } from '../diagram/raw-diagram';
-import EntitySetNode from './diagram/entity-set-node.tsx';
-import PropertySetEdge from './diagram/property-set-edge.tsx';
+import EntitySetNode from './diagram-diff/diagram/entity-set-node.tsx';
+import PropertySetEdge from './diagram-diff/diagram/property-set-edge.tsx';
 import { useState } from 'react';
 import { useEditorContext } from '../editor/editor-context';
 import { reflectSchema } from '../diagram/reflect-schema/reflect-schema';
@@ -23,6 +23,7 @@ import { ENTITY_SET_NODE } from '../diagram/nodes/entity-set-node.tsx';
 import { PROPERTY_SET_EDGE } from '../diagram/edges/property-set-edge.tsx';
 import { NodeSelection, useNodeSelection } from '../diagram/use-node-selection.ts';
 import { TransformSchemaAndInstances } from '../editor/update-operations/transform-schema-and-instances-operation.ts';
+import * as _ from 'lodash';
 
 export type RecommendationDiagram = {
     nodes: SchemaNode[];
@@ -33,16 +34,21 @@ export type RecommendationDiagram = {
 };
 
 export type Recommendations = {
-    recommendations: Recommendation[];
+    categories: IdentifiableRecommendation['category'][];
+    selectCategory: (category: IdentifiableRecommendation['category']) => void;
+    selectedRecommendations: {
+        category: IdentifiableRecommendation['category'];
+        recommendations: IdentifiableRecommendation[];
+    };
+    recommendationsLoadState: 'loading' | 'loaded' | 'before-load' | 'no-recommendations-yielded';
     getRecommendations: () => Promise<void>;
     deleteRecommendations: () => void;
-    applyRecommendation: (recommendation: Recommendation) => Promise<void>;
-    showRecommendationDetail: (recommendation: Recommendation, index: number) => Promise<void>;
+    applyRecommendation: (recommendation: IdentifiableRecommendation) => Promise<void>;
+    showRecommendationDetail: (recommendation: IdentifiableRecommendation) => Promise<void>;
     hideRecommendationDetail: () => void;
     shownRecommendationDetail?: {
-        recommendation: Recommendation;
+        recommendation: IdentifiableRecommendation;
         changes: TransformationChanges;
-        recommendationIndex: number;
         old: {
             schema: Schema;
             instances: InMemoryInstances;
@@ -57,9 +63,8 @@ export type Recommendations = {
 };
 
 type RawRecommendationDetail = {
-    recommendation: Recommendation;
+    recommendation: IdentifiableRecommendation;
     changes: TransformationChanges;
-    recommendationIndex: number;
     old: {
         schema: RawSchema;
         instances: RawInstances;
@@ -77,16 +82,35 @@ export const nodeTypes = { [ENTITY_SET_NODE]: EntitySetNode };
 export const edgeTypes = { [PROPERTY_SET_EDGE]: PropertySetEdge };
 
 export function useRecommendations(): Recommendations {
-    const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
+    const [recommendations, setRecommendations] = useState<{
+        [recommenderType: string]: IdentifiableRecommendation[];
+    }>({});
+    const [selectedCategory, setSelectedCategory] = useState<
+        IdentifiableRecommendation['category']
+    >({
+        name: 'expert',
+    });
+
+    const [recommendationsLoadState, setRecommendationsLoadingState] = useState<
+        'loading' | 'loaded' | 'before-load' | 'no-recommendations-yielded'
+    >('before-load');
+
     const [selectedRecommendation, setSelectedRecommendation] =
         useState<RawRecommendationDetail | null>(null);
-    const { schema, instances, updateSchemaAndInstances, diagram, runOperations } =
-        useEditorContext();
+    const { schema, instances, diagram, runOperations } = useEditorContext();
     const oldPropertySetSelection = usePropertySetSelection();
     const newPropertySetSelection = usePropertySetSelection();
     const oldNodeSelection = useNodeSelection();
     const newNodeSelection = useNodeSelection();
 
+    const categories = Object.values(recommendations)
+        .filter((rs) => rs.at(0))
+        .map((rs) => rs[0].category);
+
+    const selectedRecommendations = {
+        category: selectedCategory,
+        recommendations: recommendations[selectedCategory.name] ?? [],
+    };
     const getRecommendations = (): Promise<void> => {
         deleteRecommendations();
         const url = '/api/v1/recommend';
@@ -101,16 +125,26 @@ export function useRecommendations(): Recommendations {
             }),
         };
 
+        setRecommendationsLoadingState('loading');
+
         return fetch(url, fetchOptions)
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);
-                setRecommendations(data);
+                const r: IdentifiableRecommendation[] = data;
+                if (r.length > 0) {
+                    setRecommendationsLoadingState('loaded');
+                    setRecommendations(_.groupBy(r, (r) => r.category.name));
+                } else {
+                    setRecommendationsLoadingState('no-recommendations-yielded');
+                    setRecommendations({});
+                }
             });
     };
 
     const deleteRecommendations = () => {
-        setRecommendations([]);
+        setRecommendationsLoadingState('before-load');
+        setRecommendations({});
         setSelectedRecommendation(null);
         oldPropertySetSelection.clearSelectedPropertySet();
         oldNodeSelection.clearSelectedNode();
@@ -118,7 +152,7 @@ export function useRecommendations(): Recommendations {
         newNodeSelection.clearSelectedNode();
     };
 
-    const showRecommendationDetail = async (recommendation: Recommendation, index: number) => {
+    const showRecommendationDetail = async (recommendation: IdentifiableRecommendation) => {
         const old = {
             schema: schema.raw(),
             instances: instances.raw() as RawInstances,
@@ -171,7 +205,6 @@ export function useRecommendations(): Recommendations {
                 items: itemChanges,
                 relations: relationChanges,
             },
-            recommendationIndex: index,
             old: old,
             new: n,
         });
@@ -210,7 +243,6 @@ export function useRecommendations(): Recommendations {
         ? {
               recommendation: selectedRecommendation.recommendation,
               changes: selectedRecommendation.changes,
-              recommendationIndex: selectedRecommendation.recommendationIndex,
               old: {
                   schema: new Schema(selectedRecommendation.old.schema),
                   instances: new InMemoryInstances(selectedRecommendation.old.instances),
@@ -236,7 +268,7 @@ export function useRecommendations(): Recommendations {
           }
         : undefined;
 
-    const applyRecommendation = async (recommendation: Recommendation) => {
+    const applyRecommendation = async (recommendation: IdentifiableRecommendation) => {
         const operations: TransformSchemaAndInstances[] = recommendation.transformations.map(
             (transformation) => ({
                 type: 'transform-schema-and-instances',
@@ -248,8 +280,15 @@ export function useRecommendations(): Recommendations {
         });
     };
 
+    const selectCategory = (category: IdentifiableRecommendation['category']) => {
+        setSelectedCategory(category);
+    };
+
     return {
-        recommendations,
+        categories: categories,
+        selectCategory: selectCategory,
+        selectedRecommendations: selectedRecommendations,
+        recommendationsLoadState,
         getRecommendations,
         deleteRecommendations,
         applyRecommendation,

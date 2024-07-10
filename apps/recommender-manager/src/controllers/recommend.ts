@@ -18,6 +18,7 @@ export const recommend = endpointErrorHandler(
         const { body } = await parseRequest(requestSchema, request);
 
         let noError = false;
+
         const recommendations: Recommendation[] = await Promise.allSettled(
             SERVER_ENV.recommenderUrls.map((url) => axios.post(`${url}/api/v1/recommend`, body))
         ).then((results) =>
@@ -30,6 +31,7 @@ export const recommend = endpointErrorHandler(
                 return [];
             })
         );
+        await new Promise((f) => setTimeout(f, 2000));
         // logger.info(recommendations);
         response.status(200).send(recommendations);
     }

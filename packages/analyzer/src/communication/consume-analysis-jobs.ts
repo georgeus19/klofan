@@ -33,9 +33,25 @@ export async function consumeAnalysisJobs({
 }) {
     const datasetMetadataQueue = new RedisBlockingQueue<DatasetAnalysisJob>(redisOptions, jobQueue);
     while (true) {
+        // The following value of analysis job is never used since the first action is to set it from the queue. Howver, it the pop fails,
+        // some value needs to be set for the catch error branch.
+        let analysisJob: DatasetAnalysisJob = {
+            dataset: {
+                iri: 'http://dummy-dataset-uri.dummy',
+                distributions: [
+                    {
+                        iri: 'http://dummy-dist-uri.dummy',
+                        downloadUrl: 'http://dummy-download.dummy',
+                        mimeType: 'application/ld+json',
+                        mediaType: '',
+                    },
+                ],
+            },
+            notifications: [],
+        };
         try {
             // Wait indefinitely for datasets to be added to dataset queue.
-            const analysisJob: DatasetAnalysisJob = await datasetMetadataQueue.pop();
+            analysisJob = await datasetMetadataQueue.pop();
             logger.info(`Analyzing dataset ${analysisJob.dataset.iri}`);
 
             const analyses: Analysis[] = (await analyze(analysisJob.dataset)).map((analysis) => {
@@ -85,7 +101,10 @@ export async function consumeAnalysisJobs({
                 }
             }
         } catch (e) {
-            logger.error('Unknown error occurred in analyzer.', e);
+            logger.error(
+                `Error occurred in analyzer - ${(e as any).message ?? 'no error message'}`,
+                { error: e, analysisJob: analysisJob }
+            );
         }
     }
 }

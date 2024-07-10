@@ -3,7 +3,7 @@ import { EntitySetDetail } from './detail/entity-set-detail.tsx';
 import { EntityPropertySetDetail } from './detail/entity-property-set-detail.tsx';
 import { LiteralPropertySetDetail } from './detail/literal-property-set-detail.tsx';
 import ReactFlow, { Background, BackgroundVariant, ReactFlowProvider } from 'reactflow';
-import { edgeTypes, nodeTypes, Recommendations } from './use-recommendations.ts';
+import { edgeTypes, nodeTypes, Recommendations } from '../use-recommendations.ts';
 
 export type RecommendationDetailProps = Required<
     Pick<Recommendations, 'shownRecommendationDetail'>

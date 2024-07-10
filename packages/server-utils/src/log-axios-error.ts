@@ -14,9 +14,15 @@ export function processAxiosError(error: any, options?: Options) {
             headers: error.response.headers,
         };
     } else if (error.request) {
+        if (error.code === 'ECONNABORTED') {
+            return {
+                type: 'request-error',
+                message: 'Request timed out (aborted).',
+            };
+        }
         return {
             type: 'request-error',
-            message: 'Request sent but no response was received.',
+            message: (error.message ?? '') + ' - Request sent but no response was received.',
         };
     } else {
         return {

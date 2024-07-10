@@ -36,7 +36,7 @@ export async function recommendDate({
     const replacementPattern = '$3-$2-$1';
 
     const description = `Proposing to change czech date format DD.MM.YYYY to standard xsd:dateTime YYYY-MM-DD.`;
-    const category = 'Date';
+    const area = 'Date';
     const recommendations: Recommendation[] = literalProperties
         .filter(
             ({ properties }) =>
@@ -59,9 +59,9 @@ export async function recommendDate({
                         },
                     }),
                 ],
-                category,
+                area: area,
+                category: { name: 'expert' },
                 description,
-                recommenderType: 'Expert',
             };
         });
 

@@ -236,14 +236,14 @@ export async function recommendFoodOntology({
                         .transformations();
                     return {
                         transformations: transformations,
-                        category: 'Nutrients',
+                        area: 'Nutrients',
                         description: `
                             Found ${name} nutritional information in data. Recommending nutrition properties from Food Ontology. 
                             |
                             Food Ontology is built on top of Good Relations. It extends gr:Product with food:Food which
                             has nutrition properties such as food:carbohydratesPer100g extending gr:quantitativeProductOrServiceProperty.
                             `,
-                        recommenderType: 'Expert',
+                        category: { name: 'expert' },
                         recommendedTerms: [
                             uri,
                             'http://purl.org/goodrelations/v1#hasValueFloat',

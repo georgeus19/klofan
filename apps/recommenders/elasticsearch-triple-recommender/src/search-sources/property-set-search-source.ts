@@ -45,8 +45,8 @@ The recommended type is taken from the predicate if it is a property (rdfs:Prope
                             predicateType
                         ),
                     ],
-                    category: 'Uri',
-                    recommenderType: 'General',
+                    area: 'Uri',
+                    category: { name: 'fulltext' },
                     recommendedTerms: [predicateType],
                     mainSchemaMatch: this.propertySet.id,
                     score: hit._score ?? undefined,

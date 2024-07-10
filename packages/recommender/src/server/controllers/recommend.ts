@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { Schema } from '@klofan/schema';
 import { InMemoryInstances, Instances } from '@klofan/instances';
 import { Recommendation } from '../../recommendation/recommendation';
+import { v4 as uuidv4 } from 'uuid';
 
 const requestSchema = z.object({
     body: z.object({
@@ -12,7 +13,12 @@ const requestSchema = z.object({
     }),
 });
 
-export const recommendEndpoint = (recommend: (editorData: { schema: Schema; instances: Instances }) => Promise<Recommendation[]>) =>
+export const recommendEndpoint = (
+    recommend: (editorData: {
+        schema: Schema;
+        instances: Instances;
+    }) => Promise<Omit<Recommendation, 'id'>[]>
+) =>
     endpointErrorHandler(async (request: Request, response: Response, next: NextFunction) => {
         const { body } = await parseRequest(requestSchema, request);
 
@@ -20,7 +26,7 @@ export const recommendEndpoint = (recommend: (editorData: { schema: Schema; inst
             schema: new Schema(body.schema as any),
             instances: new InMemoryInstances(body.instances as any),
         };
-        const recommendations: Recommendation[] = await recommend(editorData);
+        const recommendations: Omit<Recommendation, 'id'>[] = await recommend(editorData);
 
-        response.status(200).send(recommendations);
+        response.status(200).send(recommendations.map((r) => ({ ...r, id: uuidv4() })));
     });

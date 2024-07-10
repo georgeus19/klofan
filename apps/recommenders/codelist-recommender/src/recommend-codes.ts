@@ -74,8 +74,8 @@ export async function recommendCodes({
                                 },
                                 { deleteOriginalLiterals: true }
                             ),
-                        category: 'Code List',
-                        recommenderType: 'Expert',
+                        area: 'Code List',
+                        category: { name: 'expert' },
                         description: 'Recommend code list values based on matched literals.',
                         recommendedTerms: matchingCodes.map((code) => code.iri),
                         related: [

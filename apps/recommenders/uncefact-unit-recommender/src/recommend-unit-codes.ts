@@ -54,11 +54,11 @@ export async function recommendUnitCodes({
             return [
                 {
                     transformations: transformations,
-                    category: 'Unit',
+                    area: 'Unit',
                     description: `
                             Recommending UN/CEFACT codes for units in ${propertySet.name} properties. 
                             `,
-                    recommenderType: 'Expert',
+                    category: { name: 'expert' },
                     related: [
                         {
                             name: 'Popular UN/CEFACT codes',

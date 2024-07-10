@@ -50,9 +50,9 @@ The recommended type is taken from the subject if it is a class in an ontology o
                             }
                         ),
                     ],
-                    category: 'Type',
+                    area: 'Type',
                     recommendedTerms: [subjectType],
-                    recommenderType: 'General',
+                    category: { name: 'fulltext' },
                     mainSchemaMatch: this.entitySet.id,
                     score: hit._score ?? undefined,
                     description: description,

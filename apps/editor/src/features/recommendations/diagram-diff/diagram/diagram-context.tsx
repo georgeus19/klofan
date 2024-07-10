@@ -1,5 +1,9 @@
 import { ReactNode, createContext, useContext } from 'react';
-import { RecommendationDiagram, Recommendations, useRecommendations } from '../use-recommendations';
+import {
+    RecommendationDiagram,
+    Recommendations,
+    useRecommendations,
+} from '../../use-recommendations.ts';
 import { Instances } from '@klofan/instances';
 import { Schema } from '@klofan/schema';
 
@@ -11,7 +15,13 @@ type DiagramContextType = {
 
 const DiagramContext = createContext<DiagramContextType | null>(null);
 
-export function DiagramContextProvider({ children, value }: { children: ReactNode; value: DiagramContextType }) {
+export function DiagramContextProvider({
+    children,
+    value,
+}: {
+    children: ReactNode;
+    value: DiagramContextType;
+}) {
     return <DiagramContext.Provider value={value}>{children}</DiagramContext.Provider>;
 }
 

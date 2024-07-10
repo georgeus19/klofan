@@ -1,12 +1,12 @@
-import { useDiagramContext } from '../diagram/diagram-context';
-import { Header } from '../../manual-actions-pane/utils/header';
-import { ReadonlyInput } from '../../manual-actions-pane/utils/general-label-input/readonly-input.tsx';
-import { VirtualList } from '../../utils/virtual-list.tsx';
-import { toUri } from '../../manual-actions-pane/utils/uri/use-uri-input.ts';
-import { usePrefixesContext } from '../../prefixes/prefixes-context.tsx';
-import { useEntities } from '../../utils/use-entities.ts';
+import { useDiagramContext } from '../diagram/diagram-context.tsx';
+import { Header } from '../../../manual-actions-pane/utils/header.tsx';
+import { ReadonlyInput } from '../../../manual-actions-pane/utils/general-label-input/readonly-input.tsx';
+import { VirtualList } from '../../../utils/virtual-list.tsx';
+import { toUri } from '../../../manual-actions-pane/utils/uri/use-uri-input.ts';
+import { usePrefixesContext } from '../../../prefixes/prefixes-context.tsx';
+import { useEntities } from '../../../utils/use-entities.ts';
 import { literalView } from '@klofan/instances/representation';
-import { LabelReadonlyUriInput } from '../../manual-actions-pane/utils/uri/label-readonly-uri-input.tsx';
+import { LabelReadonlyUriInput } from '../../../manual-actions-pane/utils/uri/label-readonly-uri-input.tsx';
 
 export type ShownDetailProps = {
     height: string;

@@ -14,7 +14,10 @@ export type RecommenderServerOptions = {
 };
 
 export function runRecommenderServer(
-    recommend: (editorData: { schema: Schema; instances: Instances }) => Promise<Recommendation[]>,
+    recommend: (editorData: {
+        schema: Schema;
+        instances: Instances;
+    }) => Promise<Omit<Recommendation, 'id'>[]>,
     { port, requestLimit, logger }: RecommenderServerOptions
 ) {
     const app: Express = express();

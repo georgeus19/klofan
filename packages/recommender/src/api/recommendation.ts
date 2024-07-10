@@ -1,1 +1,1 @@
-export type { Recommendation } from '../recommendation/recommendation';
+export type { Recommendation, IdentifiableRecommendation } from '../recommendation/recommendation';

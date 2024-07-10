@@ -3,7 +3,7 @@ import { ManualActionsPane } from '../manual-actions-pane/manual-actions-pane';
 import { Help } from '../help/help';
 import { EditorContextProvider } from './editor-context';
 import { Diagram } from '../diagram/diagram';
-import { RecommendationsPane } from '../recommendations/recommendations-pane';
+import { RecommendationsPane } from '../recommendations/pane/recommendations-pane.tsx';
 import { RecommendationsContextProvider } from '../recommendations/recommendations-context';
 import { ManualActionsSelect } from '../manual-actions-select/manual-actions-select.tsx';
 import { RecommendationsErrorBoundary } from '../recommendations/error/recommendations-error-boundary.tsx';
