@@ -13,6 +13,9 @@ export default {
             },
 
         },
+        animation: {
+            'spin-slow': 'spin 1.6s linear infinite',
+        }
     },
     plugins: [],
 };

@@ -9,6 +9,7 @@ import { useErrorBoundary } from 'react-error-boundary';
 import { Recommendation } from '@klofan/recommender/recommendation';
 import { VirtualList } from '../../utils/virtual-list.tsx';
 import { RecommendationsList } from './recommendations-list.tsx';
+import { Buffering } from '../../utils/buffering.tsx';
 
 export type RecommendationsPaneProps = {
     className?: string;
@@ -58,7 +59,11 @@ export function RecommendationsPane({ className }: RecommendationsPaneProps) {
                         }}
                     ></RecommendationsList>
                 )}
-                {recommendationsLoadState === 'loading' && <div>Loading recommendations</div>}
+                {recommendationsLoadState === 'loading' && (
+                    <div>
+                        <Buffering className='p-2' alt='Loading recommendations...'></Buffering>
+                    </div>
+                )}
                 {recommendationsLoadState === 'no-recommendations-yielded' && (
                     <div className='text-center text-lg'>No suitable recommendations found.</div>
                 )}
