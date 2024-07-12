@@ -22,6 +22,7 @@ export function RecommendationsPane({ className }: RecommendationsPaneProps) {
 
     const {
         showRecommendationDetail,
+        selectedRecommendations,
         recommendationsLoadState,
         shownRecommendationDetail,
         getRecommendations,
@@ -36,11 +37,19 @@ export function RecommendationsPane({ className }: RecommendationsPaneProps) {
                 <Header label='Recommendations'></Header>
                 <button
                     className='rounded shadow bg-blue-200 hover:bg-blue-300 p-2 w-96'
-                    onClick={() => getRecommendations().catch((error) => showBoundary(error))}
+                    onClick={() => {
+                        try {
+                            getRecommendations();
+                        } catch (error) {
+                            showBoundary(error);
+                        }
+                    }}
                 >
                     Get Recommendations
                 </button>
-                {recommendationsLoadState === 'loaded' && (
+                {(recommendationsLoadState.type === 'loaded' ||
+                    (recommendationsLoadState.type === 'loading' &&
+                        recommendationsLoadState.recommendationsPresent)) && (
                     <RecommendationsList
                         showOption={showOption}
                         onRecommendationDescriptionClick={(recommendation) => {
@@ -59,12 +68,12 @@ export function RecommendationsPane({ className }: RecommendationsPaneProps) {
                         }}
                     ></RecommendationsList>
                 )}
-                {recommendationsLoadState === 'loading' && (
+                {recommendationsLoadState.type === 'loading' && (
                     <div>
                         <Buffering className='p-2' alt='Loading recommendations...'></Buffering>
                     </div>
                 )}
-                {recommendationsLoadState === 'no-recommendations-yielded' && (
+                {recommendationsLoadState.type === 'no-recommendations-yielded' && (
                     <div className='text-center text-lg'>No suitable recommendations found.</div>
                 )}
             </div>

@@ -1,17 +1,46 @@
-import express, { Express } from 'express';
-import bodyParser from 'body-parser';
-import cors from 'cors';
-import { recommend } from './controllers/recommend';
 import { SERVER_ENV } from '@klofan/config/env/server';
 import { createLogger } from '@klofan/config/logger';
+import { WebSocket, WebSocketServer } from 'ws';
+import { parseInput } from '@klofan/server-utils';
+import axios from 'axios';
+import { z } from 'zod';
+import { IdentifiableRecommendation } from '@klofan/recommender/recommendation';
 
-const app: Express = express();
+const wss = new WebSocketServer({ port: SERVER_ENV.RECOMMENDER_MANAGER_PORT });
 export const logger = createLogger();
-app.use(cors());
-app.use(bodyParser.json({ limit: SERVER_ENV.RECOMMENDER_REQUEST_LIMIT }));
+console.log(`Recommender Manager started on port ${SERVER_ENV.RECOMMENDER_MANAGER_PORT}`);
+const requestSchema = z.object({
+    schema: z.object({}).passthrough(),
+    instances: z.object({}).passthrough(),
+});
 
-app.post('/api/v1/recommend', recommend);
+wss.on('connection', (ws: WebSocket) => {
+    ws.on('message', async (message) => {
+        try {
+            const body = await parseInput(requestSchema, JSON.parse(message.toString()));
 
-app.listen(SERVER_ENV.RECOMMENDER_MANAGER_PORT, () => {
-    console.log(`Recommender Manager started on port ${SERVER_ENV.RECOMMENDER_MANAGER_PORT}`);
+            await Promise.allSettled(
+                SERVER_ENV.recommenderUrls.map((url) =>
+                    axios.post(`${url}/api/v1/recommend`, body).then((response) => {
+                        const recommendations = response.data as Array<IdentifiableRecommendation>;
+                        logger.debug(
+                            `Recommender ${url} gave ${recommendations.length} recommendations`
+                        );
+                        if (recommendations.length > 0) {
+                            ws.send(JSON.stringify(response.data));
+                        }
+                    })
+                )
+            );
+            await new Promise((f) => setTimeout(f, 2000));
+            ws.send(JSON.stringify([]));
+        } catch (error) {
+            logger.error(
+                (error as any).message ??
+                    'Error without message from Recommender Manager websocket message event',
+                error
+            );
+            ws.send(JSON.stringify([]));
+        }
+    });
 });

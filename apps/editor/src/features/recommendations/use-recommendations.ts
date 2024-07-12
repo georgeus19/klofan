@@ -24,6 +24,7 @@ import { PROPERTY_SET_EDGE } from '../diagram/edges/property-set-edge.tsx';
 import { NodeSelection, useNodeSelection } from '../diagram/use-node-selection.ts';
 import { TransformSchemaAndInstances } from '../editor/update-operations/transform-schema-and-instances-operation.ts';
 import * as _ from 'lodash';
+import { useRecommendationLoader } from './use-recommendation-loader.ts';
 
 export type RecommendationDiagram = {
     nodes: SchemaNode[];
@@ -40,8 +41,8 @@ export type Recommendations = {
         category: IdentifiableRecommendation['category'];
         recommendations: IdentifiableRecommendation[];
     };
-    recommendationsLoadState: 'loading' | 'loaded' | 'before-load' | 'no-recommendations-yielded';
-    getRecommendations: () => Promise<void>;
+    recommendationsLoadState: LoadState;
+    getRecommendations: () => void;
     deleteRecommendations: () => void;
     applyRecommendation: (recommendation: IdentifiableRecommendation) => Promise<void>;
     showRecommendationDetail: (recommendation: IdentifiableRecommendation) => Promise<void>;
@@ -81,6 +82,15 @@ export const nodeTypes = { [ENTITY_SET_NODE]: EntitySetNode };
 
 export const edgeTypes = { [PROPERTY_SET_EDGE]: PropertySetEdge };
 
+export type LoadState =
+    | {
+          recommendationsPresent: boolean;
+          type: 'loading';
+      }
+    | { type: 'loaded' }
+    | { type: 'before-load' }
+    | { type: 'no-recommendations-yielded' };
+
 export function useRecommendations(): Recommendations {
     const [recommendations, setRecommendations] = useState<{
         [recommenderType: string]: IdentifiableRecommendation[];
@@ -91,9 +101,9 @@ export function useRecommendations(): Recommendations {
         name: 'expert',
     });
 
-    const [recommendationsLoadState, setRecommendationsLoadingState] = useState<
-        'loading' | 'loaded' | 'before-load' | 'no-recommendations-yielded'
-    >('before-load');
+    const [recommendationsLoadState, setRecommendationsLoadingState] = useState<LoadState>({
+        type: 'before-load',
+    });
 
     const [selectedRecommendation, setSelectedRecommendation] =
         useState<RawRecommendationDetail | null>(null);
@@ -103,6 +113,8 @@ export function useRecommendations(): Recommendations {
     const oldNodeSelection = useNodeSelection();
     const newNodeSelection = useNodeSelection();
 
+    const recommendationLoader = useRecommendationLoader({ schema, instances });
+
     const categories = Object.values(recommendations)
         .filter((rs) => rs.at(0))
         .map((rs) => rs[0].category);
@@ -111,39 +123,40 @@ export function useRecommendations(): Recommendations {
         category: selectedCategory,
         recommendations: recommendations[selectedCategory.name] ?? [],
     };
-    const getRecommendations = (): Promise<void> => {
+
+    const getRecommendations = () => {
         deleteRecommendations();
-        const url = '/api/v1/recommend';
-        const fetchOptions: RequestInit = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                schema: schema.raw(),
-                instances: instances.raw(),
-            }),
-        };
+        setRecommendationsLoadingState({
+            type: 'loading',
+            recommendationsPresent: false,
+        });
 
-        setRecommendationsLoadingState('loading');
-
-        return fetch(url, fetchOptions)
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data);
-                const r: IdentifiableRecommendation[] = data;
-                if (r.length > 0) {
-                    setRecommendationsLoadingState('loaded');
-                    setRecommendations(_.groupBy(r, (r) => r.category.name));
+        recommendationLoader.getRecommendations(
+            ({ recommendations: fetchedRecommendations, partiallyLoaded }) => {
+                if (fetchedRecommendations.length > 0) {
+                    setRecommendations((prev) =>
+                        _.groupBy(
+                            [...Object.values(prev).flat(), ...fetchedRecommendations],
+                            (r) => r.category.name
+                        )
+                    );
+                    setRecommendationsLoadingState({
+                        type: 'loading',
+                        recommendationsPresent: true,
+                    });
                 } else {
-                    setRecommendationsLoadingState('no-recommendations-yielded');
-                    setRecommendations({});
+                    if (partiallyLoaded) {
+                        setRecommendationsLoadingState({ type: 'loaded' });
+                    } else {
+                        setRecommendationsLoadingState({ type: 'no-recommendations-yielded' });
+                    }
                 }
-            });
+            }
+        );
     };
 
     const deleteRecommendations = () => {
-        setRecommendationsLoadingState('before-load');
+        setRecommendationsLoadingState({ type: 'before-load' });
         setRecommendations({});
         setSelectedRecommendation(null);
         oldPropertySetSelection.clearSelectedPropertySet();

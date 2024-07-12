@@ -11,11 +11,11 @@ export function RecommendationDescription({ recommendation }: RecommendationDesc
             <div className='col-start-3 col-span-8 rounded p-2 row-start-2 row-span-9 bg-slate-300 flex flex-col overflow-auto'>
                 <h1 className='text-xl self-center'>Category: {recommendation.area}</h1>
                 <Dropdown headerLabel='Description' showInitially>
-                    <p className='mx-2'>
+                    <div className='mx-2'>
                         {recommendation.description.split('|').map((d) => (
-                            <div>{d}</div>
+                            <div key={d}>{d}</div>
                         ))}
-                    </p>
+                    </div>
                 </Dropdown>
                 {recommendation.recommendedTerms && (
                     <Dropdown headerLabel='Recommended Terms' showInitially>
