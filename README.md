@@ -1,4 +1,5 @@
-# Klofan - a system for interactive transformation of structured data to RDF
+# Klofan [![klofan.linkedpipes.com](https://img.shields.io/badge/-klofan.linkedpipes.com-informational)](https://klofan.linkedpipes.com/) 
+A system for interactive transformation of structured data to RDF
 
 # Table of Contents
 
