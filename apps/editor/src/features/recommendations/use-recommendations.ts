@@ -25,6 +25,8 @@ import { NodeSelection, useNodeSelection } from '../diagram/use-node-selection.t
 import { TransformSchemaAndInstances } from '../editor/update-operations/transform-schema-and-instances-operation.ts';
 import * as _ from 'lodash';
 import { useRecommendationLoader } from './use-recommendation-loader.ts';
+import { SchemaFilter, useSchemaFilter } from './use-schema-filter.ts';
+import { CategoryFilter, useCategoryFilter } from './use-category-filter.ts';
 
 export type RecommendationDiagram = {
     nodes: SchemaNode[];
@@ -35,12 +37,9 @@ export type RecommendationDiagram = {
 };
 
 export type Recommendations = {
-    categories: IdentifiableRecommendation['category'][];
-    selectCategory: (category: IdentifiableRecommendation['category']) => void;
-    selectedRecommendations: {
-        category: IdentifiableRecommendation['category'];
-        recommendations: IdentifiableRecommendation[];
-    };
+    schemaFilter: SchemaFilter;
+    categoryFilter: CategoryFilter;
+    selectedRecommendations: IdentifiableRecommendation[];
     recommendationsLoadState: LoadState;
     getRecommendations: () => void;
     deleteRecommendations: () => void;
@@ -95,11 +94,6 @@ export function useRecommendations(): Recommendations {
     const [recommendations, setRecommendations] = useState<{
         [recommenderType: string]: IdentifiableRecommendation[];
     }>({});
-    const [selectedCategory, setSelectedCategory] = useState<
-        IdentifiableRecommendation['category']
-    >({
-        name: 'expert',
-    });
 
     const [recommendationsLoadState, setRecommendationsLoadingState] = useState<LoadState>({
         type: 'before-load',
@@ -114,15 +108,18 @@ export function useRecommendations(): Recommendations {
     const newNodeSelection = useNodeSelection();
 
     const recommendationLoader = useRecommendationLoader({ schema, instances });
+    const schemaFilter = useSchemaFilter();
+    const categoryFilter = useCategoryFilter();
 
-    const categories = Object.values(recommendations)
-        .filter((rs) => rs.at(0))
-        .map((rs) => rs[0].category);
-
-    const selectedRecommendations = {
-        category: selectedCategory,
-        recommendations: recommendations[selectedCategory.name] ?? [],
-    };
+    const categoryFilteredRecommendations =
+        categoryFilter.selectedCategory !== null &&
+        recommendations[categoryFilter.selectedCategory.name]
+            ? recommendations[categoryFilter.selectedCategory.name]
+            : Object.values(recommendations).flat(1);
+    const selectedRecommendations = categoryFilteredRecommendations.filter((recommendation) => {
+        const { itemChanges, relationChanges } = calculateSchemaChanges(recommendation);
+        return schemaFilter.isFiltered(itemChanges.concat(relationChanges));
+    });
 
     const getRecommendations = () => {
         deleteRecommendations();
@@ -140,6 +137,7 @@ export function useRecommendations(): Recommendations {
                             (r) => r.category.name
                         )
                     );
+                    categoryFilter.updateCategories(fetchedRecommendations, true);
                     setRecommendationsLoadingState({
                         type: 'loading',
                         recommendationsPresent: true,
@@ -163,6 +161,8 @@ export function useRecommendations(): Recommendations {
         oldNodeSelection.clearSelectedNode();
         newPropertySetSelection.clearSelectedPropertySet();
         newNodeSelection.clearSelectedNode();
+        categoryFilter.updateCategories([], false);
+        schemaFilter.reset();
     };
 
     const showRecommendationDetail = async (recommendation: IdentifiableRecommendation) => {
@@ -192,25 +192,8 @@ export function useRecommendations(): Recommendations {
                 newSchema
             ),
         };
-        const instancesChanges = recommendation.transformations.flatMap((transformation) =>
-            transformation.instanceTransformations.map((transformation) =>
-                instancesTransformationChanges(transformation)
-            )
-        );
-        const schemaChanges = recommendation.transformations.flatMap((transformation) =>
-            transformation.schemaTransformations.map((transformation) =>
-                schemaTransformationChanges(transformation)
-            )
-        );
 
-        const itemChanges = [
-            ...instancesChanges.flatMap((ch) => ch.entities),
-            ...schemaChanges.flatMap((ch) => ch.items),
-        ];
-        const relationChanges = [
-            ...instancesChanges.flatMap((ch) => ch.properties),
-            ...schemaChanges.flatMap((ch) => ch.relations),
-        ];
+        const { itemChanges, relationChanges } = calculateSchemaChanges(recommendation);
 
         setSelectedRecommendation({
             recommendation: recommendation,
@@ -293,13 +276,9 @@ export function useRecommendations(): Recommendations {
         });
     };
 
-    const selectCategory = (category: IdentifiableRecommendation['category']) => {
-        setSelectedCategory(category);
-    };
-
     return {
-        categories: categories,
-        selectCategory: selectCategory,
+        schemaFilter: schemaFilter,
+        categoryFilter,
         selectedRecommendations: selectedRecommendations,
         recommendationsLoadState,
         getRecommendations,
@@ -309,4 +288,27 @@ export function useRecommendations(): Recommendations {
         hideRecommendationDetail,
         shownRecommendationDetail: shownRecommendationDetail,
     };
+}
+
+function calculateSchemaChanges(recommendation: IdentifiableRecommendation) {
+    const instancesChanges = recommendation.transformations.flatMap((transformation) =>
+        transformation.instanceTransformations.map((transformation) =>
+            instancesTransformationChanges(transformation)
+        )
+    );
+    const schemaChanges = recommendation.transformations.flatMap((transformation) =>
+        transformation.schemaTransformations.map((transformation) =>
+            schemaTransformationChanges(transformation)
+        )
+    );
+
+    const itemChanges = [
+        ...instancesChanges.flatMap((ch) => ch.entities),
+        ...schemaChanges.flatMap((ch) => ch.items),
+    ];
+    const relationChanges = [
+        ...instancesChanges.flatMap((ch) => ch.properties),
+        ...schemaChanges.flatMap((ch) => ch.relations),
+    ];
+    return { itemChanges, relationChanges };
 }

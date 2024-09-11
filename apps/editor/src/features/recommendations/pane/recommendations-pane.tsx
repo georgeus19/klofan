@@ -6,8 +6,6 @@ import { DiagramRecommendationDiff } from '../diagram-diff/diagram-recommendatio
 import { useState } from 'react';
 import { RecommendationDescription } from '../description/recommendation-description.tsx';
 import { useErrorBoundary } from 'react-error-boundary';
-import { Recommendation } from '@klofan/recommender/recommendation';
-import { VirtualList } from '../../utils/virtual-list.tsx';
 import { RecommendationsList } from './recommendations-list.tsx';
 import { Buffering } from '../../utils/buffering.tsx';
 

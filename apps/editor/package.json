@@ -20,6 +20,7 @@
         "csv-parse": "^5.5.2",
         "elkjs": "^0.8.2",
         "lodash": "^4.17.21",
+        "multiselect-react-dropdown": "^2.0.25",
         "n3": "^1.17.1",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",

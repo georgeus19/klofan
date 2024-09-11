@@ -5,7 +5,8 @@ import { twMerge } from 'tailwind-merge';
 import { VirtualList } from '../../utils/virtual-list.tsx';
 import { useEditorContext } from '../../editor/editor-context.tsx';
 import { useErrorBoundary } from 'react-error-boundary';
-import { Divider } from '../../utils/divider.tsx';
+import { CategoryFilter } from './category-filter.tsx';
+import { SchemaFilter } from './schema-filter.tsx';
 
 export type RecommendationsListProps = {
     showOption: ShowOption;
@@ -20,13 +21,8 @@ export function RecommendationsList({
     const { schema } = useEditorContext();
     const { showBoundary } = useErrorBoundary();
 
-    const {
-        selectedRecommendations,
-        categories,
-        selectCategory,
-        applyRecommendation,
-        shownRecommendationDetail,
-    } = useRecommendationsContext();
+    const { selectedRecommendations, applyRecommendation, shownRecommendationDetail } =
+        useRecommendationsContext();
     const recommendationsList = (recommendation: IdentifiableRecommendation) => {
         return (
             <div
@@ -99,34 +95,14 @@ export function RecommendationsList({
     return (
         <>
             <div className='m-1 rounded bg-slate-300'>
-                <div className='grid grid-cols-4'>
-                    <div className='rounded text-center text-lg p-1'>Category</div>
-                    <select
-                        defaultValue='Select category...'
-                        onChange={(e) =>
-                            selectCategory(
-                                categories.find((c) => c.name === e.target.value) ?? categories[0]
-                            )
-                        }
-                        className='col-span-3 rounded bg-blue-200 rounded shadow bg-blue-200 hover:bg-blue-300 border-2 border-slate-400 px-1 focus:bg-yellow-200 h-10 w-full text-center text-lg'
-                    >
-                        {categories.map((category) => (
-                            <option
-                                className='p-2 rounded shadow bg-blue-200 hover:bg-blue-300 overflow-auto whitespace-nowrap text-center'
-                                key={category.name}
-                                value={category.name}
-                            >
-                                {category.name}
-                            </option>
-                        ))}
-                    </select>
-                </div>
+                <CategoryFilter />
+                <SchemaFilter />
                 <div className='flex items-center mt-1'>
                     <div className='w-5'></div>
                     <div className='flex-grow border-t border-y-2 rounded border-gray-400'></div>
                     <div className='w-5'></div>
                 </div>
-                <VirtualList items={selectedRecommendations.recommendations} height='max-h-160'>
+                <VirtualList items={selectedRecommendations} height='max-h-160'>
                     {(recommendation: IdentifiableRecommendation) =>
                         recommendationsList(recommendation)
                     }

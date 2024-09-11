@@ -21,7 +21,7 @@ services:
       - klofan-virtuoso
     volumes:
       - "./grant-permissions.sh:/grant-permissions.sh"
-    entrypoint: sh -c "sleep 10s && sh /grant-permissions.sh"
+    entrypoint: sh -c "sleep 30s && sh /grant-permissions.sh"
 volumes:
   virtuoso-data:
     driver: local
