@@ -182,6 +182,19 @@ const envSchema = z
                     RECOMMENDERS_UNCEFACT_UNIT_RECOMMENDER_URL: z.undefined(),
                 })
             )
+    )
+    .and(
+        z
+            .object({
+                RECOMMENDERS_LOV_RECOMMENDER_PORT: port(),
+                RECOMMENDERS_LOV_RECOMMENDER_URL: url(),
+            })
+            .or(
+                z.object({
+                    RECOMMENDERS_LOV_RECOMMENDER_PORT: z.undefined(),
+                    RECOMMENDERS_LOV_RECOMMENDER_URL: z.undefined(),
+                })
+            )
     );
 
 const result = envSchema.safeParse(process.env);
@@ -263,6 +276,9 @@ export type ServerEnvType = {
 
     RECOMMENDERS_UNCEFACT_UNIT_RECOMMENDER_PORT: number;
     RECOMMENDERS_UNCEFACT_UNIT_RECOMMENDER_URL: string;
+
+    RECOMMENDERS_LOV_RECOMMENDER_PORT: number;
+    RECOMMENDERS_LOV_RECOMMENDER_URL: string;
 };
 export const SERVER_ENV: ServerEnvType = {
     ...result.data,

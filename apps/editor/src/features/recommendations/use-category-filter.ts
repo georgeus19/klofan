@@ -41,6 +41,8 @@ export function useCategoryFilter(): CategoryFilter {
         }
     };
 
+    // console.log(categories);
+
     return {
         selectedCategory,
         categories,

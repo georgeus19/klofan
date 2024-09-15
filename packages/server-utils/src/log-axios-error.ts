@@ -33,5 +33,5 @@ export function processAxiosError(error: any, options?: Options) {
 }
 
 export function logAxiosError(logger: Logger, error: any, message: string, options?: Options) {
-    logger.log(message, processAxiosError(error, options));
+    logger.error({ message: message, other: processAxiosError(error, options) });
 }

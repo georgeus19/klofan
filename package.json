@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "scripts": {
         "build": "turbo build",
-        "dev": "dotenv -- turbo dev --concurrency=30",
+        "dev": "dotenv -- turbo dev --concurrency=35",
         "test": "turbo test --concurrency=1",
         "lint": "turbo lint",
         "format": "prettier --write \"**/*.{ts,tsx,md}\"",

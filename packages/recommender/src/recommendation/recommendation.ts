@@ -9,6 +9,7 @@ export interface Recommendation {
     mainSchemaMatch?: string;
     recommendedTerms?: string[];
     related?: { name: string; link: string }[];
+    surrounding?: { property: string; values: string[] }[];
 }
 
 export type IdentifiableRecommendation = Recommendation & { id: string };

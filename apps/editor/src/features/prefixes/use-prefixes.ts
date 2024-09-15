@@ -19,18 +19,30 @@ export type Prefixes = {
 
 const prefixEqual = (a: Prefix, b: Prefix) => a.value === b.value;
 
-export function usePrefixes(): Prefixes {
-    const [prefixes, setPrefixes] = useState<Prefix[]>([]);
+const predefinedPrefixes: Prefix[] = [
+    { value: 'schema', fullUri: 'http://schema.org/' },
+    { value: 'skos', fullUri: 'http://www.w3.org/2004/02/skos/core#' },
+    { value: 'rdfs', fullUri: 'http://www.w3.org/2000/01/rdf-schema#' },
+    { value: 'dcterms', fullUri: 'http://purl.org/dc/terms/' },
+];
 
-    const addPrefix = (prefix: Prefix) => setPrefixes((prefixes) => uniqWith([prefix, ...prefixes], prefixEqual));
-    const removePrefix = (prefix: string) => setPrefixes(prefixes.filter((p) => p.value !== prefix));
-    const updatePrefix = (prefix: Prefix) => setPrefixes(uniqWith([prefix, ...prefixes], prefixEqual));
+export function usePrefixes(): Prefixes {
+    const [__p, setPrefixes] = useState<Prefix[]>([]);
+    const prefixes = [...__p, ...predefinedPrefixes];
+
+    const addPrefix = (prefix: Prefix) =>
+        setPrefixes((prefixes) => uniqWith([prefix, ...prefixes], prefixEqual));
+    const removePrefix = (prefix: string) =>
+        setPrefixes(prefixes.filter((p) => p.value !== prefix));
+    const updatePrefix = (prefix: Prefix) =>
+        setPrefixes(uniqWith([prefix, ...prefixes], prefixEqual));
     const longestPrefixByUri = (uri: string) =>
         maxBy(
             prefixes.filter((prefix) => uri.startsWith(prefix.fullUri)),
             (p: Prefix) => p.fullUri
         ) ?? null;
-    const availablePrefixes = (prefix: string) => prefixes.filter((p) => p.value.startsWith(prefix));
+    const availablePrefixes = (prefix: string) =>
+        prefixes.filter((p) => p.value.startsWith(prefix));
     const getPrefix = (prefix: string) => prefixes.find((p) => p.value === prefix) ?? null;
 
     const matchPrefix = (uri: string): { prefix?: Prefix; rest: string } => {

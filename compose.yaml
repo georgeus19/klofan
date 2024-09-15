@@ -191,3 +191,14 @@ services:
     env_file: .docker-env
     ports:
       - "${RECOMMENDERS_UNCEFACT_UNIT_RECOMMENDER_PORT:-51005}:${RECOMMENDERS_UNCEFACT_UNIT_RECOMMENDER_PORT:-51005}"
+  lov-recommender:
+    build:
+      context: ./
+      dockerfile: backend-dockerfile.dockerfile
+    restart: always
+    environment:
+      APP_PROJECT_NAME: lov-recommender
+      APP_DIRECTORY: recommenders/lov-recommender
+    env_file: .docker-env
+    ports:
+      - "${RECOMMENDERS_LOV_RECOMMENDER_PORT:-51006}:${RECOMMENDERS_LOV_RECOMMENDER_PORT:-51006}"
