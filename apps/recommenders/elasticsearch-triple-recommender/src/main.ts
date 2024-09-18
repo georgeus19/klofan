@@ -6,7 +6,10 @@ import { createLogger } from '@klofan/config/logger';
 export const OBJECT_WEIGHT = 2;
 export const RECOMMENDATIONS_MAX = 20;
 
-export const logger = createLogger();
+export const logger = createLogger({
+    workflow: 'RECOMMEND',
+    serviceName: 'ElasticsearchTripleRecommender',
+});
 
 if (SERVER_ENV.RECOMMENDERS_ELASTICSEARCH_TRIPLE_RECOMMENDER_PORT) {
     runRecommenderServer(recommend, {

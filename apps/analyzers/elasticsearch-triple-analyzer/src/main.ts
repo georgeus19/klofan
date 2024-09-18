@@ -96,7 +96,10 @@ const indexConfiguration: IndicesCreateRequest = {
     },
 };
 
-export const logger = createLogger();
+export const logger = createLogger({
+    workflow: 'ANALYZE',
+    serviceName: 'ElasticIndexPaperAnalyzer',
+});
 
 export async function main() {
     if (SERVER_ENV.ANALYZERS_ELASTICSEARCH_TRIPLE_ANALYZER_PORT) {

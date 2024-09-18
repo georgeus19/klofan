@@ -3,7 +3,7 @@ import { recommend } from './recommend';
 import { runRecommenderServer } from '@klofan/recommender/server';
 import { createLogger } from '@klofan/config/logger';
 
-export const logger = createLogger();
+export const logger = createLogger({ workflow: 'RECOMMEND', serviceName: 'LovRecommender' });
 
 if (SERVER_ENV.RECOMMENDERS_LOV_RECOMMENDER_PORT) {
     runRecommenderServer(recommend, {

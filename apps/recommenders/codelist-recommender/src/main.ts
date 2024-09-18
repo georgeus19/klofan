@@ -3,7 +3,7 @@ import { recommendCodes } from './recommend-codes';
 import { runRecommenderServer } from '@klofan/recommender/server';
 import { createLogger } from '@klofan/config/logger';
 
-export const logger = createLogger();
+export const logger = createLogger({ workflow: 'RECOMMEND', serviceName: 'CodelistRecommender' });
 
 if (SERVER_ENV.RECOMMENDERS_CODELIST_RECOMMENDER_PORT) {
     runRecommenderServer(recommendCodes, {

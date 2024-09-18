@@ -7,7 +7,7 @@ import { z } from 'zod';
 import { IdentifiableRecommendation } from '@klofan/recommender/recommendation';
 
 const wss = new WebSocketServer({ port: SERVER_ENV.RECOMMENDER_MANAGER_PORT });
-export const logger = createLogger();
+export const logger = createLogger({ workflow: 'RECOMMEND', serviceName: 'RecommenderManager' });
 logger.info(`Recommender Manager started on port ${SERVER_ENV.RECOMMENDER_MANAGER_PORT}`);
 const requestSchema = z.object({
     schema: z.object({}).passthrough(),

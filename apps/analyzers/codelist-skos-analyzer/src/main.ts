@@ -3,7 +3,7 @@ import { SERVER_ENV } from '@klofan/config/env/server';
 import { runAnalyzerServer } from '@klofan/analyzer/communication';
 import { createLogger } from '@klofan/config/logger';
 
-export const logger = createLogger();
+export const logger = createLogger({ workflow: 'ANALYZE', serviceName: 'SkosCodeListAnalyzer' });
 
 if (SERVER_ENV.ANALYZERS_SKOS_CODELIST_ANALYZER_PORT) {
     runAnalyzerServer(findSkosCodelists, {

@@ -1,7 +1,12 @@
 import winston from 'winston';
 import 'winston-mongodb';
+import LokiTransport from 'winston-loki';
+import { SERVER_ENV } from '../env/server';
 
-export const createLogger = () => {
+export const createLogger = (options: {
+    serviceName: string;
+    workflow: 'ANALYZE' | 'RECOMMEND' | 'STORE';
+}) => {
     const logger = winston.createLogger({
         level: 'info',
         format: winston.format.combine(
@@ -10,8 +15,15 @@ export const createLogger = () => {
             winston.format.metadata()
         ),
         transports: [
+            new LokiTransport({
+                host: SERVER_ENV.LOKI_URL,
+                labels: {
+                    serviceName: options.serviceName,
+                    workflow: options.workflow,
+                },
+            }),
             new winston.transports.Console({
-                format: winston.format.simple(),
+                format: winston.format.prettyPrint(),
             }),
         ],
     });

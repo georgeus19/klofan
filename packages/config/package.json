@@ -27,6 +27,7 @@
     },
     "dependencies": {
         "winston": "^3.11.0",
+        "winston-loki": "^6.1.2",
         "winston-mongodb": "^5.1.1",
         "zod": "^3.22.4"
     },

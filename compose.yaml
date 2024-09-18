@@ -3,6 +3,8 @@ include:
   - databases/mongo/compose.yaml
   - databases/redis/compose.yaml
   - databases/virtuoso/compose.yaml
+  - databases/loki/compose.yaml
+
 services:
   editor:
     build:

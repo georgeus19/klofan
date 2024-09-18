@@ -9,7 +9,7 @@ import { graphPostRequestValidation } from './graph-post-request-validation';
 export const GRAPH_STORE_PATH = '/rdf-graph-store';
 export const VIRTUOSO_GRAPH_STORE_PATH = '/sparql-graph-crud';
 
-export const logger = createLogger();
+export const logger = createLogger({ workflow: 'ANALYZE', serviceName: 'Catalog' });
 const app: Express = express();
 
 app.use(cors());

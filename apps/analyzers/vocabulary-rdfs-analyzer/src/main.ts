@@ -3,7 +3,7 @@ import { SERVER_ENV } from '@klofan/config/env/server';
 import { runAnalyzerServer } from '@klofan/analyzer/communication';
 import { createLogger } from '@klofan/config/logger';
 
-export const logger = createLogger();
+export const logger = createLogger({ workflow: 'ANALYZE', serviceName: 'RdfsVocabularyAnalyzer' });
 
 if (SERVER_ENV.ANALYZERS_RDFS_VOCABULARY_ANALYZER_QUEUE) {
     runAnalyzerServer(findVocabularyTerms, {

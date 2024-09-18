@@ -4,6 +4,8 @@ import { port, url } from './helper';
 const envSchema = z
     .object({
         NODE_ENV: z.enum(['production', 'development']),
+        LOKI_PORT: port(),
+        LOKI_URL: url(),
         CATALOG_PORT: port(),
         CATALOG_URL: url(),
         VIRTUOSO_PORT: port(),
@@ -218,6 +220,8 @@ export type ServerEnvType = {
     analyzerQueues: string[];
     recommenderUrls: string[];
     NODE_ENV: 'production' | 'development';
+    LOKI_PORT: number;
+    LOKI_URL: string;
     CATALOG_PORT: number;
     CATALOG_URL: string;
     VIRTUOSO_PORT: number;

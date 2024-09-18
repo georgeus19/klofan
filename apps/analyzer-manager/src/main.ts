@@ -18,7 +18,7 @@ export const analyzerQueues = SERVER_ENV.analyzerQueues.map(
     (queue) => new RedisBlockingQueue<DatasetAnalysisJob>(redisOptions, queue)
 );
 
-export const logger = createLogger();
+export const logger = createLogger({ workflow: 'ANALYZE', serviceName: 'AnalyzerManager' });
 const app: Express = express();
 app.use(cors());
 app.use(bodyParser.json());

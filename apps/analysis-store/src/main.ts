@@ -17,7 +17,7 @@ export const getAnalysisCollection = (): Collection => {
     return db.collection(ANALYSIS_COLLECTION);
 };
 
-export const logger = createLogger();
+export const logger = createLogger({ workflow: 'STORE', serviceName: 'AnalysisStore' });
 const app: Express = express();
 app.use(cors());
 app.use(bodyParser.json({ limit: SERVER_ENV.ANALYSIS_STORE_REQUEST_LIMIT }));

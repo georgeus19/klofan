@@ -3,7 +3,10 @@ import { SERVER_ENV } from '@klofan/config/env/server';
 import { runAnalyzerServer } from '@klofan/analyzer/communication';
 import { createLogger } from '@klofan/config/logger';
 
-export const logger = createLogger();
+export const logger = createLogger({
+    workflow: 'ANALYZE',
+    serviceName: 'SkosConceptSchemeAnalyzer',
+});
 
 if (SERVER_ENV.ANALYZERS_SKOS_CONCEPT_SCHEME_ANALYZER_PORT) {
     runAnalyzerServer(findConceptSchemes, {
