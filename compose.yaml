@@ -15,7 +15,7 @@ services:
       APP_PROJECT_NAME: editor
     env_file: .docker-env
     ports:
-      - "80:80"
+      - "5400:5400"
   analysis-store:
     build:
       context: ./

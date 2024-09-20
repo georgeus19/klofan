@@ -33,7 +33,7 @@ export async function consumeAnalysisJobs({
 }) {
     const datasetMetadataQueue = new RedisBlockingQueue<DatasetAnalysisJob>(redisOptions, jobQueue);
     while (true) {
-        // The following value of analysis job is never used since the first action is to set it from the queue. Howver, it the pop fails,
+        // The following value of analysis job is never used since the first action is to set it from the queue. However, it the pop fails,
         // some value needs to be set for the catch error branch.
         let analysisJob: DatasetAnalysisJob = {
             dataset: {
@@ -52,13 +52,21 @@ export async function consumeAnalysisJobs({
         try {
             // Wait indefinitely for datasets to be added to dataset queue.
             analysisJob = await datasetMetadataQueue.pop();
-            logger.info(`Analyzing dataset ${analysisJob.dataset.iri}`);
+            logger.info({
+                message: `Analyzing dataset ${analysisJob.dataset.iri}`,
+                labels: { event: 'AnalysisStarted', dataset: analysisJob.dataset.iri },
+            });
 
             const analyses: Analysis[] = (await analyze(analysisJob.dataset)).map((analysis) => {
                 const analysisId = uuidv4();
-                logger.info(
-                    `Created analysis ${analysisId} for dataset ${analysisJob.dataset.iri}`
-                );
+                logger.info({
+                    message: `Created analysis ${analysisId} for dataset ${analysisJob.dataset.iri}.`,
+                    labels: {
+                        event: 'AnalysisCreatedSuccess',
+                        dataset: analysisJob.dataset.iri,
+                        analysisId: analysisId,
+                    },
+                });
                 return {
                     ...analysis,
                     provenance: baseAnalysisProvenance({
@@ -99,12 +107,19 @@ export async function consumeAnalysisJobs({
                                 );
                         });
                 }
+            } else {
+                logger.info({
+                    message: `Produced no analyses for dataset ${analysisJob.dataset.iri}`,
+                    labels: { event: 'AnalysisCreatedNone', dataset: analysisJob.dataset.iri },
+                });
             }
         } catch (e) {
-            logger.error(
-                `Error occurred in analyzer - ${(e as any).message ?? 'no error message'}`,
-                { error: e, analysisJob: analysisJob }
-            );
+            logger.error({
+                message: `Error occurred in analyzer - ${(e as any).message ?? 'no error message'}`,
+                labels: { event: 'AnalysisCreatedError', dataset: analysisJob.dataset.iri },
+                error: e,
+                analysisJob: analysisJob,
+            });
         }
     }
 }

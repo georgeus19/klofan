@@ -8,9 +8,9 @@ COPY .docker-env ./.docker-env
 
 RUN npm ci
 
-RUN npm run build
+RUN npm run prodbuild
 
 FROM nginx:1.25.4
 
-COPY --from=builder /project/apps/editor/dist /usr/share/nginx/html
+COPY --from=builder /project/apps/editor/dist /usr/share/nginx/html/editor
 COPY --from=builder /project/apps/editor/server.conf /etc/nginx/conf.d/default.conf

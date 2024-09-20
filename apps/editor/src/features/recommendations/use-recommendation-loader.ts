@@ -3,8 +3,8 @@ import { Schema } from '@klofan/schema';
 import { Instances } from '@klofan/instances';
 import { v4 as uuidv4 } from 'uuid';
 
-let ws = new WebSocket(`ws://${location.host}/ws`);
-console.log(location.host);
+let ws = new WebSocket(import.meta.env.VITE_RECOMMENDER_MANAGER_URL);
+console.log('RM URL', import.meta.env.VITE_RECOMMENDER_MANAGER_URL);
 let closingWebSockets: WebSocket[] = [];
 let request = {
     id: uuidv4(),

@@ -32,7 +32,7 @@ export function runAnalyzerServer(
     app.post('/api/v1/file/dataset/dcat', analyzeDcatFiles(analyze, analyzerIri, logger));
 
     app.listen(port, () => {
-        logger.info(`Analyzer consuming ${jobQueue} started on port ${port}`);
+        logger.info(`Analyzer ${analyzerIri} consuming ${jobQueue} started on port ${port}.`);
     });
 
     void consumeAnalysisJobs({

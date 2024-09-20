@@ -5,6 +5,7 @@ import { Schema } from '@klofan/schema';
 import { InMemoryInstances, Instances } from '@klofan/instances';
 import { Recommendation } from '../../recommendation/recommendation';
 import { v4 as uuidv4 } from 'uuid';
+import winston from 'winston';
 
 const requestSchema = z.object({
     body: z.object({
@@ -17,7 +18,9 @@ export const recommendEndpoint = (
     recommend: (editorData: {
         schema: Schema;
         instances: Instances;
-    }) => Promise<Omit<Recommendation, 'id'>[]>
+    }) => Promise<Omit<Recommendation, 'id'>[]>,
+    logger: winston.Logger,
+    serverName: string
 ) =>
     endpointErrorHandler(async (request: Request, response: Response, next: NextFunction) => {
         const { body } = await parseRequest(requestSchema, request);
@@ -27,6 +30,7 @@ export const recommendEndpoint = (
             instances: new InMemoryInstances(body.instances as any),
         };
         const recommendations: Omit<Recommendation, 'id'>[] = await recommend(editorData);
+        logger.info(`${serverName} recommended ${recommendations.length} recommendations.`);
 
         response.status(200).send(recommendations.map((r) => ({ ...r, id: uuidv4() })));
     });

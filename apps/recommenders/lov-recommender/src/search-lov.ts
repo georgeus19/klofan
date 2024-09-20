@@ -46,6 +46,7 @@ export async function searchEntitySetInLov(
             recommendedTerms: result.uri,
             score: result.score * 100,
             surrounding: createSnippet(result),
+            mainSchemaMatch: entitySet.id,
             description: `Recommendation for adding type to entities of ${entitySet.name} based on Linked Open Vocabularies.`,
         };
     });
@@ -66,6 +67,7 @@ export async function searchPropertySetInLov(
             recommendedTerms: result.uri,
             score: result.score * 100,
             surrounding: createSnippet(result),
+            mainSchemaMatch: propertySet.id,
             description: `Recommendation for setting uri of properties of ${propertySet.name} based on Linked Open Vocabularies.`,
         };
     });

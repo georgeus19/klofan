@@ -13,5 +13,6 @@ if (SERVER_ENV.RECOMMENDERS_FOOD_ONTOLOGY_RECOMMENDER_PORT) {
         port: SERVER_ENV.RECOMMENDERS_FOOD_ONTOLOGY_RECOMMENDER_PORT,
         requestLimit: SERVER_ENV.RECOMMENDER_REQUEST_LIMIT,
         logger: logger,
+        serverName: 'FoodOntologyRecommender',
     });
 }

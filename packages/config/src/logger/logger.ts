@@ -8,17 +8,11 @@ export const createLogger = (options: {
     workflow: 'ANALYZE' | 'RECOMMEND' | 'STORE';
 }) => {
     const logger = winston.createLogger({
-        level: 'info',
-        format: winston.format.combine(
-            winston.format.timestamp(),
-            winston.format.errors({ stack: true }),
-            winston.format.metadata()
-        ),
         transports: [
             new LokiTransport({
                 host: SERVER_ENV.LOKI_URL,
                 labels: {
-                    serviceName: options.serviceName,
+                    service_name: options.serviceName,
                     workflow: options.workflow,
                 },
             }),
