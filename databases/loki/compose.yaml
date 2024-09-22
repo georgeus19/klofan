@@ -16,6 +16,8 @@ services:
       - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
       - GF_AUTH_ANONYMOUS_ENABLED=true
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_SERVER_ROOT_URL=${GRAFANA_URL}
+      - GF_SERVER_SERVE_FROM_SUB_PATH=true
     entrypoint:
       - sh
       - -euc

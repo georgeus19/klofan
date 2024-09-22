@@ -2,6 +2,7 @@ NODE_ENV=development
 
 LOKI_PORT=3100
 LOKI_URL=http://localhost:3100
+GRAFANA_URL=http://localhost:3000/grafana
 
 # Catalog
 CATALOG_PORT=7000
