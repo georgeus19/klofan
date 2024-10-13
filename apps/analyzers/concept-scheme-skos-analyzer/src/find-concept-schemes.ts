@@ -14,7 +14,7 @@ import { QueryEngine } from '@comunica/query-sparql';
 import { logger } from './main';
 
 export async function findConceptSchemes(dataset: DcatDataset): Promise<InternalAnalysis[]> {
-    const quads = await fetchRdfData(dataset);
+    const quads = await fetchRdfData(dataset, { logger });
 
     const store = new Store(quads);
     const engine = new QueryEngine();

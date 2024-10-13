@@ -5,7 +5,7 @@ import { DCAT } from '@klofan/utils';
 import { Quad } from '@rdfjs/types';
 import axios from 'axios';
 import { SERVER_ENV } from '@klofan/config/env/server';
-import { logAxiosError, processAxiosError } from '@klofan/server-utils';
+import { logAxiosError, ObservabilityTools, processAxiosError } from '@klofan/server-utils';
 import rdfParser from 'rdf-parse';
 import { Readable } from 'stream';
 
@@ -18,6 +18,11 @@ export type DcatDistributionMimeType =
     | 'application/ld+json'
     | 'text/turtle'
     | 'text/csv'
+    | 'application/trig'
+    | 'application/n-quads'
+    | 'application/n-triples'
+    | 'text/n3'
+    | 'application/json'
     | 'application/rdf+xml';
 
 export type DcatDistribution = {
@@ -27,18 +32,36 @@ export type DcatDistribution = {
     mediaType: string;
 };
 
-export async function fetchRdfData(dataset: DcatDataset): Promise<Quad[]> {
+export async function fetchRdfData(
+    dataset: DcatDataset,
+    { logger }: ObservabilityTools
+): Promise<Quad[]> {
     const suitableDistribution = retrieveDistribution(dataset, [
         'text/turtle',
         'application/ld+json',
+        'application/trig',
+        'application/n-quads',
+        'application/n-triples',
+        'text/n3',
         'application/rdf+xml',
     ]);
     if (!suitableDistribution) {
-        throw new Error(`No suitable rdf distrubution for ${dataset.iri}`);
+        logger.warn({
+            message: `No suitable RDF distribution found for dataset ${dataset.iri}.`,
+            labels: { event: 'RetrieveRDFDistribution', outcome: 'Failed', dataset: dataset.iri },
+        });
+        return [];
     }
-    console.log('suitableDistribution.mediaType', suitableDistribution.mediaType);
-    console.log('suitableDistribution.mimeType', suitableDistribution.mimeType);
-    console.log('suitableDistribution.downloadURL', suitableDistribution.downloadUrl);
+    logger.info({
+        message: `Found suitable distribution for dataset ${dataset.iri}`,
+        labels: {
+            event: 'RetrieveRDFDistribution',
+            suitableDistributionType: suitableDistribution.mimeType,
+            outcome: 'Success',
+            dataset: dataset.iri,
+            downloadURL: suitableDistribution.downloadUrl,
+        },
+    });
 
     const response: { data?: any; error?: any } = await axios
         .get(suitableDistribution.downloadUrl, {
@@ -51,9 +74,16 @@ export async function fetchRdfData(dataset: DcatDataset): Promise<Quad[]> {
         throw response.error;
     }
     if (typeof response.data !== 'string') {
-        throw new Error(
-            `Fetched data for dataset ${dataset.iri} for distribution ${suitableDistribution.iri} are not string.`
-        );
+        logger.info({
+            message: `Fetched data for dataset ${dataset.iri} for distribution ${suitableDistribution.iri} are not string.`,
+            labels: {
+                event: 'FetchDistributionData',
+                outcome: 'Failed',
+                dataset: dataset.iri,
+                distribution: suitableDistribution.iri,
+            },
+        });
+        return [];
     }
     return parseQuads(response.data, suitableDistribution);
 }

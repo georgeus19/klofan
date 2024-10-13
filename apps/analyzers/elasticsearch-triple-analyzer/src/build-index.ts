@@ -14,7 +14,7 @@ import { URL } from 'url';
 import { Quad } from '@rdfjs/types';
 
 export async function buildIndex(dataset: DcatDataset): Promise<InternalAnalysis[]> {
-    const quads = keepNamedNodesAndLiterals(await fetchRdfData(dataset));
+    const quads = keepNamedNodesAndLiterals(await fetchRdfData(dataset, { logger }));
     console.log(dataset);
 
     const comments = getRdfsComments(quads);

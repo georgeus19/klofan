@@ -8,6 +8,7 @@ import {
     VocabularyTerm,
 } from '@klofan/analyzer/analysis';
 import { RDFS } from '@klofan/utils';
+import { logger } from './main';
 
 interface VocabTerm {
     class?: boolean;
@@ -17,7 +18,7 @@ interface VocabTerm {
 }
 
 export async function findVocabularyTerms(dataset: DcatDataset): Promise<InternalAnalysis[]> {
-    const quads = await fetchRdfData(dataset);
+    const quads = await fetchRdfData(dataset, { logger });
 
     const namedNodesQuads = quads
         .filter((quad) => quad.subject.termType === 'NamedNode')

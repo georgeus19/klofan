@@ -7,9 +7,10 @@ import {
     TypeMapAnalysis,
 } from '@klofan/analyzer/analysis';
 import * as _ from 'lodash';
+import { logger } from './main';
 
 export async function findTypes(dataset: DcatDataset): Promise<InternalAnalysis[]> {
-    const quads = await fetchRdfData(dataset);
+    const quads = await fetchRdfData(dataset, { logger });
 
     // Get triples <UriSubject> <rdf:type> <UriObject>
     const typeQuads = quads
