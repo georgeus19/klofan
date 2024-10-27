@@ -67,6 +67,8 @@ export async function fetchRdfData(
         .get(suitableDistribution.downloadUrl, {
             timeout: SERVER_ENV.ANALYZER_GET_DATASET_DATA_TIMEOUT,
             timeoutErrorMessage: `Timed out when fetching data for dataset ${dataset.iri}`,
+            transformResponse: (res) => res,
+            maxContentLength: SERVER_ENV.ANALYZER_FETCH_CONTENT_LIMIT,
         })
         .then(({ data }) => ({ data }))
         .catch((error) => ({ error: processAxiosError(error) }));

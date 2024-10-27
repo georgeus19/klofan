@@ -14,6 +14,7 @@ const envSchema = z
         ANALYZER_MANAGER_PORT: port(),
         ANALYZER_MANAGER_URL: url(),
         ANALYZER_GET_DATASET_DATA_TIMEOUT: z.coerce.number().nonnegative(),
+        ANALYZER_FETCH_CONTENT_LIMIT: z.coerce.number().nonnegative(),
         ELASTICSEARCH_PORT: port(),
         ELASTICSEARCH_URL: url(),
         REDIS_PORT: port(),
@@ -230,6 +231,7 @@ export type ServerEnvType = {
     ANALYZER_MANAGER_PORT: number;
     ANALYZER_MANAGER_URL: string;
     ANALYZER_GET_DATASET_DATA_TIMEOUT: number;
+    ANALYZER_FETCH_CONTENT_LIMIT: number;
     ELASTICSEARCH_PORT: number;
     ELASTICSEARCH_URL: string;
     REDIS_PORT: number;
