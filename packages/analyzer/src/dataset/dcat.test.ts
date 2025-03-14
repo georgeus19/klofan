@@ -48,6 +48,7 @@ describe('@klofan/Analyzer', () => {
                 const expectedDatasets: DcatDataset[] = [
                     {
                         iri: 'http://example.org/opendata/czech/births/czech-birth-regions',
+                        title: 'Live births values for regions in the Czech Republic.',
                         distributions: [
                             {
                                 iri: 'http://example.org/opendata/czech/births/metadata/csv-distribution',
@@ -61,7 +62,8 @@ describe('@klofan/Analyzer', () => {
                                 mimeType: 'text/turtle',
                                 downloadUrl:
                                     'https://raw.githubusercontent.com/georgeus19/NSWI144/main/triplification/czech-region-births-dataset/output/czech-region-births-agg.ttl',
-                                mediaType: 'https://www.iana.org/assignments/media-types/text/turtle',
+                                mediaType:
+                                    'https://www.iana.org/assignments/media-types/text/turtle',
                             },
                         ],
                     },
@@ -77,6 +79,7 @@ describe('@klofan/Analyzer', () => {
                 @prefix dcterms: <http://purl.org/dc/terms/> .
 
                 ex:czech-people-regions a dcat:Dataset ;
+                    dcterms:title "regiony v ceske republice"@cs ;
                     dcat:distribution ex-metadata:jsonld1-distribution, ex-metadata:ttl1-distribution .
 
                 ex-metadata:jsonld1-distribution a dcat:Distribution ;
@@ -121,24 +124,28 @@ describe('@klofan/Analyzer', () => {
                 const expectedDatasets: DcatDataset[] = [
                     {
                         iri: 'http://example.org/opendata/czech/births/czech-people-regions',
+                        title: 'regiony v ceske republice',
                         distributions: [
                             {
                                 iri: 'http://example.org/opendata/czech/births/metadata/jsonld1-distribution',
                                 mimeType: 'application/ld+json',
                                 downloadUrl: 'https://example.com/aa.jsonld',
-                                mediaType: 'https://www.iana.org/assignments/media-types/application/ld+json',
+                                mediaType:
+                                    'https://www.iana.org/assignments/media-types/application/ld+json',
                             },
                             {
                                 iri: 'http://example.org/opendata/czech/births/metadata/ttl1-distribution',
                                 mimeType: 'text/turtle',
                                 downloadUrl:
                                     'https://raw.githubusercontent.com/georgeus19/NSWI144/main/triplification/czech-region-people-dataset/output/czech-region-people-agg.ttl',
-                                mediaType: 'https://www.iana.org/assignments/media-types/text/turtle',
+                                mediaType:
+                                    'https://www.iana.org/assignments/media-types/text/turtle',
                             },
                         ],
                     },
                     {
                         iri: 'http://example.org/opendata/czech/births/czech-birth-regions',
+                        title: 'Live births values for regions in the Czech Republic.',
                         distributions: [
                             {
                                 iri: 'http://example.org/opendata/czech/births/metadata/csv2-distribution',
@@ -152,7 +159,8 @@ describe('@klofan/Analyzer', () => {
                                 mimeType: 'text/turtle',
                                 downloadUrl:
                                     'https://raw.githubusercontent.com/georgeus19/NSWI144/main/triplification/czech-region-births-dataset/output/czech-region-births-agg.ttl',
-                                mediaType: 'https://www.iana.org/assignments/media-types/text/turtle',
+                                mediaType:
+                                    'https://www.iana.org/assignments/media-types/text/turtle',
                             },
                         ],
                     },

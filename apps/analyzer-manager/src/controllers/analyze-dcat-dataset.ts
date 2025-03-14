@@ -20,8 +20,20 @@ export const analyzeDcatDataset = endpointErrorHandler(
         const body: any = await parseMultipartRequest(request);
         const bb = { ...body, notifications: JSON.parse(body.notifications ?? '[]') };
         const { files, notifications } = await parseInput(bodySchema, bb);
-        logger.info('Uploaded files to Analyzer Manager.', files);
+        logger.info({
+            message: `Uploaded files ${files.map((f) => f.originalFilename).join(',')} to Analyzer Manager.`,
+            labels: {
+                event: 'DatasetFileUpload',
+            },
+            files: files,
+        });
         const [datasets, filesSubmittedForAnalysis] = await getFilesWithDcat(files);
+        logger.info({
+            message: `Uploaded ${datasets.length} datasets for analysis from files ${files.map((f) => f.originalFilename).join(',')},`,
+            labels: {
+                event: 'DatasetUpload',
+            },
+        });
         if (datasets.length > 0) {
             await Promise.all(
                 analyzerQueues.map((queue) =>

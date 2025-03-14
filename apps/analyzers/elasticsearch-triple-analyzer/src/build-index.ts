@@ -43,7 +43,7 @@ export async function buildIndex(dataset: DcatDataset): Promise<InternalAnalysis
             indexName: INDEX_NAME,
         },
     };
-    logger.info(`Added dataset ${dataset.iri} data to elastic search index ${INDEX_NAME}.`);
+    logger.info(`Added dataset ${dataset.title} data to elastic search index ${INDEX_NAME}.`);
 
     return Promise.resolve([analysis]);
 }

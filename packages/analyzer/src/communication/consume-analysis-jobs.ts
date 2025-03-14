@@ -38,6 +38,7 @@ export async function consumeAnalysisJobs({
         let analysisJob: DatasetAnalysisJob = {
             dataset: {
                 iri: 'http://dummy-dataset-uri.dummy',
+                title: 'dummy title',
                 distributions: [
                     {
                         iri: 'http://dummy-dist-uri.dummy',
@@ -60,10 +61,11 @@ export async function consumeAnalysisJobs({
             const analyses: Analysis[] = (await analyze(analysisJob.dataset)).map((analysis) => {
                 const analysisId = uuidv4();
                 logger.info({
-                    message: `Created analysis ${analysisId} for dataset ${analysisJob.dataset.iri}.`,
+                    message: `Created analysis ${analysisId} for dataset ${analysisJob.dataset.title}.`,
                     labels: {
                         event: 'AnalysisCreatedSuccess',
                         dataset: analysisJob.dataset.iri,
+                        datasetTitle: analysisJob.dataset.title,
                         analysisId: analysisId,
                     },
                 });
@@ -78,6 +80,14 @@ export async function consumeAnalysisJobs({
                     }),
                     id: analysisId,
                 };
+            });
+            logger.info({
+                message: `Created ${analyses.length} analyses for dataset ${analysisJob.dataset.title}.`,
+                labels: {
+                    event: 'AnalysesCreated',
+                    dataset: analysisJob.dataset.iri,
+                    datasetTitle: analysisJob.dataset.title,
+                },
             });
             if (analyses.length > 0) {
                 const result = await postAnalysesToAdapter({
@@ -109,14 +119,22 @@ export async function consumeAnalysisJobs({
                 }
             } else {
                 logger.info({
-                    message: `Produced no analyses for dataset ${analysisJob.dataset.iri}`,
-                    labels: { event: 'AnalysisCreatedNone', dataset: analysisJob.dataset.iri },
+                    message: `Produced no analyses for dataset ${analysisJob.dataset.title}`,
+                    labels: {
+                        event: 'AnalysisCreatedNone',
+                        dataset: analysisJob.dataset.iri,
+                        datasetTitle: analysisJob.dataset.title,
+                    },
                 });
             }
         } catch (e) {
             logger.error({
-                message: `Error occurred in analyzer - ${(e as any).message ?? 'no error message'}`,
-                labels: { event: 'AnalysisCreatedError', dataset: analysisJob.dataset.iri },
+                message: `Error occurred in analyzer for ${analysisJob.dataset.title} - ${(e as any).message ?? 'no error message'}`,
+                labels: {
+                    event: 'AnalysisCreatedError',
+                    dataset: analysisJob.dataset.iri,
+                    datasetTitle: analysisJob.dataset.title,
+                },
                 error: e,
                 analysisJob: analysisJob,
             });
@@ -142,30 +160,41 @@ async function postAnalysesToAdapter({
                 return null;
             }
             if (analyses.length !== result.insertedCount) {
-                observability.logger.warn(
-                    `Not all analyses were inserted for dataset ${dataset.iri}`,
-                    {
-                        allAnalyses: analyses.length,
-                        inserted: result.insertedCount,
+                observability.logger.warn({
+                    message: `Not all analyses were inserted for dataset ${dataset.title}`,
+                    labels: {
                         dataset: dataset.iri,
-                    }
-                );
+                        datasetTitle: dataset.title,
+                        event: 'AnalysisStoring',
+                    },
+                    allAnalyses: analyses.length,
+                    inserted: result.insertedCount,
+                });
             } else {
-                observability.logger.info(
-                    `Inserted all ${analyses.length} analyses for dataset ${dataset.iri}`
-                );
+                observability.logger.info({
+                    message: `Inserted all ${analyses.length} analyses for dataset ${dataset.title}`,
+                    labels: {
+                        dataset: dataset.iri,
+                        datasetTitle: dataset.title,
+                        event: 'AnalysisStoring',
+                    },
+                });
             }
-            observability.logger.info(
-                `Inserted analyses: ${result.insertedIds.join(',')}`,
-                result.insertedIds
-            );
+            observability.logger.info({
+                message: `Inserted analyses: ${result.insertedIds.join(',')} for dataset ${dataset.title}`,
+                labels: {
+                    dataset: dataset.iri,
+                    datasetTitle: dataset.title,
+                },
+                insertedAnalyses: result.insertedIds,
+            });
             return { insertedIds: result.insertedIds };
         })
         .catch((error) => {
             logAxiosError(
                 observability.logger,
                 error,
-                `Response error received when posting analyses to adapter. No analyses for dataset ${dataset.iri}`
+                `Response error received when posting analyses to adapter. No analyses for dataset ${dataset.title} - ${dataset.iri}`
             );
             return null;
         });
